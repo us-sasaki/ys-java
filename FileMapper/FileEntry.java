@@ -8,5 +8,5 @@ public class FileEntry {
 	List<Long>	sizeList;	// 過去のサイズ履歴
 	long		size;
 	long		increase;	// 直近の増分
-	String		owner;		// ファイル所有者
+	String		owner	= "unknown";		// ファイル所有者
 }
