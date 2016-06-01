@@ -1,0 +1,517 @@
+テスト
+。
+家
+に
+帰る
+。
+投資
+家
+。
+この
+家
+に
+は
+庭
+が
+ない
+。
+投資
+家
+に
+は
+庭
+が
+ない
+。
+家
+（
+いえ
+）
+と
+家
+（
+か
+）
+が
+適切
+に
+読み
+仮名
+が
+振ら
+れる
+こと
+が
+わかっ
+た
+。
+==================================================
+allFeatures : 名詞,サ変接続,*,*,*,*,テスト,テスト,テスト
+partOfSpeech : 名詞,サ変接続,*,*
+position : 0
+reading : テスト
+surfaceFrom : テスト
+allFeaturesArray : [名詞, サ変接続, *, *, *, *, テスト, テスト, テスト]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 記号,句点,*,*,*,*,。,。,。
+partOfSpeech : 記号,句点,*,*
+position : 3
+reading : 。
+surfaceFrom : 。
+allFeaturesArray : [記号, 句点, *, *, *, *, 。, 。, 。]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 名詞,一般,*,*,*,*,家,イエ,イエ
+partOfSpeech : 名詞,一般,*,*
+position : 4
+reading : イエ
+surfaceFrom : 家
+allFeaturesArray : [名詞, 一般, *, *, *, *, 家, イエ, イエ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助詞,格助詞,一般,*,*,*,に,ニ,ニ
+partOfSpeech : 助詞,格助詞,一般,*
+position : 5
+reading : ニ
+surfaceFrom : に
+allFeaturesArray : [助詞, 格助詞, 一般, *, *, *, に, ニ, ニ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 動詞,自立,*,*,五段・ラ行,基本形,帰る,カエル,カエル
+partOfSpeech : 動詞,自立,*,*
+position : 6
+reading : カエル
+surfaceFrom : 帰る
+allFeaturesArray : [動詞, 自立, *, *, 五段・ラ行, 基本形, 帰る, カエル, カエル]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 記号,句点,*,*,*,*,。,。,。
+partOfSpeech : 記号,句点,*,*
+position : 8
+reading : 。
+surfaceFrom : 。
+allFeaturesArray : [記号, 句点, *, *, *, *, 。, 。, 。]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 名詞,サ変接続,*,*,*,*,投資,トウシ,トーシ
+partOfSpeech : 名詞,サ変接続,*,*
+position : 9
+reading : トウシ
+surfaceFrom : 投資
+allFeaturesArray : [名詞, サ変接続, *, *, *, *, 投資, トウシ, トーシ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 名詞,接尾,一般,*,*,*,家,カ,カ
+partOfSpeech : 名詞,接尾,一般,*
+position : 11
+reading : カ
+surfaceFrom : 家
+allFeaturesArray : [名詞, 接尾, 一般, *, *, *, 家, カ, カ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 記号,句点,*,*,*,*,。,。,。
+partOfSpeech : 記号,句点,*,*
+position : 12
+reading : 。
+surfaceFrom : 。
+allFeaturesArray : [記号, 句点, *, *, *, *, 。, 。, 。]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 連体詞,*,*,*,*,*,この,コノ,コノ
+partOfSpeech : 連体詞,*,*,*
+position : 13
+reading : コノ
+surfaceFrom : この
+allFeaturesArray : [連体詞, *, *, *, *, *, この, コノ, コノ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 名詞,一般,*,*,*,*,家,イエ,イエ
+partOfSpeech : 名詞,一般,*,*
+position : 15
+reading : イエ
+surfaceFrom : 家
+allFeaturesArray : [名詞, 一般, *, *, *, *, 家, イエ, イエ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助詞,格助詞,一般,*,*,*,に,ニ,ニ
+partOfSpeech : 助詞,格助詞,一般,*
+position : 16
+reading : ニ
+surfaceFrom : に
+allFeaturesArray : [助詞, 格助詞, 一般, *, *, *, に, ニ, ニ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助詞,係助詞,*,*,*,*,は,ハ,ワ
+partOfSpeech : 助詞,係助詞,*,*
+position : 17
+reading : ハ
+surfaceFrom : は
+allFeaturesArray : [助詞, 係助詞, *, *, *, *, は, ハ, ワ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 名詞,一般,*,*,*,*,庭,ニワ,ニワ
+partOfSpeech : 名詞,一般,*,*
+position : 18
+reading : ニワ
+surfaceFrom : 庭
+allFeaturesArray : [名詞, 一般, *, *, *, *, 庭, ニワ, ニワ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助詞,格助詞,一般,*,*,*,が,ガ,ガ
+partOfSpeech : 助詞,格助詞,一般,*
+position : 19
+reading : ガ
+surfaceFrom : が
+allFeaturesArray : [助詞, 格助詞, 一般, *, *, *, が, ガ, ガ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 形容詞,自立,*,*,形容詞・アウオ段,基本形,ない,ナイ,ナイ
+partOfSpeech : 形容詞,自立,*,*
+position : 20
+reading : ナイ
+surfaceFrom : ない
+allFeaturesArray : [形容詞, 自立, *, *, 形容詞・アウオ段, 基本形, ない, ナイ, ナイ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 記号,句点,*,*,*,*,。,。,。
+partOfSpeech : 記号,句点,*,*
+position : 22
+reading : 。
+surfaceFrom : 。
+allFeaturesArray : [記号, 句点, *, *, *, *, 。, 。, 。]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 名詞,サ変接続,*,*,*,*,投資,トウシ,トーシ
+partOfSpeech : 名詞,サ変接続,*,*
+position : 23
+reading : トウシ
+surfaceFrom : 投資
+allFeaturesArray : [名詞, サ変接続, *, *, *, *, 投資, トウシ, トーシ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 名詞,接尾,一般,*,*,*,家,カ,カ
+partOfSpeech : 名詞,接尾,一般,*
+position : 25
+reading : カ
+surfaceFrom : 家
+allFeaturesArray : [名詞, 接尾, 一般, *, *, *, 家, カ, カ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助詞,格助詞,一般,*,*,*,に,ニ,ニ
+partOfSpeech : 助詞,格助詞,一般,*
+position : 26
+reading : ニ
+surfaceFrom : に
+allFeaturesArray : [助詞, 格助詞, 一般, *, *, *, に, ニ, ニ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助詞,係助詞,*,*,*,*,は,ハ,ワ
+partOfSpeech : 助詞,係助詞,*,*
+position : 27
+reading : ハ
+surfaceFrom : は
+allFeaturesArray : [助詞, 係助詞, *, *, *, *, は, ハ, ワ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 名詞,一般,*,*,*,*,庭,ニワ,ニワ
+partOfSpeech : 名詞,一般,*,*
+position : 28
+reading : ニワ
+surfaceFrom : 庭
+allFeaturesArray : [名詞, 一般, *, *, *, *, 庭, ニワ, ニワ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助詞,格助詞,一般,*,*,*,が,ガ,ガ
+partOfSpeech : 助詞,格助詞,一般,*
+position : 29
+reading : ガ
+surfaceFrom : が
+allFeaturesArray : [助詞, 格助詞, 一般, *, *, *, が, ガ, ガ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 形容詞,自立,*,*,形容詞・アウオ段,基本形,ない,ナイ,ナイ
+partOfSpeech : 形容詞,自立,*,*
+position : 30
+reading : ナイ
+surfaceFrom : ない
+allFeaturesArray : [形容詞, 自立, *, *, 形容詞・アウオ段, 基本形, ない, ナイ, ナイ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 記号,句点,*,*,*,*,。,。,。
+partOfSpeech : 記号,句点,*,*
+position : 32
+reading : 。
+surfaceFrom : 。
+allFeaturesArray : [記号, 句点, *, *, *, *, 。, 。, 。]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 名詞,一般,*,*,*,*,家,イエ,イエ
+partOfSpeech : 名詞,一般,*,*
+position : 33
+reading : イエ
+surfaceFrom : 家
+allFeaturesArray : [名詞, 一般, *, *, *, *, 家, イエ, イエ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 記号,括弧開,*,*,*,*,（,（,（
+partOfSpeech : 記号,括弧開,*,*
+position : 34
+reading : （
+surfaceFrom : （
+allFeaturesArray : [記号, 括弧開, *, *, *, *, （, （, （]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 動詞,自立,*,*,五段・ワ行促音便,命令ｅ,いう,イエ,イエ
+partOfSpeech : 動詞,自立,*,*
+position : 35
+reading : イエ
+surfaceFrom : いえ
+allFeaturesArray : [動詞, 自立, *, *, 五段・ワ行促音便, 命令ｅ, いう, イエ, イエ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 記号,括弧閉,*,*,*,*,）,）,）
+partOfSpeech : 記号,括弧閉,*,*
+position : 37
+reading : ）
+surfaceFrom : ）
+allFeaturesArray : [記号, 括弧閉, *, *, *, *, ）, ）, ）]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助詞,格助詞,引用,*,*,*,と,ト,ト
+partOfSpeech : 助詞,格助詞,引用,*
+position : 38
+reading : ト
+surfaceFrom : と
+allFeaturesArray : [助詞, 格助詞, 引用, *, *, *, と, ト, ト]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 名詞,一般,*,*,*,*,家,イエ,イエ
+partOfSpeech : 名詞,一般,*,*
+position : 39
+reading : イエ
+surfaceFrom : 家
+allFeaturesArray : [名詞, 一般, *, *, *, *, 家, イエ, イエ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 記号,括弧開,*,*,*,*,（,（,（
+partOfSpeech : 記号,括弧開,*,*
+position : 40
+reading : （
+surfaceFrom : （
+allFeaturesArray : [記号, 括弧開, *, *, *, *, （, （, （]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助詞,副助詞／並立助詞／終助詞,*,*,*,*,か,カ,カ
+partOfSpeech : 助詞,副助詞／並立助詞／終助詞,*,*
+position : 41
+reading : カ
+surfaceFrom : か
+allFeaturesArray : [助詞, 副助詞／並立助詞／終助詞, *, *, *, *, か, カ, カ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 記号,括弧閉,*,*,*,*,）,）,）
+partOfSpeech : 記号,括弧閉,*,*
+position : 42
+reading : ）
+surfaceFrom : ）
+allFeaturesArray : [記号, 括弧閉, *, *, *, *, ）, ）, ）]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助詞,格助詞,一般,*,*,*,が,ガ,ガ
+partOfSpeech : 助詞,格助詞,一般,*
+position : 43
+reading : ガ
+surfaceFrom : が
+allFeaturesArray : [助詞, 格助詞, 一般, *, *, *, が, ガ, ガ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 名詞,形容動詞語幹,*,*,*,*,適切,テキセツ,テキセツ
+partOfSpeech : 名詞,形容動詞語幹,*,*
+position : 44
+reading : テキセツ
+surfaceFrom : 適切
+allFeaturesArray : [名詞, 形容動詞語幹, *, *, *, *, 適切, テキセツ, テキセツ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助詞,副詞化,*,*,*,*,に,ニ,ニ
+partOfSpeech : 助詞,副詞化,*,*
+position : 46
+reading : ニ
+surfaceFrom : に
+allFeaturesArray : [助詞, 副詞化, *, *, *, *, に, ニ, ニ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 動詞,自立,*,*,五段・マ行,連用形,読む,ヨミ,ヨミ
+partOfSpeech : 動詞,自立,*,*
+position : 47
+reading : ヨミ
+surfaceFrom : 読み
+allFeaturesArray : [動詞, 自立, *, *, 五段・マ行, 連用形, 読む, ヨミ, ヨミ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 名詞,一般,*,*,*,*,仮名,カメイ,カメイ
+partOfSpeech : 名詞,一般,*,*
+position : 49
+reading : カメイ
+surfaceFrom : 仮名
+allFeaturesArray : [名詞, 一般, *, *, *, *, 仮名, カメイ, カメイ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助詞,格助詞,一般,*,*,*,が,ガ,ガ
+partOfSpeech : 助詞,格助詞,一般,*
+position : 51
+reading : ガ
+surfaceFrom : が
+allFeaturesArray : [助詞, 格助詞, 一般, *, *, *, が, ガ, ガ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 動詞,自立,*,*,五段・ラ行,未然形,振る,フラ,フラ
+partOfSpeech : 動詞,自立,*,*
+position : 52
+reading : フラ
+surfaceFrom : 振ら
+allFeaturesArray : [動詞, 自立, *, *, 五段・ラ行, 未然形, 振る, フラ, フラ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 動詞,接尾,*,*,一段,基本形,れる,レル,レル
+partOfSpeech : 動詞,接尾,*,*
+position : 54
+reading : レル
+surfaceFrom : れる
+allFeaturesArray : [動詞, 接尾, *, *, 一段, 基本形, れる, レル, レル]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 名詞,非自立,一般,*,*,*,こと,コト,コト
+partOfSpeech : 名詞,非自立,一般,*
+position : 56
+reading : コト
+surfaceFrom : こと
+allFeaturesArray : [名詞, 非自立, 一般, *, *, *, こと, コト, コト]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助詞,格助詞,一般,*,*,*,が,ガ,ガ
+partOfSpeech : 助詞,格助詞,一般,*
+position : 58
+reading : ガ
+surfaceFrom : が
+allFeaturesArray : [助詞, 格助詞, 一般, *, *, *, が, ガ, ガ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 動詞,自立,*,*,五段・ラ行,連用タ接続,わかる,ワカッ,ワカッ
+partOfSpeech : 動詞,自立,*,*
+position : 59
+reading : ワカッ
+surfaceFrom : わかっ
+allFeaturesArray : [動詞, 自立, *, *, 五段・ラ行, 連用タ接続, わかる, ワカッ, ワカッ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 助動詞,*,*,*,特殊・タ,基本形,た,タ,タ
+partOfSpeech : 助動詞,*,*,*
+position : 62
+reading : タ
+surfaceFrom : た
+allFeaturesArray : [助動詞, *, *, *, 特殊・タ, 基本形, た, タ, タ]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
+==================================================
+allFeatures : 記号,句点,*,*,*,*,。,。,。
+partOfSpeech : 記号,句点,*,*
+position : 63
+reading : 。
+surfaceFrom : 。
+allFeaturesArray : [記号, 句点, *, *, *, *, 。, 。, 。]
+辞書にある言葉? : true
+未知語? : false
+ユーザ定義? : false
