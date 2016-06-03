@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.nio.*;
 import java.nio.file.*;
 import java.nio.file.attribute.UserPrincipal;
+import java.nio.file.attribute.FileTime;
 
 /**
  * 指定されたディレクトリ以下のファイルパス、ファイルサイズ(ディレクトリの場合は配下の
@@ -61,7 +62,10 @@ public class FileLister2 {
 		printPath(f.getPath());
 		out.print(size);
 		out.print(',');
-		out.println(Files.getOwner(f.toPath()).getName());
+		out.print(Files.getOwner(f.toPath()).getName());
+		out.print(',');
+		out.print(Files.getLastModifiedTime(f.toPath()).toMillis());
+		out.println();
 	}
 	
 	protected void printPath(String path) {
