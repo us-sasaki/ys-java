@@ -116,6 +116,12 @@ public class FileList {
 		makeup(); // sizeList の長さをそろえ、isDirectoryを設定
 	}
 	
+	/**
+	 * readFile した場合、dateList が構築されないため、手動構築するための
+	 * メソッド
+	 *
+	 * @deprecated
+	 */
 	public void addDateList(String filename) {
 		if (dateList == null) dateList = new ArrayList<Long>();
 		try {
@@ -172,6 +178,9 @@ public class FileList {
 			// owner を上書きする
 			if (token.length >= MAX_DEPTH + 3)
 				entry.owner = token[MAX_DEPTH + 2];
+			// lastModified を上書きする
+			if (token.length >= MAX_DEPTH + 4)
+				entry.lastModified = Long.parseLong(token[MAX_DEPTH + 3]);
 		}
 		
 		sizeListCount++;
@@ -251,7 +260,7 @@ public class FileList {
 	 * 変更されることに注意が必要です。
 	 */
 	public List<FileEntry> selectLevel(int level) {
-		if (list == null) throw new IllegalStateException("set または readFile によって値を格納してください");
+		if (list == null) throw new IllegalStateException("addFile によって値を格納してください");
 		ArrayList<FileEntry> result = new ArrayList<FileEntry>();
 		
 		for (FileEntry f : list) {
@@ -267,11 +276,27 @@ public class FileList {
 	 * 変更されることに注意が必要です。
 	 */
 	public List<FileEntry> selectFile(boolean isFile) {
-		if (list == null) throw new IllegalStateException("set または readFile によって値を格納してください");
+		if (list == null) throw new IllegalStateException("addFile によって値を格納してください");
 		ArrayList<FileEntry> result = new ArrayList<FileEntry>();
 		
 		for (FileEntry f : list) {
 			if (f.isDirectory != isFile) result.add(f);
+		}
+		return result;
+	}
+	
+	/**
+	 * 任意のルール(FileEntrySelector)に従ってファイルを抽出する
+	 *
+	 * @param	fes		ファイル抽出ルール
+	 * @return	抽出された FileEntry の List (shallow copy)
+	 */
+	public List<FileEntry> selectAs(FileEntrySelector fes) {
+		if (list == null) throw new IllegalStateException("addFile によって値を格納してください");
+		ArrayList<FileEntry> result = new ArrayList<FileEntry>();
+		
+		for (FileEntry f : list) {
+			if (fes.hits(f)) result.add(f);
 		}
 		return result;
 	}
