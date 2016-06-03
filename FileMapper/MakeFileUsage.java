@@ -25,6 +25,7 @@ public class MakeFileUsage {
 		a.addFile("list20160516.csv");
 		a.addFile("list20160527.csv");
 		a.addFile("list20160601.csv");
+		a.addFile("list20160603.csv");
 		
 		String date = sdf.format(new Date());
 		
