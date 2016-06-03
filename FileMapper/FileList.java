@@ -15,6 +15,7 @@ public class FileList {
 	List<Long>		dateList;
 	List<FileEntry> list;
 	int sizeListCount;
+	int referencePoint; // increase を計算する基準, list の index で指定
 	
 /*-------------
  * constructor
@@ -26,11 +27,16 @@ public class FileList {
 		list = null;
 		dateList = null;
 		sizeListCount = 0;
+		referencePoint = 0; // 最初のサイズと比較して increase を計算
 	}
 	
 /*------------------
  * instance methods
  */
+	public void setReferencePoint() {
+		referencePoint = dateList.size() - 1;
+	}
+	
 	/**
 	 * 試験用に作ったもの。今後はlistyyyyMMdd.csv 形式のものを呼ぶように変更
 	 * ファイル名から、いつの情報かを取得する必要があるため。
@@ -93,7 +99,7 @@ public class FileList {
 			if (l.size() == 1) {
 				entry.increase = entry.size;
 			} else {
-				entry.increase = entry.size - l.get(l.size() - 2);
+				entry.increase = entry.size - l.get(referencePoint);
 			}
 			
 			list.add(entry);
@@ -163,15 +169,9 @@ public class FileList {
 			}
 			entry.sizeList.add(Long.decode(token[MAX_DEPTH + 1]));
 			
-			// increase は１つ前のものとの差分を取っているが、
-			// 今後、指定できるようにする
-			List<Long> l = entry.sizeList;
-			entry.size	= l.get(l.size() - 1); // 最後(最新)のサイズ
-			if (l.size() == 1) {
-				entry.increase = entry.size;
-			} else {
-				entry.increase = entry.size - l.get(l.size() - 2);
-			}
+			// owner を上書きする
+			if (token.length >= MAX_DEPTH + 3)
+				entry.owner = token[MAX_DEPTH + 2];
 		}
 		
 		sizeListCount++;
@@ -227,6 +227,12 @@ public class FileList {
 			else f.isDirectory = false;
 			f = next;
 		}
+		// increase を計算
+		for (FileEntry e : list) {
+			List<Long> l = e.sizeList;
+			e.size	= l.get(sizeListCount - 1); // 最後(最新)のサイズ
+			e.increase = e.size - l.get(referencePoint);
+		}
 	}
 	
 	/**
@@ -270,62 +276,60 @@ public class FileList {
 		return result;
 	}
 	
-/*-------------
- * inner class
- */
-	/**
-	 * サイズ, 深さ, パス名 の順に並べる Comparator
-	 */
-	static class SizeOrder implements Comparator<FileEntry> {
-		public int compare(FileEntry a, FileEntry b) {
-			if (a.size > b.size) return 1;
-			if (a.size < b.size) return -1;
-			if (a.level != b.level) return a.level - b.level;
-			return a.path.compareTo(b.path);
-		}
-		
-		public boolean equals(FileEntry a, FileEntry b) {
-			return ((a.size == b.size)&& // 早くて分解能が高い size でまず比較
-						(a.level == b.level)&&
-						(a.path.equals(b.path)) ); // 遅いのは最後
-		}
-	}
-	
-	/**
-	 * 増分, 深さ, パス名 の順に並べる Comparator
-	 */
-	static class IncreaseOrder implements Comparator<FileEntry> {
-		public int compare(FileEntry a, FileEntry b) {
-			if (a.increase > b.increase) return 1;
-			if (a.increase < b.increase) return -1;
-			if (a.level != b.level) return a.level - b.level;
-			return a.path.compareTo(b.path);
-		}
-		
-		public boolean equals(FileEntry a, FileEntry b) {
-			return ((a.increase == b.increase)&& // 早くて分解能が高い increase でまず比較
-						(a.level == b.level)&&
-						(a.path.equals(b.path)) ); // 遅いのは最後
-		}
-	}
-	
-	/**
-	 * パス名 の辞書式順序で並べる Comparator
-	 */
-	static class PathOrder implements Comparator<FileEntry> {
-		public int compare(FileEntry a, FileEntry b) {
-			return a.path.compareTo(b.path);
-		}
-		
-		public boolean equals(FileEntry a, FileEntry b) {
-			return a.path.equals(b.path);
-		}
-	}
-	
 /*---------------
  * class methods
- */
-	public static void writeJsonFile(FileList fileList,
+ *
+	/**
+	 * path 文字列からファイル名を取得
+	 */
+	public static String filename(String pathString) {
+		return new File(pathString).getName();
+	}
+	
+	/**
+	 * NVD3 line chart 用 JSON ファイル出力
+	 */
+	public static void writeJsonFile(List<Long> dateList,
+							List<FileEntry> target,
+							String filename) throws IOException {
+		FileOutputStream fos = new FileOutputStream(filename);
+		Writer fw = new OutputStreamWriter(fos, "UTF-8");
+		PrintWriter p = new PrintWriter(fw);
+		
+		p.println("["); // start mark
+		boolean first = true;
+		for (FileEntry fe : target) {
+			if (!fe.isDirectory) continue;
+			if (!first) {
+				p.println(",");
+			} else {
+				first = false;
+			}
+			p.println("  {");
+			String path = fe.path;
+			path = path.replace("\\", "\\\\");
+			p.println("    \"key\": \"" + filename(path) + "\",");
+			p.print("    \"values\": [ ");
+			int i = 0;
+			for (Long date : dateList) {
+				if (i > 0) p.print(" , ");
+				p.print("{\"x\":" + date + " , \"y\":" + (fe.sizeList.get(i++)/1024/1024) + "}");
+			}
+			p.println("]");
+			p.print("  }");
+		}
+		p.println();
+		p.println("]");
+		
+		p.close();
+		fw.close();
+		fos.close();
+	}
+	
+	/**
+	 * NVD3 stacked area chart / cumulative line chart 用 JSON ファイル出力
+	 */
+	public static void writePosJsonFile(List<Long> dateList,
 							List<FileEntry> target,
 							String filename) throws IOException {
 		FileOutputStream fos = new FileOutputStream(filename);
@@ -347,9 +351,9 @@ public class FileList {
 			p.println("    \"key\": \"" + path + "\",");
 			p.print("    \"values\": [ ");
 			int i = 0;
-			for (Long date : fileList.dateList) {
-				if (i > 0) p.print(" , ");
-				p.print("{\"x\":" + date + " , \"y\":" + (fe.sizeList.get(i++)/1024/1024) + "}");
+			for (Long date : dateList) {
+				if (i > 0) p.print(", ");
+				p.print("[" + date + ", " + (fe.sizeList.get(i++)/1024/1024) + "]");
 			}
 			p.println("]");
 			p.print("  }");
@@ -361,9 +365,10 @@ public class FileList {
 		fw.close();
 		fos.close();
 	}
-	
-	public static void writePieChartJsonFile(FileList fileList,
-							List<FileEntry> target,
+	/**
+	 * NVD3 Pie Chart 用 JSON ファイル出力
+	 */
+	public static void writePieChartJsonFile(List<FileEntry> target,
 							String filename) throws IOException {
 		FileOutputStream fos = new FileOutputStream(filename);
 		Writer fw = new OutputStreamWriter(fos, "UTF-8");
@@ -372,19 +377,54 @@ public class FileList {
 		p.println("["); // start mark
 		boolean first = true;
 		for (FileEntry fe : target) {
-			if (!fe.isDirectory) continue;
+			//if (!fe.isDirectory) continue;
 			if (!first) {
 				p.println(",");
 			} else {
 				first = false;
+				p.println();
 			}
-			p.println("  {");
-			String path = fe.path;
-			path = path.replace("\\", "\\\\");
-			p.println("    \"label\": \"" + path + "\",");
-			p.println("    \"value\": \"" +(fe.size/1024/1024)+"\"" );
-			p.println("  }");
+			p.print("  {");
+			p.print(" \"label\": \"" + filename(fe.path) + "\",");
+			p.print(" \"value\": \"" +(fe.size/1024/1024)+"\"" );
+			p.print("  }");
 		}
+		p.println();
+		p.println("]");
+		
+		p.close();
+		fw.close();
+		fos.close();
+	}
+	/**
+	 * NVD3 Indented Table 用 JSON ファイル出力
+	 */
+	public static void writeTableChartJsonFile(List<FileEntry> target,
+							String filename) throws IOException {
+		FileOutputStream fos = new FileOutputStream(filename);
+		Writer fw = new OutputStreamWriter(fos, "UTF-8");
+		PrintWriter p = new PrintWriter(fw);
+		
+		p.println("["); // start mark
+		p.println("  { \"key\": \"file\", \"label\": \"サイズの大きなファイル\", \"values\": [");
+		boolean first = true;
+		for (FileEntry fe : target) {
+			if (!first) {
+				p.println(",");
+			} else {
+				first = false;
+				p.println();
+			}
+			p.print("  {");
+			p.print(" \"label\": \"" + fe.path.replace("\\", "\\\\") + "\",");
+			p.print(" \"value\": \"" +(fe.size/1024/1024)+"\"," );
+			String owner = fe.owner;
+			int codeIndex = owner.lastIndexOf("\\");
+			if (codeIndex >= 0) owner = owner.substring(codeIndex + 1);
+			p.print(" \"owner\": \"" +(OwnerTable.convert(owner))+"\"" );
+			p.print("  }");
+		}
+		p.println("]}");
 		p.println("]");
 		
 		p.close();
@@ -392,7 +432,9 @@ public class FileList {
 		fos.close();
 	}
 
-	
+	/**
+	 * CSV形式ファイル出力
+	 */
 	public static void writeFile(String filename, List<FileEntry> target, List<Long> dateList, int maxCount)
 				throws IOException {
 		FileOutputStream fos = new FileOutputStream(filename);
@@ -430,106 +472,11 @@ public class FileList {
 		return result;
 	}
 	
-/*------
- * main
- */
-	public static void main(String[] args) throws Exception {
-		FileList a = new FileList();
-		a.readFile("Merged20160516.csv");
-		a.addDateList("list20160212.csv");
-		a.addDateList("list20160308.csv");
-		a.addDateList("list20160418.csv");
-		a.addDateList("list20160510.csv");
-		a.addDateList("list20160516.csv");
-		
-		a.addFile("list20160527.csv");
-		
-		String date = sdf.format(new Date());
-		
-		// レベル1で増分の大きい順に表示
-		System.out.println("■大きなディレクトリ(ファイル) 階層=1");
-		List<FileEntry> l1 = a.selectLevel(1);
-		l1.sort(new IncreaseOrder().reversed());
-		for (FileEntry f : l1) {
-			System.out.println(f.path + "," + f.increase + "," + f.size);
+	public static List<FileEntry> cutFile(List<FileEntry> src, boolean cutFile) {
+		List<FileEntry> result = new ArrayList<FileEntry>();
+		for (FileEntry fe : src) {
+			if (fe.isDirectory == cutFile) result.add(fe);
 		}
-		System.out.println();
-		
-		writeJsonFile(a, l1, "simpleLineData"+date+"l1.json");
-		writePieChartJsonFile(a, l1, "pieChart"+date+"l1size.json");
-		
-		// レベル2で増分の大きい順に10個表示
-		System.out.println("■増分の大きなディレクトリ(ファイル) 階層=2");
-		
-		List<FileEntry> l2 = a.selectLevel(2);
-		
-		l2.sort(new IncreaseOrder().reversed());
-		int c = 0;
-		for (FileEntry f : l2) {
-			System.out.println(f.path + "," + f.increase + "," + f.size);
-			c++;
-			if (c >= 10) break;
-		}
-		System.out.println();
-		
-		writeJsonFile(a, cut(l2, 10), "simpleLineData"+date+"l2.json");
-		
-		// レベル3で増分の大きい順に20個表示
-		System.out.println("■増分の大きなディレクトリ(ファイル) 階層=3");
-		
-		List<FileEntry> l3 = a.selectLevel(3);
-		l3.sort(new IncreaseOrder().reversed());
-		c = 0;
-		for (FileEntry f : l3) {
-			System.out.println(f.path + "," + f.increase + "," + f.size);
-			c++;
-			if (c >= 20) break;
-		}
-		System.out.println();
-		
-		// グラフ化のcsvを作成
-		// レベル1のサイズのデータ
-		writeFile("ApplyToGraph"+date+"_Level1_size.csv", l1, a.dateList, 999999);
-		writeFile("ApplyToGraph"+date+"_Level2_size.csv", l2, a.dateList, 10);
-		
-		// 同一ファイル疑惑を探す
-		System.out.println("■以下のファイルは同一ファイルと思われます。ショートカット化できないか検討してください。");
-		List<FileEntry> list = a.selectFile(true);
-		list.sort(new SizeOrder().reversed());
-		
-		long lastSize = -1;
-		String lastPath = "";
-		String lastFile = "";
-		c = 0;
-		for (FileEntry f : list) {
-			String p = f.path;
-			try {
-				String[] t = p.split("\\\\");
-				if (lastFile.equals(t[t.length-1])) {
-					System.out.println("-------------------------------------------");
-					System.out.println(lastPath);
-					System.out.println(f.path);
-				}
-				lastSize = f.size;
-				lastPath = f.path;
-				lastFile = t[t.length-1];
-				c++;
-				if (c > 20) break;
-			} catch (Exception e) {
-				System.out.println(e);
-				System.out.println(p);
-				break;
-			}
-		}
-		// 大きいファイルを20個表示
-		System.out.println("■サイズの大きなファイル20");
-		c = 0;
-		for (FileEntry f : list) {
-			System.out.println(f.path + "," + f.size);
-			c++;
-			if (c >= 20) break;
-		}
-
+		return result;
 	}
-	
 }
