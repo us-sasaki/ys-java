@@ -14,7 +14,8 @@ import java.nio.file.attribute.FileTime;
  * ファイル名は listyyyyMMdd.csv とする。
  *
  * @version 2016/3/14 修正(,や'がファイル名にある場合、カット)
- *          2016/5/20 最後にオーナーを追加
+ *          2016/5/20 オーナーを追加
+ *          2016/6/03 lastModified (ファイル最終更新時)を追加
  */
 public class FileLister2 {
 	
