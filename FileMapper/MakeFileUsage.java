@@ -1,5 +1,8 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Date;
+import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 
 /**
@@ -9,23 +12,41 @@ import java.text.SimpleDateFormat;
  * @version	June 2nd, 2016
  */
 public class MakeFileUsage {
+	
+	/**
+	 * 指定されたディレクトリのファイルを読み込む
+	 * list20yyMMdd.csv のような形のファイルをすべて読み込む
+	 */
+	public static FileList readFiles(String path) throws IOException {
+		File dir = new File(path);
+		if (!dir.isDirectory()) return null;
+		
+		List<String> filelist = new ArrayList<String>();
+		for (String f : dir.list() ) {
+			if (f.matches("list20[0-9]{6}\\.csv")) {
+				filelist.add(f);
+			}
+		}
+		filelist.sort(null);
+
+		FileList a = new FileList();
+		for (String f : filelist) {
+			a.addFile(f);
+			System.out.println(f);
+		}
+		
+		return a;
+	}
 
 /*------
  * main
  */
 	public static void main(String[] args) throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
-	
-		FileList a = new FileList();
-		a.addFile("list20160212.csv");
-		a.addFile("list20160308.csv");
-		a.addFile("list20160418.csv");
-		a.addFile("list20160419.csv"); a.setReferencePoint();
-		a.addFile("list20160510.csv");
-		a.addFile("list20160516.csv");
-		a.addFile("list20160527.csv");
-		a.addFile("list20160601.csv");
-		a.addFile("list20160603.csv");
+		
+		// csv ファイル読込
+		FileList a = readFiles(".");
+		a.setReferencePoint(3);
 		
 		String date = sdf.format(new Date());
 		

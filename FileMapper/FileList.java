@@ -36,6 +36,10 @@ public class FileList {
 	public void setReferencePoint() {
 		referencePoint = dateList.size() - 1;
 	}
+	public void setReferencePoint(int position) {
+		if (position < 0 || position >= dateList.size()) throw new IndexOutOfBoundsException("setReferencePoint(int) 現在、データファイルは"+dateList.size()+"個設定されています。この数未満の値を設定してください");
+		referencePoint = position;
+	}
 	
 	/**
 	 * 試験用に作ったもの。今後はlistyyyyMMdd.csv 形式のものを呼ぶように変更
