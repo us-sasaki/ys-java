@@ -19,6 +19,10 @@ public class JsonTest {
 		JsonObject jo2 = new JsonObject();
 		jo2.add("name2", new JsonValue("value2"));
 		jo2.add("object", jo);
+		jo2.add("int", 4);
+		jo2.add("char", 'a');
+		jo2.add("float", 0.5f);
+		jo2.add("double", Math.PI);
 		System.out.println(jo2);
 	}
 }
