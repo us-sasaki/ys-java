@@ -32,7 +32,7 @@ public class MakeFileUsage {
 		FileList a = new FileList();
 		for (String f : filelist) {
 			a.addFile(f);
-			System.out.println(f);
+			System.out.println("reading.." + f);
 		}
 		
 		return a;
@@ -47,6 +47,8 @@ public class MakeFileUsage {
 		// csv ファイル読込
 		FileList a = readFiles(".");
 		a.setReferencePoint(3);
+		
+		System.out.println("processing");
 		
 		String date = sdf.format(new Date());
 		
@@ -78,39 +80,107 @@ public class MakeFileUsage {
 		List<FileEntry> l3 = a.selectLevel(3);
 		l3.sort(new IncreaseOrder().reversed());
 		FileList.writeJsonFile(a.dateList, FileList.cut(l3, 20), "lineL3Inc"+date+".json");
-		
+		//
 		// 同一ファイル疑惑を探す
-		System.out.println("■以下のファイルは同一ファイルと思われます。ショートカット化できないか検討してください。");
+		//
 		List<FileEntry> list = a.selectFile(true);
 		list.sort(new SizeOrder().reversed()); // サイズ降順
 		
-		long lastSize = -1;
-		String lastPath = "";
 		String lastFile = "";
+		FileEntry lastF = null;
+		
+		// TableChart にも登録
+		//
+		// TableChartのJSON形式は以下
+		//
+		// top = array[] { table }
+		// table    = {	"key":"top",
+		//				"label":"ファイル使用量削減に向けたヒント"
+		//				"values": [ group1, group2, group3, ... ] }
+		//
+		// group(n) = { "key":"key",
+		//				"label":"表示するラベル名",
+		//				"values": [ entry1, entry2, entry3, ... ] }
+		//
+		// entry(n) = { "label":"表示するラベル名",
+		//				"value":"ファイルサイズ",
+		//				"owner":"所有者名" }
+		
+		JsonObject tableContainer = new JsonObject().add("key","top").add("label","ファイル使用量削減に向けたヒント"); // values(Array) は後で指定
+		
+		JsonArray top = new JsonArray(new JsonType[]{tableContainer});
+		
 		int c = 0;
+		
 		for (FileEntry f : list) {
 			String p = f.path;
 			try {
 				String filename = FileList.filename(p);
 				if (lastFile.equals(filename)) {
-					System.out.println("-------------------------------------------");
-					System.out.println(lastPath);
-					System.out.println(f.path);
+					JsonObject same = new JsonObject();
+					same.add("key", "same");
+					same.add("label", "同一ファイルかも知れません(No."+(c+1)+")。ショートカット化できないか検討して下さい。");
+					JsonType[] jt = new JsonType[2];
+					jt[0] = new JsonObject().add("label", lastF.path)
+								.add("value", lastF.size/1024/1024)
+								.add("owner", FileList.reveal(lastF.owner));
+					jt[1] = new JsonObject().add("label", f.path)
+								.add("value", f.size/1024/1024)
+								.add("owner", FileList.reveal(f.owner));
+					same.add("_values", jt); // 複数の場合、自動Array化(1個だとうまくいかないと思われる)
+					// 最初は JsonObject として登録されるが、2回目に同一 key で登録
+					// するとき、JsonArray に変換される。
+					// table chart では JsonArray であることが必要。
+					tableContainer.add("values", same); // _ means folded
+					c++;
+					if (c >= 10) break; // 10個まで
+					
 				}
-				lastSize = f.size;
-				lastPath = f.path;
-				lastFile = filename;
-				c++;
-				if (c > 20) break;
+				lastFile	= filename;
+				lastF		= f;
 			} catch (Exception e) {
 				System.out.println(e);
 				System.out.println(p);
 				break;
 			}
 		}
-		// 大きいファイルを20個
-		FileList.writeTableChartJsonFile(FileList.cut(list, 20), "bigFile"+date+".json");
+		
+		//
+		// サイズの大きなファイルを出力
+		//
+		JsonObject jo = new JsonObject();
+		jo.add("key","file");
+		jo.add("label", "(参考)サイズの大きなファイル");
 
+		jo.add("_values", jsonArrayPut(FileList.cut(list, 20),
+			// lambda expression ( new Putter(JsonObject target, FileEntry src) {..
+			(target, src) -> {
+				target.add("label", src.path);
+				target.add("value", src.size/1024/1024);
+				target.add("owner", FileList.reveal(src.owner));
+			}
+		));
+		tableContainer.add("values", jo);
+		
+		//
+		// JSON ファイルとして出力
+		//
+		FileList.writeJsonType(top, "bigFile"+date+".json");
+		
+		System.out.println("done!");
 	}
 	
+	private static JsonArray jsonArrayPut(List<FileEntry> l, Putter p) {
+		JsonType[] result = new JsonType[l.size()];
+		for (int i = 0; i < l.size(); i++) {
+			JsonObject jo = new JsonObject();
+			p.put(jo, l.get(i));
+			result[i] = jo;
+		}
+		return new JsonArray(result);
+	}
+	
+	private static interface Putter {
+		void put(JsonObject target, FileEntry srcData);
+	}
 }

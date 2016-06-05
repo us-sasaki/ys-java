@@ -447,10 +447,7 @@ public class FileList {
 			p.print("  {");
 			p.print(" \"label\": \"" + fe.path.replace("\\", "\\\\") + "\",");
 			p.print(" \"value\": \"" +(fe.size/1024/1024)+"\"," );
-			String owner = fe.owner;
-			int codeIndex = owner.lastIndexOf("\\");
-			if (codeIndex >= 0) owner = owner.substring(codeIndex + 1);
-			p.print(" \"owner\": \"" +(OwnerTable.convert(owner))+"\"" );
+			p.print(" \"owner\": \"" +reveal(fe.owner)+"\"" );
 			p.print("  }");
 		}
 		p.println("]}");
@@ -460,7 +457,29 @@ public class FileList {
 		fw.close();
 		fos.close();
 	}
-
+	
+	/**
+	 * owner 文字列から名前をマッピングする
+	 */
+	public static String reveal(String owner) {
+		int codeIndex = owner.lastIndexOf("\\");
+		if (codeIndex >= 0) owner = owner.substring(codeIndex + 1);
+		return OwnerTable.convert(owner);
+	}
+	
+	/**
+	 * JsonObject をファイルに出力する
+	 */
+	public static void writeJsonType(JsonType obj, String filename) throws Exception {
+		FileOutputStream fos = new FileOutputStream(filename);
+		BufferedOutputStream bos = new BufferedOutputStream(fos);
+		//bos.write("[\n".getBytes("UTF-8"));
+		bos.write(obj.toString().getBytes("UTF-8"));
+		//bos.write("\n]".getBytes("UTF-8"));
+		bos.close();
+		fos.close();
+	}
+	
 	/**
 	 * CSV形式ファイル出力
 	 */
