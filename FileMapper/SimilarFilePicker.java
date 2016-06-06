@@ -27,7 +27,7 @@ public class SimilarFilePicker {
 		System.out.println("SimilarFilePicker: calculating distances");
 		int size = list.size();
 		
-		int loopCount = (size - 1) * (size - 2) / 2;
+		int loopCount = (size - 1) * size / 2;
 		int count = 0;
 		int percentage = 0;
 		
@@ -40,7 +40,7 @@ public class SimilarFilePicker {
 				dist.add(new FileDistance(a, b, d(a,b) ));
 				
 				count++;
-				if (count > loopCount/100*percentage) {
+				if (count >= loopCount/100*percentage) {
 					System.out.print("" + percentage +"%..");
 					System.out.flush();
 					percentage += 5;
@@ -49,15 +49,17 @@ public class SimilarFilePicker {
 		}
 		
 		System.out.println("SimilarFilePicker: sorting by distance");
-		// Integer でソート
+		// Integer でソート(昇順)
 		dist.sort(new Comparator<FileDistance>() {
 				public int compare(FileDistance a, FileDistance b) {
-					return (a.dist - b.dist);
+					if (a.dist != b.dist) return (a.dist - b.dist);
+					if (a.a.path.compareTo(b.a.path) != 0) return (a.a.path.compareTo(b.a.path));
+					return (a.b.path.compareTo(b.b.path));
 				}
 				public boolean equals(FileDistance a, FileDistance b) {
-					return a.dist == b.dist;
+					return (a.dist == b.dist)&&(a.a.path.equals(b.a.path))&&(a.b.path.equals(b.b.path));
 				}
-			}.reversed() );
+			} );
 		
 	}
 	
@@ -76,17 +78,49 @@ public class SimilarFilePicker {
 			// a <= b となるようにする
 			String c = a; a = b; b = c;
 		}
-		int length = a.length();
-		String subs = null;
 		
-		loop:
-		for (int len = length; len > 0; len--) {
-			for (int i = 0; i <= length-len; i++) {
-				subs = a.substring(i, i+len);
-				if (b.indexOf(subs) >= 0) return subs;
+		int maxLen = 0;
+		int maxLenStartIdxA = -1;
+		int alen = a.length();
+		int blen = b.length();
+		
+		for (int i = 0; i < alen; i++) {
+			//if (alen - i < maxLen) break; // 後過ぎて記録更新できない
+			// ↑(逆に遅くなりそうなのでcut)
+			char c = a.charAt(i);
+			int bidx = b.indexOf(c);
+			if (bidx == -1) continue;
+			if (blen - bidx < maxLen) break; // 後過ぎて記録更新できない
+			
+			// 1文字合った
+			int len = 1;
+			bidx++;
+			for (int j = i+1; j < alen; j++) { // どこまで合いつづけるか
+				if (bidx >= blen) break;
+				if (a.charAt(j) != b.charAt(bidx)) break;
+				len++;
+				bidx++;
+			}
+			if (len > maxLen) { // 記録更新
+				maxLen = len;
+				maxLenStartIdxA = i;
 			}
 		}
-		return "";
+		if (maxLen == 0) return "";
+		return a.substring(maxLenStartIdxA, maxLenStartIdxA+maxLen);
+		
+//		この実装は遅すぎるので没
+//		int length = a.length();
+//		String subs = null;
+//		
+//		loop:
+//		for (int len = length; len > 0; len--) {
+//			for (int i = 0; i <= length-len; i++) {
+//				subs = a.substring(i, i+len);
+//				if (b.indexOf(subs) >= 0) return subs;
+//			}
+//		}
+//		return "";
 	}
 	
 	/**
