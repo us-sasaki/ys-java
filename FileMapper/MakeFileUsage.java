@@ -119,7 +119,7 @@ public class MakeFileUsage {
 				if (lastFile.equals(filename)) {
 					JsonObject same = new JsonObject();
 					same.add("key", "same");
-					same.add("label", "同一ファイルかも知れません(No."+(c+1)+")。ショートカット化できないか検討して下さい。");
+					same.add("label", "同一ファイルかも知れません(No."+(c+1)+", "+FileList.filename(f.path)+")。ショートカット化できないか検討して下さい。");
 					JsonType[] jt = new JsonType[2];
 					jt[0] = new JsonObject().add("label", lastF.path)
 								.add("value", lastF.size/1024/1024)
@@ -170,6 +170,25 @@ public class MakeFileUsage {
 		System.out.println("done!");
 	}
 	
+	/**
+	 * 似ているファイルを抽出し、作業中ファイル疑惑を発信
+	 *
+	 * 似ているファイル
+	 * 　(1) 拡張子が同じであること
+	 * 　(2) ファイル名が似ていること(典型例：日付だけ違う)
+	 * 　(3) サイズが似ていること
+	 *
+	 * 　上記、似ている or 似ていない を判定。閾値は統計的に計算する。
+	 */
+	
+	
+	/**
+	 * 指定された List から指定のルールでデータを抽出し、JsonArray 形式で返却する。
+	 *
+	 * @param	l	FileEntryのList
+	 * @param	p	Listからデータを抽出、JsonObject化してJsonArrayに追加する実装
+	 * @return	できあがった JsonArray
+	 */
 	private static JsonArray jsonArrayPut(List<FileEntry> l, Putter p) {
 		JsonType[] result = new JsonType[l.size()];
 		for (int i = 0; i < l.size(); i++) {
@@ -180,6 +199,9 @@ public class MakeFileUsage {
 		return new JsonArray(result);
 	}
 	
+/*--------------
+ * static class
+ */
 	private static interface Putter {
 		void put(JsonObject target, FileEntry srcData);
 	}

@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Date;
 
 /** 各種処理用に便利な値を追加. keyはpath */
 public class FileEntry {
@@ -12,4 +13,26 @@ public class FileEntry {
 	// 以下、拡張フィールドで昔の csv には含まれていない
 	String		owner	= "unknown";	// ファイル所有者 since 16/05/27
 	long		lastModified	= 0;	// 最終更新日 since 16/06/03
+	
+/*-----------
+ * overrides
+ */
+	public String toString() {
+		StringBuffer s = new StringBuffer();
+		s.append("    path   :"+path+"\n");
+		s.append("   level   :"+level+"\n");
+		s.append("isDirectory:"+isDirectory+"\n");
+		s.append("  sizeList :{");
+		for (Long l: sizeList) {
+			s.append(l);
+			s.append(" ");
+		}
+		s.append("}\n");
+		s.append("   size    :"+size+"\n");
+		s.append(" increase  :"+increase+"\n");
+		s.append("   owner   :"+FileList.reveal(owner)+"\n");
+		s.append("lastModified:"+new Date(lastModified)+"\n");
+		
+		return s.toString();
+	}
 }

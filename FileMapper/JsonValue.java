@@ -6,7 +6,7 @@ public class JsonValue extends JsonType {
  */
 	/**
 	 * \ でエスケープすべき文字もそのまま保存し、toString で返してしまう。
-	 * \", \', \\ は toString() 時にエスケープするよう変更する
+	 * ので、\", \', \\ は toString() 時にエスケープするよう変更する
 	 */
 	public JsonValue(String value) {
 		this.value = value;
