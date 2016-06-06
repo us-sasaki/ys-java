@@ -46,6 +46,8 @@ public class FileList {
 	 * ファイル名から、いつの情報かを取得する必要があるため。
 	 * FileMapper も不要になりそう
 	 *
+	 * 現状、owner, lastModified に非対応のままとなっている
+	 *
 	 * @deprecated
 	 */
 	public void readFile(String fname) throws IOException {

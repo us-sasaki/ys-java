@@ -17,7 +17,7 @@ import java.nio.file.attribute.FileTime;
  *          2016/5/20 オーナーを追加
  *          2016/6/03 lastModified (ファイル最終更新時)を追加
  */
-public class FileLister2 {
+public class FileLister {
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 	PrintWriter out;
