@@ -33,9 +33,14 @@ public class SimilarFilePicker {
 		
 		// かなり遅い。CPU 25%しか使ってないので、マルチスレッドにした方がよいかも
 		for (int i = 0; i < size - 1; i++) {
+			FileEntry a = list.get(i);
+			if (a.isDirectory) continue; // directory は除外
+			if (a.size == 0) continue; // 過去だけに存在したファイルは除外
+			
 			for (int j = i+1; j < size; j++) {
-				FileEntry a = list.get(i);
 				FileEntry b = list.get(j);
+				if (b.isDirectory) continue; // directory は除外
+				if (b.size == 0) continue; // 過去だけに存在したファイルは除外
 				
 				dist.add(new FileDistance(a, b, d(a,b) ));
 				
