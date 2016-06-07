@@ -164,30 +164,31 @@ public class SimilarFilePicker {
 						+ pb.substring(0, ib) + pb.substring(ib+sub.length());
 		// 差分文字列の種類によって距離が異なる
 		// 教師データがあれば文字種と距離は学習させる手もあるかも知れない
+		int dd = 0;
 		for (int i = 0; i < diff.length(); i++) {
 			char c = diff.charAt(i);
-			if (c >= '0' && c <= '9') d += 2;
-			else if (c == '_')  d += 2;
-			else if (c == '-')  d += 2;
-			else if (c == ' ')  d += 2;
-			else if (c == '　') d += 2;
-			else if (c == '(')  d += 2;
-			else if (c == ')')  d += 2;
-			else if (c == '（') d += 2;
-			else if (c == '）') d += 2;
-			else if (c == '[')  d += 2;
-			else if (c == ']')  d += 2;
-			else if (c == '「') d += 2;
-			else if (c == '」') d += 2;
-			else if (c == '<')  d += 2;
-			else if (c == '>')  d += 2;
-			else if (c == '＜') d += 2;
-			else if (c == '＞') d += 2;
-			else d += 20;
+			if (c >= '0' && c <= '9') dd += 2;
+			else if (c == '_')  dd += 2;
+			else if (c == '-')  dd += 2;
+			else if (c == ' ')  dd += 2;
+			else if (c == '　') dd += 2;
+			else if (c == '(')  dd += 2;
+			else if (c == ')')  dd += 2;
+			else if (c == '（') dd += 2;
+			else if (c == '）') dd += 2;
+			else if (c == '[')  dd += 2;
+			else if (c == ']')  dd += 2;
+			else if (c == '「') dd += 2;
+			else if (c == '」') dd += 2;
+			else if (c == '<')  dd += 2;
+			else if (c == '>')  dd += 2;
+			else if (c == '＜') dd += 2;
+			else if (c == '＞') dd += 2;
+			else dd += 20;
 		}
 		
 		// 一致している部分が小さいと距離は長い(式は適当)
-		d = d * 1000 / (sub.length() + 5); // 学習の余地あり？
+		d += dd * 1000 / (sub.length() + 5); // 学習の余地あり？
 		
 		// サイズによる判定も加味する
 		long sizeGap = a.size - b.size;
