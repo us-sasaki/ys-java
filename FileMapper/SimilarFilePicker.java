@@ -157,38 +157,43 @@ public class SimilarFilePicker {
 		
 		// 最大共通部分を探す
 		String sub = longestCommonSubsequence(pa, pb);
-		int ia = pa.indexOf(sub);
-		int ib = pb.indexOf(sub);
-		// 差分文字列
-		String diff = pa.substring(0, ia) + pa.substring(ia+sub.length())
-						+ pb.substring(0, ib) + pb.substring(ib+sub.length());
-		// 差分文字列の種類によって距離が異なる
-		// 教師データがあれば文字種と距離は学習させる手もあるかも知れない
+		
 		int dd = 0;
-		for (int i = 0; i < diff.length(); i++) {
-			char c = diff.charAt(i);
-			if (c >= '0' && c <= '9') dd += 2;
-			else if (c == '_')  dd += 2;
-			else if (c == '-')  dd += 2;
-			else if (c == ' ')  dd += 2;
-			else if (c == '　') dd += 2;
-			else if (c == '(')  dd += 2;
-			else if (c == ')')  dd += 2;
-			else if (c == '（') dd += 2;
-			else if (c == '）') dd += 2;
-			else if (c == '[')  dd += 2;
-			else if (c == ']')  dd += 2;
-			else if (c == '「') dd += 2;
-			else if (c == '」') dd += 2;
-			else if (c == '<')  dd += 2;
-			else if (c == '>')  dd += 2;
-			else if (c == '＜') dd += 2;
-			else if (c == '＞') dd += 2;
-			else dd += 20;
+		if (sub.length() > 3) {
+			int ia = pa.indexOf(sub);
+			int ib = pb.indexOf(sub);
+			// 差分文字列
+			String diff = pa.substring(0, ia) + pa.substring(ia+sub.length())
+							+ pb.substring(0, ib) + pb.substring(ib+sub.length());
+			// 差分文字列の種類によって距離が異なる
+			// 教師データがあれば文字種と距離は学習させる手もあるかも知れない
+			for (int i = 0; i < diff.length(); i++) {
+				char c = diff.charAt(i);
+				if (c >= '0' && c <= '9') dd += 2;
+				else if (c == '_')  dd += 2;
+				else if (c == '-')  dd += 2;
+				else if (c == ' ')  dd += 2;
+				else if (c == '　') dd += 2;
+				else if (c == '(')  dd += 2;
+				else if (c == ')')  dd += 2;
+				else if (c == '（') dd += 2;
+				else if (c == '）') dd += 2;
+				else if (c == '[')  dd += 2;
+				else if (c == ']')  dd += 2;
+				else if (c == '「') dd += 2;
+				else if (c == '」') dd += 2;
+				else if (c == '<')  dd += 2;
+				else if (c == '>')  dd += 2;
+				else if (c == '＜') dd += 2;
+				else if (c == '＞') dd += 2;
+				else dd += 20;
+			}
+		} else {
+			dd += 100;
 		}
 		
 		// 一致している部分が小さいと距離は長い(式は適当)
-		d += dd * 1000 / (sub.length() + 5); // 学習の余地あり？
+		d += dd * 1000 / (sub.length() * sub.length() + 2); // 学習の余地あり？
 		
 		// サイズによる判定も加味する
 		long sizeGap = a.size - b.size;
@@ -203,7 +208,7 @@ public class SimilarFilePicker {
 		long dateGap = a.lastModified - b.lastModified;
 		if (dateGap < 0) dateGap = -dateGap;
 		
-		d += (int)(Math.log(dateGap) * 10); // 学習の余地あり？
+		d += (int)(Math.log(dateGap) * 100); // 学習の余地あり？
 		
 		return d;
 	}
@@ -214,6 +219,31 @@ public class SimilarFilePicker {
 		System.out.println("長さ="+s.length());
 		
 		FileList l = MakeFileUsage.readFiles(".");
+		
+//		List<FileEntry> list = l.list;
+//		for (int i = 0; i < 10; i++) {
+//			int a = (int)(Math.random() * list.size());
+//			int b = (int)(Math.random() * list.size());
+//			System.out.println("--------------------------");
+//			System.out.println(list.get(a));
+//			System.out.println(list.get(b));
+//			System.out.println(d(list.get(a), list.get(b)));
+//		}
+//		FileEntry aa = new FileEntry();
+//		aa.path = "適当な名前.ppt";
+//		aa.size = 10000;
+//		aa.sizeList = new ArrayList<Long>(); aa.sizeList.add((long)aa.size);
+//		aa.lastModified = new java.util.Date().getTime();
+//		FileEntry bb = new FileEntry();
+//		bb.path = "適当な名前_back.ppt";
+//		bb.size = 9000;
+//		bb.sizeList = new ArrayList<Long>(); bb.sizeList.add((long)bb.size);
+//		bb.lastModified = new java.util.Date().getTime() - 10000L;
+//		
+//		System.out.println(aa);
+//		System.out.println(bb);
+//		System.out.println(d(aa, bb));
+		
 		List<FileDistance> fdl = new SimilarFilePicker(l.list).getDistanceList();
 		for (int i = 0; i < 1000; i++) {
 			FileDistance f = fdl.get(i);
