@@ -54,17 +54,17 @@ public class SimilarFilePicker {
 		}
 		
 		System.out.println("SimilarFilePicker: sorting by distance");
-		// Integer でソート(昇順)
-		dist.sort(new Comparator<FileDistance>() {
-				public int compare(FileDistance a, FileDistance b) {
-					if (a.dist != b.dist) return (a.dist - b.dist);
-					if (a.a.path.compareTo(b.a.path) != 0) return (a.a.path.compareTo(b.a.path));
-					return (a.b.path.compareTo(b.b.path));
-				}
-				public boolean equals(FileDistance a, FileDistance b) {
-					return (a.dist == b.dist)&&(a.a.path.equals(b.a.path))&&(a.b.path.equals(b.b.path));
-				}
-			} );
+		// dist でソート(昇順)
+//		dist.sort(new Comparator<FileDistance>() {
+//				public int compare(FileDistance a, FileDistance b) {
+//					if (a.dist != b.dist) return (a.dist - b.dist);
+//					if (a.a.path.compareTo(b.a.path) != 0) return (a.a.path.compareTo(b.a.path));
+//					return (a.b.path.compareTo(b.b.path));
+//				}
+//				public boolean equals(FileDistance a, FileDistance b) {
+//					return ((a.dist == b.dist)&&(a.a.path.equals(b.a.path))&&(a.b.path.equals(b.b.path)));
+//				}
+//			} );
 		
 	}
 	
