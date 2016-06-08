@@ -63,15 +63,27 @@ public class MakeFileUsage {
 		// [SortTarget].. Size / Inc(rease)
 		//
 		
-		// レベル1で増分の大きい順に表示
+		// レベル1でサイズ順に表示
 		List<FileEntry> l1 = a.selectLevel(1);
 		l1.sort(new SizeOrder().reversed()); // size 降順でソート
 		
 		FileList.writePosJsonFile(a.dateList, l1, "posL1Size"+date+".json");
-		FileList.writePieChartJsonFile(FileList.cutFile(l1, true), "pieL1Size"+date+".json");
+		List<FileEntry> l1dir = FileList.cutFile(l1, true);
+		FileList.writePieChartJsonFile(l1dir, "pieL1Size"+date+".json");
+		
+		// レベル2で上位3フォルダをサイズ順に表示
+		List<FileEntry> l2 = a.selectLevel(2);
+		int n = 3;
+		if (n > l1dir.size()) n = l1dir.size();
+		for (int i = 0; i < n; i++) {
+			String dir = l1dir.get(i).path;
+			List<FileEntry> l2big = a.selectAs( (e) -> { return e.path.startsWith(dir); } ); // できるのか
+			
+		}
+********************************
+		
 		
 		// レベル2で増分の大きい順に10個表示
-		List<FileEntry> l2 = a.selectLevel(2);
 		
 		l2.sort(new IncreaseOrder().reversed());
 		FileList.writeJsonFile(a.dateList, FileList.cut(l2, 10), "lineL2Inc"+date+".json");
