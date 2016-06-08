@@ -72,26 +72,24 @@ public class MakeFileUsage {
 		FileList.writePieChartJsonFile(l1dir, "pieL1Size"+date+".json");
 		
 		// レベル2で上位3フォルダをサイズ順に表示
-		List<FileEntry> l2 = a.selectLevel(2);
 		int n = 3;
 		if (n > l1dir.size()) n = l1dir.size();
 		for (int i = 0; i < n; i++) {
-			String dir = l1dir.get(i).path;
-			List<FileEntry> l2big = a.selectAs( (e) -> { return e.path.startsWith(dir); } ); // できるのか
-			
+			final String dir = l1dir.get(i).path;
+			List<FileEntry> l2big = a.selectAs( e -> { return (e.level == 2 && e.path.startsWith(dir)); } ); // できるのか、できるらしい
+			l2big.sort(new SizeOrder().reversed());
+			FileList.writePieChartJsonFile(FileList.cut(l2big, 5), "pieL2Size"+date+"_"+i+".json");
 		}
-********************************
-		
 		
 		// レベル2で増分の大きい順に10個表示
-		
+		List<FileEntry> l2 = a.selectLevel(2);
 		l2.sort(new IncreaseOrder().reversed());
 		FileList.writeJsonFile(a.dateList, FileList.cut(l2, 10), "lineL2Inc"+date+".json");
 		
-		// レベル3で増分の大きい順に20個表示
+		// レベル3で増分の大きい順に10個表示
 		List<FileEntry> l3 = a.selectLevel(3);
 		l3.sort(new IncreaseOrder().reversed());
-		FileList.writeJsonFile(a.dateList, FileList.cut(l3, 20), "lineL3Inc"+date+".json");
+		FileList.writeJsonFile(a.dateList, FileList.cut(l3, 10), "lineL3Inc"+date+".json");
 		//
 		// 同一ファイル疑惑を探す
 		//
@@ -165,7 +163,7 @@ public class MakeFileUsage {
 		jo.add("label", "(参考)サイズの大きなファイル");
 
 		jo.add("_values", jsonArrayPut(FileList.cut(list, 20),
-			// lambda expression ( new Putter(JsonObject target, FileEntry src) {..
+			// lambda expression
 			(target, src) -> {
 				target.add("label", src.path);
 				target.add("value", src.size/1024/1024);
@@ -201,20 +199,14 @@ public class MakeFileUsage {
 	 * @param	p	Listからデータを抽出、JsonObject化してJsonArrayに追加する実装
 	 * @return	できあがった JsonArray
 	 */
-	private static JsonArray jsonArrayPut(List<FileEntry> l, Putter p) {
+	private static JsonArray jsonArrayPut(List<FileEntry> l,
+							java.util.function.BiConsumer<JsonObject, FileEntry> p) {
 		JsonType[] result = new JsonType[l.size()];
 		for (int i = 0; i < l.size(); i++) {
 			JsonObject jo = new JsonObject();
-			p.put(jo, l.get(i));
+			p.accept(jo, l.get(i));
 			result[i] = jo;
 		}
 		return new JsonArray(result);
-	}
-	
-/*--------------
- * static class
- */
-	private static interface Putter {
-		void put(JsonObject target, FileEntry srcData);
 	}
 }

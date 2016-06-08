@@ -297,12 +297,12 @@ public class FileList {
 	 * @param	fes		ファイル抽出ルール
 	 * @return	抽出された FileEntry の List (shallow copy)
 	 */
-	public List<FileEntry> selectAs(FileEntrySelector fes) {
+	public List<FileEntry> selectAs(java.util.function.Predicate<FileEntry> fes) {
 		if (list == null) throw new IllegalStateException("addFile によって値を格納してください");
 		ArrayList<FileEntry> result = new ArrayList<FileEntry>();
 		
 		for (FileEntry f : list) {
-			if (fes.hits(f)) result.add(f);
+			if (fes.test(f)) result.add(f);
 		}
 		return result;
 	}
