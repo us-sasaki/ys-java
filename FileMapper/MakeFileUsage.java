@@ -13,30 +13,6 @@ import java.text.SimpleDateFormat;
  */
 public class MakeFileUsage {
 	
-	/**
-	 * 指定されたディレクトリのファイルを読み込む
-	 * list20yyMMdd.csv のような形のファイルをすべて読み込む
-	 */
-	public static FileList readFiles(String path) throws IOException {
-		File dir = new File(path);
-		if (!dir.isDirectory()) return null;
-		
-		List<String> filelist = new ArrayList<String>();
-		for (String f : dir.list() ) {
-			if (f.matches("list20[0-9]{6}\\.csv")) {
-				filelist.add(f);
-			}
-		}
-		filelist.sort(null);
-
-		FileList a = new FileList();
-		for (String f : filelist) {
-			a.addFile(f);
-			System.out.println("reading.." + f);
-		}
-		
-		return a;
-	}
 
 /*------
  * main
@@ -45,7 +21,7 @@ public class MakeFileUsage {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
 		
 		// csv ファイル読込
-		FileList a = readFiles(".");
+		FileList a = FileList.readFiles(".");
 		a.setReferencePoint(3);
 		
 		System.out.println("processing");
@@ -76,7 +52,10 @@ public class MakeFileUsage {
 		if (n > l1dir.size()) n = l1dir.size();
 		for (int i = 0; i < n; i++) {
 			final String dir = l1dir.get(i).path;
-			List<FileEntry> l2big = a.selectAs( e -> { return (e.level == 2 && e.path.startsWith(dir)); } ); // できるのか、できるらしい
+			List<FileEntry> l2big = a.selectAs(
+				 e -> { return (e.level == 2 && e.path.startsWith(dir));} );
+				 // できるのか(dir指定)、できるらしい(finalの場合(省略可能))
+			
 			l2big.sort(new SizeOrder().reversed());
 			FileList.writePieChartJsonFile(FileList.cut(l2big, 5), "pieL2Size"+date+"_"+i+".json");
 		}
@@ -116,7 +95,7 @@ public class MakeFileUsage {
 		//				"value":"ファイルサイズ",
 		//				"owner":"所有者名" }
 		
-		JsonObject tableContainer = new JsonObject().add("key","top").add("label","ファイル使用量削減に向けたヒント"); // values(Array) は後で指定
+		JsonObject tableContainer = new JsonObject().add("key","top").add("label","同一ファイルかも知れません。ショートカット化できないか検討して下さい。"); // values(Array) は後で指定
 		
 		JsonArray top = new JsonArray(new JsonType[]{tableContainer});
 		
@@ -129,7 +108,7 @@ public class MakeFileUsage {
 				if (lastFile.equals(filename)) {
 					JsonObject same = new JsonObject();
 					same.add("key", "same");
-					same.add("label", "同一ファイルかも知れません(No."+(c+1)+", "+FileList.filename(f.path)+")。ショートカット化できないか検討して下さい。");
+					same.add("label", "No."+(c+1)+", "+FileList.filename(f.path));
 					JsonType[] jt = new JsonType[2];
 					jt[0] = new JsonObject().add("label", lastF.path)
 								.add("value", lastF.size/1024/1024)
@@ -154,10 +133,17 @@ public class MakeFileUsage {
 				break;
 			}
 		}
+		//
+		// JSON ファイルとして出力
+		//
+		FileList.writeJsonType(top, "sameFile"+date+".json");
 		
 		//
 		// サイズの大きなファイルを出力
 		//
+		tableContainer = new JsonObject().add("key","top").add("label","現在保存されているサイズの大きいファイル");
+		top = new JsonArray(new JsonType[]{tableContainer});
+		
 		JsonObject jo = new JsonObject();
 		jo.add("key","file");
 		jo.add("label", "(参考)サイズの大きなファイル");
@@ -170,7 +156,7 @@ public class MakeFileUsage {
 				target.add("owner", FileList.reveal(src.owner));
 			}
 		));
-		tableContainer.add("values", jo);
+		tableContainer.add("values", new JsonArray(new JsonType[] {jo}));
 		
 		//
 		// JSON ファイルとして出力

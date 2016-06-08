@@ -529,4 +529,30 @@ public class FileList {
 		}
 		return result;
 	}
+	
+	/**
+	 * 指定されたディレクトリのファイルを読み込む
+	 * list20yyMMdd.csv のような形のファイルをすべて読み込む
+	 */
+	public static FileList readFiles(String path) throws IOException {
+		File dir = new File(path);
+		if (!dir.isDirectory()) return null;
+		
+		List<String> filelist = new ArrayList<String>();
+		for (String f : dir.list() ) {
+			if (f.matches("list20[0-9]{6}\\.csv")) {
+				filelist.add(f);
+			}
+		}
+		filelist.sort(null);
+
+		FileList a = new FileList();
+		for (String f : filelist) {
+			a.addFile(f);
+			System.out.println("reading.." + f);
+		}
+		
+		return a;
+	}
+	
 }
