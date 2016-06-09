@@ -55,7 +55,33 @@ public class DeletedFilePicker {
 		for (FileEntry e : list) {
 			System.out.println("--------------------");
 			System.out.println(e);
-			p.println(e.path);
+			p.print(e.path);
+			p.print(",");
+			String fname = new File(e.path).getName();
+			int extIdx = fname.lastIndexOf(".");
+			if (extIdx > 0) {
+				p.print(fname.substring(0, extIdx));
+				p.print(",");
+				p.print(fname.substring(extIdx+1));
+				p.print(",");
+			} else {
+				p.print(fname + ",,");
+			}
+			
+			long size;
+			List<Long> sl = e.sizeList;
+			// ‚Ç‚±‚©‚Å 0 ‚É‚È‚é‚à‚Ì
+			boolean exist = false;
+			for (int i = 0; i < sl.size(); i++) {
+				if (sl.get(i) > 0) {
+					exist = true;
+					size = sl.get(i);
+				} else if (exist && sl.get(i) == 0) break;
+			}
+			
+			p.print(e.size);
+			p.print(",");
+			p.println(e.lastModified);
 		}
 		
 		p.close();

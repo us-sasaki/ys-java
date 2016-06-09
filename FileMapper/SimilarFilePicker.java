@@ -6,7 +6,7 @@ import java.util.Comparator;
 public class SimilarFilePicker {
 	// (FileEntry, FileEntry) -> distance
 	private List<FileDistance> dist;
-	static class FileDistance {
+	public static class FileDistance {
 		FileEntry a;
 		FileEntry b;
 		int dist;
@@ -25,24 +25,23 @@ public class SimilarFilePicker {
 		dist = new ArrayList<FileDistance>();
 		
 		System.out.println("SimilarFilePicker: calculating distances");
+		
+		// list 中、directory, 今存在しないファイルを除外する
+		list = FileList.selectAs(list, fe -> (fe.size != 0 && !fe.isDirectory) );
 		int size = list.size();
 		
 		int loopCount = (size - 1) * size / 2;
 		int count = 0;
 		int percentage = 0;
 		
-		// かなり遅い。CPU 25%しか使ってないので、マルチスレッドにした方がよいかも
+		// 遅い。CPU 25%しか使ってないので、Streamにした方がよいかも
 		for (int i = 0; i < size - 1; i++) {
 			FileEntry a = list.get(i);
-			if (a.isDirectory) continue; // directory は除外
-			if (a.size == 0) continue; // 過去だけに存在したファイルは除外
 			
 			for (int j = i+1; j < size; j++) {
 				FileEntry b = list.get(j);
-				if (b.isDirectory) continue; // directory は除外
-				if (b.size == 0) continue; // 過去だけに存在したファイルは除外
 				
-				dist.add(new FileDistance(a, b, d(a,b) ));
+				dist.add(new FileDistance(a, b, d(a,b) )); // 遅！
 				
 				count++;
 				if (count >= loopCount/100*percentage) {
@@ -52,19 +51,18 @@ public class SimilarFilePicker {
 				}
 			}
 		}
-		
+		System.out.println();
 		System.out.println("SimilarFilePicker: sorting by distance");
+		
 		// dist でソート(昇順)
-//		dist.sort(new Comparator<FileDistance>() {
-//				public int compare(FileDistance a, FileDistance b) {
-//					if (a.dist != b.dist) return (a.dist - b.dist);
-//					if (a.a.path.compareTo(b.a.path) != 0) return (a.a.path.compareTo(b.a.path));
-//					return (a.b.path.compareTo(b.b.path));
-//				}
-//				public boolean equals(FileDistance a, FileDistance b) {
-//					return ((a.dist == b.dist)&&(a.a.path.equals(b.a.path))&&(a.b.path.equals(b.b.path)));
-//				}
-//			} );
+		dist.sort(new Comparator<FileDistance>() {
+				public int compare(FileDistance a, FileDistance b) {
+					return (a.dist - b.dist);
+				}
+				public boolean equals(FileDistance a, FileDistance b) {
+					return (a.dist == b.dist);
+				}
+			} );
 		
 	}
 	
@@ -114,18 +112,6 @@ public class SimilarFilePicker {
 		if (maxLen == 0) return "";
 		return a.substring(maxLenStartIdxA, maxLenStartIdxA+maxLen);
 		
-//		この実装は遅すぎるので没
-//		int length = a.length();
-//		String subs = null;
-//		
-//		loop:
-//		for (int len = length; len > 0; len--) {
-//			for (int i = 0; i <= length-len; i++) {
-//				subs = a.substring(i, i+len);
-//				if (b.indexOf(subs) >= 0) return subs;
-//			}
-//		}
-//		return "";
 	}
 	
 	/**
@@ -160,7 +146,7 @@ public class SimilarFilePicker {
 		// (データがあれば定数を学習させた方がよい？)
 		if (!ea.equals(eb)) d += 10000;
 		
-		// 最大共通部分を探す
+		// 最長共通文字列を探す
 		String sub = longestCommonSubsequence(pa, pb);
 		
 		int dd = 0;
@@ -213,50 +199,28 @@ public class SimilarFilePicker {
 		long dateGap = a.lastModified - b.lastModified;
 		if (dateGap < 0) dateGap = -dateGap;
 		
-		d += (int)(Math.log(dateGap) * 100); // 学習の余地あり？
+		if (dateGap > 0) d += (int)(Math.log(dateGap) * 100); // 学習の余地あり？
 		
 		return d;
 	}
 	
 	public static void main(String[] args) throws Exception {
-		String s = longestCommonSubsequence("適当な文字列35", "ちょっと違う適当な文字列");
-		System.out.println(s);
-		System.out.println("長さ="+s.length());
-		
-		FileList l = MakeFileUsage.readFiles(".");
-		
-//		List<FileEntry> list = l.list;
-//		for (int i = 0; i < 10; i++) {
-//			int a = (int)(Math.random() * list.size());
-//			int b = (int)(Math.random() * list.size());
-//			System.out.println("--------------------------");
-//			System.out.println(list.get(a));
-//			System.out.println(list.get(b));
-//			System.out.println(d(list.get(a), list.get(b)));
-//		}
-//		FileEntry aa = new FileEntry();
-//		aa.path = "適当な名前.ppt";
-//		aa.size = 10000;
-//		aa.sizeList = new ArrayList<Long>(); aa.sizeList.add((long)aa.size);
-//		aa.lastModified = new java.util.Date().getTime();
-//		FileEntry bb = new FileEntry();
-//		bb.path = "適当な名前_back.ppt";
-//		bb.size = 9000;
-//		bb.sizeList = new ArrayList<Long>(); bb.sizeList.add((long)bb.size);
-//		bb.lastModified = new java.util.Date().getTime() - 10000L;
-//		
-//		System.out.println(aa);
-//		System.out.println(bb);
-//		System.out.println(d(aa, bb));
+		FileList l = FileList.readFiles(".");
 		
 		List<FileDistance> fdl = new SimilarFilePicker(l.list).getDistanceList();
-		for (int i = 0; i < 1000; i++) {
-			FileDistance f = fdl.get(i);
+		int i = 0;
+		int cnt = 0;
+		while (true) {
+			FileDistance f = fdl.get(cnt++);
+			if (cnt >= fdl.size()) break;
+			if (f.a.size + f.b.size < 2 * 200 * 1024) continue; // 200K以下はスキップ
 			System.out.println("---------------------------------------");
 			System.out.println("           " + f.dist + "             ");
 			System.out.println("---------------------------------------");
 			System.out.println(f.a);
 			System.out.println(f.b);
+			i++;
+			if (i >= 1000) break;
 		}
 		
 	}
