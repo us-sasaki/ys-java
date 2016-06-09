@@ -21,7 +21,7 @@ nv.addGraph(function() {
 
   chart.yAxis     //Chart y-axis settings
       .axisLabel('Size(MByte)')
-      .tickFormat(d3.format('.01f'));
+      .tickFormat(d3.format('.0f'));
 
   d3.select('#'+chartname+' svg')    //Select the <svg> element you want to render the chart in.   
       .datum(myData)         //Populate the <svg> element with chart data...

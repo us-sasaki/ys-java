@@ -9,7 +9,7 @@ nv.addGraph(function() {
       .x(function(d) { return d.label })
       .y(function(d) { return d.value })
       .showLabels(true);
-
+      
     d3.select("#"+chartname+" svg")
         .datum(myData)
         .transition().duration(350)

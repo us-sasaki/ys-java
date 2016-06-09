@@ -21,7 +21,7 @@ nv.addGraph(function() {
     });
 
     chart.yAxis
-        .tickFormat(d3.format(',.2f'));
+        .tickFormat(d3.format(',.0f'));
 
     d3.select('#'+chartname+' svg')
       .datum(myData)
