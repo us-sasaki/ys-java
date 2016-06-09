@@ -107,7 +107,12 @@ public class FileList {
 		makeup();
 		
 		// ファイル名から、date を取得
-		addDateList(fname);
+		try {
+			long date = sdf.parse(fname.substring(4,12)).getTime();
+			dateList.add(date);
+		} catch (java.text.ParseException pe) {
+			throw new RuntimeException(pe.toString());
+		}
 	}
 	
 	/**
