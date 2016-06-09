@@ -68,7 +68,7 @@ public class DeletedFilePicker {
 				p.print(fname + ",,");
 			}
 			
-			long size;
+			long size = 0;
 			List<Long> sl = e.sizeList;
 			// ‚Ç‚±‚©‚Å 0 ‚É‚È‚é‚à‚Ì
 			boolean exist = false;
@@ -79,7 +79,7 @@ public class DeletedFilePicker {
 				} else if (exist && sl.get(i) == 0) break;
 			}
 			
-			p.print(e.size);
+			p.print(size);
 			p.print(",");
 			p.println(e.lastModified);
 		}
