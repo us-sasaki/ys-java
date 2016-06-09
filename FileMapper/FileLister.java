@@ -92,7 +92,7 @@ public class FileLister {
  * main
  */
 	public static void main(String[] args) throws Exception {
-		FileLister2 f = new FileLister2();
+		FileLister f = new FileLister();
 		f.list(new File(args[0]));
 	}
 	

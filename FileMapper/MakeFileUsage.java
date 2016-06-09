@@ -1,9 +1,17 @@
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Date;
 import java.util.ArrayList;
-import java.text.SimpleDateFormat;
+import java.util.Set;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.Comparator;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
+
+import static java.util.Map.Entry;
 
 /**
  * ファイル利用状況表示用データを生成するメインプログラム
@@ -95,7 +103,7 @@ public class MakeFileUsage {
 		//				"value":"ファイルサイズ",
 		//				"owner":"所有者名" }
 		
-		JsonObject tableContainer = new JsonObject().add("key","top").add("label","同一ファイルかも知れません。ショートカット化できないか検討して下さい。"); // values(Array) は後で指定
+		JsonObject tableContainer = new JsonObject().add("key","top").add("label","同一と思われるファイル：ショートカット化要検討"); // values(Array) は後で指定
 		
 		JsonArray top = new JsonArray(new JsonType[]{tableContainer});
 		
@@ -139,6 +147,86 @@ public class MakeFileUsage {
 		FileList.writeJsonType(top, "sameFile"+date+".json");
 		
 		//
+		// 似ているファイルを探す
+		//
+		
+		// 先に候補を絞ると早い
+		List<FileEntry> largeFiles =
+				FileList.selectAs(a.list,
+						e ->
+							( (e.size > 200000)&&(!e.isDirectory)&&
+							 (e.path.endsWith("pptx") || e.path.endsWith("ppt") ||
+							  e.path.endsWith("xlsx") || e.path.endsWith("xls") ||
+							  e.path.endsWith("docx") || e.path.endsWith("doc") ||
+							  e.path.endsWith("txt") )
+							)
+				);
+		
+		List<SimilarFilePicker.FileDistance> fdl = new SimilarFilePicker(largeFiles).getDistanceList();
+		
+		TreeMap<String, Integer> appearPaths = new TreeMap<String, Integer>();
+		for (SimilarFilePicker.FileDistance fd : fdl) {
+			if (fd.dist > 5000) break; // dist 5000超えは似ていないファイル
+			// fd.a の path を登録
+			String path = fd.a.path;
+			int idx = path.lastIndexOf('\\');
+			if (idx >= 0) {
+				path = path.substring(0, idx); // path string
+				Integer count = appearPaths.get(path);
+				if (count == null) appearPaths.put(path, 1);
+				else appearPaths.put(path, count+1);
+			}
+			// fd.b の path を登録
+			path = fd.b.path;
+			idx = path.lastIndexOf('\\');
+			if (idx >= 0) {
+				path = path.substring(0, idx); // path string
+				Integer count = appearPaths.get(path);
+				if (count == null) appearPaths.put(path, 1);
+				else appearPaths.put(path, count+1);
+			}
+		}
+		// List に変換してソートする(降順)
+		Set<Entry<String, Integer>> viewSet = appearPaths.entrySet();
+		
+		List<Entry<String, Integer>> view = new ArrayList<Entry<String, Integer>>();
+		for (Entry<String, Integer> ent : viewSet) {
+			view.add(ent);
+		}
+		
+		view.sort(new Comparator<Entry<String, Integer>>() {
+					public int compare(Entry<String, Integer> a, Entry<String, Integer> b) {
+						return a.getValue() - b.getValue();
+					}
+					public boolean equals(Entry<String, Integer> a, Entry<String, Integer> b) {
+						return a.getValue().equals(b.getValue());
+					}
+		}.reversed() );
+		
+		tableContainer = new JsonObject().add("key","top").add("label","チェックフォルダ");
+		top = new JsonArray(new JsonType[]{tableContainer});
+		
+		JsonObject folder = new JsonObject();
+		folder.add("key","file");
+		folder.add("label", "削除候補が多いと推定される10フォルダ(実験中)");
+		
+		int count = 0;
+		for (Entry<String, Integer> e : view) {
+			JsonObject jt = new JsonObject();
+			jt.add("label", e.getKey());
+			jt.add("value", e.getValue());
+			
+			folder.add("_values", jt); // 自動Array化に期待
+			count++;
+			if (count >= 10) break;
+		}
+		tableContainer.add("values", new JsonArray(new JsonType[] {folder}));
+		//
+		// JSON ファイルとして出力
+		//
+		FileList.writeJsonType(top, "similarFile"+date+".json");
+		
+		//
 		// サイズの大きなファイルを出力
 		//
 		tableContainer = new JsonObject().add("key","top").add("label","現在保存されているサイズの大きいファイル");
@@ -162,6 +250,7 @@ public class MakeFileUsage {
 		// JSON ファイルとして出力
 		//
 		FileList.writeJsonType(top, "bigFile"+date+".json");
+		
 		
 		System.out.println("done!");
 	}

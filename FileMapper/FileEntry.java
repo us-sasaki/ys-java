@@ -12,7 +12,7 @@ public class FileEntry {
 	
 	// 以下、拡張フィールドで昔の csv には含まれていない
 	String		owner	= "unknown";	// ファイル所有者 since 16/05/27
-	long		lastModified	= 0;	// 最終更新日 since 16/06/03
+	long		lastModified	= 614201724000000L;	// 最終更新日 since 16/06/03
 	
 /*-----------
  * overrides
