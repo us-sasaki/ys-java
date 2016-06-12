@@ -27,7 +27,7 @@ public class FileList {
 		list = null;
 		dateList = null;
 		sizeListCount = 0;
-		referencePoint = 0; // 最初のサイズと比較して increase を計算
+		referencePoint = 0; // 最初のサイズと比較して increase を計算(初期状態)
 	}
 	
 /*------------------
