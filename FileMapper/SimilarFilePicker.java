@@ -76,7 +76,7 @@ public class SimilarFilePicker {
 /*----------------
  * static methods
  */
-	private static String longestCommonSubsequence(String a, String b) {
+	public static String longestCommonSubsequence(String a, String b) {
 		if (a.length() > b.length() ) {
 			// a <= b となるようにする
 			String c = a; a = b; b = c;
@@ -118,7 +118,7 @@ public class SimilarFilePicker {
 	 * ２つのFileEntryの距離を測る。
 	 * ただし、 !FileEntry.isDirectory である必要がある。
 	 */
-	private static int d(FileEntry a, FileEntry b) {
+	public static int d(FileEntry a, FileEntry b) {
 		//
 		// 前処理
 		//
