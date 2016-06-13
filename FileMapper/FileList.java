@@ -25,7 +25,7 @@ public class FileList {
 	 */
 	public FileList() {
 		list = null;
-		dateList = null;
+		dateList = new ArrayList<Long>();
 		sizeListCount = 0;
 		referencePoint = 0; // 最初のサイズと比較して increase を計算(初期状態)
 	}
@@ -96,7 +96,6 @@ public class FileList {
 		
 		fr.close();
 		br.close();
-		
 		// map を list に再設定
 		list.clear();
 		for (FileEntry entry : map.values()) {
@@ -457,11 +456,13 @@ public class FileList {
 	public static FileList readFiles(String path) throws IOException {
 		File dir = new File(path);
 		if (!dir.isDirectory()) return null;
+System.out.println(dir);
 		
 		List<String> filelist = new ArrayList<String>();
 		for (String f : dir.list() ) {
 			if (f.matches("list20[0-9]{6}\\.csv")) {
 				filelist.add(f);
+System.out.println(f);
 			}
 		}
 		filelist.sort(null);
