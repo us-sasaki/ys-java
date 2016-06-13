@@ -3,12 +3,11 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 
 /**
- * 複数回のディレクトリ内ファイルサイズ情報を元に沢山容量を消費している
- * ファイルを抽出する。
+ * 複数回のディレクトリ内ファイルサイズ情報を格納する。
+ * また、基本的な操作を行うメソッドを提供する。
  */
 public class FileList {
 	public static int MAX_DEPTH = FileLister.MAX_DEPTH;
-	
 	
 	static SimpleDateFormat	sdf = new SimpleDateFormat("yyyyMMdd");
 	
@@ -25,9 +24,9 @@ public class FileList {
 	 */
 	public FileList() {
 		list = null;
-		dateList = new ArrayList<Long>();
+		dateList = null;
 		sizeListCount = 0;
-		referencePoint = 0; // 最初のサイズと比較して increase を計算(初期状態)
+		referencePoint = 0; // 最初のサイズと比較して increase を計算
 	}
 	
 /*------------------
@@ -37,12 +36,109 @@ public class FileList {
 		referencePoint = dateList.size() - 1;
 	}
 	public void setReferencePoint(int position) {
-		if (position < 0 || position >= dateList.size()) throw new IndexOutOfBoundsException("setReferencePoint(int) 現在、データファイルは"+dateList.size()+"個設定されています。この数未満の値を設定してください");
+		if (position < 0 || position >= dateList.size()) throw new IndexOutOfBoundsException("setReferencePoint(int) 現在、データファイルは"+dateList.size()+"個設定されています。この数未満の非負整数を設定してください");
 		referencePoint = position;
 	}
 	
 	/**
-	 * listyyyyMMdd.csv 形式(FileLister で生成)のファイルの情報を読み込みます。
+	 * 試験用に作ったもの。今後はlistyyyyMMdd.csv 形式のものを呼ぶように変更
+	 * ファイル名から、いつの情報かを取得する必要があるため。
+	 * FileMapper も不要になりそう
+	 *
+	 * 現状、owner, lastModified に非対応のままとなっている
+	 *
+	 * @deprecated
+	 */
+	public void readFile(String fname) throws IOException {
+		if (list != null) throw new IllegalStateException("すでに値を保持しています");
+		list = new ArrayList<FileEntry>();
+		
+		FileReader fr = new FileReader(fname);
+		BufferedReader br = new BufferedReader(fr);
+		
+		int maxTokens = 0;
+		while (true) {
+			String line = br.readLine();
+			if ( (line == null)||(line.equals("")) ) break;
+			
+			String[] token = line.split(",");
+			
+			// ファイルサイズが途中で切れることがあるため、最大値を取得
+			if (token.length > maxTokens) maxTokens = token.length;
+			
+			// FileEntry に変換する
+			FileEntry entry = new FileEntry();
+			
+			entry.level = Integer.parseInt(token[0]);
+			String p = "";
+			for (int i = 1; i <= MAX_DEPTH; i++) {
+				if (token[i].equals("")) continue;
+				if (i > 1) p = p + "\\";
+				p = p + token[i];
+			}
+			entry.path = p;
+			entry.isDirectory = false; // ちゃんと処理してない
+			entry.sizeList = new ArrayList<Long>();
+			
+			boolean hasSize  = false;
+			boolean hasOwner = false;
+			
+			for (int i = MAX_DEPTH+1; i < token.length; i++) {
+				if (token[i].equals("")) token[i] = "0";
+				try {
+					entry.sizeList.add(Long.decode(token[i]));
+					if (i == token.length - 1) hasSize = true;
+				} catch (NumberFormatException e) {
+					if (i == token.length - 1) {
+						entry.owner = token[i];
+						hasOwner = true;
+					}
+					else throw new NumberFormatException(e.getMessage());
+				}
+			}
+			// 最後の成分が長さの場合、文字列の場合の両方を含むとエラー
+			if (hasSize&&hasOwner) throw new NumberFormatException("フォーマットエラー");
+			
+			List<Long> l = entry.sizeList;
+			entry.size	= l.get(l.size() - 1);
+			if (l.size() == 1) {
+				entry.increase = entry.size;
+			} else {
+				entry.increase = entry.size - l.get(referencePoint);
+			}
+			
+			list.add(entry);
+		}
+		
+		sizeListCount = maxTokens - MAX_DEPTH - 1;
+		
+		fr.close();
+		br.close();
+		// isDirectory の設定
+		// アルゴリズム
+		//   同一のpath文字列を含む他の Entry があれば directory
+		//   まず path について辞書式にならべるとすぐわかりそう
+		makeup(); // sizeList の長さをそろえ、isDirectoryを設定
+	}
+	
+	/**
+	 * readFile した場合、dateList が構築されないため、手動構築するための
+	 * メソッド
+	 *
+	 * @deprecated
+	 */
+	public void addDateList(String filename) {
+		if (dateList == null) dateList = new ArrayList<Long>();
+		try {
+			long date = sdf.parse(filename.substring(4,12)).getTime();
+			dateList.add(date);
+		} catch (java.text.ParseException pe) {
+			throw new RuntimeException(pe.toString());
+		}
+	}
+	
+	/**
+	 * listyyyyMMdd.csv 形式(FileLister2 で生成)のファイルの情報を読み込みます。
 	 */
 	public void addFile(String fname) throws IOException {
 		if (list == null) list = new ArrayList<FileEntry>();
@@ -96,6 +192,7 @@ public class FileList {
 		
 		fr.close();
 		br.close();
+		
 		// map を list に再設定
 		list.clear();
 		for (FileEntry entry : map.values()) {
@@ -106,12 +203,7 @@ public class FileList {
 		makeup();
 		
 		// ファイル名から、date を取得
-		try {
-			long date = sdf.parse(fname.substring(4,12)).getTime();
-			dateList.add(date);
-		} catch (java.text.ParseException pe) {
-			throw new RuntimeException(pe.toString());
-		}
+		addDateList(fname);
 	}
 	
 	/**
@@ -456,13 +548,11 @@ public class FileList {
 	public static FileList readFiles(String path) throws IOException {
 		File dir = new File(path);
 		if (!dir.isDirectory()) return null;
-System.out.println(dir);
 		
 		List<String> filelist = new ArrayList<String>();
 		for (String f : dir.list() ) {
 			if (f.matches("list20[0-9]{6}\\.csv")) {
 				filelist.add(f);
-System.out.println(f);
 			}
 		}
 		filelist.sort(null);

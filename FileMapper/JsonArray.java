@@ -73,11 +73,12 @@ public class JsonArray extends JsonType {
 		sb.append("[ ");
 		boolean first = true;
 		for (JsonType obj : array) {
+			sb.append("\n");
 			if (!first) sb.append(", ");
 			else first = false;
 			sb.append(obj);
 		}
-		sb.append(" ]");
+		sb.append("\n ]");
 		
 		return sb.toString();
 	}
