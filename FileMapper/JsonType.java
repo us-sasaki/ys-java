@@ -21,5 +21,6 @@ public abstract class JsonType {
 //	public static JsonType parse(String json) {
 //	
 //	}
+	public abstract String toString(String indent);
 
 }
