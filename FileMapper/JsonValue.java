@@ -23,6 +23,9 @@ public class JsonValue extends JsonType {
  * overrides
  */
 	public String toString() {
-		return "\""+value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\'", "\\\'")+"\""; // "value" ‚ÌŒ`Ž®
+		return toString("");
+	}
+	public String toString(String indent) {
+		return indent+"\""+value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\'", "\\\'")+"\""; // "value" ‚ÌŒ`Ž®
 	}
 }

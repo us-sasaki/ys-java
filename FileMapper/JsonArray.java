@@ -68,17 +68,25 @@ public class JsonArray extends JsonType {
  * overrides
  */
 	public String toString() {
+		return toString("");
+	}
+	
+	public String toString(String indent) {
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append("[ ");
+		sb.append(indent);
+		sb.append("[");
 		boolean first = true;
 		for (JsonType obj : array) {
 			sb.append("\n");
+			sb.append(indent);
 			if (!first) sb.append(", ");
 			else first = false;
-			sb.append(obj);
+			sb.append(obj.toString(indent+"  "));
 		}
-		sb.append("\n ]");
+		sb.append("\n");
+		sb.append(indent);
+		sb.append("]");
 		
 		return sb.toString();
 	}

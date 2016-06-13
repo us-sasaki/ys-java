@@ -75,20 +75,28 @@ public class JsonObject extends JsonType {
  * overrides
  */
 	public String toString() {
+		return toString("");
+	}
+	public String toString(String indent) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("{ ");
+		sb.append(indent);
+		sb.append("{");
 		boolean first = true;
 		for (String name : map.keySet() ) {
-			sb.append("\n");
-			if (!first) sb.append(", ");
+			if (!first) sb.append(",");
 			else first = false;
-			sb.append("\"");
+			sb.append("\n");
+			sb.append(indent);
+			sb.append("  \"");
 			sb.append(name);
-			sb.append("\" : ");
-			sb.append(map.get(name));
+			sb.append("\" :");
+			JsonType jt = map.get(name);
+			if (jt instanceof JsonValue) sb.append(jt);
+			else sb.append(jt.toString("  "+indent));
 		}
 		sb.append("\n");
-		sb.append(" }");
+		sb.append(indent);
+		sb.append("}");
 		
 		return sb.toString();
 	}
