@@ -79,6 +79,7 @@ public class JsonObject extends JsonType {
 		sb.append("{ ");
 		boolean first = true;
 		for (String name : map.keySet() ) {
+			sb.append("\n");
 			if (!first) sb.append(", ");
 			else first = false;
 			sb.append("\"");
@@ -86,6 +87,7 @@ public class JsonObject extends JsonType {
 			sb.append("\" : ");
 			sb.append(map.get(name));
 		}
+		sb.append("\n");
 		sb.append(" }");
 		
 		return sb.toString();
