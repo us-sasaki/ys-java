@@ -27,7 +27,7 @@ public class FileLister {
 
 	public void list(File f) throws IOException {
 		FileWriter fw = new FileWriter("list"+sdf.format(new Date()) + ".csv");
-		out = new PrintWriter(fw);
+		out = new PrintWriter(new BufferedWriter(fw));
 		list(f, 0);
 		out.close();
 	}
