@@ -1,4 +1,4 @@
-﻿function table(filename, chartname) {
+﻿function table(filename, chartname, labelStr) {
 
 d3.json(filename, function(myData) {
 
@@ -15,7 +15,7 @@ nv.addGraph(function() {
                   },
                   {
                     key: 'value',
-                    label: 'Size(MByte)',
+                    label: labelStr,
                     width: '10%',
                     type: 'text'
                   },

@@ -11,7 +11,7 @@ nv.addGraph(function() {
 
   //Configure how the tooltip looks.
   chart.tooltipContent(function(key, x, y) {
-      return '<h3>' + key + '</h3><h4><br>削減:' + x + '<br>整理:' + y +'</h4>';
+      return '<h3>' + key + '</h3><h4>削減:' + x + '<br>整理:' + y +'</h4>';
   });
 
   //Axis settings
