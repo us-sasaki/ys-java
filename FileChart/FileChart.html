@@ -10,7 +10,8 @@
 <script src='cmn/line.js' type='text/javascript'> </script>
 <script src='cmn/stackArea.js' type='text/javascript'> </script>
 <script src='cmn/table.js' type='text/javascript'> </script>
-<script type="text/javascript">var filedate="160609";</script>
+<script src='cmn/scatter.js' type='text/javascript'> </script>
+<script type="text/javascript">var filedate="160619";</script>
 </head>
 
 <body>
@@ -52,9 +53,16 @@
 <div id='chart6'><svg style='height:10px'></svg></div>
 <script type="text/javascript">table('json/similarFile'+filedate+'.json', 'chart6');</script>
 
+
 <h3>参考情報</h3>
-<div id='chart7'><svg style='height:10px'></svg></div>
-<script type="text/javascript">table('json/bigFile'+filedate+'.json', 'chart7');</script>
+<div id='chart8'><svg style='height:10px'></svg></div>
+<script type="text/javascript">table('json/bigFile'+filedate+'.json', 'chart8');</script>
+
+<h3>ファイルオーナーごとのアクティビティ</h3>
+<br>※各ファイルのowner値に基づく集計です。本人のアクティビティと必ずしも一致しないため、ご注意下さい。
+<div id='chart7'><svg style='height:500px'></svg></div>
+<script type="text/javascript">scatter('json/activity'+filedate+'.json', 'chart7');</script>
+
 
 
 </body>

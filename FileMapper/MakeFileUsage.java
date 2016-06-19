@@ -20,8 +20,11 @@ import static java.util.Map.Entry;
  * @version	June 19th, 2016
  */
 public class MakeFileUsage {
+	/** FileList オブジェクト */
 	FileList		a;
+	/** 実ファイルのみ(!isDirectory)の List */
 	List<FileEntry> list;
+	/** ファイル名に使用する日付文字列(yyMMdd) */
 	String			date;
 
 /*------------------
@@ -30,10 +33,15 @@ public class MakeFileUsage {
 	public void make() throws IOException {
 		init();
 		System.out.println("processing");
+		System.out.println("calculating for chart");
 		makeCharts();
+		System.out.println("finding same files");
 		findSameFiles();
+		System.out.println("finding similar files");
 		findSimilarFiles();
+		System.out.println("listing big files");
 		listBigFiles();
+		System.out.println("listing file usage of users");
 		listFileUsage();
 		System.out.println("done!");
 	}
@@ -44,7 +52,7 @@ public class MakeFileUsage {
 	private void init() throws IOException {
 		// csv ファイル読込
 		a = FileList.readFiles(".");
-		a.setReferencePoint(10);
+		a.setReferencePoint(9); // 2016/6/7
 		list = a.selectFile(true); // ファイルだけ抽出
 		list.sort(new SizeOrder().reversed()); // サイズ降順
 		
@@ -129,6 +137,7 @@ public class MakeFileUsage {
 		int c = 0;
 		
 		for (FileEntry f : list) {
+			if (f.size/1024/1024 < 10) break;
 			String p = f.path;
 			try {
 				String filename = FileList.filename(p);
@@ -281,31 +290,99 @@ public class MakeFileUsage {
 	private void listFileUsage() throws IOException {
 		Map<String, Long> usage = new TreeMap<String, Long>();
 		Map<String, Long> lastUsage = new TreeMap<String, Long>();
+		Map<String, Long> actSize = new TreeMap<String, Long>();
+		
+		// referencePoint(2016/6/7) からの減少量を取得
+		// name         : ファイルの所有者名
+		// usage        : その使用者のファイルサイズ合計
+		// lastUsage    : referencePoint時のファイルサイズ合計
+		// reductionRate: 前回からどれだけサイズが減少したか
+		// actSize      : 前回からファイル削除や移動をどれだけしたか
 		int referencePoint = a.getReferencePoint();
 		for (FileEntry f : list) {
 			String owner = FileList.reveal(f.owner);
+			// usage を取得
 			Long size = usage.get(owner);
 			if (size == null) usage.put(owner, f.size);
 			else usage.put(owner, size + f.size);
+			
+			// lastUsage を取得
 			Long lastSize = lastUsage.get(owner);
 			if (size == null) lastUsage.put(owner, f.sizeList.get(referencePoint));
 			else lastUsage.put(owner, lastSize + f.sizeList.get(referencePoint));
+			
+			// actSize を取得(増えた分はカウントしない)
+			boolean exists  = false;
+			long    maxSize = 0;
+			for (int i = referencePoint; i < f.sizeList.size(); i++) {
+				if (f.sizeList.get(i) > 0) { // ファイルが存在した
+					if (!exists) exists = true;
+					if (maxSize < f.sizeList.get(i)) maxSize = f.sizeList.get(i);
+				} else if (exists) {
+					// 一度存在した後消えた -> deleted
+					Long s = actSize.get(owner);
+					if (s == null) actSize.put(owner, 1L); //maxSize);
+					else actSize.put(owner, s + 1L); //maxSize);
+					break; // 二度目はカウントしない
+				}
+			}
 		}
+		
+		// Json形式で保存(自作形式)
 		JsonObject[] memberArray = new JsonObject[usage.keySet().size()];
 		
 		int idx = 0;
 		for (String name : usage.keySet() ) {
-			memberArray[idx] = new JsonObject().add("name", name);
+			memberArray[idx] = new JsonObject().add("owner", name);
 			Long u = usage.get(name);
 			memberArray[idx].add("usage", u.toString());
 			Long lu = lastUsage.get(name);
 			memberArray[idx].add("lastUsage", lu.toString());
 			int reductionRate = 0;
-			if (0L != u) reductionRate = (int)((lu - u)*100L/u);
+			if (0L != u) reductionRate = (int)((lu - u)*100L/lu);
 			memberArray[idx].add("reductionRate", String.valueOf(reductionRate));
+			Long ds = actSize.get(name);
+			memberArray[idx].add("activitySize", String.valueOf(ds));
 			idx++;
 		}
 		FileList.writeJsonType(new JsonArray(memberArray), "usage"+date+".json");
+		
+		// Json形式で保存(scatterChart形式)
+		
+		
+		
+		List<JsonObject> jl = new ArrayList<JsonObject>();
+//		JsonObject[] jo = new JsonObject[usage.keySet().size()];
+		idx = 0;
+		for (String name : usage.keySet() ) {
+			if (Math.abs(lastUsage.get(name) - usage.get(name)) < 1024.0) continue;
+			if (actSize.get(name) == null) continue;
+			
+			JsonObject jo = new JsonObject().add("key", name);
+			
+			JsonObject j = new JsonObject();
+			j.add("x", rescale(lastUsage.get(name) - usage.get(name)));
+			Long act = actSize.get(name);
+			if (act == null) act = new Long(0L);
+			j.add("y", rescale(act.longValue()));
+			j.add("size", rescale(usage.get(name).longValue()));
+			j.add("shape", "circle");
+			
+			
+			jo.add("values", new JsonArray(new JsonType[] { j } ));
+			
+			jl.add(jo);
+//			idx++;
+		}
+		JsonArray data = new JsonArray(jl.toArray(new JsonObject[0]));
+		
+		FileList.writeJsonType(data, "activity"+date+".json");
+	}
+	
+	private static double rescale(double x) {
+		if (x < 0) return -Math.pow(-x, 0.25d);
+		if (x == 0) return 0d;
+		return Math.pow(x, 0.25d);
 	}
 	
 	/**
