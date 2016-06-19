@@ -1,3 +1,6 @@
+/**
+ * Json形式における配列を表します。
+ */
 public class JsonArray extends JsonType {
 	public JsonType[] array;
 	
@@ -30,37 +33,37 @@ public class JsonArray extends JsonType {
 	public void set(byte[] array) {
 		this.array = new JsonValue[array.length];
 		for (int i = 0; i < array.length; i++) {
-			this.array[i] = new JsonValue(String.valueOf(array[i]));
+			this.array[i] = new JsonValue(array[i]);
 		}
 	}
 	public void set(char[] array) {
 		this.array = new JsonValue[array.length];
 		for (int i = 0; i < array.length; i++) {
-			this.array[i] = new JsonValue(String.valueOf(array[i]));
+			this.array[i] = new JsonValue(array[i]);
 		}
 	}
 	public void set(int[] array) {
 		this.array = new JsonValue[array.length];
 		for (int i = 0; i < array.length; i++) {
-			this.array[i] = new JsonValue(String.valueOf(array[i]));
+			this.array[i] = new JsonValue(array[i]);
 		}
 	}
 	public void set(long[] array) {
 		this.array = new JsonValue[array.length];
 		for (int i = 0; i < array.length; i++) {
-			this.array[i] = new JsonValue(String.valueOf(array[i]));
+			this.array[i] = new JsonValue(array[i]);
 		}
 	}
 	public void set(float[] array) {
 		this.array = new JsonValue[array.length];
 		for (int i = 0; i < array.length; i++) {
-			this.array[i] = new JsonValue(String.valueOf(array[i]));
+			this.array[i] = new JsonValue(array[i]);
 		}
 	}
 	public void set(double[] array) {
 		this.array = new JsonValue[array.length];
 		for (int i = 0; i < array.length; i++) {
-			this.array[i] = new JsonValue(String.valueOf(array[i]));
+			this.array[i] = new JsonValue(array[i]);
 		}
 	}
 	
@@ -78,10 +81,14 @@ public class JsonArray extends JsonType {
 		sb.append("[");
 		boolean first = true;
 		for (JsonType obj : array) {
-			sb.append("\n");
-			sb.append(indent);
-			if (!first) sb.append(", ");
-			else first = false;
+			if (!first) {
+				sb.append(",");
+				sb.append("\n");
+			} else {
+				sb.append("\n");
+//				sb.append(indent);
+				first = false;
+			}
 			sb.append(obj.toString(indent+"  "));
 		}
 		sb.append("\n");

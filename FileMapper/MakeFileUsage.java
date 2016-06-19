@@ -17,25 +17,43 @@ import static java.util.Map.Entry;
  * ファイル利用状況表示用データを生成するメインプログラム
  *
  * @author	Yusuke Sasaki
- * @version	June 2nd, 2016
+ * @version	June 19th, 2016
  */
 public class MakeFileUsage {
-	
+	FileList		a;
+	List<FileEntry> list;
+	String			date;
 
-/*------
- * main
+/*------------------
+ * instance methods
  */
-	public static void main(String[] args) throws Exception {
+	public void make() throws IOException {
+		init();
+		System.out.println("processing");
+		makeCharts();
+		findSameFiles();
+		findSimilarFiles();
+		listBigFiles();
+		listFileUsage();
+		System.out.println("done!");
+	}
+	
+	/**
+	 * ファイル読込、初期化
+	 */
+	private void init() throws IOException {
+		// csv ファイル読込
+		a = FileList.readFiles(".");
+		a.setReferencePoint(10);
+		list = a.selectFile(true); // ファイルだけ抽出
+		list.sort(new SizeOrder().reversed()); // サイズ降順
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
 		
-		// csv ファイル読込
-		FileList a = FileList.readFiles(".");
-		a.setReferencePoint(3);
-		
-		System.out.println("processing");
-		
-		String date = sdf.format(new Date());
-		
+		date = sdf.format(new Date());
+	}
+	
+	private void makeCharts() throws IOException {
 		//
 		// ファイル命名規則
 		// [dataType][Level][SortTarget][yyMMdd].json
@@ -49,11 +67,12 @@ public class MakeFileUsage {
 		
 		// レベル1でサイズ順に表示
 		List<FileEntry> l1 = a.selectLevel(1);
+		l1 = FileList.cutFile(l1, true);
 		l1.sort(new SizeOrder().reversed()); // size 降順でソート
 		
 		FileList.writePosJsonFile(a.dateList, l1, "posL1Size"+date+".json");
 		List<FileEntry> l1dir = FileList.cutFile(l1, true);
-		FileList.writePieChartJsonFile(l1dir, "pieL1Size"+date+".json");
+		FileList.writePieChartJsonFile(l1dir, 1, "pieL1Size"+date+".json");
 		
 		// レベル2で上位3フォルダをサイズ順に表示
 		int n = 3;
@@ -65,24 +84,24 @@ public class MakeFileUsage {
 				 // できるのか(dir指定)、できるらしい(finalの場合(省略可能))
 			
 			l2big.sort(new SizeOrder().reversed());
-			FileList.writePieChartJsonFile(FileList.cut(l2big, 5), "pieL2Size"+date+"_"+i+".json");
+			FileList.writePieChartJsonFile(FileList.cut(l2big, 5), 1, "pieL2Size"+date+"_"+i+".json");
 		}
 		
 		// レベル2で増分の大きい順に10個表示
 		List<FileEntry> l2 = a.selectLevel(2);
 		l2.sort(new IncreaseOrder().reversed());
-		FileList.writeJsonFile(a.dateList, FileList.cut(l2, 10), "lineL2Inc"+date+".json");
+		FileList.writeJsonFile(a.dateList, FileList.cut(l2, 10), 1, "lineL2Inc"+date+".json");
 		
 		// レベル3で増分の大きい順に10個表示
 		List<FileEntry> l3 = a.selectLevel(3);
 		l3.sort(new IncreaseOrder().reversed());
-		FileList.writeJsonFile(a.dateList, FileList.cut(l3, 10), "lineL3Inc"+date+".json");
-		//
-		// 同一ファイル疑惑を探す
-		//
-		List<FileEntry> list = a.selectFile(true);
-		list.sort(new SizeOrder().reversed()); // サイズ降順
-		
+		FileList.writeJsonFile(a.dateList, FileList.cut(l3, 10), 2, "lineL3Inc"+date+".json");
+	}
+	
+	/**
+	 * 同一ファイル疑惑を探す
+	 */
+	private void findSameFiles() throws IOException {
 		String lastFile = "";
 		FileEntry lastF = null;
 		
@@ -145,10 +164,12 @@ public class MakeFileUsage {
 		// JSON ファイルとして出力
 		//
 		FileList.writeJsonType(top, "sameFile"+date+".json");
-		
-		//
-		// 似ているファイルを探す
-		//
+	}
+	
+	/**
+	 * 似ているファイルを探す
+	 */
+	private void findSimilarFiles() throws IOException {
 		
 		// 先に候補を絞ると早い
 		List<FileEntry> largeFiles =
@@ -203,8 +224,8 @@ public class MakeFileUsage {
 					}
 		}.reversed() );
 		
-		tableContainer = new JsonObject().add("key","top").add("label","チェックフォルダ");
-		top = new JsonArray(new JsonType[]{tableContainer});
+		JsonObject tableContainer = new JsonObject().add("key","top").add("label","チェックフォルダ");
+		JsonArray top = new JsonArray(new JsonType[]{tableContainer});
 		
 		JsonObject folder = new JsonObject();
 		folder.add("key","file");
@@ -225,23 +246,25 @@ public class MakeFileUsage {
 		// JSON ファイルとして出力
 		//
 		FileList.writeJsonType(top, "similarFile"+date+".json");
-		
-		//
-		// サイズの大きなファイルを出力
-		//
-		tableContainer = new JsonObject().add("key","top").add("label","現在保存されているサイズの大きいファイル");
-		top = new JsonArray(new JsonType[]{tableContainer});
+	}
+	
+	/**
+	 * サイズの大きなファイルを出力
+	 */
+	private void listBigFiles() throws IOException {
+		JsonObject tableContainer = new JsonObject().add("key","top").add("label","現在保存されているサイズの大きいファイル");
+		JsonArray top = new JsonArray(new JsonType[]{tableContainer});
 		
 		JsonObject jo = new JsonObject();
 		jo.add("key","file");
 		jo.add("label", "(参考)サイズの大きなファイル");
 
-		jo.add("_values", jsonArrayPut(FileList.cut(list, 20),
+		jo.add("_values", jsonObjectArray(FileList.cut(list, 20),
 			// lambda expression
 			(target, src) -> {
-				target.add("label", src.path);
-				target.add("value", src.size/1024/1024);
-				target.add("owner", FileList.reveal(src.owner));
+				target.add("label", src.path)
+						.add("value", src.size/1024/1024)
+						.add("owner", FileList.reveal(src.owner));
 			}
 		));
 		tableContainer.add("values", new JsonArray(new JsonType[] {jo}));
@@ -250,9 +273,39 @@ public class MakeFileUsage {
 		// JSON ファイルとして出力
 		//
 		FileList.writeJsonType(top, "bigFile"+date+".json");
+	}
+	
+	/**
+	 * 人毎のファイル使用量を見る
+	 */
+	private void listFileUsage() throws IOException {
+		Map<String, Long> usage = new TreeMap<String, Long>();
+		Map<String, Long> lastUsage = new TreeMap<String, Long>();
+		int referencePoint = a.getReferencePoint();
+		for (FileEntry f : list) {
+			String owner = FileList.reveal(f.owner);
+			Long size = usage.get(owner);
+			if (size == null) usage.put(owner, f.size);
+			else usage.put(owner, size + f.size);
+			Long lastSize = lastUsage.get(owner);
+			if (size == null) lastUsage.put(owner, f.sizeList.get(referencePoint));
+			else lastUsage.put(owner, lastSize + f.sizeList.get(referencePoint));
+		}
+		JsonObject[] memberArray = new JsonObject[usage.keySet().size()];
 		
-		
-		System.out.println("done!");
+		int idx = 0;
+		for (String name : usage.keySet() ) {
+			memberArray[idx] = new JsonObject().add("name", name);
+			Long u = usage.get(name);
+			memberArray[idx].add("usage", u.toString());
+			Long lu = lastUsage.get(name);
+			memberArray[idx].add("lastUsage", lu.toString());
+			int reductionRate = 0;
+			if (0L != u) reductionRate = (int)((lu - u)*100L/u);
+			memberArray[idx].add("reductionRate", String.valueOf(reductionRate));
+			idx++;
+		}
+		FileList.writeJsonType(new JsonArray(memberArray), "usage"+date+".json");
 	}
 	
 	/**
@@ -274,7 +327,7 @@ public class MakeFileUsage {
 	 * @param	p	Listからデータを抽出、JsonObject化してJsonArrayに追加する実装
 	 * @return	できあがった JsonArray
 	 */
-	private static JsonArray jsonArrayPut(List<FileEntry> l,
+	private static JsonArray jsonObjectArray(List<FileEntry> l,
 							java.util.function.BiConsumer<JsonObject, FileEntry> p) {
 		JsonType[] result = new JsonType[l.size()];
 		for (int i = 0; i < l.size(); i++) {
@@ -283,5 +336,12 @@ public class MakeFileUsage {
 			result[i] = jo;
 		}
 		return new JsonArray(result);
+	}
+
+/*------
+ * main
+ */
+	public static void main(String[] args) throws Exception {
+		new MakeFileUsage().make();
 	}
 }

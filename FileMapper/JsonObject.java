@@ -1,6 +1,9 @@
 import java.util.Map;
-import java.util.HashMap;
+import java.util.TreeMap;
 
+/**
+ * Json形式におけるオブジェクトを表します。
+ */
 public class JsonObject extends JsonType {
 	public Map<String, JsonType> map;
 	
@@ -8,7 +11,7 @@ public class JsonObject extends JsonType {
  * constructor
  */
 	public JsonObject() {
-		map = new HashMap<String, JsonType>();
+		map = new TreeMap<String, JsonType>();
 	}
 	
 /*------------------
@@ -48,6 +51,7 @@ public class JsonObject extends JsonType {
 			JsonType v = map.get(name);
 			if (v instanceof JsonArray) {
 				// すでに JsonArray になっていた場合、要素追加
+				// 毎回heapを新規確保する実装で遅い
 				JsonArray src = (JsonArray)v;
 				JsonType[] newArray = new JsonType[src.array.length + 1];
 				System.arraycopy(src.array, 0, newArray, 0, src.array.length);
@@ -92,7 +96,10 @@ public class JsonObject extends JsonType {
 			sb.append("\" :");
 			JsonType jt = map.get(name);
 			if (jt instanceof JsonValue) sb.append(jt);
-			else sb.append(jt.toString("  "+indent));
+			else {
+				sb.append("\n");
+				sb.append(jt.toString("  "+indent));
+			}
 		}
 		sb.append("\n");
 		sb.append(indent);
