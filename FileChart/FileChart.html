@@ -1,4 +1,5 @@
-﻿<head>
+﻿<html>
+<head>
   <meta charset="utf-8">
   <title>IoTシェアポイント利用状況レポート</title>
     <link href="cmn/nv.d3.css" rel="stylesheet">
@@ -48,18 +49,18 @@
 
 <h3>サイズ削減ヒント</h3>
 <div id='chart5'><svg style='height:10px'></svg></div>
-<script type="text/javascript">table('json/sameFile'+filedate+'.json', 'chart5');</script>
+<script type="text/javascript">table('json/sameFile'+filedate+'.json', 'chart5', 'Size(MB)');</script>
 
 <div id='chart6'><svg style='height:10px'></svg></div>
-<script type="text/javascript">table('json/similarFile'+filedate+'.json', 'chart6');</script>
+<script type="text/javascript">table('json/similarFile'+filedate+'.json', 'chart6', 'score');</script>
 
 
 <h3>参考情報</h3>
 <div id='chart8'><svg style='height:10px'></svg></div>
-<script type="text/javascript">table('json/bigFile'+filedate+'.json', 'chart8');</script>
+<script type="text/javascript">table('json/bigFile'+filedate+'.json', 'chart8', 'Size(MB)');</script>
 
-<h3>ファイルオーナーごとのアクティビティ</h3>
-<br>※各ファイルのowner値に基づく集計です。本人のアクティビティと必ずしも一致しないため、ご注意下さい。
+<h3>ファイルオーナーごとの増減情報</h3>
+<br>※各ファイルのowner値に基づくファイル増減情報です。必ずしも本人のアクティビティを表すものではありません。
 <div id='chart7'><svg style='height:500px'></svg></div>
 <script type="text/javascript">scatter('json/activity'+filedate+'.json', 'chart7');</script>
 
