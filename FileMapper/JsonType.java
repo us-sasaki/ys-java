@@ -1,5 +1,9 @@
 import java.util.*;
 
+/**
+ * Json形式における型一般を表します(composite pat.)
+ * 利便性のため、アクセスメソッドを提供します。
+ */
 public abstract class JsonType {
 
 	public String getValue() {
@@ -19,8 +23,12 @@ public abstract class JsonType {
 	}
 	
 //	public static JsonType parse(String json) {
-//	
+//	未実装。stack で実装すると良さそう
 //	}
+
+	/**
+	 * 人が見やすい indent に対応するためのメソッド
+	 */
 	public abstract String toString(String indent);
 
 }

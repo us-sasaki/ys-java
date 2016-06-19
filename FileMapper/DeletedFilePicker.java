@@ -46,15 +46,15 @@ public class DeletedFilePicker {
 				}
 			}
 			// 消えていて移動したわけではない⇒削除された
-			if (deleted && !moved) list.add(e);
+			if (!moved) list.add(e);
 		}
 		
 		// 表示、ファイル出力
 		PrintWriter p = new PrintWriter(new FileWriter("deletedFiles"+date+".txt"));
 		
 		for (FileEntry e : list) {
-			System.out.println("--------------------");
-			System.out.println(e);
+//			System.out.println("--------------------");
+//			System.out.println(e);
 			p.print(e.path);
 			p.print(",");
 			String fname = new File(e.path).getName();

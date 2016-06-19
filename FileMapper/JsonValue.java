@@ -1,5 +1,9 @@
+/**
+ * Json形式におけるプリミティブ型(文字列,数値)を表します
+ */
 public class JsonValue extends JsonType {
 	public String value;
+	public boolean isString = false;
 	
 /*-------------
  * constructor
@@ -10,6 +14,7 @@ public class JsonValue extends JsonType {
 	 */
 	public JsonValue(String value) {
 		this.value = value;
+		this.isString = true;
 	}
 	
 	public JsonValue(byte value) {	this.value = String.valueOf(value);	}
@@ -26,6 +31,8 @@ public class JsonValue extends JsonType {
 		return toString("");
 	}
 	public String toString(String indent) {
-		return indent+"\""+value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\'", "\\\'")+"\""; // "value" の形式
+		String quote = "";
+		if (this.isString) quote = "\"";
+		return indent+quote+value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\'", "\\\'")+quote; // "value" の形式
 	}
 }

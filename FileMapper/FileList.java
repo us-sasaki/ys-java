@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 
 /**
  * 複数回のディレクトリ内ファイルサイズ情報を格納する。
- * また、基本的な操作を行うメソッドを提供する。
+ * また、FileList や List<FileEntry> に関する便利な操作を行うメソッドを提供する。
  */
 public class FileList {
 	public static int MAX_DEPTH = FileLister.MAX_DEPTH;
@@ -39,7 +39,9 @@ public class FileList {
 		if (position < 0 || position >= dateList.size()) throw new IndexOutOfBoundsException("setReferencePoint(int) 現在、データファイルは"+dateList.size()+"個設定されています。この数未満の非負整数を設定してください");
 		referencePoint = position;
 	}
-	
+	public int getReferencePoint() {
+		return referencePoint;
+	}
 	/**
 	 * 試験用に作ったもの。今後はlistyyyyMMdd.csv 形式のものを呼ぶように変更
 	 * ファイル名から、いつの情報かを取得する必要があるため。
@@ -328,44 +330,46 @@ public class FileList {
 		return new File(pathString).getName();
 	}
 	
+	public static String filename(String pathString, int depth) {
+		String result = null;
+		int startIdx = pathString.length() - 1;
+		for (int i = 0; i < depth; i++) {
+			int idx = pathString.lastIndexOf('\\', startIdx);
+			if (idx == -1) {
+				if (result == null) return pathString.substring(0, startIdx);
+				return pathString.substring(0, startIdx) + "/" + result;
+			}
+			if (result != null) {
+				result = pathString.substring(idx+1, startIdx + 1) + "/" + result;
+			} else {
+				result = pathString.substring(idx+1, startIdx + 1);
+			}
+			startIdx = idx - 1;
+		}
+		return result;
+	}
+	
 	/**
 	 * NVD3 line chart 用 JSON ファイル出力
 	 */
 	public static void writeJsonFile(List<Long> dateList,
-							List<FileEntry> target,
+							List<FileEntry> target, int depth,
 							String filename) throws IOException {
-		FileOutputStream fos = new FileOutputStream(filename);
-		Writer fw = new OutputStreamWriter(fos, "UTF-8");
-		PrintWriter p = new PrintWriter(fw);
-		
-		p.println("["); // start mark
-		boolean first = true;
-		for (FileEntry fe : target) {
-			if (!fe.isDirectory) continue;
-			if (!first) {
-				p.println(",");
-			} else {
-				first = false;
+		JsonObject[] data = new JsonObject[target.size()];
+		for (int i = 0; i < data.length; i++) {
+			FileEntry fe = target.get(i);
+			data[i] = new JsonObject().add("key", filename(fe.path, depth));
+			JsonType[] values = new JsonType[dateList.size()];
+			for (int j = 0; j < values.length; j++) {
+				values[j] = new JsonObject()
+								.add("x", dateList.get(j))
+								.add("y", (fe.sizeList.get(j)/1024/1024) );
 			}
-			p.println("  {");
-			String path = fe.path;
-			path = path.replace("\\", "\\\\");
-			p.println("    \"key\": \"" + filename(path) + "\",");
-			p.print("    \"values\": [ ");
-			int i = 0;
-			for (Long date : dateList) {
-				if (i > 0) p.print(" , ");
-				p.print("{\"x\":" + date + " , \"y\":" + (fe.sizeList.get(i++)/1024/1024) + "}");
-			}
-			p.println("]");
-			p.print("  }");
+			data[i].add("values", values);
 		}
-		p.println();
-		p.println("]");
+		JsonArray top = new JsonArray(data);
 		
-		p.close();
-		fw.close();
-		fos.close();
+		writeJsonType(top, filename);
 	}
 	
 	/**
@@ -374,101 +378,34 @@ public class FileList {
 	public static void writePosJsonFile(List<Long> dateList,
 							List<FileEntry> target,
 							String filename) throws IOException {
-		FileOutputStream fos = new FileOutputStream(filename);
-		Writer fw = new OutputStreamWriter(fos, "UTF-8");
-		PrintWriter p = new PrintWriter(fw);
-		
-		p.println("["); // start mark
-		boolean first = true;
-		for (FileEntry fe : target) {
-			if (!fe.isDirectory) continue;
-			if (!first) {
-				p.println(",");
-			} else {
-				first = false;
+		JsonObject[] data = new JsonObject[target.size()];
+		for (int i = 0; i < data.length; i++) {
+			FileEntry fe = target.get(i);
+			data[i] = new JsonObject().add("key", filename(fe.path));
+			JsonArray[] values = new JsonArray[dateList.size()];
+			for (int j = 0; j < values.length; j++) {
+				values[j] = new JsonArray(new long[] { dateList.get(j), (fe.sizeList.get(j)/1024/1024) } );
 			}
-			p.println("  {");
-			String path = fe.path;
-			path = path.replace("\\", "\\\\");
-			p.println("    \"key\": \"" + path + "\",");
-			p.print("    \"values\": [ ");
-			int i = 0;
-			for (Long date : dateList) {
-				if (i > 0) p.print(", ");
-				p.print("[" + date + ", " + (fe.sizeList.get(i++)/1024/1024) + "]");
-			}
-			p.println("]");
-			p.print("  }");
+			data[i].add("values", values);
 		}
-		p.println();
-		p.println("]");
+		JsonArray top = new JsonArray(data);
 		
-		p.close();
-		fw.close();
-		fos.close();
+		writeJsonType(top, filename);
 	}
 	/**
 	 * NVD3 Pie Chart 用 JSON ファイル出力
 	 */
-	public static void writePieChartJsonFile(List<FileEntry> target,
+	public static void writePieChartJsonFile(List<FileEntry> target, int depth,
 							String filename) throws IOException {
-		FileOutputStream fos = new FileOutputStream(filename);
-		Writer fw = new OutputStreamWriter(fos, "UTF-8");
-		PrintWriter p = new PrintWriter(fw);
-		
-		p.println("["); // start mark
-		boolean first = true;
-		for (FileEntry fe : target) {
-			//if (!fe.isDirectory) continue;
-			if (!first) {
-				p.println(",");
-			} else {
-				first = false;
-				p.println();
-			}
-			p.print("  {");
-			p.print(" \"label\": \"" + filename(fe.path) + "\",");
-			p.print(" \"value\": \"" +(fe.size/1024/1024)+"\"" );
-			p.print("  }");
+		JsonType[] data = new JsonType[target.size()];
+		for (int i = 0; i < data.length; i++) {
+			FileEntry fe = target.get(i);
+			data[i] = new JsonObject().add("label", filename(fe.path, depth))
+										.add("value", (fe.size/1024/1024) );
 		}
-		p.println();
-		p.println("]");
+		JsonArray top = new JsonArray(data);
 		
-		p.close();
-		fw.close();
-		fos.close();
-	}
-	/**
-	 * NVD3 Indented Table 用 JSON ファイル出力
-	 */
-	public static void writeTableChartJsonFile(List<FileEntry> target,
-							String filename) throws IOException {
-		FileOutputStream fos = new FileOutputStream(filename);
-		Writer fw = new OutputStreamWriter(fos, "UTF-8");
-		PrintWriter p = new PrintWriter(fw);
-		
-		p.println("["); // start mark
-		p.println("  { \"key\": \"file\", \"label\": \"サイズの大きなファイル\", \"values\": [");
-		boolean first = true;
-		for (FileEntry fe : target) {
-			if (!first) {
-				p.println(",");
-			} else {
-				first = false;
-				p.println();
-			}
-			p.print("  {");
-			p.print(" \"label\": \"" + fe.path.replace("\\", "\\\\") + "\",");
-			p.print(" \"value\": \"" +(fe.size/1024/1024)+"\"," );
-			p.print(" \"owner\": \"" +reveal(fe.owner)+"\"" );
-			p.print("  }");
-		}
-		p.println("]}");
-		p.println("]");
-		
-		p.close();
-		fw.close();
-		fos.close();
+		writeJsonType(top, filename);
 	}
 	
 	/**
@@ -483,45 +420,13 @@ public class FileList {
 	/**
 	 * JsonObject をファイルに出力する
 	 */
-	public static void writeJsonType(JsonType obj, String filename) throws Exception {
+	public static void writeJsonType(JsonType obj, String filename) throws IOException {
 		FileOutputStream fos = new FileOutputStream(filename);
 		BufferedOutputStream bos = new BufferedOutputStream(fos);
 		//bos.write("[\n".getBytes("UTF-8"));
 		bos.write(obj.toString().getBytes("UTF-8"));
 		//bos.write("\n]".getBytes("UTF-8"));
 		bos.close();
-		fos.close();
-	}
-	
-	/**
-	 * CSV形式ファイル出力
-	 */
-	public static void writeFile(String filename, List<FileEntry> target, List<Long> dateList, int maxCount)
-				throws IOException {
-		FileOutputStream fos = new FileOutputStream(filename);
-		Writer fw = new OutputStreamWriter(fos, "Shift_JIS"); // for EXCEL
-		PrintWriter p = new PrintWriter(fw);
-		int count = 0;
-		
-		p.print("フォルダ");
-		for (Long date : dateList) {
-			p.print(",");
-			p.print(sdf.format(new Date(date)));
-		}
-		p.println();
-		for (FileEntry fe : target) {
-			p.print(fe.path);
-			for (Long size : fe.sizeList) {
-				p.print(",");
-				p.print(size/1024/1024); // Mbyte
-			}
-			p.println();
-			count++;
-			if (count >= maxCount) break;
-		}
-		
-		p.close();
-		fw.close();
 		fos.close();
 	}
 	
