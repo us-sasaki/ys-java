@@ -93,7 +93,7 @@ public class JsonObject extends JsonType {
 			sb.append(indent);
 			sb.append("  \"");
 			sb.append(name);
-			sb.append("\" :");
+			sb.append("\":");
 			JsonType jt = map.get(name);
 			if (jt instanceof JsonValue) sb.append(jt);
 			else {
