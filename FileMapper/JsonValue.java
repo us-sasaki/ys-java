@@ -3,7 +3,7 @@
  */
 public class JsonValue extends JsonType {
 	public String value;
-	public boolean isString = false;
+	public String quote = "";
 	
 /*-------------
  * constructor
@@ -14,11 +14,14 @@ public class JsonValue extends JsonType {
 	 */
 	public JsonValue(String value) {
 		this.value = value;
-		this.isString = true;
+		quote = "\"";
 	}
 	
 	public JsonValue(byte value) {	this.value = String.valueOf(value);	}
-	public JsonValue(char value) {	this.value = String.valueOf(value); }
+	public JsonValue(char value) {
+		this.value = String.valueOf(value);
+		quote = "\""; // string ˆµ‚¢
+	}
 	public JsonValue(int  value) {	this.value = String.valueOf(value); }
 	public JsonValue(long value) {	this.value = String.valueOf(value); }
 	public JsonValue(float value) {	this.value = String.valueOf(value); }
@@ -31,8 +34,6 @@ public class JsonValue extends JsonType {
 		return toString("");
 	}
 	public String toString(String indent) {
-		String quote = "";
-		if (this.isString) quote = "\"";
-		return indent+quote+value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\'", "\\\'")+quote; // "value" ‚ÌŒ`Ž®
+		return indent+quote+value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\'", "\\\'")+quote; // "string" / number ‚ÌŒ`Ž®
 	}
 }
