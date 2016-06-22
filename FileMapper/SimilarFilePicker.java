@@ -124,8 +124,8 @@ public class SimilarFilePicker {
 		//
 		
 		// ファイル名を取得
-		String na = new File(a.path).getName();
-		String nb = new File(b.path).getName();
+		String na = FileList.filename(a.path);
+		String nb = FileList.filename(b.path);
 		
 		// extension と名前本体を取得
 		int ind = na.lastIndexOf('.');
