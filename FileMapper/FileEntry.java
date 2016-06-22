@@ -18,7 +18,7 @@ public class FileEntry {
  * overrides
  */
 	public String toString() {
-		StringBuffer s = new StringBuffer();
+		StringBuilder s = new StringBuilder();
 		s.append("    path   :"+path+"\n");
 		s.append("   level   :"+level+"\n");
 		s.append("isDirectory:"+isDirectory+"\n");
