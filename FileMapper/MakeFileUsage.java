@@ -78,7 +78,8 @@ public class MakeFileUsage {
 		l1 = FileList.cutFile(l1, true);
 		l1.sort(new SizeOrder().reversed()); // size ç~èáÇ≈É\Å[Ég
 		
-		FileList.writePosJsonFile(a.dateList, l1, "posL1Size"+date+".json");
+//		FileList.writePosJsonFile(a.dateList, l1, "posL1Size"+date+".json");
+		FileList.writeJsonFile(a.dateList, l1, 1, "posL1Size"+date+".json");
 		List<FileEntry> l1dir = FileList.cutFile(l1, true);
 		FileList.writePieChartJsonFile(l1dir, 1, "pieL1Size"+date+".json");
 		

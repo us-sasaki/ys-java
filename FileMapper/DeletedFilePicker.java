@@ -37,8 +37,8 @@ public class DeletedFilePicker {
 			boolean moved = false;
 			for (FileEntry f : a.list) {
 				if (e == f) continue; // 同じオブジェクトはスキップ
-				String ename = new File(e.path).getName();
-				String fname = new File(f.path).getName();
+				String ename = FileList.filename(e.path);
+				String fname = FileList.filename(f.path);
 				if (ename.equals(fname) && e.size==f.size) {
 					// ファイル名とサイズが一致していたら、移動したとみなす
 					moved = true;
@@ -57,7 +57,7 @@ public class DeletedFilePicker {
 //			System.out.println(e);
 			p.print(e.path);
 			p.print(",");
-			String fname = new File(e.path).getName();
+			String fname = FileList.filename(e.path);
 			int extIdx = fname.lastIndexOf(".");
 			if (extIdx > 0) {
 				p.print(fname.substring(0, extIdx));

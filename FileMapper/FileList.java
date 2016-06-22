@@ -34,33 +34,19 @@ public class FileList {
  */
 	public void setReferencePoint() {
 		referencePoint = dateList.size() - 1;
+		calcIncrease();
 	}
 	public void setReferencePoint(int position) {
 		if (position < 0 || position >= dateList.size()) throw new IndexOutOfBoundsException("setReferencePoint(int) 現在、データファイルは"+dateList.size()+"個設定されています。この数未満の非負整数を設定してください");
 		referencePoint = position;
+		calcIncrease();
 	}
 	public int getReferencePoint() {
 		return referencePoint;
 	}
 	
 	/**
-	 * readFile した場合、dateList が構築されないため、手動構築するための
-	 * メソッド
-	 *
-	 *
-	 */
-	public void addDateList(String filename) {
-		if (dateList == null) dateList = new ArrayList<Long>();
-		try {
-			long date = sdf.parse(filename.substring(4,12)).getTime();
-			dateList.add(date);
-		} catch (java.text.ParseException pe) {
-			throw new RuntimeException(pe.toString());
-		}
-	}
-	
-	/**
-	 * listyyyyMMdd.csv 形式(FileLister2 で生成)のファイルの情報を読み込みます。
+	 * listyyyyMMdd.csv 形式(FileLister で生成)のファイルの情報を読み込みます。
 	 */
 	public void addFile(String fname) throws IOException {
 		if (list == null) list = new ArrayList<FileEntry>();
@@ -129,6 +115,20 @@ public class FileList {
 	}
 	
 	/**
+	 * 指定したファイル名から日付部分を取り出し、long値の dateList に追加
+	 */
+	private void addDateList(String filename) {
+		if (dateList == null) dateList = new ArrayList<Long>();
+		try {
+			long date = sdf.parse(filename.substring(4,12)).getTime();
+			dateList.add(date);
+		} catch (java.text.ParseException pe) {
+			throw new RuntimeException(pe.toString());
+		}
+	}
+
+	
+	/**
 	 * list を path の辞書式順序に整列し、
 	 * sizeList の長さを sizeListCount (addFile した回数) に揃え、
 	 * 各 FileEntry の isDirectory フラグを設定する。このフラグ設定は、
@@ -163,6 +163,10 @@ public class FileList {
 			else f.isDirectory = false;
 			f = next;
 		}
+		calcIncrease();
+	}
+	
+	private void calcIncrease() {
 		// increase を計算
 		for (FileEntry e : list) {
 			List<Long> l = e.sizeList;
@@ -247,7 +251,9 @@ public class FileList {
 	 * path 文字列からファイル名を取得
 	 */
 	public static String filename(String pathString) {
-		return new File(pathString).getName();
+		int idx = pathString.lastIndexOf('\\');
+		if (idx == -1) return pathString;
+		return pathString.substring(idx+1);
 	}
 	
 	public static String filename(String pathString, int depth) {
@@ -293,26 +299,6 @@ public class FileList {
 	}
 	
 	/**
-	 * NVD3 stacked area chart / cumulative line chart 用 JSON ファイル出力
-	 */
-	public static void writePosJsonFile(List<Long> dateList,
-							List<FileEntry> target,
-							String filename) throws IOException {
-		JsonObject[] data = new JsonObject[target.size()];
-		for (int i = 0; i < data.length; i++) {
-			FileEntry fe = target.get(i);
-			data[i] = new JsonObject().add("key", filename(fe.path));
-			JsonArray[] values = new JsonArray[dateList.size()];
-			for (int j = 0; j < values.length; j++) {
-				values[j] = new JsonArray(new long[] { dateList.get(j), (fe.sizeList.get(j)/1024/1024) } );
-			}
-			data[i].add("values", values);
-		}
-		JsonArray top = new JsonArray(data);
-		
-		writeJsonType(top, filename);
-	}
-	/**
 	 * NVD3 Pie Chart 用 JSON ファイル出力
 	 */
 	public static void writePieChartJsonFile(List<FileEntry> target, int depth,
@@ -343,9 +329,7 @@ public class FileList {
 	public static void writeJsonType(JsonType obj, String filename) throws IOException {
 		FileOutputStream fos = new FileOutputStream(filename);
 		BufferedOutputStream bos = new BufferedOutputStream(fos);
-		//bos.write("[\n".getBytes("UTF-8"));
 		bos.write(obj.toString().getBytes("UTF-8"));
-		//bos.write("\n]".getBytes("UTF-8"));
 		bos.close();
 		fos.close();
 	}
