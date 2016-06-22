@@ -78,9 +78,11 @@ public class JsonObject extends JsonType {
 /*-----------
  * overrides
  */
+	@Override
 	public String toString() {
 		return toString("");
 	}
+	@Override
 	public String toString(String indent) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(indent);

@@ -229,9 +229,9 @@ public class MakeFileUsage {
 					public int compare(Entry<String, Integer> a, Entry<String, Integer> b) {
 						return a.getValue() - b.getValue();
 					}
-					public boolean equals(Entry<String, Integer> a, Entry<String, Integer> b) {
-						return a.getValue().equals(b.getValue());
-					}
+//					public boolean equals(Entry<String, Integer> a, Entry<String, Integer> b) {
+//						return a.getValue().equals(b.getValue());
+//					}
 		}.reversed() );
 		
 		JsonObject tableContainer = new JsonObject().add("key","top").add("label","チェックフォルダ");
