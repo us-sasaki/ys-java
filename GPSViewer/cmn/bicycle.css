@@ -1,0 +1,70 @@
+@charset "UTF-8";
+
+/** Google Maps 用 */
+html, body { height: 100%; margin: 0; padding: 0; }
+#map { height: 100%; }
+dt { display: table-cell; width: 100px; height: 100px; text-align: center; vertical-align: middle; }
+dt img {width: auto; height: auto; max-width: 100px; max-height: 100px; vertical-align: middle; }
+
+/** モーダルウィンドウ用 */
+#modal-content {
+	width: 80% ;
+	height: 80% ;
+	overflow-y: scroll;
+	margin: 0 ;
+	padding: 10px 20px ;
+	border: 2px solid #aaa ;
+	background: #fff ;
+	position: fixed ;
+	display: none ;
+	z-index: 2 ;
+}
+  
+#modal-overlay {
+	z-index: 1 ;
+	display: none ;
+	position: fixed ;
+	top: 0 ;
+	left: 0 ;
+	width: 100% ;
+	height: 120% ;
+	background-color: rgba( 0,0,0, 0.75 ) ;
+}
+
+.button-link {
+	color: #00f ;
+	text-decoration: underline ;
+}
+ 
+.button-link:hover {
+	cursor: pointer ;
+	color: #f00 ;
+}
+
+/** モーダルウィンドウ内テーブル */
+table.ride-list { 
+    width: 90%; 
+    font-size: 16px; 
+    margin: 0 auto; 
+    border-collapse: separate; 
+    border-spacing: 0px 1px;
+}
+
+table.ride-list th { 
+    padding: 8px; 
+    vertical-align: middle; 
+    text-align: left; 
+    border-bottom: #999 1px solid; 
+    color: #fff; 
+    background: #447791;
+    font-size: 16px;
+} 
+  
+table.ride-list td { 
+    padding: 8px; 
+    vertical-align: middle; 
+    text-align: left; 
+    border-bottom: #999 1px solid; 
+    font-size: 16px; 
+}
+
