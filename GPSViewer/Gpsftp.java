@@ -17,7 +17,7 @@ import abdom.location.filter.VelocityPlotsFilter;
 
 import abdom.location.interval.Interval;
 
-public class Gpstest {
+public class Gpsftp {
 	/**
 	 * main。通常起動では、全自動で解析、ファイル格納を行う。
 	 * args が指定されている場合、そのファイルに対し、manual() を呼ぶ。
@@ -30,11 +30,11 @@ public class Gpstest {
 //			d.addPhotoDirectory("G:\\Photo\\2016\\161015【スマホ】【自転車】相模湖/");
 			//d.addPhotoDirectory("G:\\programs\\misc\\160922_★★★GPSプログラム統合\\");
 			d.processAllLogs("gpslog/", "json/");
-//			d.uploadPhotos("ftp.la.coocan.jp", "appuri.la.coocan.jp", "293hvcXg", "/appuri.la.coocan.jp/homepage/gps/photo/");
-//			d.uploadJsons("ftp.la.coocan.jp", "appuri.la.coocan.jp", "293hvcXg", "/appuri.la.coocan.jp/homepage/gps/json/");
+			d.uploadPhotos("ftp.la.coocan.jp", "appuri.la.coocan.jp", "293hvcXg", "/appuri.la.coocan.jp/homepage/gps/photo/");
+			d.uploadJsons("ftp.la.coocan.jp", "appuri.la.coocan.jp", "293hvcXg", "/appuri.la.coocan.jp/homepage/gps/json/");
 			
 			// Firefox 起動
-			Runtime.getRuntime().exec("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe bicycle.html");
+//			Runtime.getRuntime().exec("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe bicycle.html");
 		} else {
 			manual(args[0]);
 		}

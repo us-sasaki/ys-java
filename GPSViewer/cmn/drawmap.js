@@ -140,19 +140,28 @@ function setJsonFile(fileName) {
  *
  */
 function drawPaths(coords) {
-	var pathColor = new PathColor();
+//	var pathColor = new PathColor();
 	
 	for (var i = 0; i < coords.length; i+=30) {
   	
 		var crds = coords.slice(i, i+31);
-
-		paths[paths.length] = new google.maps.Polyline({
+		
+		var polyline = new google.maps.Polyline({
 		   	path: crds,
 		   	geodesic: true,
-		   	strokeColor: pathColor.getColor(),
+		   	strokeColor: "#FF2000", //pathColor.getColor(),
 		   	strokeOpacity: 0.7, // 不透明度
 		   	strokeWeight: 2 // 線の太さ
 		});
+//		polyline.infowindow = new google.maps.InfoWindow({
+//			content: 'clicked'
+//		});
+		
+//		polyline.addListener('click', function(d) {
+			// d.latLng にアクセス可能, this は Polyline obj.
+//			this.infowindow.open(map, d); //.open(map, this);
+//		});
+		paths.push(polyline);
 		
 		// マウスオーバーすると写真を表示する Marker をつくる
 		for (var j = 0; j < crds.length; j++) {
@@ -225,7 +234,7 @@ function drawPaths(coords) {
 		paths[paths.length-1].setMap(map);
   		
 	  	// 色を変更
-		pathColor.next();
+//		pathColor.next();
 	}
   	
   	// 中央に
@@ -240,10 +249,21 @@ function drawPaths(coords) {
 		if (coords[i].lng > maxLng) maxLng = coords[i].lng;
 		if (coords[i].lng < minLng) minLng = coords[i].lng;
   	}
-  	var lat = (minLat + maxLat)/2;
-  	var lng = (minLng + maxLng)/2;
   	
-	map.panTo(new google.maps.LatLng(lat, lng));
-	map.setZoom(12); // zoom は固定
+  	var corner1 = new google.maps.LatLng(minLat, minLng);
+  	var corner2 = new google.maps.LatLng(maxLat, maxLng);
+  	var bounds = new google.maps.LatLngBounds().extend(corner1).extend(corner2);
   	
+//  	var lat = (minLat + maxLat)/2;
+//  	var lng = (minLng + maxLng)/2;
+  	
+//	map.panTo(new google.maps.LatLng(lat, lng));
+	
+//	var h = (maxLat - minLat);
+//	var w = (maxLng - minLng);
+	
+	
+//	map.setZoom(12); // zoom は固定
+  	
+  	map.fitBounds(bounds);
 }
