@@ -22,23 +22,26 @@ import abdom.location.filter.ULMPlotsFilter;
 import abdom.location.filter.VelocityPlotsFilter;
 import abdom.location.interval.Interval;
 import abdom.location.interval.StopPicker;
+import abdom.location.interval.StopPicker2;
 import abdom.location.interval.IntervalDivider;
 
 /**
- * ファイルを読み、List<Plot>, List<Interval> など行程に関する
- * 情報を補正、保持するクラス。
+ * ファイルを読み、List<Plot>, List<Interval> など行程に関する情報を補正、
+ * 保持するクラスです。
  *
- * 写真情報との結合は別のクラス(GPSDecorator)にする
+ * 写真情報との結合など、経路情報の補正以外の付加価値を付けるのは別のクラス
+ * (GPSDecorator)です。Interval 分解は、補正の役に立つことを想定してこちらの
+ * クラスに組み込んでいます。
  *
- * 将来的にアルゴリズムを add して refine() で修正するつくりとする
- * このクラスの保持する plots, interval は必ず添え字が対応する
- * ことを保証する
+ * アルゴリズムを add し readGPSLog() で修正する、というのが基本の使い方です。
+ * このクラスの保持する plots, interval は必ず添え字が対応することを保証しま
+ * す。このため、一部の get メソッドで返り値に制約がある場合があります。
  *
  * @see		abdom.app.gpsview.GPSDecorator
  */
 public class GPSRefiner {
 	protected String gpslogDir	= "gpslog/";
-	protected String jsonDir	= "json/";
+//	protected String jsonDir	= "json/";
 	
 	protected String filename;
 	protected List<Plot> plots;
@@ -80,8 +83,8 @@ public class GPSRefiner {
 		// Smirnov-Grubbs検定で、棄却されなくなるまで外れ値を除去
 		filter.add(new CutOutlierPlotsFilter(0.05d));
 		
-		// 局所的に等速直線運動を仮定して精度up
-		filter.add(new ULMPlotsFilter(10d)); // 10秒以上離れたら補正しない
+		// 局所的に等速直線運動を仮定してなめらかにする
+//		filter.add(new ULMPlotsFilter(10d)); // 10秒以上離れたら補正しない
 	}
 	
 	/**
@@ -107,7 +110,7 @@ public class GPSRefiner {
 		//
 		
 		// 滞留区間を検出する
-		StopPicker t = new StopPicker(plots);
+		StopPicker2 t = new StopPicker2(plots);
 		interval = t.divideByStop();
 		
 		// 速度に関し、二乗誤差(分散)が小さくなるように区間を分割する
@@ -128,7 +131,7 @@ public class GPSRefiner {
 	 */
 	public List<Interval> getInterval() {	return interval;	}
 	
-	public void setJsonDirectory(String d) {	jsonDir = d;	}
+//	public void setJsonDirectory(String d) {	jsonDir = d;	}
 	
 	public void setGPSLogDirectory(String d) {	gpslogDir = d;	}
 	
@@ -136,9 +139,9 @@ public class GPSRefiner {
 	 * 指定されたファイル名で既定のディレクトリに json ファイルを書き出します。
 	 * 文字コードは UTF-8 が使用されます。
 	 */
-	public void writeJson(String fname) throws IOException {
-		PlotUtils.writeJson(jsonDir, fname, plots);
-	}
+//	public void writeJson(String fname) throws IOException {
+//		PlotUtils.writeJson(jsonDir, fname, plots);
+//	}
 	public void writeVelocity(String fname) throws IOException {
 		PlotUtils.writeVelocity(fname, plots);
 	}

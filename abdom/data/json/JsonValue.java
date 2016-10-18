@@ -24,6 +24,7 @@ public class JsonValue extends JsonType {
 		this.value = String.valueOf(value);
 		quote = "\""; // string ˆµ‚¢
 	}
+	public JsonValue(short value) { this.value = String.valueOf(value); }
 	public JsonValue(int  value) {	this.value = String.valueOf(value); }
 	public JsonValue(long value) {	this.value = String.valueOf(value); }
 	public JsonValue(float value) {	this.value = String.valueOf(value); }

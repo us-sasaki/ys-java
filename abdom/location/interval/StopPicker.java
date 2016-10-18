@@ -16,8 +16,8 @@ import abdom.location.Coord;
  * @‡At-s ‚ª T msec ˆÈã
  */
 public class StopPicker {
-	private static final double R = 50.0 * Math.sqrt(3) / 2; // ”¼Œa 50m ‚Ì‰~“à
-	private static final long	T = 3 * 60 * 1000; // 3 min.
+	protected double	limitRadius = 50.0 * Math.sqrt(3) / 2; // ”¼Œa 50m ‚Ì‰~“à
+	protected long		limitTime = 3 * 60 * 1000; // 3 min.
 	
 	protected List<Plot> plots;
 	
@@ -26,6 +26,12 @@ public class StopPicker {
  */
 	public StopPicker(List<Plot> plots) {
 		this.plots = plots;
+	}
+	
+	public StopPicker(List<Plot> plots, double limitRadius, long limitTime) {
+		this.plots = plots;
+		this.limitRadius = limitRadius * Math.sqrt(3) / 2;
+		this.limitTime = limitTime * 1000;
 	}
 	
 /*------------------
@@ -101,7 +107,7 @@ public class StopPicker {
 			// ‚ ‚é‚©‚ğŠm”F
 			for (int j = ei; j > i; j--) {
 				long t = plots.get(j).time - plots.get(i).time;
-				if (t < T) break;
+				if (t < limitTime) break;
 				if (checkArbitraryPairIsClose(i, j)) {
 					Interval result = new Interval(i, j, t, "stop");
 					
@@ -119,11 +125,11 @@ public class StopPicker {
 		Plot p = plots.get(i);
 		int j = i + 1;
 		for (; j < plots.size(); j++) {
-			if (Coord.calcDistHubeny(p, plots.get(j)) > R) break;
+			if (Coord.calcDistHubeny(p, plots.get(j)) > limitRadius) break;
 		}
 		if (j == plots.size()) return j -1;
 		// Å‰‚É R ‚ğ’´‚¦‚é index ‚Ü‚Å‚ÌŠÔ‚ª T –¢–‚Ì’ZŠÔ‚È‚ç -1 ‚ğ•Ô‹p
-		if (plots.get(j).time - p.time < T) return -1;
+		if (plots.get(j).time - p.time < limitTime) return -1;
 		
 		// j‚Ü‚Å‚Ì‚·‚×‚Ä‚Ìindex‚É‚Â‚¢‚ÄAi ‚Æ‚Ì‹——£‚ª R ˆÈ“àA‚©‚Â T ˆÈã‚ÌŠÔ
 		return j;
@@ -136,7 +142,7 @@ public class StopPicker {
 	private boolean checkArbitraryPairIsClose(int s, int e) {
 		for (int i = s; i < e; i++) {
 			for (int j = i+1; j < e+1; j++) {
-				if (Coord.calcDistHubeny(plots.get(i), plots.get(j)) > R) return false;
+				if (Coord.calcDistHubeny(plots.get(i), plots.get(j)) > limitRadius) return false;
 			}
 		}
 		return true;

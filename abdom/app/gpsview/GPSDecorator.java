@@ -13,7 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import abdom.data.json.*;
+import abdom.image.exif.MyExifUtils;
 import abdom.location.*;
+import abdom.location.altitude.AltitudeMesh3;
 import abdom.location.filter.CutReturningCertainPlotsFilter;
 import abdom.location.filter.CutOutlierPlotsFilter;
 import abdom.location.filter.ULMPlotsFilter;
@@ -21,11 +23,13 @@ import abdom.location.interval.Interval;
 import abdom.location.interval.StopPicker;
 import abdom.location.interval.IntervalDivider;
 import abdom.math.stats.Stats;
-import abdom.image.exif.MyExifUtils;
+import abdom.net.FtpClient;
 
 /**
  * GPSRefiner を入力として、photoFileName など、Google Maps に渡す情報を生成します。
  * また、Webにアップロードするための最終的なファイルを生成し、アップロードします。
+ *
+ * 
  */
 public class GPSDecorator {
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd HH:mm:ss");
@@ -39,42 +43,57 @@ public class GPSDecorator {
 	
 	protected boolean manual = false;
 	
+	/** 対応付けできた写真のリスト(アップロード用) */
 	protected List<String> photoList;
+	
+	/** 作成した jsonファイルのリスト(アップロード用) */
+	protected List<String> jsonList;
 	
 /*-------------
  * constructor
  */
 	public GPSDecorator() {
 		photoMap = new TreeMap<Long, String>();
+		photoList = new ArrayList<String>();
+		jsonList = new ArrayList<String>();
 	}
 	
 /*------------------
  * instance methods
  */
+	/**
+	 * 行程と突合せを行う jpeg ファイルの格納されたローカルディレクトリを
+	 * 追加します。この操作では、子ディレクトリすべてが対象となります。
+	 *
+	 * @param	photoDir	写真の格納されたローカルディレクトリパス
+	 */
 	public void addPhotoDirectory(String photoDir) {
-		if ( (!photoDir.endsWith("\\"))&&(!photoDir.endsWith("/")) )
-			throw new IllegalArgumentException("directoryは \\ または / で終わる必要があります");
+//		if ( (!photoDir.endsWith("\\"))&&(!photoDir.endsWith("/")) )
+//			throw new IllegalArgumentException("directoryは \\ または / で終わる必要があります");
 		// photo map (ファイル名と時間)を取得しておく
-		File dir = new File(photoDir);
-		String[] p = dir.list();
-		if (p == null) return;
-		for (String pname : p) {
+		File f = new File(photoDir);
+		if (f.isDirectory()) {
+			String[] p = f.list();
+			if (p == null) return;
+			for (String pname : p) {
+				addPhotoDirectory(f+"/"+pname);
+			}
+		} else {
 			// 最後が .jpg で終わる(jpg は大文字、小文字区別しない (?i) )
-			if (pname.matches(".+(?i)jpg$")) {
+			if (f.getName().matches(".+(?i)jpg$")) {
 				Date date = null;
 				try {
-					date = MyExifUtils.getJpegDate(photoDir + pname);
+					date = MyExifUtils.getJpegDate(photoDir);
 				} catch (IOException e) {
 					System.out.println(e);
 				}
 				if (date == null) {
-					System.out.println(pname + " ファイルから日時を取得できません");
-					continue;
+					System.out.println(photoDir + "ファイルから日時を取得できません");
+					return;
 				}
-				photoMap.put(date.getTime(), photoDir + pname);
+				photoMap.put(date.getTime(), f.getAbsolutePath());
 			}
 		}
-	
 	}
 	/**
 	 * GPSRefiner の plots の写真情報 (photoFileName) フィールドを設定します。
@@ -88,8 +107,6 @@ public class GPSDecorator {
 	 */
 	public void setPhotoFileName(GPSRefiner g) {
 		manual = true;
-		
-		photoList = new ArrayList<String>();
 		
 		// photoMap の情報を map に挿入(適切な位置に Plot として挿入する)
 		List<Plot> plots = g.getPlots();
@@ -173,7 +190,9 @@ public class GPSDecorator {
 				Plot ep = stops.get(stops.size()-1);
 				replacement.add(ep); // 最後の点
 				
-				centroid.photoFileName = "stop:"+((ep.time-sp.time)/60000L) + "min.";
+				if (ep.time-sp.time >= 180000L) {
+					centroid.photoFileName = "stop:"+((ep.time-sp.time)/60000L) + "min.";
+				}
 				
 				g.replaceInterval(i, replacement);
 			}
@@ -181,7 +200,7 @@ public class GPSDecorator {
 	}
 	
 	/**
-	 * GPSRefiner の持つ情報の総括情報を JsonObject で返却する
+	 * GPSRefiner の持つ情報の総括情報を JsonObject として返却します。
 	 *<pre>
 	 *      log      : plotログファイル名
 	 *     title     : タイトル
@@ -295,15 +314,85 @@ System.out.println("processing.. " + fname);
 			
 			joList.add(getMetaInfoAsJson(g));
 			
+			// JsonType に変換
+			
+			// altitude (alt) 付加
+			JsonArray ja = g.getPlotsAsJson();
+			AltitudeMesh3 altDB = AltitudeMesh3.getInstance();
+			
+			for (int i = 0; i < ja.size(); i++) {
+				JsonType plot = ja.get(i);
+				double lat = Double.parseDouble(plot.get("lat").toString());
+				double lng = Double.parseDouble(plot.get("lng").toString());
+				float alt = altDB.getAltitude(lat, lng);
+				plot.add("alt", (int)(alt*10)/10f);
+			}
+			
 			// ファイル書き込み
-			g.setJsonDirectory(jsonDir);
-			g.writeJson(fname);
+			String jsonfname = PlotUtils.changeExtension(jsonDir+fname, ".json");
+			PlotUtils.writeString(jsonfname, ja.toString());
+			
+			// jsonリストに登録
+			jsonList.add(jsonfname);
 		}
 		// meta data (GPSMetaData.json) 書き込み
 		JsonArray ja = new JsonArray(joList.toArray(new JsonObject[0]));
+		String metajsonfname = jsonDir+"GPSMetaData.json";
+		PlotUtils.writeString(metajsonfname, ja.toString());
 		
-		PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(jsonDir+"GPSMetaData.json"), "UTF-8"));
-		pw.println(ja);
-		pw.close();
+		// jsonリストに登録
+		jsonList.add(metajsonfname);
+	}
+	
+	/**
+	 * FTP を使用して、旗の立っている写真を web サーバにアップロードします。
+	 * アップロードは、サーバにファイルがないか、あっても古い場合に行われます。
+	 *
+	 * @param	host	webサーバホスト(URL or IP address)
+	 * @param	user	FTPログインユーザ
+	 * @param	password FTPログインパスワード
+	 * @param	path	アップロード先のディレクトリパス(photo/ など)
+	 */
+	public void uploadPhotos(	String host,
+								String user,
+								String password,
+								String path)
+											throws IOException {
+		if ( (!path.endsWith("\\"))&&(!path.endsWith("/")) )
+			throw new IllegalArgumentException("pathは \\ または / で終わる必要があります");
+		FtpClient ftp = new FtpClient(host, user, password);
+		ftp.connect();
+		for (String photo : photoList) {
+			String fname = new File(photo).getName();
+			if (ftp.putIfNew(photo, path + fname))
+				System.out.println(fname + " を upload しました");
+		}
+		ftp.close();
+	}
+	
+	/**
+	 * FTP を使用して、生成されたJsonファイルを web サーバにアップロードします。
+	 * アップロードは、サーバにファイルがないか、あっても古い場合に行われます。
+	 *
+	 * @param	host	webサーバホスト(URL or IP address)
+	 * @param	user	FTPログインユーザ
+	 * @param	password FTPログインパスワード
+	 * @param	path	アップロード先のディレクトリパス(photo/ など)
+	 */
+	public void uploadJsons(	String host,
+								String user,
+								String password,
+								String path)
+											throws IOException {
+		if ( (!path.endsWith("\\"))&&(!path.endsWith("/")) )
+			throw new IllegalArgumentException("pathは \\ または / で終わる必要があります");
+		FtpClient ftp = new FtpClient(host, user, password);
+		ftp.connect();
+		for (String json : jsonList) {
+			String fname = new File(json).getName();
+			if (ftp.putIfNew(json, path + fname))
+				System.out.println(fname + " を upload しました");
+		}
+		ftp.close();
 	}
 }

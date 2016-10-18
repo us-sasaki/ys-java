@@ -75,18 +75,62 @@ public class PlotUtils {
 	 * @param	fname	保存する Json ファイル名(ただし拡張子 .txt 固定)
 	 * @param	plots	保存する Plot データ
 	 */
+	@Deprecated
 	public static void writeJson(String jsonDir, String fname, List<Plot> plots) throws IOException {
-		// outlier のマークが付けられたものを除いて Json 変換
-		JsonType[] jt = Plot.toJson(plots.toArray(new Plot[0]));
-		
 		// ファイル名を生成
-		int idx = fname.indexOf(".txt");
-		String jsonfname = fname.substring(0, idx);
+		String jsonfname = changeExtension(fname, ".json");
 		
 		// 書く
-		PrintWriter p = new PrintWriter(new OutputStreamWriter(new FileOutputStream(jsonDir+jsonfname+".json"), "UTF-8"));
-		p.println(new JsonArray(jt));
+		writeString(jsonDir + jsonfname, plotsToJson(plots).toString());
+	}
+	
+	/**
+	 * ファイルとして指定された文字列を書き込みます。
+	 * JSON を書き込むことを想定しています。UTF-8が使用されます。
+	 *
+	 * @param	path	ファイルパス(フルパス、相対パス)
+	 * @param	content	書き込む内容。最後には改行が入ります。
+	 */
+	public static void writeString(String path, String content) throws IOException {
+		// 書く
+		PrintWriter p = new PrintWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"));
+		p.println(content);
 		p.close();
+	}
+	
+	/**
+	 * ファイルとして指定された文字列を書き込みます。
+	 * ファイルパスの拡張子は指定されたものに置き換えられます。ファイル名本体は
+	 * 変更されません。
+	 *
+	 * @param	path	ファイルパス(フルパス、相対パス)
+	 * @param	ext		変更後の拡張子
+	 */
+	public static void writeString(String path, String ext, String content) throws IOException {
+		String fname = changeExtension(path, ext);
+		writeString(fname, content);
+	}
+	
+	/**
+	 * List<Plot> を JsonArray に変換します。
+	 */
+	public static JsonArray plotsToJson(List<Plot> plots) {
+		JsonType[] jt = Plot.toJson(plots.toArray(new Plot[0]));
+		
+		return new JsonArray(jt);
+	}
+	
+	/**
+	 * パス名文字列のうち、最後の . 以降の文字を指定された拡張子に
+	 * 変換します。パス名文字列は、拡張子つきの実体のあるファイルであることを
+	 * 仮定しています。
+	 */
+	public static String changeExtension(String path, String ext) {
+		if (!ext.startsWith(".")) throw new IllegalArgumentException("ext は . ではじめて下さい");
+		int idx = path.lastIndexOf(".");
+		if (idx == -1) return path + ".dummy";
+		String name = path.substring(0, idx);
+		return name + ext;
 	}
 	
 	/**

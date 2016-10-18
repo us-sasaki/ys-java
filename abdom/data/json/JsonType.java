@@ -4,7 +4,8 @@ import java.util.Deque;
 
 /**
  * Json形式における型一般を表します(composite pat.)
- * 利便性のため、アクセスメソッドを提供します。
+ * キャストせずに利用できるよう、アクセスメソッドを提供します。
+ * アクセスできない型であった場合、ClassCastException が発生します。
  */
 public abstract class JsonType {
 
@@ -23,6 +24,40 @@ public abstract class JsonType {
 		JsonArray ja = (JsonArray)this; // may throw ClassCastException
 		return ja.array.length;
 	}
+	public JsonObject add(String name, JsonType t) {
+		return ((JsonObject)this).add(name, t);
+	}
+	public JsonObject add(String name, String t) {
+		return ((JsonObject)this).add(name, t);
+	}
+	public JsonObject add(String name, boolean t) {
+		return ((JsonObject)this).add(name, t);
+	}
+	public JsonObject add(String name, byte t) {
+		return ((JsonObject)this).add(name, t);
+	}
+	public JsonObject add(String name, char t) {
+		return ((JsonObject)this).add(name, t);
+	}
+	public JsonObject add(String name, short t) {
+		return ((JsonObject)this).add(name, t);
+	}
+	public JsonObject add(String name, int t) {
+		return ((JsonObject)this).add(name, t);
+	}
+	public JsonObject add(String name, long t) {
+		return ((JsonObject)this).add(name, t);
+	}
+	public JsonObject add(String name, float t) {
+		return ((JsonObject)this).add(name, t);
+	}
+	public JsonObject add(String name, double t) {
+		return ((JsonObject)this).add(name, t);
+	}
+	public JsonObject add(String name, JsonType[] t) {
+		return ((JsonObject)this).add(name, t);
+	}
+	
 	
 	private static class ArrayMark extends JsonType {
 		boolean open = true; // true .. [   false .. ]

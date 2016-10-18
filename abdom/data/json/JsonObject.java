@@ -25,6 +25,9 @@ public class JsonObject extends JsonType {
 	public JsonObject add(String name, String value) {
 		return put(name, new JsonValue(value));
 	}
+	public JsonObject add(String name, boolean value) {
+		return put(name, new JsonValue(value));
+	}
 	public JsonObject add(String name, byte value) {
 		return put(name, new JsonValue(value));
 	}

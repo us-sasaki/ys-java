@@ -11,7 +11,8 @@ import abdom.data.json.*;
 /**
  * GPS で取得される位置情報をもとに生成される地図上の点
  *
- * 2016/8/28 Yusuke Sasaki
+ * @author	Yusuke Sasaki
+ * @version 2016/8/28
  */
 public class Plot {
 	public static SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd HH:mm:ss");
@@ -65,10 +66,13 @@ public class Plot {
 	 * Plot の配列を JsonType の配列に変換。ただし outlier は除く
 	 *
 	 * JsonObject は、次の型
-	 *    var lat; // number(double)
-	 *    var lng; // number(double)
-	 *    var date; // string
-	 *    var photoFile; // string
+	 * <pre>
+	 *    lat  : <number(float)>
+	 *    lng  : <number(float)>
+	 *    date : <string>
+	 *    velo : <number(float)>
+	 *    photoFile : <string>
+	 * </pre>
 	 */
 	public static JsonObject[] toJson(Plot[] plots) {
 		List<JsonType> result = new ArrayList<JsonType>();
@@ -82,6 +86,20 @@ public class Plot {
 /*------------------
  * instance methods
  */
+	/**
+	 * Plot を JsonObject に変換。
+	 * JsonObject は、次の型。桁数を減らすため、内部表現の double を float に
+	 * 変換しています。(float では精度が 10cm くらいになります)
+	 * <pre>
+	 *    lat  : <number(float)>
+	 *    lng  : <number(float)>
+	 *    date : <string>
+	 *    velo : <number(float)>
+	 *    photoFile : <string>
+	 * </pre>
+	 *
+	 * @return	変換された JsonObject
+	 */
 	public JsonObject toJson() {
 		JsonObject jo = new JsonObject();
 		jo.add("lat",(float)latitude); // 桁数を減らすため float に(精度は10cmくらい)
