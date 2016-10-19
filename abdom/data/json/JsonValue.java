@@ -15,8 +15,11 @@ public class JsonValue extends JsonType {
 	 * ので、\", \', \\ は toString() 時にエスケープするよう変更する
 	 */
 	public JsonValue(String value) {
-		this.value = value;
-		quote = "\"";
+		if (value == null) this.value = "null";
+		else {
+			this.value = value;
+			quote = "\"";
+		}
 	}
 	
 	public JsonValue(byte value) {	this.value = String.valueOf(value);	}
