@@ -87,15 +87,14 @@ public class JsonArray extends JsonType {
 		for (JsonType obj : array) {
 			if (!first) {
 				sb.append(",");
-				sb.append("\n");
+				sb.append(JsonType.ls);
 			} else {
-				sb.append("\n");
-//				sb.append(indent);
+				sb.append(JsonType.ls);
 				first = false;
 			}
-			sb.append(obj.toString(indent+"  "));
+			sb.append(obj.toString(indent+JsonType.indent));
 		}
-		sb.append("\n");
+		sb.append(JsonType.ls);
 		sb.append(indent);
 		sb.append("]");
 		

@@ -13,6 +13,9 @@ import java.util.ArrayList;
  * アクセスできない型であった場合、ClassCastException が発生します。
  */
 public abstract class JsonType {
+	static String ls = System.getProperty("line.separator");
+	static String indent = "  ";
+	
 
 	public String getValue() {
 		return ((JsonValue)this).value; // may throw ClassCastException
@@ -73,6 +76,16 @@ public abstract class JsonType {
 /*---------------
  * class methods
  */
+	public static void setIndent(boolean withIndent) {
+		if (withIndent) {
+			ls = System.getProperty("line.separator");
+			indent = "  ";
+		} else {
+			ls = "";
+			indent = "";
+		}
+	}
+	
 	public static JsonType parse(String str) {
 		try {
 			return parse(new StringReader(str));

@@ -96,19 +96,19 @@ public class JsonObject extends JsonType {
 		for (String name : map.keySet() ) {
 			if (!first) sb.append(",");
 			else first = false;
-			sb.append("\n");
+			sb.append(JsonType.ls);
 			sb.append(indent);
-			sb.append("  \"");
+			sb.append(JsonType.indent+"\"");
 			sb.append(name);
 			sb.append("\":");
 			JsonType jt = map.get(name);
 			if (jt instanceof JsonValue) sb.append(jt);
 			else {
-				sb.append("\n");
-				sb.append(jt.toString("  "+indent));
+				sb.append(JsonType.ls);
+				sb.append(jt.toString(JsonType.indent+indent));
 			}
 		}
-		sb.append("\n");
+		sb.append(JsonType.ls);
 		sb.append(indent);
 		sb.append("}");
 		
