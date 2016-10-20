@@ -4,6 +4,7 @@ import java.io.Reader;
 import java.io.PushbackReader;
 import java.io.StringReader;
 import java.io.IOException;
+import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -64,6 +65,9 @@ public abstract class JsonType {
 	}
 	public JsonObject add(String name, JsonType[] t) {
 		return ((JsonObject)this).add(name, t);
+	}
+	public Set<String> keySet() {
+		return ((JsonObject)this).map.keySet(); // may throw ClassCastException
 	}
 	
 	/**
