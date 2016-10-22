@@ -49,8 +49,7 @@ public class AltitudeMesh3 {
 	}
 	
 	/**
-	 * データを保持するインスタンスは１つで良いため、このメソッドで取得して
-	 * 下さい。(singleton pattern)
+	 * データを保持するインスタンスは、このメソッドで取得して下さい。
 	 */
 	public static AltitudeMesh3 getInstance() {
 		if (theInstance != null) return theInstance;
@@ -158,10 +157,12 @@ public class AltitudeMesh3 {
 	 * のように求めます。
 	 * まだ、埋め立て地や海面などの特殊値処理をしていないため、これらの地域の
 	 * 近くでは標高がすごく高くなります。
+	 * →　特殊値処理を行うようにしました。
 	 */
 	private static final double LAT_STEP = 1d/3d/8d/10d/4d;
 	private static final double LNG_STEP = 0.5d/8d/10d/4d;
 	public float getAltitude(double latitude, double longitude) {
+//		return getAltitudeImpl(latitude, longitude);
 //System.out.println("alt = " + getAltitudeImpl(latitude, longitude));
 		float ha = getAltitudeImpl(latitude + LAT_STEP, longitude - LNG_STEP);
 //System.out.print("ha = " + ha);
@@ -172,15 +173,32 @@ public class AltitudeMesh3 {
 		float hd = getAltitudeImpl(latitude - LAT_STEP, longitude + LNG_STEP);
 //System.out.println("  hd = " + hd);
 		
-		float x = (float)((longitude -2.0*LNG_STEP*(int)(longitude/2.0/LNG_STEP))/2.0/LNG_STEP);
-		float y = (float)((latitude - 2.0*LAT_STEP*(int)(latitude /2.0/LAT_STEP))/2.0/LAT_STEP); // 合ってるか検算が必要(0-1になるか、 getAltitudeImpl と整合するか(cやaの時0や1に一致)
+		float x = (float)((longitude - LNG_STEP - (int)((longitude - LNG_STEP) / 2.0 / LNG_STEP) * 2.0 * LNG_STEP)/2.0/LNG_STEP);
+		float y = (float)((latitude - LAT_STEP - (int)((latitude - LAT_STEP) / 2.0 / LAT_STEP) * 2.0 * LAT_STEP)/2.0/LAT_STEP);
 //System.out.println("x="+x+",y="+y);
 		
-		return (1-y)*((1-x)*hc + x*hd) + y*((1-x)*ha + x*hb);
+		return (1f-y)*((1f-x)*hc + x*hd) + y*((1f-x)*ha + x*hb);
 	}
 	
 	/**
 	 * 指定された緯度、経度の地点の高さ(m)を返却します。
+	 * 
+	 * <pre>国土数値情報　ダウンロードサービス より
+	 * メッシュコードについて
+	 * メッシュコードは、メッシュデータの各区域に対し割り振られたコードで、以下の
+	 * 規約に従っています。
+	 * 第1次地域区画は4桁のコードで識別され、上2桁は、メッシュの南西端の緯度を
+	 * 1.5倍した数字、下2桁は同じ点の経度の下2桁の数です。
+	 * 第2次メッシュ区画の位置は、それの属する1次メッシュ区画を行列に見立てると、
+	 * 南から北に向けて0から7まで振られた行番号と西から東に向けて0から7まで振られ
+	 * た列番号を組み合わせた番号をそれの属する1次メッシュコードに続けて示されます。
+	 * 第3次メッシュ区画の位置は、それの属する2次メッシュ区画を行列に見立てると、
+	 * 南から北に向けて0から9まで振られた行番号と西から東に向けて0から9まで振られ
+	 * た列番号を組み合わせた番号をそれの属する2次メッシュコードに続けて示されます。
+	 * 例えば 5438-23-23 という3次メッシュコード（基準地域メッシュコード）は5438と
+	 * いう1次地域区画 中の南から3番目西から4番目にある2次地域区画中のさらに南から
+	 *  3番目西から 4番目の 3次地域区画を示していることになります。
+	 * </pre>
 	 *
 	 * @param	latitude	緯度
 	 * @param	longitude	経度
@@ -213,7 +231,7 @@ public class AltitudeMesh3 {
 		// ここで Map から検索
 		//
 		Mesh m = mesh.get(m1*10000 + m2*100 + m3);
-		if (m == null) return -1f;
+		if (m == null) return -1f; // データがない場合 -1f (海や外国)
 		
 		// 1/4 細分区画の index (0-15) を求める
 		// 1/4 だけ　南から北、西から東、としていた座標が　北から南、西から東と
