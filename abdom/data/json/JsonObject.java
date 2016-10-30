@@ -85,12 +85,12 @@ public class JsonObject extends JsonType {
  */
 	@Override
 	public String toString() {
-		return toString("");
+		return toString("", false);
 	}
 	@Override
-	public String toString(String indent) {
+	protected String toString(String indent, boolean objElement) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(indent);
+		if (!objElement) sb.append(indent);
 		sb.append("{");
 		boolean first = true;
 		for (String name : map.keySet() ) {
@@ -104,8 +104,9 @@ public class JsonObject extends JsonType {
 			JsonType jt = map.get(name);
 			if (jt instanceof JsonValue) sb.append(jt);
 			else {
-				sb.append(JsonType.ls);
-				sb.append(jt.toString(JsonType.indent+indent));
+				// JsonObject ‚Ü‚½‚Í JsonArray
+				//sb.append(JsonType.ls);
+				sb.append(jt.toString(JsonType.indent+indent, true));
 			}
 		}
 		sb.append(JsonType.ls);

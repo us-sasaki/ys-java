@@ -37,7 +37,10 @@ public class Stats<T> {
  * instance methods
  */
 	/**
-	 * 配列と、double値抽出関数を指定し、統計量を設定する
+	 * 配列と、double値抽出関数を指定し、統計量を設定します。
+	 * 
+	 * @param	data	double 値を出力できるクラスの配列
+	 * @param	f		Double 値の出力方法。null の場合その値は除外される。
 	 */
 	public void apply(T[] data, Function<T, Double> f) {
 		n = 0;
@@ -71,7 +74,10 @@ public class Stats<T> {
 	}
 	
 	/**
-	 * データが List で与えられる場合
+	 * List と、double値抽出関数を指定し、統計量を算出します。
+	 *
+	 * @param	data	double 値を出力できるクラスのリスト
+	 * @param	f		Double 値の出力方法。null の場合、その値は除外される。
 	 */
 	public void apply(List<T> data, Function<T, Double> f) {
 		n = 0;
@@ -105,7 +111,7 @@ public class Stats<T> {
 	}
 	
 	/**
-	 * List と、List の要素から添え字情報を用いて double を出力する場合。
+	 * List と、List の要素から添え字情報を用いて double を出力する場合の統計量。
 	 *<pre>
 	 * 例) T = java.awt.Point
 	 *     BiFunction = (pList, i) ->
@@ -113,6 +119,8 @@ public class Stats<T> {
 	 *     (1つ前の点との x 軸の差) に関する統計量を得る
 	 *</pre>
 	 *
+	 * @param	data	double 値を出力できるクラスのリスト
+	 * @param	f		要素を含むリストと添え字から Double を出力する関数
 	 */
 	public void apply(List<T> data, BiFunction<List<T>, Integer, Double> f) {
 		n = 0;

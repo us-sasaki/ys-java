@@ -163,6 +163,7 @@ public class AltitudeMesh3 {
 	private static final double LNG_STEP = 0.5d/8d/10d/4d;
 	public float getAltitude(double latitude, double longitude) {
 //		return getAltitudeImpl(latitude, longitude);
+
 //System.out.println("alt = " + getAltitudeImpl(latitude, longitude));
 		float ha = getAltitudeImpl(latitude + LAT_STEP, longitude - LNG_STEP);
 //System.out.print("ha = " + ha);
@@ -173,11 +174,14 @@ public class AltitudeMesh3 {
 		float hd = getAltitudeImpl(latitude - LAT_STEP, longitude + LNG_STEP);
 //System.out.println("  hd = " + hd);
 		
-		float x = (float)((longitude - LNG_STEP - (int)((longitude - LNG_STEP) / 2.0 / LNG_STEP) * 2.0 * LNG_STEP)/2.0/LNG_STEP);
-		float y = (float)((latitude - LAT_STEP - (int)((latitude - LAT_STEP) / 2.0 / LAT_STEP) * 2.0 * LAT_STEP)/2.0/LAT_STEP);
+		double x = (double)((longitude - LNG_STEP - (int)((longitude - LNG_STEP) / 2.0 / LNG_STEP) * 2.0 * LNG_STEP)/2.0/LNG_STEP);
+//System.out.print(" x="+x);
+		double y = (double)((latitude - LAT_STEP - (int)((latitude - LAT_STEP) / 2.0 / LAT_STEP) * 2.0 * LAT_STEP)/2.0/LAT_STEP);
+//System.out.println(" y="+y);
 //System.out.println("x="+x+",y="+y);
 		
-		return (1f-y)*((1f-x)*hc + x*hd) + y*((1f-x)*ha + x*hb);
+		return (float)(  (1f-y)*((1f-x)*hc + x*hd) + y*((1f-x)*ha + x*hb)  );
+
 	}
 	
 	/**

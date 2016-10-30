@@ -106,6 +106,7 @@ public class Plot {
 		jo.add("lng",(float)longitude); // Œ…”‚ğŒ¸‚ç‚·‚½‚ß float ‚É(¸“x‚Í10cm‚­‚ç‚¢)
 		jo.add("date",date);
 		jo.add("velo",(float)velocity); // Œ…”‚ğŒ¸‚ç‚·‚½‚ß float ‚É(¸“x‚Í10cm‚­‚ç‚¢)
+		jo.add("d",(float)distance);
 		if (photoFileName != null) {
 			jo.add("photoFile", photoFileName);
 		}

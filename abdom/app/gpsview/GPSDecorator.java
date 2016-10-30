@@ -15,7 +15,7 @@ import java.util.Date;
 import abdom.data.json.*;
 import abdom.image.exif.MyExifUtils;
 import abdom.location.*;
-import abdom.location.altitude.AltitudeMesh3;
+import abdom.location.altitude.Altitude5m;
 import abdom.location.filter.CutReturningCertainPlotsFilter;
 import abdom.location.filter.CutOutlierPlotsFilter;
 import abdom.location.filter.ULMPlotsFilter;
@@ -318,7 +318,7 @@ System.out.println("processing.. " + fname);
 			
 			// altitude (alt) •t‰Á
 			JsonArray ja = g.getPlotsAsJson();
-			AltitudeMesh3 altDB = AltitudeMesh3.getInstance();
+			Altitude5m altDB = Altitude5m.getInstance();
 			
 			for (int i = 0; i < ja.size(); i++) {
 				JsonType plot = ja.get(i);

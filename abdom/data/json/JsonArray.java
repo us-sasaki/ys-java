@@ -74,14 +74,14 @@ public class JsonArray extends JsonType {
  */
 	@Override
 	public String toString() {
-		return toString("");
+		return toString("", false);
 	}
 	
 	@Override
-	public String toString(String indent) {
+	protected String toString(String indent, boolean objElement) {
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append(indent);
+		if (!objElement) sb.append(indent);
 		sb.append("[");
 		boolean first = true;
 		for (JsonType obj : array) {
@@ -92,7 +92,7 @@ public class JsonArray extends JsonType {
 				sb.append(JsonType.ls);
 				first = false;
 			}
-			sb.append(obj.toString(indent+JsonType.indent));
+			sb.append(obj.toString(indent+JsonType.indent, false));
 		}
 		sb.append(JsonType.ls);
 		sb.append(indent);

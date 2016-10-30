@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Json形式における型一般を表します(composite pat.)
+ * Json形式における型一般を表します(composite pat.)。また、ストリーム、文字列
+ * からの parse メソッドを提供します。
  * キャストせずに利用できるよう、アクセスメソッドを提供します。
  * アクセスできない型であった場合、ClassCastException が発生します。
  */
@@ -71,15 +72,26 @@ public abstract class JsonType {
 	}
 	
 	/**
-	 * 人が見やすい indent に対応するためのメソッド
+	 * JsonObject において、"name" : の後に続いている場合、改行
+	 * しないことをサポートするためのメソッド。
+	 * 
+	 * @param	indent	インデント(いくつかのスペース)
+	 * @param	objElement	true..オブジェクトの要素名の後ろ
 	 */
-	public String toString(String indent) {
+	protected String toString(String indent, boolean objElement) {
 		return indent + toString(); // デフォルトの実装
 	}
 	
 /*---------------
  * class methods
  */
+	/**
+	 * toString() で返す JSON文字列を人が見るためにインデントを行うか、
+	 * サイズを節約するために圧縮するかを指定します。
+	 * static method で実現しているため、マルチスレッドでは利用できません。
+	 *
+	 * @param	withIndent	インデントを行う(true), 詰める(false)
+	 */
 	public static void setIndent(boolean withIndent) {
 		if (withIndent) {
 			ls = System.getProperty("line.separator");
@@ -90,6 +102,12 @@ public abstract class JsonType {
 		}
 	}
 	
+	/**
+	 * 指定された JSON 文字列から JsonType を生成します。
+	 *
+	 * @param	str	Json文字列
+	 * @return	指定された文字列の表す JsonType
+	 */
 	public static JsonType parse(String str) {
 		try {
 			return parse(new StringReader(str));
@@ -102,6 +120,9 @@ public abstract class JsonType {
 	 * 指定された InputStream から JSON value を１つ読み込みます。
 	 * InputStream はJSON value終了位置まで読み込まれ、close() されません。
 	 * InputStream は内部的に PushbackInputStream として利用されます。
+	 *
+	 * @param	in	Json文字列を入力する Reader。
+	 * @return	生成された JsonType
 	 */
 	public static JsonType parse(Reader in) throws IOException {
 		PushbackReader pr = new PushbackReader(in);
@@ -129,7 +150,7 @@ public abstract class JsonType {
 	}
 	
 	/**
-	 * 指定された PushbackInputStream から JSON value を１つ読み込み、
+	 * 指定された PushbackReader から JSON value を１つ読み込み、
 	 * JsonType として返却します。
 	 */
 	private static JsonType parseValue(PushbackReader pr) throws IOException {
@@ -186,7 +207,7 @@ public abstract class JsonType {
 	}
 	
 	/**
-	 * 数値の可能性のあるトークン(0-9, -+.eE からなる文字列)を抽出する。
+	 * 数値の可能性のあるトークン(0-9, -+.eE からなる文字列)を抽出します。
 	 */
 	private static String readNumberToken(PushbackReader pr) throws IOException {
 		StringBuilder result = new StringBuilder();
@@ -267,7 +288,7 @@ public abstract class JsonType {
 		}
 	}
 	/**
-	 * [ がある前提で、続く配列を取得します。
+	 * [ がある前提(Readerの現在位置は [ の次)で、続く配列を取得します。
 	 */
 	private static JsonArray parseArray(PushbackReader pr) throws IOException {
 		List<JsonType> array = new ArrayList<JsonType>();
@@ -292,13 +313,14 @@ public abstract class JsonType {
 	}
 	
 	/**
-	 * { がある前提で、続くオブジェクトを取得します。
+	 * { がある前提(Readerの現在位置は { の次)で、続くオブジェクトを取得
+	 * します。
 	 */
 	private static JsonObject parseObject(PushbackReader pr) throws IOException {
 		JsonObject result = new JsonObject();
 		skipspaces(pr);
 		int c = pr.read();
-		if (c == '}') return result;
+		if (c == '}') return result; // 空のオブジェクト
 		pr.unread(c);
 		
 		while (true) {
