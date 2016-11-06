@@ -1,0 +1,152 @@
+@charset "UTF-8";
+
+/*********************************************************
+ *                 Google Maps 用の定義
+ *********************************************************
+ */
+html, body { height: 100%; margin: 0; padding: 0; }
+#map { height: 100%; }
+
+/** InfoWindow 用 */
+dt {
+	display: table-cell;
+	width: 100px;
+	height: 100px;
+	text-align: center;
+	vertical-align: middle;
+}
+dt img {
+	width: auto;
+	height: auto;
+	max-width: 100px;
+	max-height: 100px;
+	vertical-align: middle;
+}
+
+/*********************************************************
+ *            ライドルーラー(svg) 用の定義
+ *********************************************************
+ */
+svg {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Trying to get SVG to act like a greedy block in all browsers */
+  display: block;
+  width:100%;
+  height:60px;
+}
+
+.axis path, .axis line {
+	fill: none;
+	stroke: black;
+}
+.axis text {
+	font-size: 12px;
+}
+.timeaxis path, .timeaxis line {
+	fill: none;
+	stroke: white;
+}
+.timeaxis text {
+	font-size: 11px;
+	fill: #ffffff;
+}
+/* ライドルーラーのカーソル */
+path.cursor {
+	stroke: #ff0000;
+	stroke-width: 2;
+	fill: none;
+}
+/* ライドルーラーのウィンドウライン */
+path.window-line {
+	stroke: #0000ff;
+	stroke-width: 3;
+	fill: none;
+}
+path.altitude {
+	stroke: #24cb24;
+}
+path.velocity {
+	stroke: #FFCCEE;
+	stroke-width: 2;
+	fill: none;
+}
+
+div.back {
+	width: 100%;
+	/** 重ね合わせをしようとしたが、せずに解決したため未利用
+	position: absolute;
+	top: 0px;
+	z-index : 1;
+	*/
+}
+
+/*********************************************************
+ *             モーダルウィンドウ 用の定義
+ *********************************************************
+ */
+#modal-content {
+	width: 80% ;
+	height: 80% ;
+	overflow-y: scroll;
+	margin: 0 ;
+	padding: 10px 20px ;
+	border: 2px solid #aaa ;
+	background: #fff ;
+	position: fixed ;
+	display: none ;
+	z-index: 3 ;
+}
+  
+#modal-overlay {
+	z-index: 1 ;
+	display: none ;
+	position: fixed ;
+	top: 0 ;
+	left: 0 ;
+	width: 100% ;
+	height: 120% ;
+	background-color: rgba( 0,0,0, 0.75 ) ;
+}
+
+.button-link {
+	color: #00f ;
+	text-decoration: underline ;
+}
+ 
+.button-link:hover {
+	cursor: pointer ;
+	color: #f00 ;
+}
+
+/** モーダルウィンドウ内テーブル */
+table.ride-list { 
+    width: 90%; 
+    font-size: 16px; 
+    margin: 0 auto; 
+    border-collapse: separate; 
+    border-spacing: 0px 1px;
+}
+
+table.ride-list th { 
+    padding: 8px; 
+    vertical-align: middle; 
+    text-align: left; 
+    border-bottom: #999 1px solid; 
+    color: #fff; 
+    background: #447791;
+    font-size: 16px;
+} 
+  
+table.ride-list td { 
+    padding: 8px; 
+    vertical-align: middle; 
+    text-align: left; 
+    border-bottom: #999 1px solid; 
+    font-size: 16px; 
+}
+
