@@ -11,6 +11,15 @@ var paths = new Array();
 // マップ上に表示しているマーカー
 var markers = new Array();
 
+/** ファイルから読み込んだ JSON データ */
+var jsonData;
+
+/** 同時に１つしか開かない 速度/高度/時刻 表示用の InfoWindow */
+var velowindow;
+
+/** 同時に１つしかないマップ上の現在位置を示すカーソル */
+var cursor;
+
 // Google Maps API から call back される
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
@@ -53,69 +62,6 @@ var URLParam = function() {
  */
 
 
-/**------------------------------------------------------------
- * PathColor Class
- *
- * 線の色をラップするJSクラスを作ってみる
- */
-var PathColor = function() {
-
-/*------------------------------------
- * Constructor(兼 instance variables)
- */
-	this.b  = 0;
-	this.bs = 7;
-	this.r  = 0;
-	this.rs = 13;
-	this.g  = 0;
-	this.gs = 19;
-
-};
-
-/*------------------
- * instance methods
- */
-	/**
-	 * getColor 関数
-	 * return	#ff56c4 のような色定数
-	 */
-	PathColor.prototype.getColor = function() {
-		return '#'+PathColor.toHex(this.r)+PathColor.toHex(this.g)+PathColor.toHex(this.b);
-	};
-	
-	/**
-	 * 次の色に変える
-	 */
-	PathColor.prototype.next = function() {
-		// 線の色を変える
-		this.b += this.bs;
-		if ((this.b < 0) || (this.b > 255)) { this.bs = -this.bs; this.b += this.bs; }
-		this.r += this.rs;
-		if ((this.r < 0) || (this.r > 255)) { this.rs = -this.rs; this.r += this.rs; }
-		this.g += this.gs;
-		if ((this.g < 0) || (this.g > 255)) { this.gs = -this.gs; this.g += this.gs; }
-	};
-	
-/*---------------
- * class methods
- */
-	/**
-	 * 0-255の数値を2桁の16進文字列に変換する
-	 *
-	 * 1 -> 01
-	 * 15 -> 0f
-	 * 100 -> 64
-	 */
-	PathColor.toHex = function(n) {
-		if (n < 16) return '0'+n.toString(16);
-		return n.toString(16);
-	};
-
-
-/* PathColor Class
- *----------------------------------------------------------
- */
-
 function setJsonFile(fileName) {
 	// マーカーを消す
 	for (var i = 0; i < markers.length; i++) {
@@ -129,10 +75,94 @@ function setJsonFile(fileName) {
 	}
 	paths = [];
 	
+	if (velowindow) velowindow.close();
+	
 	// ファイルを読み込む
 	$.getJSON(fileName, function(data) {
+		jsonData = data;
 	    drawPaths(data);
+		// ライドルーラーに設定
+		window.top.setJsonFile(data);
 	});
+	
+}
+
+
+/**
+ * 速度/高度/時刻 表示用の InfoWindow を開く。
+ * すでに開いていたら、それは閉じる。
+ *
+ * @param	lat, lng	位置
+ * @param	coords		path (最も近いものを全検索する),
+ */
+function openVeloWindow(lat, lng, coords) {
+	// d.latLng にアクセス可能, this は Polyline obj.
+	// Object.keys(d.latLng) --> lat, lng となた
+	if (velowindow) velowindow.close();
+	var ll = new google.maps.LatLng(lat, lng);
+	var pos = {lat:lat, lng:lng};
+	velowindow = new google.maps.InfoWindow({
+		content: '<div style="overflow:hidden">'+pathInfo(coords, pos)+'</div>',
+		position: ll
+	});
+	velowindow.open(map); //.open(map, this);
+	velowindow.setPosition(pos);
+}
+
+/**
+ * msec 時刻から、位置を求める。
+ */
+function getLatLngAtTime(t) {
+	// 2分探索でindexを検索する
+	var ind = -1;
+	var tm = t;
+	var l = 0;
+	var r = jsonData.length-1;
+	while (true) {
+		if (jsonData[l].time >= tm) { ind = l; break; }
+		if (jsonData[r].time <= tm) { ind = r; break; }
+		var next = Math.floor((l+r)/2);
+		if (jsonData[next].time >= tm) r = next;
+		else l = next;
+		if (r - l <= 1) { ind = l; break; }
+	}
+	var lat, lng;
+	if (ind == jsonData.length-1 ||
+		jsonData[ind].time == jsonData[ind+1].time) {
+		lat = jsonData[ind].lat;
+		lng = jsonData[ind].lng;
+	} else {
+		var rate = (t - jsonData[ind].time)/(jsonData[ind+1].time - jsonData[ind].time);
+		lat = (1-rate) * jsonData[ind].lat + rate * jsonData[ind+1].lat;
+		lng = (1-rate) * jsonData[ind].lng + rate * jsonData[ind+1].lng;
+	}
+	return {lat:lat, lng:lng, index:ind};
+}
+
+/**
+ * msec 時刻を与えると、その位置にマーカー(cursor)を表示する。
+ */
+function setCursorAtTime(t) {
+	var latLng = getLatLngAtTime(t);
+	if (!cursor) {
+		cursor = new google.maps.Marker({
+						position: latLng,
+						map: map
+					});
+	} else {
+		cursor.setPosition( latLng );
+	}
+}
+
+function setInfoWindowAtTime(t, panTo) {
+	var latLng = getLatLngAtTime(t);
+	var sindex = latLng.index - 2;
+	var eindex = latLng.index + 2;
+	sindex = (sindex < 0)? 0 : sindex;
+	eindex = (eindex > jsonData.length)? jsonData.length : eindex;
+	var coords = jsonData.slice(sindex, eindex);
+	openVeloWindow(latLng.lat, latLng.lng, coords); // 全部渡しているので遅い
+	if (panTo) map.panTo(latLng);
 }
 
 /**
@@ -140,7 +170,6 @@ function setJsonFile(fileName) {
  *
  */
 function drawPaths(coords) {
-//	var pathColor = new PathColor();
 	
 	for (var i = 0; i < coords.length; i+=30) {
   	
@@ -151,16 +180,20 @@ function drawPaths(coords) {
 		   	geodesic: true,
 		   	strokeColor: "#FF2000", //pathColor.getColor(),
 		   	strokeOpacity: 0.7, // 不透明度
-		   	strokeWeight: 2 // 線の太さ
+		   	strokeWeight: 4 // 線の太さ
 		});
-//		polyline.infowindow = new google.maps.InfoWindow({
-//			content: 'clicked'
-//		});
+		polyline.cords = crds;
 		
-//		polyline.addListener('click', function(d) {
-			// d.latLng にアクセス可能, this は Polyline obj.
-//			this.infowindow.open(map, d); //.open(map, this);
-//		});
+		// polyline にマウスオーバーしたときの速度/高度情報表示
+		polyline.addListener('mouseover', function(d) {
+			openVeloWindow(d.latLng.lat(), d.latLng.lng(), this.cords);
+		});
+		polyline.addListener('mouseout', function() {
+			// mouseout したら消す
+			setTimeout( function() {
+				if (velowindow) velowindow.close();
+			}, 1500 );
+		});
 		paths.push(polyline);
 		
 		// マウスオーバーすると写真を表示する Marker をつくる
@@ -174,7 +207,7 @@ function drawPaths(coords) {
 				str = str.substring(str.indexOf(':')+1);
 				// coords[i+j].photoFile が defined のとき
 				var infowindow = new google.maps.InfoWindow({
-					content: '<dl><dt><img src=\"' + image_dir + str+'\" width=160 height=90></dt></dl><br>' + str
+					content: '<dl><dt><img src=\"' + image_dir + str+'\" ></dt></dl><br>' + str
 				});
 				var photoMarker = new google.maps.Marker({
 					position: coords[i+j],
@@ -197,7 +230,7 @@ function drawPaths(coords) {
 				});
 				
 				// 配列に格納
-				markers[markers.length] = photoMarker;
+				markers.push(photoMarker);
 			} else if (str.indexOf("stop:") == 0) {
 				//
 				// stop 指定のとき(stop:)
@@ -209,7 +242,7 @@ function drawPaths(coords) {
 					title: str
 				});
 				// 配列に格納
-				markers[markers.length] = photoMarker;
+				markers.push(photoMarker);
 			} else {
 				//
 				// その他、標準の Marker を表示
@@ -227,14 +260,12 @@ function drawPaths(coords) {
 					this.infowindow.open(map, this);
 				});
 				// 配列に格納
-				markers[markers.length] = photoMarker;
+				markers.push(photoMarker);
 			}
 		}
 		
 		paths[paths.length-1].setMap(map);
   		
-	  	// 色を変更
-//		pathColor.next();
 	}
   	
   	// 中央に
@@ -254,16 +285,93 @@ function drawPaths(coords) {
   	var corner2 = new google.maps.LatLng(maxLat, maxLng);
   	var bounds = new google.maps.LatLngBounds().extend(corner1).extend(corner2);
   	
-//  	var lat = (minLat + maxLat)/2;
-//  	var lng = (minLng + maxLng)/2;
-  	
-//	map.panTo(new google.maps.LatLng(lat, lng));
-	
-//	var h = (maxLat - minLat);
-//	var w = (maxLng - minLng);
-	
-	
-//	map.setZoom(12); // zoom は固定
-  	
   	map.fitBounds(bounds);
+}
+
+/**
+ * sliceされた Jsonデータ、polyline, マウス位置情報から
+ * その地点での推定時間、速度、高度情報を文字列として返却する
+ * <pre>
+ *       pos・
+ *         /|
+ *        / |
+ *       /G |
+ *     p・----・q=crds[i+1]
+ * 
+ * b = (p -> q)   vector
+ * c = (p -> pos) vector
+ *
+ * ただし、x-y 座標は lng-lat で与えられるため、cos G は実際の角度ではない
+ * </pre>
+ */
+function pathInfo(crds, pos) {
+	var j = 0; // j は crds[j]-crds[j+1] に pos があると思われる index
+	var cmax = 0;
+	var csinmin = 100000;
+	var rate = 0;
+	for (var i = 0; i < crds.length-1; i++) {
+		var p = crds[i];   // path の始点
+		var q = crds[i+1]; // path の終点
+		
+		// p始点の位置ベクトル b=(x,y)
+		var x = q.lat - p.lat;
+		var y = q.lng - p.lng;
+		// p始点の位置ベクトル c=(u,v)
+		var u = pos.lat - p.lat;
+		var v = pos.lng - p.lng;
+		
+		var bc = x*u + y*v; // 内積
+		var lbl = Math.sqrt(x*x + y*y); // b の長さ
+		if (lbl == 0) continue; // p == q
+		var lcl = Math.sqrt(u*u + v*v); // c の長さ
+		if (lcl == 0) {
+			rate = 0;
+			break;
+		}
+		var cos = bc / lbl / lcl;
+		var len = bc / lbl; // len = |c|cos G
+		var csin = Math.sqrt(lcl*lcl - len*len); // 点と直線の距離
+		if ((len >= 0)&&(len <= lbl)&&(csin < csinmin)) {
+			j = i; // 長さが 0 以上 |b| 以下で なるべく pq に近い index
+			csinmin = csin;
+			rate = len / lbl;
+		}
+	}
+	
+	var date = crds[j].date;
+	// t0 は始点の time(msec)
+	var t0 = new Date(Number('20'+date.substring(0,2)), // year
+						Number(date.substring(2,4))-1, // month
+						Number(date.substring(4,6)), // day
+						Number(date.substring(7,9)), // hour
+						Number(date.substring(10,12)), // minute
+						Number(date.substring(13,15)) ).getTime(); // second
+	date = crds[j+1].date;
+	// t1 は終点の time(msec)
+	var t1 = new Date(Number('20'+date.substring(0,2)), // year
+						Number(date.substring(2,4))-1, // month
+						Number(date.substring(4,6)), // day
+						Number(date.substring(7,9)), // hour
+						Number(date.substring(10,12)), // minute
+						Number(date.substring(13,15)) ).getTime(); // second
+	// 0 ≦ len ≦ 1
+	var t = (1.0-rate)*t0 + rate*t1;
+	
+	// t が計算されるのがここのため、ここで moveInfoWindowAtTime() を呼ぶ
+	window.top.moveInfoWindowAtTime(t);
+	
+	var d = new Date(t);
+	var v = (1.0-rate)*crds[j].velo + rate*crds[j+1].velo;
+	var a = (1.0-rate)*crds[j].alt + rate*crds[j+1].alt;
+	var gradm;
+	var dist = crds[j+1].d;
+	var grad = (crds[j+1].alt - crds[j].alt);
+	if (grad != 0) grad = grad / dist;
+	if (grad > 0.06) gradm = '登り(;´Д`)';
+	else if (grad > 0.03) gradm = '登り';
+	else if (grad < -0.06) gradm = '下り(^o^)';
+	else if (grad < -0.03) gradm = '下り';
+	else gradm = '';
+	
+	return '時刻'+d.getHours()+':'+('0'+d.getMinutes()).slice(-2)+'<br>速度'+(Math.floor(v*36))/10+'km/h<br>高度'+Math.floor(a)+"m "+gradm;
 }
