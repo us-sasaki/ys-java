@@ -39,10 +39,11 @@ public class JsonValue extends JsonType {
  */
 	@Override
 	public String toString() {
-		return toString("", false);
+		return quote+value+quote;
 	}
 	@Override
-	protected String toString(String indent, boolean objElement) {
-		return indent+quote+value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\'", "\\\'")+quote; // "string" / number ‚ÌŒ`Ž®
+	protected String toString(String indent, String indentStep, int textwidth, boolean objElement) {
+		return indent+quote+value+quote;
+//		return indent+quote+value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\'", "\\\'")+quote; // "string" / number ‚ÌŒ`Ž®
 	}
 }

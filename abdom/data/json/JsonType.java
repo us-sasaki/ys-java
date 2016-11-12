@@ -15,8 +15,8 @@ import java.util.ArrayList;
  * アクセスできない型であった場合、ClassCastException が発生します。
  */
 public abstract class JsonType {
-	static String ls = System.getProperty("line.separator");
-	static String indent = "  ";
+	static final String LS = System.getProperty("line.separator");
+//	static String indent = "  ";
 	
 
 	public String getValue() {
@@ -28,12 +28,16 @@ public abstract class JsonType {
 	}
 	public JsonType get(int index) {
 		JsonArray ja = (JsonArray)this; // may throw ClassCastException
-		return ja.array[index]; // may throw ArrayIndexOutOfBoundsException
+		return ja.array.get(index); // may throw ArrayIndexOutOfBoundsException
 	}
 	public int size() {
 		JsonArray ja = (JsonArray)this; // may throw ClassCastException
-		return ja.array.length;
+		return ja.array.size();
 	}
+	
+/*
+ * add methods
+ */
 	public JsonObject add(String name, JsonType t) {
 		return ((JsonObject)this).add(name, t);
 	}
@@ -67,9 +71,94 @@ public abstract class JsonType {
 	public JsonObject add(String name, JsonType[] t) {
 		return ((JsonObject)this).add(name, t);
 	}
+/*
+ * put methods (add と同等だが、値を上書き)
+ */
+	public JsonObject put(String name, JsonType t) {
+		return ((JsonObject)this).put(name, t);
+	}
+	public JsonObject put(String name, String t) {
+		return ((JsonObject)this).put(name, t);
+	}
+	public JsonObject put(String name, boolean t) {
+		return ((JsonObject)this).put(name, t);
+	}
+	public JsonObject put(String name, byte t) {
+		return ((JsonObject)this).put(name, t);
+	}
+	public JsonObject put(String name, char t) {
+		return ((JsonObject)this).put(name, t);
+	}
+	public JsonObject put(String name, short t) {
+		return ((JsonObject)this).put(name, t);
+	}
+	public JsonObject put(String name, int t) {
+		return ((JsonObject)this).put(name, t);
+	}
+	public JsonObject put(String name, long t) {
+		return ((JsonObject)this).put(name, t);
+	}
+	public JsonObject put(String name, float t) {
+		return ((JsonObject)this).put(name, t);
+	}
+	public JsonObject put(String name, double t) {
+		return ((JsonObject)this).put(name, t);
+	}
+	public JsonObject put(String name, JsonType[] t) {
+		return ((JsonObject)this).put(name, t);
+	}
+/*
+ * push methods (配列の最後尾に値追加)
+ */
+	public JsonArray push(String name, JsonType t) {
+		return ((JsonArray)this).push(name, t);
+	}
+	public JsonArray push(String name, String t) {
+		return ((JsonArray)this).push(name, t);
+	}
+	public JsonArray push(String name, boolean t) {
+		return ((JsonArray)this).push(name, t);
+	}
+	public JsonArray push(String name, byte t) {
+		return ((JsonArray)this).push(name, t);
+	}
+	public JsonArray push(String name, char t) {
+		return ((JsonArray)this).push(name, t);
+	}
+	public JsonArray push(String name, short t) {
+		return ((JsonArray)this).push(name, t);
+	}
+	public JsonArray push(String name, int t) {
+		return ((JsonArray)this).push(name, t);
+	}
+	public JsonArray push(String name, long t) {
+		return ((JsonArray)this).push(name, t);
+	}
+	public JsonArray push(String name, float t) {
+		return ((JsonArray)this).push(name, t);
+	}
+	public JsonArray push(String name, double t) {
+		return ((JsonArray)this).push(name, t);
+	}
+	public JsonArray push(String name, JsonType[] t) {
+		return ((JsonArray)this).push(name, t);
+	}
+	
+	
+	
+	
 	public Set<String> keySet() {
 		return ((JsonObject)this).map.keySet(); // may throw ClassCastException
 	}
+	
+	public String toString(String indent) {
+		return toString(indent, 80);
+	}
+	
+	public String toString(String indent, int textwidth) {
+		return toString(indent, indent, textwidth, false);
+	}
+	
 	
 	/**
 	 * JsonObject において、"name" : の後に続いている場合、改行
@@ -78,7 +167,8 @@ public abstract class JsonType {
 	 * @param	indent	インデント(いくつかのスペース)
 	 * @param	objElement	true..オブジェクトの要素名の後ろ
 	 */
-	protected String toString(String indent, boolean objElement) {
+	protected String toString(String indent, String indentStep,
+						int textwidth, boolean objElement) {
 		return indent + toString(); // デフォルトの実装
 	}
 	
@@ -92,15 +182,15 @@ public abstract class JsonType {
 	 *
 	 * @param	withIndent	インデントを行う(true), 詰める(false)
 	 */
-	public static void setIndent(boolean withIndent) {
-		if (withIndent) {
-			ls = System.getProperty("line.separator");
-			indent = "  ";
-		} else {
-			ls = "";
-			indent = "";
-		}
-	}
+//	public static void setIndent(boolean withIndent) {
+//		if (withIndent) {
+//			ls = System.getProperty("line.separator");
+//			indent = "  ";
+//		} else {
+//			ls = "";
+//			indent = "";
+//		}
+//	}
 	
 	/**
 	 * 指定された JSON 文字列から JsonType を生成します。
@@ -330,6 +420,7 @@ public abstract class JsonType {
 			String name = readString(pr);
 			// ここで name として入っていてはならない文字をチェック
 			// しかし、規則が書いてないので手抜き
+			// RFC4627 によると、string とあり、なんでもOKらしい
 			skipspaces(pr);
 			c = pr.read();
 			if (c == -1) throw new JsonParseException("オブジェクトの要素名の後に予期しない終了を検知しました");
