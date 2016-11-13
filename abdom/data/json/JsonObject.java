@@ -157,18 +157,18 @@ public class JsonObject extends JsonType {
 			sb.append(indentStep);
 			sb.append("\"");
 			sb.append(name);
-			sb.append("\":");
+			sb.append("\": ");
 			JsonType jt = map.get(name);
 			if (jt instanceof JsonValue) sb.append(jt);
 			else if (jt instanceof JsonObject) {
 				// JsonObject では、空の場合のみ簡略表示
-				if (((JsonObject)jt).map.size() == 0) sb.append("{ }");
+				if (((JsonObject)jt).map.size() == 0) sb.append("{}");
 				else sb.append(jt.toString(indent+indentStep, indentStep,
 								textwidth, true));
 			} else if (((JsonArray)jt).array.size() == 0) {
 				// JsonArray では、要素数が 0 の場合簡略表示
 				// 1 以上の場合は textwidth 指定による
-				sb.append("[ ]");
+				sb.append("[]");
 			} else if (textwidth > 0) {
 				// JsonArray で、textwidth 指定の範囲で一行化を試みる
 				

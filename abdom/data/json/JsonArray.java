@@ -72,35 +72,45 @@ public class JsonArray extends JsonType {
 /*
  * push
  */
-	public void push(JsonType val) {
+	public JsonArray push(JsonType val) {
 		this.array.add(val);
+		return this;
 	}
-	public void push(String val) {
+	public JsonArray push(String val) {
 		this.array.add(new JsonValue(val));
+		return this;
 	}
-	public void push(byte val) {
+	public JsonArray push(byte val) {
 		this.array.add(new JsonValue(val));
+		return this;
 	}
-	public void push(char val) {
+	public JsonArray push(char val) {
 		this.array.add(new JsonValue(val));
+		return this;
 	}
-	public void push(short val) {
+	public JsonArray push(short val) {
 		this.array.add(new JsonValue(val));
+		return this;
 	}
-	public void push(int val) {
+	public JsonArray push(int val) {
 		this.array.add(new JsonValue(val));
+		return this;
 	}
-	public void push(long val) {
+	public JsonArray push(long val) {
 		this.array.add(new JsonValue(val));
+		return this;
 	}
-	public void push(float val) {
+	public JsonArray push(float val) {
 		this.array.add(new JsonValue(val));
+		return this;
 	}
-	public void push(double val) {
+	public JsonArray push(double val) {
 		this.array.add(new JsonValue(val));
+		return this;
 	}
-	public void push(boolean val) {
+	public JsonArray push(boolean val) {
 		this.array.add(new JsonValue(val));
+		return this;
 	}
 /*
  * pop
@@ -136,6 +146,82 @@ public class JsonArray extends JsonType {
 		return this.array.remove(array.size()-1);
 	}
 	
+/*
+ * shift
+ */
+	public JsonArray shift(JsonType val) {
+		this.array.add(0,val);
+		return this;
+	}
+	public JsonArray shift(String val) {
+		this.array.add(0, new JsonValue(val));
+		return this;
+	}
+	public JsonArray shift(byte val) {
+		this.array.add(0, new JsonValue(val));
+		return this;
+	}
+	public JsonArray shift(char val) {
+		this.array.add(0, new JsonValue(val));
+		return this;
+	}
+	public JsonArray shift(short val) {
+		this.array.add(0, new JsonValue(val));
+		return this;
+	}
+	public JsonArray shift(int val) {
+		this.array.add(0, new JsonValue(val));
+		return this;
+	}
+	public JsonArray shift(long val) {
+		this.array.add(0, new JsonValue(val));
+		return this;
+	}
+	public JsonArray shift(float val) {
+		this.array.add(0, new JsonValue(val));
+		return this;
+	}
+	public JsonArray shift(double val) {
+		this.array.add(0, new JsonValue(val));
+		return this;
+	}
+	public JsonArray shift(boolean val) {
+		this.array.add(0, new JsonValue(val));
+		return this;
+	}
+/*
+ * unshift
+ */
+	public JsonType unshift(JsonType val) {
+		return this.array.remove(0);
+	}
+	public JsonType unshift(String val) {
+		return this.array.remove(0);
+	}
+	public JsonType unshift(byte val) {
+		return this.array.remove(0);
+	}
+	public JsonType unshift(char val) {
+		return this.array.remove(0);
+	}
+	public JsonType unshift(short val) {
+		return this.array.remove(0);
+	}
+	public JsonType unshift(int val) {
+		return this.array.remove(0);
+	}
+	public JsonType unshift(long val) {
+		return this.array.remove(0);
+	}
+	public JsonType unshift(float val) {
+		return this.array.remove(0);
+	}
+	public JsonType unshift(double val) {
+		return this.array.remove(0);
+	}
+	public JsonType unshift(boolean val) {
+		return this.array.remove(0);
+	}
 /*-----------
  * overrides
  */

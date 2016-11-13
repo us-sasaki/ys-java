@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Json形式における型一般を表します(composite pat.)。また、ストリーム、文字列
  * からの parse メソッドを提供します。
- * キャストせずに利用できるよう、アクセスメソッドを提供します。
+ * 利便性のため、キャストせずに利用できるアクセスメソッドを提供します。
  * アクセスできない型であった場合、ClassCastException が発生します。
  */
 public abstract class JsonType {
@@ -144,6 +144,116 @@ public abstract class JsonType {
 		return ((JsonArray)this).push(name, t);
 	}
 	
+/*
+ * pop methods (配列の最後の要素を取得し、削除)
+ */
+	public JsonType pop(String name, JsonType t) {
+		return ((JsonArray)this).pop(name, t);
+	}
+	public JsonType pop(String name, String t) {
+		return ((JsonArray)this).pop(name, t);
+	}
+	public JsonType pop(String name, boolean t) {
+		return ((JsonArray)this).pop(name, t);
+	}
+	public JsonType pop(String name, byte t) {
+		return ((JsonArray)this).pop(name, t);
+	}
+	public JsonType pop(String name, char t) {
+		return ((JsonArray)this).pop(name, t);
+	}
+	public JsonType pop(String name, short t) {
+		return ((JsonArray)this).pop(name, t);
+	}
+	public JsonType pop(String name, int t) {
+		return ((JsonArray)this).pop(name, t);
+	}
+	public JsonType pop(String name, long t) {
+		return ((JsonArray)this).pop(name, t);
+	}
+	public JsonType pop(String name, float t) {
+		return ((JsonArray)this).pop(name, t);
+	}
+	public JsonType pop(String name, double t) {
+		return ((JsonArray)this).pop(name, t);
+	}
+	public JsonType pop(String name, JsonType[] t) {
+		return ((JsonArray)this).pop(name, t);
+	}
+	
+/*
+ * shift methods (配列の最初に値追加)
+ */
+	public JsonArray shift(String name, JsonType t) {
+		return ((JsonArray)this).shift(name, t);
+	}
+	public JsonArray shift(String name, String t) {
+		return ((JsonArray)this).shift(name, t);
+	}
+	public JsonArray shift(String name, boolean t) {
+		return ((JsonArray)this).shift(name, t);
+	}
+	public JsonArray shift(String name, byte t) {
+		return ((JsonArray)this).shift(name, t);
+	}
+	public JsonArray shift(String name, char t) {
+		return ((JsonArray)this).shift(name, t);
+	}
+	public JsonArray shift(String name, short t) {
+		return ((JsonArray)this).shift(name, t);
+	}
+	public JsonArray shift(String name, int t) {
+		return ((JsonArray)this).shift(name, t);
+	}
+	public JsonArray shift(String name, long t) {
+		return ((JsonArray)this).shift(name, t);
+	}
+	public JsonArray shift(String name, float t) {
+		return ((JsonArray)this).shift(name, t);
+	}
+	public JsonArray shift(String name, double t) {
+		return ((JsonArray)this).shift(name, t);
+	}
+	public JsonArray shift(String name, JsonType[] t) {
+		return ((JsonArray)this).shift(name, t);
+	}
+	
+/*
+ * unshift methods (配列の最初の要素を取得し、削除)
+ */
+	public JsonType unshift(String name, JsonType t) {
+		return ((JsonArray)this).unshift(name, t);
+	}
+	public JsonType unshift(String name, String t) {
+		return ((JsonArray)this).unshift(name, t);
+	}
+	public JsonType unshift(String name, boolean t) {
+		return ((JsonArray)this).unshift(name, t);
+	}
+	public JsonType unshift(String name, byte t) {
+		return ((JsonArray)this).unshift(name, t);
+	}
+	public JsonType unshift(String name, char t) {
+		return ((JsonArray)this).unshift(name, t);
+	}
+	public JsonType unshift(String name, short t) {
+		return ((JsonArray)this).unshift(name, t);
+	}
+	public JsonType unshift(String name, int t) {
+		return ((JsonArray)this).unshift(name, t);
+	}
+	public JsonType unshift(String name, long t) {
+		return ((JsonArray)this).unshift(name, t);
+	}
+	public JsonType unshift(String name, float t) {
+		return ((JsonArray)this).unshift(name, t);
+	}
+	public JsonType unshift(String name, double t) {
+		return ((JsonArray)this).unshift(name, t);
+	}
+	public JsonType unshift(String name, JsonType[] t) {
+		return ((JsonArray)this).unshift(name, t);
+	}
 	
 	
 	
@@ -156,7 +266,7 @@ public abstract class JsonType {
 	}
 	
 	public String toString(String indent, int textwidth) {
-		return toString(indent, indent, textwidth, false);
+		return toString("", indent, textwidth, false);
 	}
 	
 	
