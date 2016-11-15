@@ -29,11 +29,16 @@ import abdom.data.json.JsonValue;
  * メンバとして現れます。
  * 子クラスで、JSON形式との相互変換対象外の変数を定義したい場合、
  * transient 修飾子をつけて下さい。
+ * 実装メモ：JValue, JData は 型(JsonValue/JsonObject)以外、記述内容は
+ * 同一。JValue, JData extends JValue という実装も可能だが、今後新しい
+ * 型の追加がないと考えられること(JSON型で、JsonObject/JsonArray/JsonValue
+ * すべてが Java 型と変換可能になっている)、JValue は JsonType でなく、
+ * 明示的に JsonValue と結び付けられるため、別個のクラスとした。
  *
  * @version	November 12, 2016
  * @author	Yusuke Sasaki
  */
-public abstract class JData {
+public abstract class JData extends JValue {
 
 	/** fill できなかった値を格納する予約領域 */
 	public JsonObject _fragment;
@@ -41,6 +46,7 @@ public abstract class JData {
 	/**
 	 * 子クラスのコンストラクタで super() を呼び忘れたときに例外を
 	 * 発生させるためのフラグ。
+	 * 直列化に関係ないため、transient 。
 	 */
 	public transient boolean fieldChecked = false;
 	
@@ -112,9 +118,10 @@ public abstract class JData {
 	 *
 	 * @param	json	このオブジェクトに値を与える JsonType
 	 */
+	@Override
 	public void fill(JsonType json) {
 		if (!fieldChecked)
-			throw new IllegalStateException("It is inevitable to invoke the constructor of super class(JData).");
+			throw new IllegalStateException("It is necessary to invoke the constructor of super class(JData).");
 		JsonObject jobj = (JsonObject)json; // may throw ClassCastException
 		
 		Field[] fields = this.getClass().getFields();
@@ -200,20 +207,14 @@ public abstract class JData {
 			f.set(this, str.substring(1, str.length() - 1));
 		} else if (JData.class.isAssignableFrom(type)) {
 		
-			// JData 型の場合
-			if (!(val instanceof JsonObject))
-				throw new IllegalFieldTypeException(name + " field is expected as type of JsonObject instead of type " + type);
+			// JValue 型の場合
+			if (!(val instanceof JsonType))
+				throw new IllegalFieldTypeException(name + " field is expected as type of JsonType instead of type " + type);
 			
 			Object instance = f.get(this);
 			if (instance == null) instance = type.newInstance();
 			((JData)instance).fill(val);
 			f.set(this, instance);
-		} else if (JValue.class.isAssignableFrom(type)) {
-		
-			// JValue 型の場合
-			Object instance = f.get(this);
-			if (instance == null) instance = type.newInstance();
-			((JValue)instance).fill((JsonValue)val);
 		} else if (JsonType.class.isAssignableFrom(type)) {
 		
 			// JsonType 型の場合
@@ -296,7 +297,7 @@ public abstract class JData {
 			
 			// JData[] 型の場合
 			if (!(val instanceof JsonArray))
-				throw new IllegalFieldTypeException(name + " field is expected as type of JsonArray(JsonObject) instead of type " + type);
+				throw new IllegalFieldTypeException(name + " field is expected as type of JsonArray instead of type " + type);
 			JsonArray ja = (JsonArray)val;
 			
 			// 子クラスで宣言されている型での配列を生成し、とりあえず JData[]
@@ -305,29 +306,8 @@ public abstract class JData {
 			JData[] instance = (JData[])Array.newInstance(comptype, ja.size());
 			int i = 0;
 			for (JsonType j : ja.array) {
-				if (!(j instanceof JsonObject))
-					throw new IllegalFieldTypeException(name + " array-field is expected as type of JsonObject[]) instead of type " + type);
 				JData elm = (JData)comptype.newInstance();
 				elm.fill(j);
-				instance[i++] = elm;
-			}
-			f.set(this, instance);
-		} else if (JValue[].class.isAssignableFrom(type)) {
-		
-			// JValue[] 型の場合
-			if (!(val instanceof JsonArray))
-				throw new IllegalFieldTypeException(name + " field is expected as type of JsonArray(JsonObject) instead of type " + type);
-			JsonArray ja = (JsonArray)val;
-			// 子クラスで宣言されている型での配列を生成し、とりあえず JValue[]
-			// 型で保持する
-			Class comptype = type.getComponentType();
-			JValue[] instance = (JValue[])Array.newInstance(comptype, ja.size());
-			int i = 0;
-			for (JsonType j : ja.array) {
-				if (!(j instanceof JsonValue))
-					throw new IllegalFieldTypeException(name + " array-field is expected as type of JsonValue[]) instead of type " + type);
-				JValue elm = (JValue)comptype.newInstance();
-				elm.fill((JsonValue)j);
 				instance[i++] = elm;
 			}
 			f.set(this, instance);
@@ -361,8 +341,6 @@ public abstract class JData {
 			JsonArray ja = (JsonArray)val;
 			List<JData> instance = new ArrayList<JData>();
 			for (JsonType j : ja.array) {
-				if (!(j instanceof JsonObject))
-					throw new IllegalFieldTypeException(name + " array-field is expected as type of JsonObject[]) instead of type " + type);
 				JData elm = (JData)type.getComponentType().newInstance();
 				elm.fill(j);
 				instance.add(elm);
@@ -374,7 +352,10 @@ public abstract class JData {
 	}
 	
 	/**
-	 * JSON形式の文字列でフィールドを埋めます。
+	 * JSON形式の文字列でフィールドを埋めます。内部的には、文字列から
+	 * JsonType を構成し、fill(JsonType) を呼んでいます。
+	 *
+	 * @param	jsonString	値を保持する JSON 文字列
 	 */
 	public void fill(String jsonString) {
 		fill(JsonType.parse(jsonString));
@@ -382,8 +363,11 @@ public abstract class JData {
 	
 	/**
 	 * このオブジェクトを JsonObject に変換します。
+	 *
+	 * @return	JsonObject
 	 */
-	public JsonObject toJson() {
+	@Override
+	public JsonType toJson() {
 		if (!fieldChecked)
 			throw new IllegalStateException("It is inevitable to invoke the constructor of super class(JData).");
 		try {
@@ -392,6 +376,10 @@ public abstract class JData {
 			throw new IllegalFieldTypeException("..");
 		}
 	}
+	
+	/**
+	 * toJson の実装本体です。
+	 */
 	private JsonObject toJsonImpl() throws IllegalAccessException {
 		JsonObject result = new JsonObject();
 		
