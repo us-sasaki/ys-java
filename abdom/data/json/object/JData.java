@@ -79,12 +79,13 @@ public abstract class JData {
 	 * チェックします。
 	 */
 	private boolean isJDataCategory(Class type) {
-		// プリミティブ、JData, JsonType
+		// プリミティブ、JData, JsonType, JValue
 		if ( Boolean.TYPE.isAssignableFrom(type) ||
 			Integer.TYPE.isAssignableFrom(type) ||
 			Double.TYPE.isAssignableFrom(type) ||
 			String.class.isAssignableFrom(type) ||
 			JData.class.isAssignableFrom(type) ||
+			JValue.class.isAssignableFrom(type) ||
 			JsonType.class.isAssignableFrom(type) ) return true;
 		
 		// 配列
@@ -93,6 +94,7 @@ public abstract class JData {
 			double[].class.isAssignableFrom(type) ||
 			String[].class.isAssignableFrom(type) ||
 			JData[].class.isAssignableFrom(type) ||
+			JValue[].class.isAssignableFrom(type) ||
 			JsonType[].class.isAssignableFrom(type) ) return true;
 		
 		// List<JData>
@@ -206,10 +208,16 @@ public abstract class JData {
 			if (instance == null) instance = type.newInstance();
 			((JData)instance).fill(val);
 			f.set(this, instance);
+		} else if (JValue.class.isAssignableFrom(type)) {
+		
+			// JValue 型の場合
+			Object instance = f.get(this);
+			if (instance == null) instance = type.newInstance();
+			((JValue)instance).fill((JsonValue)val);
 		} else if (JsonType.class.isAssignableFrom(type)) {
 		
 			// JsonType 型の場合
-System.out.println("type = "+type+" f = " + f+" val = "+val);
+//System.out.println("type = "+type+" f = " + f+" val = "+val);
 			f.set(this, JsonType.parse(val.toString()));
 		} else if (boolean[].class.isAssignableFrom(type)) {
 		
@@ -304,6 +312,26 @@ System.out.println("type = "+type+" f = " + f+" val = "+val);
 				instance[i++] = elm;
 			}
 			f.set(this, instance);
+		} else if (JValue[].class.isAssignableFrom(type)) {
+		
+			// JValue[] 型の場合
+			if (!(val instanceof JsonArray))
+				throw new IllegalFieldTypeException(name + " field is expected as type of JsonArray(JsonObject) instead of type " + type);
+			JsonArray ja = (JsonArray)val;
+			// 子クラスで宣言されている型での配列を生成し、とりあえず JValue[]
+			// 型で保持する
+			Class comptype = type.getComponentType();
+			JValue[] instance = (JValue[])Array.newInstance(comptype, ja.size());
+			int i = 0;
+			for (JsonType j : ja.array) {
+				if (!(j instanceof JsonValue))
+					throw new IllegalFieldTypeException(name + " array-field is expected as type of JsonValue[]) instead of type " + type);
+				JValue elm = (JValue)comptype.newInstance();
+				elm.fill((JsonValue)j);
+				instance[i++] = elm;
+			}
+			f.set(this, instance);
+			
 		} else if (JsonType[].class.isAssignableFrom(type)) {
 			
 			// JsonType[] 型の場合
@@ -385,11 +413,13 @@ System.out.println("type = "+type+" f = " + f+" val = "+val);
 				} else if (Double.TYPE.isAssignableFrom(type)) {
 					result.put(name, new JsonValue(f.getDouble(this)));
 					
-				// String, JData, JsonType
+				// String, JData, JValue, JsonType
 				} else if (String.class.isAssignableFrom(type)) {
 					result.put(name, new JsonValue((String)f.get(this)));
 				} else if (JData.class.isAssignableFrom(type)) {
 					result.put(name, ((JData)f.get(this)).toJson());
+				} else if (JValue.class.isAssignableFrom(type)) {
+					result.put(name, ((JValue)f.get(this)).toJson());
 				} else if (JsonType.class.isAssignableFrom(type)) {
 					result.put(name, (JsonType)f.get(this));
 					
@@ -410,6 +440,11 @@ System.out.println("type = "+type+" f = " + f+" val = "+val);
 					JData[] v = (JData[])f.get(this);
 					JsonArray ja = new JsonArray();
 					for (JData jd : v) ja.push(jd.toJson());
+					result.put(name, ja);
+				} else if (JValue[].class.isAssignableFrom(type)) {
+					JValue[] v = (JValue[])f.get(this);
+					JsonArray ja = new JsonArray();
+					for (JValue jd : v) ja.push(jd.toJson());
 					result.put(name, ja);
 				} else if (JsonType[].class.isAssignableFrom(type)) {
 					JsonType[] v = (JsonType[])f.get(this);
