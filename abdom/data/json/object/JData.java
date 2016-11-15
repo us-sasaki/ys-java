@@ -19,7 +19,7 @@ import abdom.data.json.JsonValue;
  * 容易になります。
  * メンバ変数として次のフィールド(JDataカテゴリ)が指定できます。<pre>
  *
- * boolean, int, double, String, JData, JsonType
+ * boolean, int, double, String, JValue, JsonType
  * および、これらの型の配列 、List<JData>
  *
  * </pre>暗黙のフィールドとして、_fragment (JsonType型, JsonObject または
@@ -29,11 +29,6 @@ import abdom.data.json.JsonValue;
  * メンバとして現れます。
  * 子クラスで、JSON形式との相互変換対象外の変数を定義したい場合、
  * transient 修飾子をつけて下さい。
- * 実装メモ：JValue, JData は 型(JsonValue/JsonObject)以外、記述内容は
- * 同一。JValue, JData extends JValue という実装も可能だが、今後新しい
- * 型の追加がないと考えられること(JSON型で、JsonObject/JsonArray/JsonValue
- * すべてが Java 型と変換可能になっている)、JValue は JsonType でなく、
- * 明示的に JsonValue と結び付けられるため、別個のクラスとした。
  *
  * @version	November 12, 2016
  * @author	Yusuke Sasaki
@@ -72,7 +67,7 @@ public abstract class JData extends JValue {
 			Class type = f.getType();
 			
 			if (isJDataCategory(type)) continue;
-			throw new IllegalFieldTypeException("Illegal type " + type + " has found. JData field must consist of boolean, int, double, String, JData, JsonType and their arrays.");
+			throw new IllegalFieldTypeException("Illegal type " + type + " has found. JData field must consist of boolean, int, double, String, JValue, JsonType and their arrays.");
 		}
 		fieldChecked = true;
 	}
@@ -85,12 +80,11 @@ public abstract class JData extends JValue {
 	 * チェックします。
 	 */
 	private boolean isJDataCategory(Class type) {
-		// プリミティブ、JData, JsonType, JValue
+		// プリミティブ、JsonType, JValue
 		if ( Boolean.TYPE.isAssignableFrom(type) ||
 			Integer.TYPE.isAssignableFrom(type) ||
 			Double.TYPE.isAssignableFrom(type) ||
 			String.class.isAssignableFrom(type) ||
-			JData.class.isAssignableFrom(type) ||
 			JValue.class.isAssignableFrom(type) ||
 			JsonType.class.isAssignableFrom(type) ) return true;
 		
@@ -99,7 +93,6 @@ public abstract class JData extends JValue {
 			int[].class.isAssignableFrom(type) ||
 			double[].class.isAssignableFrom(type) ||
 			String[].class.isAssignableFrom(type) ||
-			JData[].class.isAssignableFrom(type) ||
 			JValue[].class.isAssignableFrom(type) ||
 			JsonType[].class.isAssignableFrom(type) ) return true;
 		
@@ -205,7 +198,7 @@ public abstract class JData extends JValue {
 			if (!str.startsWith("\"") || !str.endsWith("\"") )
 				throw new IllegalFieldTypeException(name + " field is expected as Json string. The value: " + str);
 			f.set(this, str.substring(1, str.length() - 1));
-		} else if (JData.class.isAssignableFrom(type)) {
+		} else if (JValue.class.isAssignableFrom(type)) {
 		
 			// JValue 型の場合
 			if (!(val instanceof JsonType))
@@ -213,7 +206,7 @@ public abstract class JData extends JValue {
 			
 			Object instance = f.get(this);
 			if (instance == null) instance = type.newInstance();
-			((JData)instance).fill(val);
+			((JValue)instance).fill(val);
 			f.set(this, instance);
 		} else if (JsonType.class.isAssignableFrom(type)) {
 		
@@ -293,20 +286,20 @@ public abstract class JData extends JValue {
 				instance[i++] = str.substring(1, str.length() - 1);
 			}
 			f.set(this, instance);
-		} else if (JData[].class.isAssignableFrom(type)) {
+		} else if (JValue[].class.isAssignableFrom(type)) {
 			
-			// JData[] 型の場合
+			// JValue[] 型の場合
 			if (!(val instanceof JsonArray))
 				throw new IllegalFieldTypeException(name + " field is expected as type of JsonArray instead of type " + type);
 			JsonArray ja = (JsonArray)val;
 			
-			// 子クラスで宣言されている型での配列を生成し、とりあえず JData[]
+			// 子クラスで宣言されている型での配列を生成し、とりあえず JValue[]
 			// 型で保持する
 			Class comptype = type.getComponentType();
-			JData[] instance = (JData[])Array.newInstance(comptype, ja.size());
+			JValue[] instance = (JValue[])Array.newInstance(comptype, ja.size());
 			int i = 0;
 			for (JsonType j : ja.array) {
-				JData elm = (JData)comptype.newInstance();
+				JValue elm = (JValue)comptype.newInstance();
 				elm.fill(j);
 				instance[i++] = elm;
 			}
@@ -401,11 +394,9 @@ public abstract class JData extends JValue {
 				} else if (Double.TYPE.isAssignableFrom(type)) {
 					result.put(name, new JsonValue(f.getDouble(this)));
 					
-				// String, JData, JValue, JsonType
+				// String, JValue, JsonType
 				} else if (String.class.isAssignableFrom(type)) {
 					result.put(name, new JsonValue((String)f.get(this)));
-				} else if (JData.class.isAssignableFrom(type)) {
-					result.put(name, ((JData)f.get(this)).toJson());
 				} else if (JValue.class.isAssignableFrom(type)) {
 					result.put(name, ((JValue)f.get(this)).toJson());
 				} else if (JsonType.class.isAssignableFrom(type)) {
@@ -424,11 +415,6 @@ public abstract class JData extends JValue {
 				} else if (String[].class.isAssignableFrom(type)) {
 					String[] v = (String[])f.get(this);
 					result.put(name, new JsonArray(v));
-				} else if (JData[].class.isAssignableFrom(type)) {
-					JData[] v = (JData[])f.get(this);
-					JsonArray ja = new JsonArray();
-					for (JData jd : v) ja.push(jd.toJson());
-					result.put(name, ja);
 				} else if (JValue[].class.isAssignableFrom(type)) {
 					JValue[] v = (JValue[])f.get(this);
 					JsonArray ja = new JsonArray();
