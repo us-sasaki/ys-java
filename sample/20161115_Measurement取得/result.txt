@@ -1,0 +1,21 @@
+get size = 19966
+elapsed time = 3166
+count = 10
+
+get size = 194895
+elapsed time = 33385
+count = 100
+
+POSTMANの結果
+http://nttcom.cumulocity.com/measurement/measurements?pageSize=500&currentPage=1
+3893ms
+
+Rest(Java)の結果
+
+5000件を1APIで取得
+9.145秒、 618,346 byte
+
+50000件を,,,
+と思ったが、大同小異。2000件がupper limit.
+
+Postmanも同等。10秒程度。

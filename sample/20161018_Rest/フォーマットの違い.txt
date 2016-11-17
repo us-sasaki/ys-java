@@ -1,0 +1,23 @@
+ÅöCumulocity Program
+
+GET /platform HTTP/1.1
+Accept: application/vnd.com.nsn.cumulocity.platformApi+json;charset=UTF-8;ver=0.9
+Authorization: Basic dXMuc2FzYWtpQG50dC5jb206bnR0Y29tc2FzYWtpMw==
+User-Agent: Jakarta Commons-HttpClient/3.1
+Host: localhost:8080
+
+ÅöYusuke Program
+GET /inventory HTTP/1.1
+Authorization: Basic dGVuYW50L3VzZXI6cGFzcw==
+User-Agent: Java/1.8.0_101
+Host: localhost:8080
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+Connection: keep-alive
+
+ÅöïœçXå„
+GET /inventory HTTP/1.1
+Accept: application/vnd.com.nsn.cumulocity.platformApi+json;charset=UTF-8;ver=0.9
+Authorization: Basic dXNlcjpwYXNz
+User-Agent: Java/1.8.0_101
+Host: localhost:8080
+Connection: close

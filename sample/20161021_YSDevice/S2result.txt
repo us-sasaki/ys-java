@@ -1,0 +1,49 @@
+{
+  "assetParents":
+  {
+    "references":
+    [
+    ],
+    "self":"https://nttcom.cumulocity.com/inventory/managedObjects/12192906/assetParents"
+  },
+  "c8y_Configuration":
+  {
+    "Place":"on the YS Desk"
+  },
+  "c8y_Hardware":
+  {
+    "CPU":"Core i5",
+    "serialNumber":"5102173"
+  },
+  "c8y_IsDevice":
+  {
+  },
+  "childAssets":
+  {
+    "references":
+    [
+    ],
+    "self":"https://nttcom.cumulocity.com/inventory/managedObjects/12192906/childAssets"
+  },
+  "childDevices":
+  {
+    "references":
+    [
+    ],
+    "self":"https://nttcom.cumulocity.com/inventory/managedObjects/12192906/childDevices"
+  },
+  "creationTime":"2016-10-24T04:50:37.894+02:00",
+  "deviceParents":
+  {
+    "references":
+    [
+    ],
+    "self":"https://nttcom.cumulocity.com/inventory/managedObjects/12192906/deviceParents"
+  },
+  "id":"12192906",
+  "lastUpdated":"2016-10-24T04:50:37.894+02:00",
+  "name":"VAIO YS\'s 5102173",
+  "owner":"device_ysdev000001",
+  "self":"https://nttcom.cumulocity.com/inventory/managedObjects/12192906",
+  "type":"YSAP"
+}

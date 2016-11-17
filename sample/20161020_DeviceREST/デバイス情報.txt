@@ -1,0 +1,89 @@
+YS First Device c8yデバイスID 9941768
+
+
+Second Device を Rest でクリエイトした。
+
+PS C:\private\programs\misc\20161020_DeviceREST> java Rest
+Response : 201
+Message  : Created
+PS C:\private\programs\misc\20161020_DeviceREST>
+
+もう一回やったが、同じ結果
+ただ、同じ名前のデバイスが２個できた
+
+HTTP_CREATE (201) に対して input stream を表示するようにすると、
+PS C:\private\programs\misc\20161020_DeviceREST> java Rest
+{"assetParents":{"references":[],"self":"https://nttcom.cumulocity.com/inventory/managedObjects/10897981/assetParents"},"childAssets":{"references":[],"self":"https://nttcom.cumulocity.com/inventory/managedObjects/10897981/childAssets"},"childDevices":{"references":[],"self":"https://nttcom.cumulocity.com/inventory/managedObjects/10897981/childDevices"},"creationTime":"2016-10-20T04:13:40.115+02:00","deviceParents":{"references":[],"self":"https://nttcom.cumulocity.com/inventory/managedObjects/10897981/deviceParents"},"id":"10897981","lastUpdated":"2016-10-20T04:13:40.115+02:00","name":"YS Second Device","owner":"us.sasaki@ntt.com","self":"https://nttcom.cumulocity.com/inventory/managedObjects/10897981","c8y_IsDevice":{}}
+PS C:\private\programs\misc\20161020_DeviceREST>
+
+--- formatted JSON ---
+{
+  "assetParents":
+  {
+    "references":
+    [
+    ],
+    "self":"https://nttcom.cumulocity.com/inventory/managedObjects/10899431/assetParents"
+  },
+  "c8y_IsDevice":
+  {
+  },
+  "childAssets":
+  {
+    "references":
+    [
+    ],
+    "self":"https://nttcom.cumulocity.com/inventory/managedObjects/10899431/childAssets"
+  },
+  "childDevices":
+  {
+    "references":
+    [
+    ],
+    "self":"https://nttcom.cumulocity.com/inventory/managedObjects/10899431/childDevices"
+  },
+  "creationTime":"2016-10-20T04:19:11.412+02:00",
+  "deviceParents":
+  {
+    "references":
+    [
+    ],
+    "self":"https://nttcom.cumulocity.com/inventory/managedObjects/10899431/deviceParents"
+  },
+  "id":"10899431",
+  "lastUpdated":"2016-10-20T04:19:11.412+02:00",
+  "name":"YS Second Device",
+  "owner":"us.sasaki@ntt.com",
+  "self":"https://nttcom.cumulocity.com/inventory/managedObjects/10899431"
+}
+PS C:\private\programs\misc\20161020_DeviceREST>
+
+となった
+
+次にデバイスからの measurement アップデート
+
+PS C:\private\programs\misc\20161020_DeviceREST> java MeasureRest
+{"time":"2014-12-15T13:00:00.123+02:00","id":"10903022","self":"https://nttcom.cumulocity.com/measurement/measurements/10903022","source":{"id":"10899431","self":"https://nttcom.cumulocity.com/inventory/managedObjects/10899431"},"type":"c8y_PTCMeasurement","c8y_TemperatureMeasurement":{"T":{"unit":"C","value":21.23}}}
+--- formatted JSON ---
+{
+  "c8y_TemperatureMeasurement":
+  {
+    "T":
+    {
+      "unit":"C",
+      "value":21.23
+    }
+  },
+  "id":"10903022",
+  "self":"https://nttcom.cumulocity.com/measurement/measurements/10903022",
+  "source":
+  {
+    "id":"10899431",
+    "self":"https://nttcom.cumulocity.com/inventory/managedObjects/10899431"
+  },
+  "time":"2014-12-15T13:00:00.123+02:00",
+  "type":"c8y_PTCMeasurement"
+}
+PS C:\private\programs\misc\20161020_DeviceREST>
+
+となった
