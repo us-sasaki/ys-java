@@ -31,7 +31,7 @@ public class MakeFileUsage {
  * instance methods
  */
 	public void make() throws IOException {
-		init();
+		//init();
 		System.out.println("processing");
 		System.out.println("calculating for chart");
 		makeCharts();
@@ -49,10 +49,10 @@ public class MakeFileUsage {
 	/**
 	 * ファイル読込、初期化
 	 */
-	private void init() throws IOException {
+	public void init() throws IOException {
 		// csv ファイル読込
 		a = FileList.readFiles(".");
-		a.setReferencePoint(12); // 2016/6/17   9); // 2016/6/7
+		a.setReferencePoint(18); // 2016/10/31
 		list = a.selectFile(true); // ファイルだけ抽出
 		list.sort(new SizeOrder().reversed()); // サイズ降順
 		
@@ -78,6 +78,7 @@ public class MakeFileUsage {
 		l1 = FileList.cutFile(l1, true);
 		l1.sort(new SizeOrder().reversed()); // size 降順でソート
 		
+//		FileList.writePosJsonFile(a.dateList, l1, "posL1Size"+date+".json");
 		FileList.writeJsonFile(a.dateList, l1, 1, "posL1Size"+date+".json");
 		List<FileEntry> l1dir = FileList.cutFile(l1, true);
 		FileList.writePieChartJsonFile(l1dir, 1, "pieL1Size"+date+".json");
@@ -228,7 +229,13 @@ public class MakeFileUsage {
 					public int compare(Entry<String, Integer> a, Entry<String, Integer> b) {
 						return a.getValue() - b.getValue();
 					}
+//					public boolean equals(Entry<String, Integer> a, Entry<String, Integer> b) {
+//						return a.getValue().equals(b.getValue());
+//					}
 		}.reversed() );
+		
+		JsonObject tableContainer = new JsonObject().add("key","top").add("label","チェックフォルダ");
+		JsonArray top = new JsonArray(new JsonType[]{tableContainer});
 		
 		JsonObject folder = new JsonObject();
 		folder.add("key","file");
@@ -244,17 +251,20 @@ public class MakeFileUsage {
 			count++;
 			if (count >= 10) break;
 		}
+		tableContainer.add("values", new JsonArray(new JsonType[] {folder}));
 		//
 		// JSON ファイルとして出力
 		//
-		FileList.writeJsonType(new JsonArray(new JsonType[] {folder}),
-			"similarFile"+date+".json");
+		FileList.writeJsonType(top, "similarFile"+date+".json");
 	}
 	
 	/**
 	 * サイズの大きなファイルを出力
 	 */
 	private void listBigFiles() throws IOException {
+		JsonObject tableContainer = new JsonObject().add("key","top").add("label","現在保存されているサイズの大きいファイル");
+		JsonArray top = new JsonArray(new JsonType[]{tableContainer});
+		
 		JsonObject jo = new JsonObject();
 		jo.add("key","file");
 		jo.add("label", "(参考)サイズの大きなファイル");
@@ -267,11 +277,12 @@ public class MakeFileUsage {
 						.add("owner", FileList.reveal(src.owner));
 			}
 		));
+		tableContainer.add("values", new JsonArray(new JsonType[] {jo}));
+		
 		//
 		// JSON ファイルとして出力
 		//
-		FileList.writeJsonType(new JsonArray(new JsonType[]{jo} ),
-			"bigFile"+date+".json");
+		FileList.writeJsonType(top, "bigFile"+date+".json");
 	}
 	
 	/**
@@ -409,6 +420,13 @@ public class MakeFileUsage {
  * main
  */
 	public static void main(String[] args) throws Exception {
-		new MakeFileUsage().make();
+		MakeFileUsage mfu = new MakeFileUsage();
+		mfu.init();
+		if (args.length > 0) {
+			mfu.a.setReferencePoint(Integer.parseInt(args[0]));
+		} else {
+			mfu.a.setReferencePoint(0);
+		}
+		mfu.make();
 	}
 }
