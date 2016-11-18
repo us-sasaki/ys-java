@@ -36,7 +36,7 @@ import abdom.data.json.JsonValue;
 public abstract class JData extends JValue {
 
 	/** fill できなかった値を格納する予約領域 */
-	public JsonObject _fragment;
+	public transient JsonObject _fragment;
 	
 	/**
 	 * 子クラスのコンストラクタで super() を呼び忘れたときに例外を
@@ -100,6 +100,34 @@ public abstract class JData extends JValue {
 		if (List.class.isAssignableFrom(type)) return true;
 		
 		return false;
+	}
+	
+	/**
+	 * 
+	 */
+	public boolean hasFragments() {
+		return (_fragment != null);
+	}
+	
+	/**
+	 * 
+	 */
+	public Set getFragmentKeySet() {
+		if (_fragment == null) return null;
+		return _fragment.map.keySet();
+	}
+	
+	/**
+	 * fragment アクセスメソッド
+	 */
+	public JsonType getFragment(String key) {
+		if (_fragment == null) return null;
+		return _fragment.get(key);
+	}
+	
+	public void putFragment(String key, JsonType jt) {
+		if (_fragment == null) _fragment = new JsonObject();
+		_fragment.put(key, jt);
 	}
 	
 	/**
@@ -382,7 +410,6 @@ public abstract class JData extends JValue {
 			if (Modifier.isTransient(f.getModifiers())) continue;
 			if (f.get(this) == null) continue;
 			String name = f.getName();
-			if ("_fragment".equals(name)) continue; // 後で処理
 			Class type = f.getType();
 			
 			try {
