@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Set;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonArray;
@@ -103,14 +104,18 @@ public abstract class JData extends JValue {
 	}
 	
 	/**
-	 * 
+	 * fragment を持つかどうかテストします。
+	 *
+	 * @return	fragment を持つ場合、true
 	 */
 	public boolean hasFragments() {
 		return (_fragment != null);
 	}
 	
 	/**
-	 * 
+	 * fragment の keySet を返却します。ない場合、null となります。
+	 *
+	 * @return	fragment のキー
 	 */
 	public Set getFragmentKeySet() {
 		if (_fragment == null) return null;
@@ -118,13 +123,22 @@ public abstract class JData extends JValue {
 	}
 	
 	/**
-	 * fragment アクセスメソッド
+	 * fragment アクセスメソッドで、JsonType 値を取得します。
+	 *
+	 * @param	key	fragment の key 情報
+	 * @return	key に対応する値
 	 */
 	public JsonType getFragment(String key) {
 		if (_fragment == null) return null;
 		return _fragment.get(key);
 	}
 	
+	/**
+	 * fragment アクセスメソッドで、JsonType 値を設定します。
+	 *
+	 * @param	key	fragment の key 情報
+	 * @param	jt	設定する値
+	 */
 	public void putFragment(String key, JsonType jt) {
 		if (_fragment == null) _fragment = new JsonObject();
 		_fragment.put(key, jt);
