@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Json形式における配列を表します。
  * 内部では配列を ArrayList<JsonType> で保持します。
  */
-public class JsonArray extends JsonType {
+public class JsonArray extends JsonType implements Iterable<JsonType> {
 	public List<JsonType> array = new ArrayList<JsonType>();
 	
 /*-------------
@@ -115,34 +115,7 @@ public class JsonArray extends JsonType {
 /*
  * pop
  */
-	public JsonType pop(JsonType val) {
-		return this.array.remove(array.size()-1);
-	}
-	public JsonType pop(String val) {
-		return this.array.remove(array.size()-1);
-	}
-	public JsonType pop(byte val) {
-		return this.array.remove(array.size()-1);
-	}
-	public JsonType pop(char val) {
-		return this.array.remove(array.size()-1);
-	}
-	public JsonType pop(short val) {
-		return this.array.remove(array.size()-1);
-	}
-	public JsonType pop(int val) {
-		return this.array.remove(array.size()-1);
-	}
-	public JsonType pop(long val) {
-		return this.array.remove(array.size()-1);
-	}
-	public JsonType pop(float val) {
-		return this.array.remove(array.size()-1);
-	}
-	public JsonType pop(double val) {
-		return this.array.remove(array.size()-1);
-	}
-	public JsonType pop(boolean val) {
+	public JsonType pop() {
 		return this.array.remove(array.size()-1);
 	}
 	
@@ -192,36 +165,10 @@ public class JsonArray extends JsonType {
 /*
  * unshift
  */
-	public JsonType unshift(JsonType val) {
+	public JsonType unshift() {
 		return this.array.remove(0);
 	}
-	public JsonType unshift(String val) {
-		return this.array.remove(0);
-	}
-	public JsonType unshift(byte val) {
-		return this.array.remove(0);
-	}
-	public JsonType unshift(char val) {
-		return this.array.remove(0);
-	}
-	public JsonType unshift(short val) {
-		return this.array.remove(0);
-	}
-	public JsonType unshift(int val) {
-		return this.array.remove(0);
-	}
-	public JsonType unshift(long val) {
-		return this.array.remove(0);
-	}
-	public JsonType unshift(float val) {
-		return this.array.remove(0);
-	}
-	public JsonType unshift(double val) {
-		return this.array.remove(0);
-	}
-	public JsonType unshift(boolean val) {
-		return this.array.remove(0);
-	}
+	
 /*-----------
  * overrides
  */
@@ -245,6 +192,15 @@ public class JsonArray extends JsonType {
 	@Override
 	protected String toString(String indent, String indentStep,
 								int textwidth, boolean objElement) {
+		// textwidth 指定がある場合、一行化を試みる
+		// 一行化は処理コストがかかるため、size() が大きく明らかに収まらない
+		// ときはスキップする
+		if ( (textwidth > 0)&&(2 * array.size() + 3 <= textwidth) ) {
+			int len = indent.length();
+			// コストがかかり、無駄になるかもしれない処理
+			String tryShort = toString();
+			if (len + tryShort.length() <= textwidth) return tryShort;
+		}
 		StringBuffer sb = new StringBuffer();
 		
 		if (!objElement) sb.append(indent);
@@ -265,5 +221,13 @@ public class JsonArray extends JsonType {
 		sb.append("]");
 		
 		return sb.toString();
+	}
+	
+/*----------------------
+ * implements(Iterable)
+ */
+	@Override
+	public java.util.Iterator<JsonType> iterator() {
+		return array.iterator();
 	}
 }

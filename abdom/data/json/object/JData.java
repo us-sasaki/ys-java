@@ -37,14 +37,14 @@ import abdom.data.json.JsonValue;
 public abstract class JData extends JValue {
 
 	/** fill できなかった値を格納する予約領域 */
-	public transient JsonObject _fragment;
+	protected transient JsonObject _fragment;
 	
 	/**
 	 * 子クラスのコンストラクタで super() を呼び忘れたときに例外を
 	 * 発生させるためのフラグ。
 	 * 直列化に関係ないため、transient 。
 	 */
-	public transient boolean fieldChecked = false;
+	private transient boolean fieldChecked = false;
 	
 /*-------------
  * constructor
@@ -142,6 +142,15 @@ public abstract class JData extends JValue {
 	public void putFragment(String key, JsonType jt) {
 		if (_fragment == null) _fragment = new JsonObject();
 		_fragment.put(key, jt);
+	}
+	
+	/**
+	 * fragment オブジェクト(JsonObject)を返却します。
+	 *
+	 * @return	fragment オブジェクト(JsonObject)。null の場合があります。
+	 */
+	public JsonObject getFragments() {
+		return _fragment;
 	}
 	
 	/**

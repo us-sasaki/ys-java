@@ -161,10 +161,23 @@ public class JsonObject extends JsonType {
 			JsonType jt = map.get(name);
 			if (jt instanceof JsonValue) sb.append(jt);
 			else if (jt instanceof JsonObject) {
-				// JsonObject では、空の場合のみ簡略表示
+				// JsonObject の場合
 				if (((JsonObject)jt).map.size() == 0) sb.append("{}");
-				else sb.append(jt.toString(indent+indentStep, indentStep,
-								textwidth, true));
+				else if (textwidth > 0) {
+					// JsonObject で、textWidth 指定の範囲で一行化を試みる
+					int len = indent.length() + indentStep.length() +
+								5 + name.length();
+					String tryShort = jt.toString();
+					if (len + tryShort.length() <= textwidth) {
+						sb.append(tryShort);
+					} else {
+						sb.append(jt.toString(indent+indentStep, indentStep,
+									textwidth, true));
+					}
+				} else {
+					sb.append(jt.toString(indent+indentStep, indentStep,
+									textwidth, true));
+				}
 			} else if (((JsonArray)jt).array.size() == 0) {
 				// JsonArray では、要素数が 0 の場合簡略表示
 				// 1 以上の場合は textwidth 指定による
@@ -174,7 +187,7 @@ public class JsonObject extends JsonType {
 				
 				// 一行化を試みる(toString() により、文字数カウント)
 				int len = indent.length() + indentStep.length()
-							+ 2 + name.length();
+							+ 5 + name.length();
 				String tryShort = jt.toString();
 				if (len + tryShort.length() <= textwidth) {
 					// textwidth 以内にはまる

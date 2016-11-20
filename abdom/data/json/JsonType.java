@@ -9,31 +9,125 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Json形式における型一般を表します(composite pat.)。また、ストリーム、文字列
- * からの parse メソッドを提供します。
- * 利便性のため、キャストせずに利用できるアクセスメソッドを提供します。
+ * Json形式における型一般を表します。また、ストリーム、文字列からの parse 
+ * メソッドを提供します。
+ * 利便性のため、なるべくキャストせずに利用できるアクセスメソッドを提供します。
  * アクセスできない型であった場合、ClassCastException が発生します。
+ *
+ * @version		November 19, 2016
+ * @author		Yusuke Sasaki
  */
-public abstract class JsonType {
+public abstract class JsonType implements Iterable<JsonType> {
 	static final String LS = System.getProperty("line.separator");
-//	static String indent = "  ";
 	
-
+	/**
+	 * JsonValue としての値を文字列で取得します。このオブジェクトが
+	 * JsonValue でない場合、ClassCastException がスローされます。
+	 *
+	 * @return	JsonValue としての文字列値
+	 */
 	public String getValue() {
 		return ((JsonValue)this).value; // may throw ClassCastException
 	}
+	
+	/**
+	 * JsonValue としての値を整数値で取得します。このオブジェクトが
+	 * JsonValue でない場合、ClassCastException がスローされます。
+	 * また、JsonValue でも整数として認識できない場合(Integer.parseInt が
+	 * 失敗)、NumberFormatException がスローされます。
+	 *
+	 * @return	JsonValue としての int 値
+	 */
+	public int getIntValue() {
+		return Integer.parseInt(((JsonValue)this).value); // may throw ClassCastException
+	}
+	
+	/**
+	 * JsonValue としての値をdouble値で取得します。このオブジェクトが
+	 * JsonValue でない場合、ClassCastException がスローされます。
+	 * また、JsonValue でも double として認識できない場合
+	 * (Double.parseDouble が失敗)、NumberFormatException がスローされます。
+	 *
+	 * @return	JsonValue としての double 値
+	 */
+	public double getDoubleValue() {
+		return Double.parseDouble(((JsonValue)this).value); // may throw ClassCastException
+	}
+	
+	/**
+	 * JsonType としての値を持っているかテストします。
+	 * false となるのは以下の場合です。<pre>
+	 * JsonObject で、空オブジェクトの場合
+	 * JsonArray で、空配列の場合
+	 * JsonValue で、値が false の場合
+	 * </pre>
+	 * ほかの場合、true が返却されます。
+	 *
+	 * @return	値を持っている、または false 値でない場合 true
+	 */
+	public boolean isTrue() {
+		if (this instanceof JsonObject) {
+			return (((JsonObject)this).keySet().size() > 0);
+		} else if (this instanceof JsonArray) {
+			return (((JsonArray)this).array.size() > 0);
+		} else if (this instanceof JsonValue) {
+			return !"\"false\"".equals(toString());
+		} else {
+			// never fall back here
+			return true;
+		}
+	}
+	
+	/**
+	 * JsonObject として、指定されたキーの値を取得します。
+	 * JsonObject でない場合、ClassCastException がスローされます。
+	 *
+	 * @param	key		値を取得したいキー名
+	 * @return	取得される値(JsonType)
+	 */
 	public JsonType get(String key) {
 		JsonObject jo = (JsonObject)this; // may throw ClassCastException
 		return jo.map.get(key);
 	}
+	
+	/**
+	 * JsonObject として、指定されたキーの値を取得し、削除します。(cut)
+	 * JsonObject でない場合、ClassCastException がスローされます。
+	 *
+	 * @param	key		値を取得し、削除したいキー名
+	 * @return	取得される値(JsonType)。キーが存在しない場合、null
+	 */
+	public JsonType cut(String key) {
+		JsonObject jo = (JsonObject)this;
+		return jo.map.remove(key);
+	}
+	
+	/**
+	 * JsonArray として、指定された index の値を取得します。
+	 * JsonArray でない場合、ClassCastException がスローされます。
+	 *
+	 * @param	index	index値( 0 ～ size()-1 )
+	 * @return	取得される値(JsonType)
+	 */
 	public JsonType get(int index) {
 		JsonArray ja = (JsonArray)this; // may throw ClassCastException
 		return ja.array.get(index); // may throw ArrayIndexOutOfBoundsException
 	}
+	
+	/**
+	 * JsonArray として、要素数を返却します。
+	 * JsonArray でない場合、ClassCastException がスローされます。
+	 *
+	 * @return	要素数
+	 */
 	public int size() {
 		JsonArray ja = (JsonArray)this; // may throw ClassCastException
 		return ja.array.size();
 	}
+	
+	public boolean isArray() {	return (this instanceof JsonArray);	}
+	public boolean isObject() {	return (this instanceof JsonObject); }
+	public boolean isValue() { return (this instanceof JsonValue); }
 	
 /*
  * add methods
@@ -110,172 +204,135 @@ public abstract class JsonType {
 /*
  * push methods (配列の最後尾に値追加)
  */
-	public JsonArray push(String name, JsonType t) {
-		return ((JsonArray)this).push(name, t);
+	public JsonArray push(JsonType t) {
+		return ((JsonArray)this).push(t);
 	}
-	public JsonArray push(String name, String t) {
-		return ((JsonArray)this).push(name, t);
+	public JsonArray push(String t) {
+		return ((JsonArray)this).push(t);
 	}
-	public JsonArray push(String name, boolean t) {
-		return ((JsonArray)this).push(name, t);
+	public JsonArray push(boolean t) {
+		return ((JsonArray)this).push(t);
 	}
-	public JsonArray push(String name, byte t) {
-		return ((JsonArray)this).push(name, t);
+	public JsonArray push(byte t) {
+		return ((JsonArray)this).push(t);
 	}
-	public JsonArray push(String name, char t) {
-		return ((JsonArray)this).push(name, t);
+	public JsonArray push(char t) {
+		return ((JsonArray)this).push(t);
 	}
-	public JsonArray push(String name, short t) {
-		return ((JsonArray)this).push(name, t);
+	public JsonArray push(short t) {
+		return ((JsonArray)this).push(t);
 	}
-	public JsonArray push(String name, int t) {
-		return ((JsonArray)this).push(name, t);
+	public JsonArray push(int t) {
+		return ((JsonArray)this).push(t);
 	}
-	public JsonArray push(String name, long t) {
-		return ((JsonArray)this).push(name, t);
+	public JsonArray push(long t) {
+		return ((JsonArray)this).push(t);
 	}
-	public JsonArray push(String name, float t) {
-		return ((JsonArray)this).push(name, t);
+	public JsonArray push(float t) {
+		return ((JsonArray)this).push(t);
 	}
-	public JsonArray push(String name, double t) {
-		return ((JsonArray)this).push(name, t);
+	public JsonArray push(double t) {
+		return ((JsonArray)this).push(t);
 	}
-	public JsonArray push(String name, JsonType[] t) {
-		return ((JsonArray)this).push(name, t);
+	public JsonArray push(JsonType[] t) {
+		return ((JsonArray)this).push(t);
 	}
 	
 /*
  * pop methods (配列の最後の要素を取得し、削除)
  */
-	public JsonType pop(String name, JsonType t) {
-		return ((JsonArray)this).pop(name, t);
-	}
-	public JsonType pop(String name, String t) {
-		return ((JsonArray)this).pop(name, t);
-	}
-	public JsonType pop(String name, boolean t) {
-		return ((JsonArray)this).pop(name, t);
-	}
-	public JsonType pop(String name, byte t) {
-		return ((JsonArray)this).pop(name, t);
-	}
-	public JsonType pop(String name, char t) {
-		return ((JsonArray)this).pop(name, t);
-	}
-	public JsonType pop(String name, short t) {
-		return ((JsonArray)this).pop(name, t);
-	}
-	public JsonType pop(String name, int t) {
-		return ((JsonArray)this).pop(name, t);
-	}
-	public JsonType pop(String name, long t) {
-		return ((JsonArray)this).pop(name, t);
-	}
-	public JsonType pop(String name, float t) {
-		return ((JsonArray)this).pop(name, t);
-	}
-	public JsonType pop(String name, double t) {
-		return ((JsonArray)this).pop(name, t);
-	}
-	public JsonType pop(String name, JsonType[] t) {
-		return ((JsonArray)this).pop(name, t);
+	public JsonType pop() {
+		return ((JsonArray)this).pop();
 	}
 	
 /*
  * shift methods (配列の最初に値追加)
  */
-	public JsonArray shift(String name, JsonType t) {
-		return ((JsonArray)this).shift(name, t);
+	public JsonArray shift(JsonType t) {
+		return ((JsonArray)this).shift(t);
 	}
-	public JsonArray shift(String name, String t) {
-		return ((JsonArray)this).shift(name, t);
+	public JsonArray shift(String t) {
+		return ((JsonArray)this).shift(t);
 	}
-	public JsonArray shift(String name, boolean t) {
-		return ((JsonArray)this).shift(name, t);
+	public JsonArray shift(boolean t) {
+		return ((JsonArray)this).shift(t);
 	}
-	public JsonArray shift(String name, byte t) {
-		return ((JsonArray)this).shift(name, t);
+	public JsonArray shift(byte t) {
+		return ((JsonArray)this).shift(t);
 	}
-	public JsonArray shift(String name, char t) {
-		return ((JsonArray)this).shift(name, t);
+	public JsonArray shift(char t) {
+		return ((JsonArray)this).shift(t);
 	}
-	public JsonArray shift(String name, short t) {
-		return ((JsonArray)this).shift(name, t);
+	public JsonArray shift(short t) {
+		return ((JsonArray)this).shift(t);
 	}
-	public JsonArray shift(String name, int t) {
-		return ((JsonArray)this).shift(name, t);
+	public JsonArray shift(int t) {
+		return ((JsonArray)this).shift(t);
 	}
-	public JsonArray shift(String name, long t) {
-		return ((JsonArray)this).shift(name, t);
+	public JsonArray shift(long t) {
+		return ((JsonArray)this).shift(t);
 	}
-	public JsonArray shift(String name, float t) {
-		return ((JsonArray)this).shift(name, t);
+	public JsonArray shift(float t) {
+		return ((JsonArray)this).shift(t);
 	}
-	public JsonArray shift(String name, double t) {
-		return ((JsonArray)this).shift(name, t);
+	public JsonArray shift(double t) {
+		return ((JsonArray)this).shift(t);
 	}
-	public JsonArray shift(String name, JsonType[] t) {
-		return ((JsonArray)this).shift(name, t);
+	public JsonArray shift(JsonType[] t) {
+		return ((JsonArray)this).shift(t);
 	}
 	
 /*
  * unshift methods (配列の最初の要素を取得し、削除)
  */
-	public JsonType unshift(String name, JsonType t) {
-		return ((JsonArray)this).unshift(name, t);
-	}
-	public JsonType unshift(String name, String t) {
-		return ((JsonArray)this).unshift(name, t);
-	}
-	public JsonType unshift(String name, boolean t) {
-		return ((JsonArray)this).unshift(name, t);
-	}
-	public JsonType unshift(String name, byte t) {
-		return ((JsonArray)this).unshift(name, t);
-	}
-	public JsonType unshift(String name, char t) {
-		return ((JsonArray)this).unshift(name, t);
-	}
-	public JsonType unshift(String name, short t) {
-		return ((JsonArray)this).unshift(name, t);
-	}
-	public JsonType unshift(String name, int t) {
-		return ((JsonArray)this).unshift(name, t);
-	}
-	public JsonType unshift(String name, long t) {
-		return ((JsonArray)this).unshift(name, t);
-	}
-	public JsonType unshift(String name, float t) {
-		return ((JsonArray)this).unshift(name, t);
-	}
-	public JsonType unshift(String name, double t) {
-		return ((JsonArray)this).unshift(name, t);
-	}
-	public JsonType unshift(String name, JsonType[] t) {
-		return ((JsonArray)this).unshift(name, t);
+	public JsonType unshift() {
+		return ((JsonArray)this).unshift();
 	}
 	
-	
-	
+	/**
+	 * JsonObject としてのキー(keySet)を取得します。
+	 *
+	 * @return	キー集合(Set<String>)
+	 */
 	public Set<String> keySet() {
 		return ((JsonObject)this).map.keySet(); // may throw ClassCastException
 	}
 	
+	/**
+	 * 人が見やすいインデントを含んだ形式で文字列化します。
+	 * 最大横幅はデフォルト値(80)が設定されます。
+	 *
+	 * @param	indent	インデント(複数のスペースやタブ)
+	 * @return	インデント、改行を含む文字列
+	 */
 	public String toString(String indent) {
 		return toString(indent, 80);
 	}
 	
+	/**
+	 * 人が見やすいインデントを含んだ形式で文字列化します。
+	 * JsonArray 値を一行で表せるなら改行しないよう、一行の文字数を指定します。
+	 *
+	 * @param	indent	インデント(複数のスペースやタブ)
+	 * @param	textWidth	一行に収まる文字数
+	 * @return	インデント、改行を含む文字列
+	 */
 	public String toString(String indent, int textwidth) {
 		return toString("", indent, textwidth, false);
 	}
 	
 	
 	/**
-	 * JsonObject において、"name" : の後に続いている場合、改行
-	 * しないことをサポートするためのメソッド。
+	 * 人が見やすいインデントを含んだ形式で文字列化します。
+	 * JsonObject において、"name" : の後に続いている場合、改行しないことを
+	 * サポートするためのメソッド。
 	 * 
 	 * @param	indent	インデント(いくつかのスペース)
+	 * @param	indentStep	インデント一回分のスペースやタブ
+	 * @param	textWidth	改行せず一行に収めようとする場合に基準とする
+	 *						一行の文字数
 	 * @param	objElement	true..オブジェクトの要素名の後ろ
+	 * @return	改行、スペースなどを含む String
 	 */
 	protected String toString(String indent, String indentStep,
 						int textwidth, boolean objElement) {
@@ -286,21 +343,48 @@ public abstract class JsonType {
  * class methods
  */
 	/**
-	 * toString() で返す JSON文字列を人が見るためにインデントを行うか、
-	 * サイズを節約するために圧縮するかを指定します。
-	 * static method で実現しているため、マルチスレッドでは利用できません。
+	 * new JsonObject を得るための便利関数です。
+	 * 文字数(タイプ数)を減らす目的で設定されています。
+	 * new JsonObject().add("name", "value") を
+	 * JsonType.o("name", "value") で取得できます。
 	 *
-	 * @param	withIndent	インデントを行う(true), 詰める(false)
+	 * @param	name	キー名
+	 * @param	t		バリュー
+	 * @return	新しく生成されたJsonObject
 	 */
-//	public static void setIndent(boolean withIndent) {
-//		if (withIndent) {
-//			ls = System.getProperty("line.separator");
-//			indent = "  ";
-//		} else {
-//			ls = "";
-//			indent = "";
-//		}
-//	}
+	public static JsonObject o(String name, JsonType t) {
+		return new JsonObject().put(name, t);
+	}
+	public static JsonObject o(String name, String t) {
+		return new JsonObject().put(name, t);
+	}
+	public static JsonObject o(String name, boolean t) {
+		return new JsonObject().put(name, t);
+	}
+	public static JsonObject o(String name, byte t) {
+		return new JsonObject().put(name, t);
+	}
+	public static JsonObject o(String name, char t) {
+		return new JsonObject().put(name, t);
+	}
+	public static JsonObject o(String name, short t) {
+		return new JsonObject().put(name, t);
+	}
+	public static JsonObject o(String name, int t) {
+		return new JsonObject().put(name, t);
+	}
+	public static JsonObject o(String name, long t) {
+		return new JsonObject().put(name, t);
+	}
+	public static JsonObject o(String name, float t) {
+		return new JsonObject().put(name, t);
+	}
+	public static JsonObject o(String name, double t) {
+		return new JsonObject().put(name, t);
+	}
+	public static JsonObject o(String name, JsonType[] t) {
+		return new JsonObject().put(name, t);
+	}
 	
 	/**
 	 * 指定された JSON 文字列から JsonType を生成します。
@@ -317,9 +401,9 @@ public abstract class JsonType {
 	}
 	
 	/**
-	 * 指定された InputStream から JSON value を１つ読み込みます。
-	 * InputStream はJSON value終了位置まで読み込まれ、close() されません。
-	 * InputStream は内部的に PushbackInputStream として利用されます。
+	 * 指定された Reader から JSON value を１つ読み込みます。
+	 * Reader はJSON value終了位置まで読み込まれ、close() されません。
+	 * Reader は内部的に PushbackReader として利用されます。
 	 *
 	 * @param	in	Json文字列を入力する Reader。
 	 * @return	生成された JsonType
@@ -531,6 +615,7 @@ public abstract class JsonType {
 			// ここで name として入っていてはならない文字をチェック
 			// しかし、規則が書いてないので手抜き
 			// RFC4627 によると、string とあり、なんでもOKらしい
+			// "." も OK
 			skipspaces(pr);
 			c = pr.read();
 			if (c == -1) throw new JsonParseException("オブジェクトの要素名の後に予期しない終了を検知しました");
@@ -547,4 +632,10 @@ public abstract class JsonType {
 		}
 	}
 
+/*----------------------
+ * implements(Iterable)
+ */
+	public java.util.Iterator<JsonType> iterator() {
+		return ((JsonArray)this).iterator();
+	}
 }
