@@ -10,7 +10,8 @@ import abdom.data.json.object.JData;
 public abstract class C8yData extends JData {
 	
 	/**
-	 * 
+	 * フィールドをすべてクリア(Objecct = null, primitive = 0)とするメソッド
+	 * いるか？ 毎回 new するでよいのでは。
 	 */
 	public void clearSelf() {
 	}
