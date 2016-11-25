@@ -581,11 +581,12 @@ public abstract class JsonType implements Iterable<JsonType> {
 					int u = 0;
 					for (int i = 0; i < 4; i++) {
 						c = pr.read();
-						if (c >= '0' && c <= '9') u = 256*u + (c-'0');
-						else if (c >= 'A' && c <= 'F') u = 256*u + (c-'A') +10;
-						else if (c >= 'a' && c <= 'f') u = 256*u + (c-'a') +10;
+						if (c >= '0' && c <= '9') u = 16*u + (c-'0');
+						else if (c >= 'A' && c <= 'F') u = 16*u + (c-'A') +10;
+						else if (c >= 'a' && c <= 'f') u = 16*u + (c-'a') +10;
 						else throw new JsonParseException("\\u‚ÌŒã‚Ì•¶Žš—ñ‚ª•s³‚Å‚· : " + (char)c);
 					}
+System.out.println(Integer.toString( (int)u , 16));
 					result.append((char)u);
 					continue;
 				}

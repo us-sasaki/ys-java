@@ -105,8 +105,8 @@ public class JsonValue extends JsonType {
 					break;
 				case 'u':
 					if (i+4 >= value.length()) throw new InternalError();
-					String hex = sb.substring(i, i+4);
-					i += 4;
+					String hex = value.substring(i+1, i+5);
+					i += 5;
 					char u = (char)Integer.parseInt(hex, 16);
 					sb.append(u);
 					break;
