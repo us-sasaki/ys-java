@@ -27,7 +27,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * @return	JsonValue ‚Æ‚µ‚Ä‚Ì•¶Žš—ñ’l
 	 */
 	public String getValue() {
-		return ((JsonValue)this).value; // may throw ClassCastException
+		return ((JsonValue)this).getValue(); // may throw ClassCastException
 	}
 	
 	/**
