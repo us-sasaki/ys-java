@@ -74,10 +74,10 @@ public class JsonValue extends JsonType {
 		// unescape
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < value.length(); i++) {
-			char c = sb.charAt(i);
+			char c = value.charAt(i);
 			if (c == '\\') {
 				if (i++ == value.length()) break; // illegal but exit
-				char c = sb.charAt(i);
+				c = value.charAt(i);
 				switch (c) {
 				case 'b':
 					sb.append('\b');
@@ -123,10 +123,6 @@ public class JsonValue extends JsonType {
 /*-----------
  * overrides
  */
-	@Override
-	public String getValue() {
-	}
-	
 	@Override
 	public String toString() {
 		return quote+value+quote;

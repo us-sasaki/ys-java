@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @author		Yusuke Sasaki
  */
 public abstract class JsonType implements Iterable<JsonType> {
-	static final String LS = System.getProperty("line.separator");
+	protected static final String LS = System.getProperty("line.separator");
 	
 	/**
 	 * JsonValue としての値を文字列で取得します。このオブジェクトが
@@ -299,6 +299,16 @@ public abstract class JsonType implements Iterable<JsonType> {
 	}
 	
 	/**
+	 * 文字列表現を返却します。文字列表現は、改行やスペース
+	 * 文字を含まない JSON 形式です。
+	 * string 型 (JsonValue で保持する値が String の場合) では
+	 * 結果は ""(ダブルクオーテーション) で括られることに注意してください。
+	 *
+	 * @return	このオブジェクトの JSON 形式(文字列)
+	 */
+	public abstract String toString();
+	
+	/**
 	 * 人が見やすいインデントを含んだ形式で文字列化します。
 	 * 最大横幅はデフォルト値(80)が設定されます。
 	 *
@@ -310,34 +320,48 @@ public abstract class JsonType implements Iterable<JsonType> {
 	}
 	
 	/**
-	 * 人が見やすいインデントを含んだ形式で文字列化します。
-	 * JsonArray 値を一行で表せるなら改行しないよう、一行の文字数を指定します。
+	 * 人が見やすいインデントを含んだJSON形式で文字列化します。
+	 * JsonObject, JsonArray 値を一行で表せるなら改行させないための、一行の
+	 * 文字数を指定します。
 	 *
-	 * @param	indent	インデント(複数のスペースやタブ)
-	 * @param	textWidth	一行に収まる文字数
+	 * @param	indent		インデント(複数のスペースやタブ)
+	 * @param	textwidth	object, array に関し、この文字数に収まる場合
+	 *						複数行に分けない処理を行うための閾値。
+	 *						0 以下を指定すると、一行化を試みず、常に複数行化
+	 *						されます。(この方が高速)
 	 * @return	インデント、改行を含む文字列
 	 */
-	public String toString(String indent, int textwidth) {
+	public final String toString(String indent, int textwidth) {
 		return toString("", indent, textwidth, false);
 	}
 	
 	
 	/**
-	 * 人が見やすいインデントを含んだ形式で文字列化します。
-	 * JsonObject において、"name" : の後に続いている場合、改行しないことを
-	 * サポートするためのメソッド。
+	 * 人が見やすいインデントを含んだJSON形式で文字列化します。
+	 * インデントをサポートするため、現在のインデントを示す indent,
+	 * 次のインデントを作るための indentStep, 行が長くならない場合に
+	 * 一行化するための textwidth, JsonObject にける "name" : 後に
+	 * { を同行に配置する特例処理をするためのフラグ(objElement)を
+	 * 持っています。
+	 * 複数行に分けるための改行コードは、JsonType.LS として保持されています。
+	 * <pre>
+	 *
+	 * [indent]*開始位置(objElement==true の時は indent をつけない)
+	 * [indent][indentStep]*インデント付の次の行の開始位置
+	 * -------------------------(textwidthまでは一行化されることあり)-----
+	 * </pre>
 	 * 
-	 * @param	indent	インデント(いくつかのスペース)
+	 * @param	indent		インデント(いくつかのスペース)
 	 * @param	indentStep	インデント一回分のスペースやタブ
-	 * @param	textWidth	改行せず一行に収めようとする場合に基準とする
-	 *						一行の文字数
+	 * @param	textwidth	object, array に関し、この文字数に収まる場合
+	 *						複数行に分けない処理を行うための閾値。
+	 *						0 以下を指定すると、一行化を試みず、常に複数行化
+	 *						されます。(この方が高速)
 	 * @param	objElement	true..オブジェクトの要素名の後ろ
 	 * @return	改行、スペースなどを含む String
 	 */
-	protected String toString(String indent, String indentStep,
-						int textwidth, boolean objElement) {
-		return indent + toString(); // デフォルトの実装
-	}
+	protected abstract String toString(String indent, String indentStep,
+						int textwidth, boolean objElement);
 	
 /*---------------
  * class methods
@@ -545,27 +569,25 @@ public abstract class JsonType implements Iterable<JsonType> {
 				c = pr.read();
 				if (c == -1) throw new JsonParseException("\\ の次に予期しない終了を検知しました");
 				switch (c) {
-				case '\"':
-				case '\\':
-				case '/':
-				case 'b':
-				case 'f':
-				case 'n':
-				case 'r':
-				case 't':
-					result.append('\\');
-					result.append((char)c);
-					continue;
+				case '\"':	result.append(c); continue;
+				case '\\':	result.append(c); continue;
+				case '/':	result.append(c); continue;
+				case 'b':	result.append('\b'); continue;
+				case 'f':	result.append('\f'); continue;
+				case 'n':	result.append('\n'); continue;
+				case 'r':	result.append('\r'); continue;
+				case 't':	result.append('\t'); continue;
 				case 'u':
-					result.append('\\');
-					result.append((char)c);
+					int u = 0;
 					for (int i = 0; i < 4; i++) {
 						c = pr.read();
-						if (c >= '0' && c <= '9') result.append( (char)c );
-						else if (c >= 'A' && c <= 'F') result.append( (char)c );
-						else if (c >= 'a' && c <= 'f') result.append( (char)c );
+						if (c >= '0' && c <= '9') u = 256*u + (c-'0');
+						else if (c >= 'A' && c <= 'F') u = 256*u + (c-'A') +10;
+						else if (c >= 'a' && c <= 'f') u = 256*u + (c-'a') +10;
 						else throw new JsonParseException("\\uの後の文字列が不正です : " + (char)c);
 					}
+					result.append((char)u);
+					continue;
 				}
 			}
 			result.append((char)c);
@@ -636,6 +658,11 @@ public abstract class JsonType implements Iterable<JsonType> {
  * implements(Iterable)
  */
 	public java.util.Iterator<JsonType> iterator() {
-		return ((JsonArray)this).iterator();
+		try {
+			JsonArray array = (JsonArray)this;
+			return array.iterator();
+		} catch (ClassCastException cce) {
+			throw new ClassCastException("JsonType が JsonArray でないため、for などで iterator を取得できません: type="+ getClass() + ":" + cce);
+		}
 	}
 }
