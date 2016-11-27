@@ -9,15 +9,48 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Json形式における型一般を表します。また、ストリーム、文字列からの parse 
+ * Json形式における型一般(var)を表します。また、ストリーム、文字列からの parse 
  * メソッドを提供します。
- * 利便性のため、なるべくキャストせずに利用できるアクセスメソッドを提供します。
- * アクセスできない型であった場合、ClassCastException が発生します。
+ * 利便性のため、キャストせずに利用するアクセスメソッドを提供します。
+ * 利用できないオペレーションであった場合、ClassCastException が発生します。
  *
  * @version		November 19, 2016
  * @author		Yusuke Sasaki
  */
 public abstract class JsonType implements Iterable<JsonType> {
+	/** getType() で返却される、JavaScript での型 void(null) を表す定数です */
+	public static final int TYPE_VOID = 0;
+	
+	/** getType() で返却される、JavaScript での型 boolean を表す定数です */
+	public static final int TYPE_BOOLEAN = 1;
+	
+	/** getType() で返却される、JavaScript での型 int を表す定数です */
+	public static final int TYPE_INT = 2;
+	
+	/** getType() で返却される、JavaScript での型 double を表す定数です */
+	public static final int TYPE_DOUBLE = 3;
+	
+	/** getType() で返却される、JavaScript での型 string を表す定数です */
+	public static final int TYPE_STRING = 4;
+	
+	/** getType() で返却される、JavaScript での型 array を表す定数です */
+	public static final int TYPE_ARRAY = 10;
+	
+	/** getType() で返却される、JavaScript での型 object を表す定数です */
+	public static final int TYPE_OBJECT = 20;
+	
+	/**
+	 * getType() で返却される、どの型でもないことを表す定数です。
+	 * この値が返却することは通常ありません。JsonType を継承した新しい
+	 * クラスを作成したり、JsonValue を継承して value, quote に新しい値を
+	 * 定義した場合に返却される可能性があります。
+	 */
+	public static final int TYPE_UNKNOWN = 99;
+	
+	/**
+	 * 高速化のため、System.getProperty("line.separator")
+	 * の値を保持します。
+	 */
 	protected static final String LS = System.getProperty("line.separator");
 	
 	/**
@@ -27,7 +60,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * @return	JsonValue としての文字列値
 	 */
 	public String getValue() {
-		return ((JsonValue)this).getValue(); // may throw ClassCastException
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、getValue できません");
 	}
 	
 	/**
@@ -128,165 +161,208 @@ public abstract class JsonType implements Iterable<JsonType> {
 	public boolean isArray() {	return (this instanceof JsonArray);	}
 	public boolean isObject() {	return (this instanceof JsonObject); }
 	public boolean isValue() { return (this instanceof JsonValue); }
+	public boolean isNumber() {
+		int type = getType();
+		return (type == TYPE_INT || type == TYPE_DOUBLE);
+	}
+	
+	/**
+	 * この JsonType が JavaScript のどの型であるかを示す定数を返却します。
+	 *
+	 * @return	型を示す定数
+	 * @see		#TYPE_VOID
+	 * @see		#TYPE_BOOLEAN
+	 * @see		#TYPE_INT
+	 * @see		#TYPE_DOUBLE
+	 * @see		#TYPE_STRING
+	 * @see		#TYPE_ARRAY
+	 * @see		#TYPE_OBJECT
+	 * @see		#TYPE_UNKNOWN
+	 */
+	public int getType() {
+		if (this instanceof JsonValue) {
+			JsonValue j = (JsonValue)this;
+			if ("\"".equals(j.quote)) return TYPE_STRING;
+			if ("null".equals(j.value)) return TYPE_VOID;
+			if ("true".equals(j.value)) return TYPE_BOOLEAN;
+			if ("false".equals(j.value)) return TYPE_BOOLEAN;
+			try {
+				Integer.parseInt(j.value);
+				return TYPE_INT;
+			} catch (NumberFormatException nfe) {
+				try {
+					Double.parseDouble(j.value);
+					return TYPE_DOUBLE;
+				} catch (NumberFormatException nfe2) {
+				}
+			}
+			return TYPE_UNKNOWN;
+		} else if (this instanceof JsonArray) {
+			return TYPE_ARRAY;
+		} else if (this instanceof JsonObject) {
+			return TYPE_OBJECT;
+		}
+		return TYPE_UNKNOWN;
+	}
 	
 /*
  * add methods
  */
 	public JsonObject add(String name, JsonType t) {
-		return ((JsonObject)this).add(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 	public JsonObject add(String name, String t) {
-		return ((JsonObject)this).add(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 	public JsonObject add(String name, boolean t) {
-		return ((JsonObject)this).add(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 	public JsonObject add(String name, byte t) {
-		return ((JsonObject)this).add(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 	public JsonObject add(String name, char t) {
-		return ((JsonObject)this).add(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 	public JsonObject add(String name, short t) {
-		return ((JsonObject)this).add(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 	public JsonObject add(String name, int t) {
-		return ((JsonObject)this).add(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 	public JsonObject add(String name, long t) {
-		return ((JsonObject)this).add(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 	public JsonObject add(String name, float t) {
-		return ((JsonObject)this).add(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 	public JsonObject add(String name, double t) {
-		return ((JsonObject)this).add(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 	public JsonObject add(String name, JsonType[] t) {
-		return ((JsonObject)this).add(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 /*
  * put methods (add と同等だが、値を上書き)
  */
 	public JsonObject put(String name, JsonType t) {
-		return ((JsonObject)this).put(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
 	public JsonObject put(String name, String t) {
-		return ((JsonObject)this).put(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
 	public JsonObject put(String name, boolean t) {
-		return ((JsonObject)this).put(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
 	public JsonObject put(String name, byte t) {
-		return ((JsonObject)this).put(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
 	public JsonObject put(String name, char t) {
-		return ((JsonObject)this).put(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
 	public JsonObject put(String name, short t) {
-		return ((JsonObject)this).put(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
 	public JsonObject put(String name, int t) {
-		return ((JsonObject)this).put(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
 	public JsonObject put(String name, long t) {
-		return ((JsonObject)this).put(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
 	public JsonObject put(String name, float t) {
-		return ((JsonObject)this).put(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
 	public JsonObject put(String name, double t) {
-		return ((JsonObject)this).put(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
 	public JsonObject put(String name, JsonType[] t) {
-		return ((JsonObject)this).put(name, t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
 /*
  * push methods (配列の最後尾に値追加)
  */
 	public JsonArray push(JsonType t) {
-		return ((JsonArray)this).push(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	public JsonArray push(String t) {
-		return ((JsonArray)this).push(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	public JsonArray push(boolean t) {
-		return ((JsonArray)this).push(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	public JsonArray push(byte t) {
-		return ((JsonArray)this).push(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	public JsonArray push(char t) {
-		return ((JsonArray)this).push(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	public JsonArray push(short t) {
-		return ((JsonArray)this).push(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	public JsonArray push(int t) {
-		return ((JsonArray)this).push(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	public JsonArray push(long t) {
-		return ((JsonArray)this).push(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	public JsonArray push(float t) {
-		return ((JsonArray)this).push(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	public JsonArray push(double t) {
-		return ((JsonArray)this).push(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	public JsonArray push(JsonType[] t) {
-		return ((JsonArray)this).push(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	
 /*
  * pop methods (配列の最後の要素を取得し、削除)
  */
 	public JsonType pop() {
-		return ((JsonArray)this).pop();
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、pop できません");
 	}
 	
 /*
  * shift methods (配列の最初に値追加)
  */
 	public JsonArray shift(JsonType t) {
-		return ((JsonArray)this).shift(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	public JsonArray shift(String t) {
-		return ((JsonArray)this).shift(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	public JsonArray shift(boolean t) {
-		return ((JsonArray)this).shift(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	public JsonArray shift(byte t) {
-		return ((JsonArray)this).shift(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	public JsonArray shift(char t) {
-		return ((JsonArray)this).shift(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	public JsonArray shift(short t) {
-		return ((JsonArray)this).shift(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	public JsonArray shift(int t) {
-		return ((JsonArray)this).shift(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	public JsonArray shift(long t) {
-		return ((JsonArray)this).shift(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	public JsonArray shift(float t) {
-		return ((JsonArray)this).shift(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	public JsonArray shift(double t) {
-		return ((JsonArray)this).shift(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	public JsonArray shift(JsonType[] t) {
-		return ((JsonArray)this).shift(t);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	
 /*
  * unshift methods (配列の最初の要素を取得し、削除)
  */
 	public JsonType unshift() {
-		return ((JsonArray)this).unshift();
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、unshift できません");
 	}
 	
 	/**

@@ -1,7 +1,12 @@
 package abdom.data.json;
 
 /**
- * Json形式におけるプリミティブ型(文字列,数値)を表します
+ * Json形式におけるプリミティブ型(文字列,数値)を表します。
+ * 文字列は内部的にはコントロールコードをエスケープシーケンスした文字列として
+ * 保持します。getValue() でエスケープシーケンスを解除します。
+ *
+ * @version		November 25, 2016
+ * @author		Yusuke Sasaki
  */
 public class JsonValue extends JsonType {
 	public String value;
@@ -11,8 +16,9 @@ public class JsonValue extends JsonType {
  * constructor
  */
 	/**
-	 * \ でエスケープすべき文字もそのまま保存し、toString で返してしまう。
-	 * ので、\", \', \\ は toString() 時にエスケープするよう変更する
+	 * 指定された文字列を保持する Json 形式を作成します。
+	 *
+	 * @param	value	保持する String
 	 */
 	public JsonValue(String value) {
 		if (value == null) this.value = "null";
@@ -23,10 +29,7 @@ public class JsonValue extends JsonType {
 	}
 	
 	public JsonValue(byte value) {	this.value = String.valueOf(value);	}
-	public JsonValue(char value) {
-		this.value = String.valueOf(value);
-		quote = "\""; // string 扱い
-	}
+	public JsonValue(char value) {	this(String.valueOf(value));	}
 	public JsonValue(short value) { this.value = String.valueOf(value); }
 	public JsonValue(int  value) {	this.value = String.valueOf(value); }
 	public JsonValue(long value) {	this.value = String.valueOf(value); }
@@ -39,30 +42,14 @@ public class JsonValue extends JsonType {
 		for (int i = 0; i < value.length(); i++) {
 			char c = value.charAt(i);
 			switch (c) {
-			case '\b':
-				sb.append("\\b");
-				break;
-			case '\t':
-				sb.append("\\t");
-				break;
-			case '\n':
-				sb.append("\\n");
-				break;
-			case '\r':
-				sb.append("\\r");
-				break;
-			case '\f':
-				sb.append("\\f");
-				break;
-			case '\'':
-				sb.append("\\\'");
-				break;
-			case '\"':
-				sb.append("\\\"");
-				break;
-			case '\\':
-				sb.append("\\\\");
-				break;
+			case '\b':	sb.append("\\b");	break;
+			case '\t':	sb.append("\\t");	break;
+			case '\n':	sb.append("\\n");	break;
+			case '\r':	sb.append("\\r");	break;
+			case '\f':	sb.append("\\f");	break;
+			case '\'':	sb.append("\\\'");	break;
+			case '\"':	sb.append("\\\"");	break;
+			case '\\':	sb.append("\\\\");	break;
 			default:
 				sb.append(c);
 			}
@@ -70,7 +57,15 @@ public class JsonValue extends JsonType {
 		return sb.toString();
 	}
 	
+	/**
+	 * この JsonValue の持つ文字列値(Java値)を返却します。
+	 * クオーテーションやエスケープシーケンスは解除されます。
+	 *
+	 * @return	String 値
+	 */
 	public String getValue() {
+		if ("".equals(quote) && "null".equals(value)) return null;
+		
 		// unescape
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < value.length(); i++) {
@@ -79,30 +74,14 @@ public class JsonValue extends JsonType {
 				if (i++ == value.length()) break; // illegal but exit
 				c = value.charAt(i);
 				switch (c) {
-				case 'b':
-					sb.append('\b');
-					break;
-				case 't':
-					sb.append('\t');
-					break;
-				case 'n':
-					sb.append('\n');
-					break;
-				case 'r':
-					sb.append('\r');
-					break;
-				case 'f':
-					sb.append('\f');
-					break;
-				case '\'':
-					sb.append('\'');
-					break;
-				case '\"':
-					sb.append('\"');
-					break;
-				case '\\':
-					sb.append('\\');
-					break;
+				case 'b':	sb.append('\b');	break;
+				case 't':	sb.append('\t');	break;
+				case 'n':	sb.append('\n');	break;
+				case 'r':	sb.append('\r');	break;
+				case 'f':	sb.append('\f');	break;
+				case '\'':	sb.append('\'');	break;
+				case '\"':	sb.append('\"');	break;
+				case '\\':	sb.append('\\');	break;
 				case 'u':
 					if (i+4 >= value.length()) throw new InternalError();
 					String hex = value.substring(i+1, i+5);
@@ -130,6 +109,5 @@ public class JsonValue extends JsonType {
 	@Override
 	protected String toString(String indent, String indentStep, int textwidth, boolean objElement) {
 		return indent+quote+value+quote;
-//		return indent+quote+value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\'", "\\\'")+quote; // "string" / number の形式
 	}
 }

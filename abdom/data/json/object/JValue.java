@@ -10,7 +10,7 @@ import abdom.data.json.JsonType;
  * JsonValue を Java オブジェクトによって模倣する場合<br/>
  * 特定の JsonObject/JsonArray 構造がまとまった意味を持ち、1つのJavaオブジェ
  * クトとして表したい場合<br/>
- * 直接継承する場合、JData のようにメンバ変数の直列化機能は持たないため、
+ * 直接継承する場合は JData のようなメンバ変数の直列化機能は持たないため、
  * JsonType との相互変換メソッドとして、fill(JsonValue), toJson() を実装する
  * 必要があります。
  *
@@ -30,7 +30,8 @@ public abstract class JValue {
 	 * JsonType によってインスタンス状態を埋めます。
 	 *
 	 * @param	value として null 値や、JSON における null が指定される場合が
-	 *			あり、これを念頭に実装して下さい。
+	 *			あり、これを念頭に(通常、NullPointerExceptionが発生しない
+	 *			ように null の場合は何もしない実装になります)実装して下さい。
 	 */
 	public abstract void fill(JsonType value);
 }

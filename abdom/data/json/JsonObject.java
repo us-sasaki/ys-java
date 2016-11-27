@@ -146,6 +146,8 @@ public class JsonObject extends JsonType {
 	protected String toString(String indent, String indentStep,
 						int textwidth, boolean objElement) {
 		StringBuilder sb = new StringBuilder();
+		
+		// object で、"name": の後だけインデントをつけないためのフラグ
 		if (!objElement) sb.append(indent);
 		sb.append('{');
 		boolean first = true;

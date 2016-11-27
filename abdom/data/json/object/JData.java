@@ -15,20 +15,21 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonValue;
 
 /**
- * Json オブジェクトを Java オブジェクトによって模倣します。
+ * JSON オブジェクトを Java オブジェクトによって模倣します。
  * このクラスを継承することで、Java オブジェクトと JSON 形式の相互変換が
- * 容易になります。
+ * 容易になります。つまり、Java オブジェクトのインスタンス変数が、
+ * JSON 形式として直列化でき、また逆に JSON 形式から Java インスタンスを
+ * 生成できるようになります。
  * メンバ変数として次のフィールド(JDataカテゴリ)が指定できます。<pre>
  *
- * boolean, int, double, String, JValue, JsonType
+ * boolean, int, double, String, JValue(,JData), JsonType
  * および、これらの型の配列 、List<JData>
  *
- * </pre>暗黙のフィールドとして、_fragment (JsonType型, JsonObject または
- * JsonArray) が存在し、fill() の際に未定義のフィールド値はすべてここに
- * 格納されます。
+ * </pre>暗黙のフィールドとして、_fragment (JsonObject型) を持っており
+ * fill() の際に未定義のフィールド値はすべてここに格納されます。
  * また、toJson() では _fragment フィールドは存在する(not null)場合のみJSON
  * メンバとして現れます。
- * 子クラスで、JSON形式との相互変換対象外の変数を定義したい場合、
+ * 子クラスで、JSON形式との相互変換対象外とする変数を定義したい場合、
  * transient 修飾子をつけて下さい。
  *
  * @version	November 12, 2016
@@ -151,6 +152,58 @@ public abstract class JData extends JValue {
 	 */
 	public JsonObject getFragments() {
 		return _fragment;
+	}
+	
+	/**
+	 * JsonType(JsonArray) から、JData[] を fill する便利関数です。
+	 * 指定する JsonType は、JsonObject を要素に持つ JsonArray である
+	 * 必要があります。
+	 * 返される配列の実行時の型は、指定された配列の型になります。
+	 * 指定された配列にリストが収まる場合は、その配列で返されます。それ
+	 * 以外の場合は、指定された配列の実行時の型と JsonArray のサイズを
+	 * 使って新しい配列が割り当てられます。 
+	 *
+	 * @param	source	値を保持している JsonType
+	 * @param	array	値を格納する配列(の型)
+	 * @return	JsonType の値が設定された JData の子クラスのインスタンスの配列
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends JData> T[] toArray(JsonType source, T[] array) {
+		int size = source.size(); // may throw class cast exception
+		T[] result = null;
+		Class compType = array.getClass().getComponentType();
+		if (array.length >= size) {
+			result = array;
+		} else {
+			result = (T[])Array.newInstance(compType, size);
+		}
+		for (int i = 0; i < size; i++) {
+			try {
+				result[i] = (T)compType.newInstance();
+				result[i].fill(source.get(i));
+			} catch (InstantiationException ie) {
+				throw new IllegalFieldTypeException(ie.toString());
+			} catch (IllegalAccessException iae) {
+				throw new IllegalFieldTypeException(iae.toString());
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * JSON 文字列から、JData[] を fill する便利関数です。
+	 * 指定する JSON 文字列は、object の array である必要があります。
+	 * 返される配列の実行時の型は、指定された配列の型になります。
+	 * 指定された配列にリストが収まる場合は、その配列で返されます。それ
+	 * 以外の場合は、指定された配列の実行時の型と JSON arrayのサイズを
+	 * 使って新しい配列が割り当てられます。 
+	 *
+	 * @param	source	値を保持している JsonType
+	 * @param	array	値を格納する配列(の型)
+	 * @return	JsonType の値が入れられた JData の子クラスの配列
+	 */
+	public static <T extends JData> T[] toArray(String source, T[] array) {
+		return toArray(JsonType.parse(source), array);
 	}
 	
 	/**
