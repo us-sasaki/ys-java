@@ -124,6 +124,22 @@ public class JsonObject extends JsonType {
  * overrides
  */
 	@Override
+	public JsonType get(String key) {
+		return map.get(key);
+	}
+	
+	@Override
+	public JsonType cut(String key) {
+		return map.remove(key);
+	}
+	
+	@Override
+	public java.util.Set<String> keySet() {
+		return map.keySet();
+	}
+	
+	
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");

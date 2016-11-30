@@ -146,7 +146,9 @@ public abstract class JData extends JValue {
 	}
 	
 	/**
-	 * fragment オブジェクト(JsonObject)を返却します。
+	 * このインスタンスが持つ fragment オブジェクト(JsonObject)
+	 * の参照を返却します。内容の参照/変更を簡便に行うことを想定した
+	 * メソッドです。
 	 *
 	 * @return	fragment オブジェクト(JsonObject)。null の場合があります。
 	 */
@@ -155,7 +157,7 @@ public abstract class JData extends JValue {
 	}
 	
 	/**
-	 * JsonType(JsonArray) から、JData[] を fill する便利関数です。
+	 * JsonType(JsonArray) から、JData[] を生成する便利関数です。
 	 * 指定する JsonType は、JsonObject を要素に持つ JsonArray である
 	 * 必要があります。
 	 * 返される配列の実行時の型は、指定された配列の型になります。
@@ -191,7 +193,7 @@ public abstract class JData extends JValue {
 	}
 	
 	/**
-	 * JSON 文字列から、JData[] を fill する便利関数です。
+	 * JSON 文字列から、JData[] を生成する便利関数です。
 	 * 指定する JSON 文字列は、object の array である必要があります。
 	 * 返される配列の実行時の型は、指定された配列の型になります。
 	 * 指定された配列にリストが収まる場合は、その配列で返されます。それ
@@ -315,7 +317,6 @@ public abstract class JData extends JValue {
 		} else if (JsonType.class.isAssignableFrom(type)) {
 		
 			// JsonType 型の場合
-//System.out.println("type = "+type+" f = " + f+" val = "+val);
 			f.set(this, JsonType.parse(val.toString()));
 		} else if (boolean[].class.isAssignableFrom(type)) {
 		
@@ -538,7 +539,6 @@ public abstract class JData extends JValue {
 					throw new IllegalFieldTypeException("Unexpected type " + type + "is found.");
 				}
 			} catch (NullPointerException npe) {
-System.out.println(npe);
 				result.put(name, (String)null);
 			}
 		}

@@ -173,6 +173,21 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
  * overrides
  */
 	@Override
+	public JsonType get(int index) {
+		return array.get(index);
+	}
+	
+	@Override
+	public int size() {
+		return array.size();
+	}
+	
+	@Override
+	public java.util.Iterator<JsonType> iterator() {
+		return array.iterator();
+	}
+	
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("[");
@@ -220,11 +235,4 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 		return sb.toString();
 	}
 	
-/*----------------------
- * implements(Iterable)
- */
-	@Override
-	public java.util.Iterator<JsonType> iterator() {
-		return array.iterator();
-	}
 }

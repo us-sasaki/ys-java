@@ -72,7 +72,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * @return	JsonValue としての int 値
 	 */
 	public int getIntValue() {
-		return Integer.parseInt(((JsonValue)this).value); // may throw ClassCastException
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、getIntValue できません");
 	}
 	
 	/**
@@ -84,7 +84,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * @return	JsonValue としての double 値
 	 */
 	public double getDoubleValue() {
-		return Double.parseDouble(((JsonValue)this).value); // may throw ClassCastException
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、getDoubleValue できません");
 	}
 	
 	/**
@@ -119,8 +119,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * @return	取得される値(JsonType)
 	 */
 	public JsonType get(String key) {
-		JsonObject jo = (JsonObject)this; // may throw ClassCastException
-		return jo.map.get(key);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、get(String) はサポートされません");
 	}
 	
 	/**
@@ -131,8 +130,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * @return	取得される値(JsonType)。キーが存在しない場合、null
 	 */
 	public JsonType cut(String key) {
-		JsonObject jo = (JsonObject)this;
-		return jo.map.remove(key);
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、cut(String) はサポートされません");
 	}
 	
 	/**
@@ -143,8 +141,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * @return	取得される値(JsonType)
 	 */
 	public JsonType get(int index) {
-		JsonArray ja = (JsonArray)this; // may throw ClassCastException
-		return ja.array.get(index); // may throw ArrayIndexOutOfBoundsException
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、get(int) はサポートされません");
 	}
 	
 	/**
@@ -154,8 +151,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * @return	要素数
 	 */
 	public int size() {
-		JsonArray ja = (JsonArray)this; // may throw ClassCastException
-		return ja.array.size();
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、size() はサポートされません");
 	}
 	
 	public boolean isArray() {	return (this instanceof JsonArray);	}
@@ -371,7 +367,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * @return	キー集合(Set<String>)
 	 */
 	public Set<String> keySet() {
-		return ((JsonObject)this).map.keySet(); // may throw ClassCastException
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、keySet を持ちません");
 	}
 	
 	/**
@@ -662,7 +658,6 @@ public abstract class JsonType implements Iterable<JsonType> {
 						else if (c >= 'a' && c <= 'f') u = 16*u + (c-'a') +10;
 						else throw new JsonParseException("\\uの後の文字列が不正です : " + (char)c);
 					}
-System.out.println(Integer.toString( (int)u , 16));
 					result.append((char)u);
 					continue;
 				}
@@ -735,11 +730,6 @@ System.out.println(Integer.toString( (int)u , 16));
  * implements(Iterable)
  */
 	public java.util.Iterator<JsonType> iterator() {
-		try {
-			JsonArray array = (JsonArray)this;
-			return array.iterator();
-		} catch (ClassCastException cce) {
-			throw new ClassCastException("JsonType が JsonArray でないため、for などで iterator を取得できません: type="+ getClass() + ":" + cce);
-		}
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、iterator を持ちません");
 	}
 }

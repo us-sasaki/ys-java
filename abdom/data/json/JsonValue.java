@@ -99,6 +99,16 @@ public class JsonValue extends JsonType {
 		return sb.toString();
 	}
 	
+	@Override
+	public int getIntValue() {
+		return Integer.parseInt(value);
+	}
+	
+	@Override
+	public double getDoubleValue() {
+		return Double.parseDouble(value);
+	}
+	
 /*-----------
  * overrides
  */

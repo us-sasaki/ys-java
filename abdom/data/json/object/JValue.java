@@ -4,7 +4,7 @@ import abdom.data.json.JsonType;
 
 /**
  * JSON と Java の間の相互変換に関するクラスのテンプレートです。
- * 通常、JsonData を継承してください。
+ * 通常、JData を継承してください。
  *
  * このクラスを直接継承するのは、以下のような場合です。<br/>
  * JsonValue を Java オブジェクトによって模倣する場合<br/>
@@ -30,8 +30,9 @@ public abstract class JValue {
 	 * JsonType によってインスタンス状態を埋めます。
 	 *
 	 * @param	value として null 値や、JSON における null が指定される場合が
-	 *			あり、これを念頭に(通常、NullPointerExceptionが発生しない
-	 *			ように null の場合は何もしない実装になります)実装して下さい。
+	 *			あり、これを念頭に実装して下さい。
+	 *			 (通常、NullPointerExceptionが発生しない
+	 *			ように null の場合は何もしない実装になります)
 	 */
 	public abstract void fill(JsonType value);
 }
