@@ -20,6 +20,7 @@ public class EventSource extends Id {
 		id		= mo.id;
 		name	= mo.name;
 		type	= mo.type;
+	}
 	
 	public EventSource(String id, String name, String type) {
 		super();
