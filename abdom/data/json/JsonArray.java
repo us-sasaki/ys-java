@@ -1,5 +1,6 @@
 package abdom.data.json;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -15,57 +16,57 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
  */
 	public JsonArray() {
 	}
-	public JsonArray(JsonType[] array) {	set(array); }
-	public JsonArray(byte[] array) {	set(array);	}
-	public JsonArray(char[] array) {	set(array);	}
-	public JsonArray(short[] array) {	set(array); }
-	public JsonArray(int[] array) {	set(array);	}
-	public JsonArray(long[] array) {	set(array);	}
-	public JsonArray(float[] array) {	set(array);	}
-	public JsonArray(double[] array) {	set(array);	}
-	public JsonArray(boolean[] array) {	set(array);	}
-	public JsonArray(String[] array) {	set(array);	}
+	public JsonArray(JsonType... array) {	set(array); }
+	public JsonArray(byte... array) {	set(array);	}
+	public JsonArray(char... array) {	set(array);	}
+	public JsonArray(short... array) {	set(array); }
+	public JsonArray(int... array) {	set(array);	}
+	public JsonArray(long... array) {	set(array);	}
+	public JsonArray(float... array) {	set(array);	}
+	public JsonArray(double... array) {	set(array);	}
+	public JsonArray(boolean... array) {	set(array);	}
+	public JsonArray(String... array) {	set(array);	}
 	
 /*------------------
  * instance methods
  */
-	public void set(JsonType[] array) {
+	public void set(JsonType... array) {
 		this.array.clear();
 		for (JsonType t : array) this.array.add(t);
 	}
-	public void set(String[] array) {
+	public void set(String... array) {
 		this.array.clear();
 		for (String t : array) this.array.add(new JsonValue(t));
 	}
-	public void set(byte[] array) {
+	public void set(byte... array) {
 		this.array.clear();
 		for (byte t : array) this.array.add(new JsonValue(t));
 	}
-	public void set(char[] array) {
+	public void set(char... array) {
 		this.array.clear();
 		for (char t : array) this.array.add(new JsonValue(t));
 	}
-	public void set(short[] array) {
+	public void set(short... array) {
 		this.array.clear();
 		for (short t : array) this.array.add(new JsonValue(t));
 	}
-	public void set(int[] array) {
+	public void set(int... array) {
 		this.array.clear();
 		for (int t : array) this.array.add(new JsonValue(t));
 	}
-	public void set(long[] array) {
+	public void set(long... array) {
 		this.array.clear();
 		for (long t : array) this.array.add(new JsonValue(t));
 	}
-	public void set(float[] array) {
+	public void set(float... array) {
 		this.array.clear();
 		for (float t : array) this.array.add(new JsonValue(t));
 	}
-	public void set(double[] array) {
+	public void set(double... array) {
 		this.array.clear();
 		for (double t : array) this.array.add(new JsonValue(t));
 	}
-	public void set(boolean[] array) {
+	public void set(boolean... array) {
 		this.array.clear();
 		for (boolean t : array) this.array.add(new JsonValue(t));
 	}
@@ -167,6 +168,85 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
  */
 	public JsonType unshift() {
 		return this.array.remove(0);
+	}
+	
+	/**
+	 * JavaScript における slice 操作です。
+	 * 
+	 * @param	s	コピーする最初のインデックス(含みます)
+	 * @param	e	コピーする末尾のインデックス(含みません)
+	 * @return	切り取った JsonArray (要素は参照(shallow copy)です)
+	 */
+	public JsonArray slice(int s, int e) {
+		JsonType[] a = array.toArray(new JsonType[0]);
+		return new JsonArray(Arrays.copyOfRange(a, s, e));
+	}
+	
+	/**
+	 * JavaScript における concat (結合、元の値を保つ) です。
+	 */
+	public JsonArray concat(JsonType target) {
+		List<JsonType> result = new ArrayList<JsonType>(array);
+		result.addAll(((JsonArray)target).array);
+		JsonArray ja = new JsonArray();
+		ja.array = result;
+		return ja;
+	}
+	
+/*
+ * splice
+ */
+	public JsonArray splice(int index, int delete, JsonType... toAdd) {
+		if (toAdd.length == 1 && (toAdd[0] instanceof JsonArray)) {
+			// 単独の JsonArray が指定された場合
+			toAdd = ((JsonArray)toAdd[0]).array.toArray(new JsonType[0]);
+		}
+		JsonType[] a = array.toArray(new JsonType[0]);
+		// 最終的な長さを計算
+		int deleteLen = Math.min(a.length - index, delete);
+		int len = a.length - deleteLen + toAdd.length;
+		JsonType[] result = new JsonType[len];
+		System.arraycopy(a, 0, result, 0, index);
+		System.arraycopy(toAdd, 0, result, index, toAdd.length);
+		System.arraycopy(a, index+deleteLen, result, index+toAdd.length, a.length-index-deleteLen);
+		
+		return new JsonArray(result);
+	}
+	public JsonArray splice(int index, int delete, String... val) {
+		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
+		return splice(index, delete, val);
+	}
+	public JsonArray splice(int index, int delete, byte... val) {
+		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
+		return splice(index, delete, val);
+	}
+	public JsonArray splice(int index, int delete, char... val) {
+		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
+		return splice(index, delete, val);
+	}
+	public JsonArray splice(int index, int delete, short... val) {
+		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
+		return splice(index, delete, val);
+	}
+	public JsonArray splice(int index, int delete, int... val) {
+		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
+		return splice(index, delete, val);
+	}
+	public JsonArray splice(int index, int delete, long... val) {
+		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
+		return splice(index, delete, val);
+	}
+	public JsonArray splice(int index, int delete, float... val) {
+		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
+		return splice(index, delete, val);
+	}
+	public JsonArray splice(int index, int delete, double... val) {
+		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
+		return splice(index, delete, val);
+	}
+	public JsonArray splice(int index, int delete, boolean... val) {
+		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
+		return splice(index, delete, val);
 	}
 	
 /*-----------

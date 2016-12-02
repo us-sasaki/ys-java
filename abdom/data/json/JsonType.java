@@ -200,7 +200,40 @@ public abstract class JsonType implements Iterable<JsonType> {
 		}
 		return TYPE_UNKNOWN;
 	}
-	
+
+/*
+ * set(array)
+ */
+	public void set(JsonType... array) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
+	}
+	public void set(String... array) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
+	}
+	public void set(byte... array) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
+	}
+	public void set(char... array) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
+	}
+	public void set(short... array) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
+	}
+	public void set(int... array) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
+	}
+	public void set(long... array) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
+	}
+	public void set(float... array) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
+	}
+	public void set(double... array) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
+	}
+	public void set(boolean... array) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
+	}	
 /*
  * add methods
  */
@@ -362,6 +395,55 @@ public abstract class JsonType implements Iterable<JsonType> {
 	}
 	
 	/**
+	 * JavaScript における slice 操作です。
+	 * 
+	 * @param	s	コピーする最初のインデックス(含みます)
+	 * @param	e	コピーする末尾のインデックス(含みません)
+	 * @return	切り取った JsonArray (要素は参照(shallow copy)です)
+	 */
+	public JsonArray slice(int s, int e) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、slice できません");
+	}
+	
+	/**
+	 * JavaScript における concat (結合、元の値を保つ) です。
+	 */
+	public JsonArray concat(JsonType target) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、concat できません");
+	}
+	
+	public JsonArray splice(int index, int delete, JsonType... toAdd) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
+	}
+	
+	public JsonArray splice(int index, int delete, String... val) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
+	}
+	public JsonArray splice(int index, int delete, byte... val) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
+	}
+	public JsonArray splice(int index, int delete, char... val) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
+	}
+	public JsonArray splice(int index, int delete, short... val) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
+	}
+	public JsonArray splice(int index, int delete, int... val) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
+	}
+	public JsonArray splice(int index, int delete, long... val) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
+	}
+	public JsonArray splice(int index, int delete, float... val) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
+	}
+	public JsonArray splice(int index, int delete, double... val) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
+	}
+	public JsonArray splice(int index, int delete, boolean... val) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
+	}
+	/**
 	 * JsonObject としてのキー(keySet)を取得します。
 	 *
 	 * @return	キー集合(Set<String>)
@@ -438,7 +520,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 /*---------------
  * class methods
  */
-	/**
+	/*
 	 * new JsonObject を得るための便利関数です。
 	 * 文字数(タイプ数)を減らす目的で設定されています。
 	 * new JsonObject().add("name", "value") を
