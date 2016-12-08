@@ -8,6 +8,11 @@ public class C8y_TemperatureMeasurement extends C8yData {
 	 */
 	public Value T;
 	
+	public C8y_TemperatureMeasurement() {
+		super();
+		this.T = new Value(0d, "C");
+	}
+	
 	public C8y_TemperatureMeasurement(double value) {
 		super();
 		this.T = new Value(value, "C");
