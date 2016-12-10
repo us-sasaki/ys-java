@@ -3,11 +3,13 @@ package abdom.data.json.object;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Set;
+import java.util.HashSet;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonArray;
@@ -18,60 +20,63 @@ import abdom.data.json.JsonValue;
  * JSON オブジェクトを Java オブジェクトによって模倣します。
  * このクラスを継承することで、Java オブジェクトと JSON 形式の相互変換が
  * 容易になります。つまり、Java オブジェクトのインスタンス変数が、
- * JSON 形式として直列化でき、また逆に JSON 形式から Java インスタンスを
- * 生成できるようになります。
- * メンバ変数として次のフィールド(JDataカテゴリ)が指定できます。<pre>
+ * JSON 形式として直列化でき、また逆に JSON 形式から Java オブジェクトの
+ * フィールドを設定できるようになります。
+ * メンバ変数として次の型(JDataカテゴリ)が指定できます。<pre>
  *
  * boolean, int, double, String, JValue(,JData), JsonType
  * および、これらの型の配列 、List<JData>
  *
- * </pre>暗黙のフィールドとして、_fragment (JsonObject型) を持っており
+ * </pre>暗黙のフィールドとして、_extra (JsonObject型) を持っており
  * fill() の際に未定義のフィールド値はすべてここに格納されます。
- * また、toJson() では _fragment フィールドは存在する(not null)場合のみJSON
+ * また、toJson() では _extra フィールドは存在する(not null)場合のみJSON
  * メンバとして現れます。
  * 子クラスで、JSON形式との相互変換対象外とする変数を定義したい場合、
  * transient 修飾子をつけて下さい。
  *
- * @version	November 12, 2016
+ * @version	December 10, 2016
  * @author	Yusuke Sasaki
  */
 public abstract class JData extends JValue {
 
 	/** fill できなかった値を格納する予約領域 */
-	protected transient JsonObject _fragment;
+	protected transient JsonObject _extra;
 	
 	/**
-	 * 子クラスのコンストラクタで super() を呼び忘れたときに例外を
-	 * 発生させるためのフラグ。
-	 * 直列化に関係ないため、transient 。
+	 * Field チェックはクラスごとに１度だけ行えばよいため、
+	 * 行ったかどうかをクラス単位で保持する。
+	 * この Set に含まれる Class はチェック済。
 	 */
-	private transient boolean fieldChecked = false;
+	private static Set<Class<?>> _fieldChecked;
+	static {
+		_fieldChecked = new HashSet<Class<?>>();
+	}
+	
 	
 /*-------------
  * constructor
  */
 	/**
-	 * このコンストラクタは、子クラスのコンストラクタで必ず呼んでください。
-	 * 呼ばない場合、fill, toJson メソッドで IllegalStateException が
-	 * スローされます。
 	 * インスタンス化の際に、インスタンス変数が JData カテゴリのものかどうか
 	 * をチェックします。
 	 */
 	protected JData() {
-		Field[] fields = this.getClass().getFields();
-		
-		for (Field f : fields) {
-			// static は除外
-			if (Modifier.isStatic(f.getModifiers())) continue;
-			// transient も除外
-			if (Modifier.isTransient(f.getModifiers())) continue;
+		if (!_fieldChecked.contains(this.getClass())) {
+			Field[] fields = this.getClass().getFields();
 			
-			Class type = f.getType();
-			
-			if (isJDataCategory(type)) continue;
-			throw new IllegalFieldTypeException("Illegal type " + type.getName() + " has found. JData field must consist of boolean, int, double, String, JValue, JsonType and their arrays.");
+			for (Field f : fields) {
+				// static は除外
+				if (Modifier.isStatic(f.getModifiers())) continue;
+				// transient も除外
+				if (Modifier.isTransient(f.getModifiers())) continue;
+				
+				Class type = f.getType();
+				
+				if (isJDataCategory(type)) continue;
+				throw new IllegalFieldTypeException("Illegal type \"" + type.getName() + "\" has found in field \""+ f.getName()+ "\" of class \"" + getClass().getName() + "\". JData field must consist of boolean, int, double, String, JValue, JsonType, their arrays, and List. To prevent the field from Jsonizing, set transient.");
+			}
+			_fieldChecked.add(this.getClass());
 		}
-		fieldChecked = true;
 	}
 	
 /*------------------
@@ -105,55 +110,57 @@ public abstract class JData extends JValue {
 	}
 	
 	/**
-	 * fragment を持つかどうかテストします。
+	 * extra を持つかどうかテストします。
 	 *
-	 * @return	fragment を持つ場合、true
+	 * @return	extra を持つ場合、true
 	 */
-	public boolean hasFragments() {
-		return (_fragment != null);
+	public boolean hasExtras() {
+		return (_extra != null);
 	}
 	
 	/**
-	 * fragment の keySet を返却します。ない場合、null となります。
+	 * extra の keySet を返却します。ない場合、null となります。
 	 *
-	 * @return	fragment のキー
+	 * @return	extra のキー(extra が存在しない場合、null)
 	 */
-	public Set getFragmentKeySet() {
-		if (_fragment == null) return null;
-		return _fragment.map.keySet();
+	public Set getExtraKeySet() {
+		if (_extra == null) return null;
+		return _extra.map.keySet();
 	}
 	
 	/**
-	 * fragment アクセスメソッドで、JsonType 値を取得します。
+	 * extra アクセスメソッドで、JsonType 値を取得します。
+	 * extra がない場合、あっても指定されたキーを持たない場合、
+	 * null が返却されます。
 	 *
-	 * @param	key	fragment の key 情報
-	 * @return	key に対応する値
+	 * @param	key	extra の key 情報
+	 * @return	key に対応する値(null の場合があります)
 	 */
-	public JsonType getFragment(String key) {
-		if (_fragment == null) return null;
-		return _fragment.get(key);
+	public JsonType getExtra(String key) {
+		if (_extra == null) return null;
+		return _extra.get(key);
 	}
 	
 	/**
-	 * fragment アクセスメソッドで、JsonType 値を設定します。
+	 * extra アクセスメソッドで、JsonType 値を設定します。
 	 *
-	 * @param	key	fragment の key 情報
+	 * @param	key	extra の key 情報
 	 * @param	jt	設定する値
 	 */
-	public void putFragment(String key, JsonType jt) {
-		if (_fragment == null) _fragment = new JsonObject();
-		_fragment.put(key, jt);
+	public void putExtra(String key, JsonType jt) {
+		if (_extra == null) _extra = new JsonObject();
+		_extra.put(key, jt);
 	}
 	
 	/**
-	 * このインスタンスが持つ fragment オブジェクト(JsonObject)
+	 * このインスタンスが持つ extra オブジェクト(JsonObject)
 	 * の参照を返却します。内容の参照/変更を簡便に行うことを想定した
 	 * メソッドです。
 	 *
-	 * @return	fragment オブジェクト(JsonObject)。null の場合があります。
+	 * @return	extra オブジェクト(JsonObject)。null の場合があります。
 	 */
-	public JsonObject getFragments() {
-		return _fragment;
+	public JsonObject getExtras() {
+		return _extra;
 	}
 	
 	/**
@@ -213,14 +220,12 @@ public abstract class JData extends JValue {
 	 * 引数の型は、利便性のため JsonType としていますが、JsonObject
 	 * 以外を指定すると、ClassCastException がスローされます。
 	 * このメソッドは値を追加し、既存値は上書きされなければ保存される
-	 * ことに注意してください。_fragment も同様です。
+	 * ことに注意してください。_extra も同様です。
 	 *
 	 * @param	json	このオブジェクトに値を与える JsonType
 	 */
 	@Override
 	public void fill(JsonType json) {
-		if (!fieldChecked)
-			throw new IllegalStateException("It is necessary to invoke the constructor of super class(JData).");
 		JsonObject jobj = (JsonObject)json; // may throw ClassCastException
 		
 		Field[] fields = this.getClass().getFields();
@@ -236,9 +241,9 @@ public abstract class JData extends JValue {
 		for (String key : jobj.map.keySet()) {
 			Field f = fmap.get(key);
 			if (f == null) {
-				// Field がない場合、_fragment に格納
-				if (_fragment == null) _fragment = new JsonObject();
-				_fragment.put(key, jobj.get(key));
+				// Field がない場合、_extra に格納
+				if (_extra == null) _extra = new JsonObject();
+				_extra.put(key, jobj.get(key));
 			} else {
 				fillMember(f, jobj.get(key));
 			}
@@ -265,7 +270,7 @@ public abstract class JData extends JValue {
 
 			// boolean 型の場合
 			if (!(val instanceof JsonValue))
-				throw new IllegalFieldTypeException(name + " field of class " + type.getName() + " expects type of JsonValue(boolean). Specified value: " + val);
+				throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + type.getName() + "\" expects type of JsonValue(boolean). Specified value: " + val);
 			try {
 				switch (val.toString()) {
 				case "true":
@@ -275,68 +280,91 @@ public abstract class JData extends JValue {
 					f.setBoolean(this, false);
 					break;
 				default:
-					throw new IllegalFieldTypeException(name + " field of class " + type.getName() + " is boolean while json value is " + val);
+					throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + type.getName() + "\" is boolean while json value is " + val);
 				}
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException("boolean field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException("boolean field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			}
 		} else if (Integer.TYPE.isAssignableFrom(type)) {
 		
 			// int 型の場合
 			if (!(val instanceof JsonValue))
-				throw new IllegalFieldTypeException(name + " field of class " + getClass().getName() + " expects type of JsonValue(number/int). Specified value: " + val);
+				throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + getClass().getName() + "\" expects type of JsonValue(number/int). Specified value: " + val);
 			try {
 				f.setInt(this, Integer.parseInt(val.toString()));
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException("int field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException("int field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			}
 		} else if (Double.TYPE.isAssignableFrom(type)) {
 		
 			// double 型の場合
 			if (!(val instanceof JsonValue))
-				throw new IllegalFieldTypeException(name + " field of class " + getClass().getName() + " expects type of JsonValue(number/double). Specified value: " + val);
+				throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + getClass().getName() + "\" expects type of JsonValue(number/double). Specified value: " + val);
 			try {
 				f.setDouble(this, Double.parseDouble(val.toString()));
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException("double field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException("double field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			}
 		} else if (String.class.isAssignableFrom(type)) {
 			
 			// String 型の場合
+			if (val.getType() == JsonType.TYPE_VOID) {
+				try {
+					f.set(this, null);
+					return;
+				} catch (IllegalAccessException iae) {
+					throw new JDataDefinitionException(type.getName().toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
+				}
+			}
 			if (!(val instanceof JsonValue))
-				throw new IllegalFieldTypeException(name + " field of class " + getClass().getName() + " expects type of JsonValue(string). Specified value: " + val);
+				throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + getClass().getName() + "\" expects type of JsonValue(string). specified value: " + val);
 			String str = val.toString(); // "" で囲まれているはず
 			if (!str.startsWith("\"") || !str.endsWith("\"") )
-				throw new IllegalFieldTypeException(name + " field of class " + getClass().getName() + " expects Json string. The value: " + str);
+				throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + getClass().getName() + "\" expects Json string. specified value: " + str);
 			try {
 				f.set(this, str.substring(1, str.length() - 1));
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException("String field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException("String field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			}
 		} else if (JValue.class.isAssignableFrom(type)) {
 		
 			// JValue 型の場合
+			if (val.getType() == JsonType.TYPE_VOID) {
+				try {
+					f.set(this, null);
+					return;
+				} catch (IllegalAccessException iae) {
+					throw new JDataDefinitionException(type.getName().toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
+				}
+			}
 			if (!(val instanceof JsonType))
-				throw new IllegalFieldTypeException(name + " field of class " + getClass().getName() + " expects type of JsonType. Specified value: " + val);
+				throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + getClass().getName() + "\" expects type of JsonType. specified value: " + val);
 			try {
 				Object instance = f.get(this);
 				try {
 					if (instance == null) instance = type.newInstance();
 				} catch (InstantiationException ie) {
-					throw new JDataDefinitionException("Failed to instantiate " + getClass().getName() + ". Default constructor of class " + type.getName() + " may not be accessible or defined.");
+					throw new JDataDefinitionException("Failed to instantiate \"" + getClass().getName() + "\". Default constructor of class \"" + type.getName() + "\" may not be accessible or defined.");
 				}
 				((JValue)instance).fill(val);
 				f.set(this, instance);
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException(type.toString() + " field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException(type.getName().toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			}
 		} else if (JsonType.class.isAssignableFrom(type)) {
-		
 			// JsonType 型の場合
+			if (val.getType() == JsonType.TYPE_VOID) {
+				try {
+					f.set(this, null);
+					return;
+				} catch (IllegalAccessException iae) {
+					throw new JDataDefinitionException(type.getName().toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
+				}
+			}
 			try {
 				f.set(this, JsonType.parse(val.toString()));
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException(type.toString() + " field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException(type.toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			}
 		} else if (boolean[].class.isAssignableFrom(type)) {
 		
@@ -345,14 +373,22 @@ public abstract class JData extends JValue {
 			//
 			
 			// boolean[] 型の場合
+			if (val.getType() == JsonType.TYPE_VOID) {
+				try {
+					f.set(this, null);
+					return;
+				} catch (IllegalAccessException iae) {
+					throw new JDataDefinitionException(type.getName().toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
+				}
+			}
 			if (!(val instanceof JsonArray))
-				throw new IllegalFieldTypeException(name + " field of class " + getClass().getName() + " expects type of JsonArray(boolean) instead of type " + type);
+				throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + getClass().getName() + "\" expects type of JsonArray(boolean) instead of type " + type);
 			JsonArray ja = (JsonArray)val;
 			boolean[] instance = new boolean[ja.size()];
 			int i = 0;
 			for (JsonType j : ja.array) {
 				if (!(j instanceof JsonValue))
-					throw new IllegalFieldTypeException(name + " array-field of class " + getClass().getName() + " expects type of JsonValue(boolean) instead of type " + type);
+					throw new IllegalFieldTypeException("\"" + name + "\" array-field of class \"" + getClass().getName() + "\" expects type of JsonValue(boolean) instead of type " + type);
 				
 				switch (j.toString()) {
 				case "true":
@@ -362,76 +398,112 @@ public abstract class JData extends JValue {
 					instance[i++] = false;
 					break;
 				default:
-					throw new IllegalFieldTypeException(name + " array-field of class " + getClass().getName() + " is boolean while json value is " + val);
+					throw new IllegalFieldTypeException("\"" + name + "\" array-field of class \"" + getClass().getName() + "\" is boolean while json value is " + val);
 				}
 			}
 			try {
 				f.set(this, instance);
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException("boolean[] field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException("boolean[] field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			}
 		} else if (int[].class.isAssignableFrom(type)) {
 			
 			// int[] 型の場合
+			if (val.getType() == JsonType.TYPE_VOID) {
+				try {
+					f.set(this, null);
+					return;
+				} catch (IllegalAccessException iae) {
+					throw new JDataDefinitionException(type.getName().toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
+				}
+			}
 			if (!(val instanceof JsonArray))
-				throw new IllegalFieldTypeException(name + " field of class " + getClass().getName() + " expects type of JsonArray(int) instead of type " + type);
+				throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + getClass().getName() + "\" expects type of JsonArray(int) instead of type " + type);
 			JsonArray ja = (JsonArray)val;
 			int[] instance = new int[ja.size()];
 			int i = 0;
 			for (JsonType j : ja.array) {
 				if (!(j instanceof JsonValue))
-					throw new IllegalFieldTypeException(name + " array-field of class " + getClass().getName() + " expects type of JsonValue(int). Specified value: " + val);
+					throw new IllegalFieldTypeException("\"" + name + "\" array-field of class \"" + getClass().getName() + "\" expects type of JsonValue(int). Specified value: " + val);
 				instance[i++] = Integer.parseInt(j.toString());
 			}
 			try {
 				f.set(this, instance);
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException("int[] field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException("int[] field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			}
 		} else if (double[].class.isAssignableFrom(type)) {
 			
 			// double[] 型の場合
+			if (val.getType() == JsonType.TYPE_VOID) {
+				try {
+					f.set(this, null);
+					return;
+				} catch (IllegalAccessException iae) {
+					throw new JDataDefinitionException(type.getName().toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
+				}
+			}
 			if (!(val instanceof JsonArray))
-				throw new IllegalFieldTypeException(name + " field of class " + getClass().getName() + " expects type of JsonArray(double). Specified value: " + val);
+				throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + getClass().getName() + "\" expects type of JsonArray(double). Specified value: " + val);
 			JsonArray ja = (JsonArray)val;
 			double[] instance = new double[ja.size()];
 			int i = 0;
 			for (JsonType j : ja.array) {
 				if (!(j instanceof JsonValue))
-					throw new IllegalFieldTypeException(name + " array-field of class " + getClass().getName() + " expects type of JsonValue(double) instead of type " + type);
+					throw new IllegalFieldTypeException("\"" + name + "\" array-field of class \"" + getClass().getName() + "\" expects type of JsonValue(double) instead of type " + type);
 				instance[i++] = Double.parseDouble(j.toString());
 			}
 			try {
 				f.set(this, instance);
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException("double[] field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException("double[] field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			}
 		} else if (String[].class.isAssignableFrom(type)) {
 			
 			// String[] 型の場合
+			if (val.getType() == JsonType.TYPE_VOID) {
+				try {
+					f.set(this, null);
+					return;
+				} catch (IllegalAccessException iae) {
+					throw new JDataDefinitionException(type.getName().toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
+				}
+			}
 			if (!(val instanceof JsonArray))
-				throw new IllegalFieldTypeException(name + " field of class " + getClass().getName() + " expects type of JsonArray(String). Specified value: " + val);
+				throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + getClass().getName() + "\" expects type of JsonArray(String). specified value: " + val);
 			JsonArray ja = (JsonArray)val;
 			String[] instance = new String[ja.size()];
 			int i = 0;
 			for (JsonType j : ja.array) {
+				if (j.getType() == JsonType.TYPE_VOID) {
+					instance[i++] = null;
+					continue;
+				}
 				if (!(j instanceof JsonValue))
-					throw new IllegalFieldTypeException(name + " array-field of class " + getClass().getName() + " expects type of JsonValue(String). Specified value: " + val);
+					throw new IllegalFieldTypeException("\"" + name + "\" array-field of class \"" + getClass().getName() + "\" expects type of JsonValue(String). specified value: " + val);
 				String str = j.toString();
 				if (!str.startsWith("\"") || !str.endsWith("\"") )
-					throw new IllegalFieldTypeException(name + " field of class " + getClass().getName() + " expects Json string. The value: " + str);
+					throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + getClass().getName() + "\" expects Json string. specified value: " + str);
 				instance[i++] = str.substring(1, str.length() - 1);
 			}
 			try {
 				f.set(this, instance);
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException("String[] field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException("String[] field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			}
 		} else if (JValue[].class.isAssignableFrom(type)) {
 			
 			// JValue[] 型の場合
+			if (val.getType() == JsonType.TYPE_VOID) {
+				try {
+					f.set(this, null);
+					return;
+				} catch (IllegalAccessException iae) {
+					throw new JDataDefinitionException(type.getName().toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
+				}
+			}
 			if (!(val instanceof JsonArray))
-				throw new IllegalFieldTypeException(name + " field of class " + getClass().getName() + " expects type of JsonArray. Specified value: " + val);
+				throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + getClass().getName() + "\" expects type of JsonArray. Specified value: " + val);
 			JsonArray ja = (JsonArray)val;
 			
 			// 子クラスで宣言されている型での配列を生成し、とりあえず JValue[]
@@ -441,37 +513,51 @@ public abstract class JData extends JValue {
 			int i = 0;
 			try {
 				for (JsonType j : ja.array) {
+					if (j.getType() == JsonType.TYPE_VOID) {
+						instance[i++] = null;
+						continue;
+					}
 					JValue elm = (JValue)comptype.newInstance();
 					elm.fill(j);
 					instance[i++] = elm;
 				}
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException(comptype.toString() + "[] field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException(comptype.toString() + "[] field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			} catch (InstantiationException ie) {
-				throw new JDataDefinitionException("Failed to instantiate " + getClass().getName() + ". Default constructor of class " + type.getName() + " may not be accessible or defined.");
+				throw new JDataDefinitionException("Failed to instantiate \"" + getClass().getName() + "\". Default constructor of class \"" + type.getName() + "\" may not be accessible or defined.");
 			}
 			try {
 				f.set(this, instance);
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException(type.toString() + " field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException(type.toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			}
 			
 		} else if (JsonType[].class.isAssignableFrom(type)) {
 			
 			// JsonType[] 型の場合
+			if (val.getType() == JsonType.TYPE_VOID) {
+				try {
+					f.set(this, null);
+					return;
+				} catch (IllegalAccessException iae) {
+					throw new JDataDefinitionException(type.getName().toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
+				}
+			}
 			if (!(val instanceof JsonArray))
-				throw new IllegalFieldTypeException(name + " field of class " + getClass().getName() + " expects type of JsonArray(JsonType). Specified value: " + val);
+				throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + getClass().getName() + "\" expects type of JsonArray(JsonType). Specified value: " + val);
 			JsonArray ja = (JsonArray)val;
 			JsonType[] instance = new JsonType[ja.size()];
 			int i = 0;
 			for (JsonType j : ja.array) {
+				// JsonType[] の場合、null が指定された場合、Java Object の
+				// null ではなく、JsonValue の null (TYPE_VOID) を入れる
 				JsonType elm = JsonType.parse(j.toString()); // deep copy
 				instance[i++] = elm;
 			}
 			try {
 				f.set(this, instance);
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException(type.toString() + " field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException(type.toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			}
 		} else if (List.class.isAssignableFrom(type)) {
 			
@@ -484,29 +570,41 @@ public abstract class JData extends JValue {
 			// List.toArray(new String[]{}) など、引数を渡したり、
 			// ジェネリック型がバインドされるクラス内では、new E[]{} の
 			// class.getComponentClass を呼ぶことで得ることは可能。
+			if (val.getType() == JsonType.TYPE_VOID) {
+				try {
+					f.set(this, null);
+					return;
+				} catch (IllegalAccessException iae) {
+					throw new JDataDefinitionException(type.getName().toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
+				}
+			}
 			if (!(val instanceof JsonArray))
-				throw new IllegalFieldTypeException(name + " field of class " + getClass().getName() + " expects type of JsonArray(JsonObject). Specified value: " + val);
+				throw new IllegalFieldTypeException("\"" + name + "\" field of class \"" + getClass().getName() + "\" expects type of JsonArray(JsonObject). Specified value: " + val);
 			JsonArray ja = (JsonArray)val;
 			List<JData> instance = new ArrayList<JData>();
 			try {
 				for (JsonType j : ja.array) {
+					if (j.getType() == JsonType.TYPE_VOID) {
+						instance.add(null);
+						continue;
+					}
 					JData elm = (JData)type.getComponentType().newInstance();
 					elm.fill(j);
 					instance.add(elm);
 				}
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException(type.getComponentType().toString() + "[] field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException(type.getComponentType().toString() + "[] field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			} catch (InstantiationException ie) {
-				throw new JDataDefinitionException("Failed to instantiate " + getClass().getName() + ". Default constructor of class " + type.getName() + " may not be accessible or defined.");
+				throw new JDataDefinitionException("Failed to instantiate \"" + getClass().getName() + "\". Default constructor of class \"" + type.getName() + "\" may not be accessible or defined.");
 			}
 			try {
 				f.set(this, instance);
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException(type.toString() + " field " + name + " of class " + getClass().getName() + " is not accessible");
+				throw new JDataDefinitionException(type.toString() + " field \"" + name + "\" of class \"" + getClass().getName() + "\" is not accessible");
 			}
 		} else {
 			// コンストラクタでチェックしているため、ここには来ないはず
-			new IllegalFieldTypeException(name + " field is not an element of JData category :" + type);
+			new IllegalFieldTypeException("\"" + name + "\" field is not an element of JData category :" + type);
 		}
 	}
 	
@@ -527,8 +625,6 @@ public abstract class JData extends JValue {
 	 */
 	@Override
 	public JsonType toJson() {
-		if (!fieldChecked)
-			throw new IllegalStateException("It is inevitable to invoke the constructor of super class(JData).");
 		try {
 			return toJsonImpl();
 		} catch (IllegalAccessException iae) {
@@ -597,16 +693,16 @@ public abstract class JData extends JValue {
 					for (JData jd : v) ja.push(jd.toJson());
 					result.put(name, ja);
 				} else {
-					throw new IllegalFieldTypeException("Unexpected type " + type.getName() + "is found.");
+					throw new IllegalFieldTypeException("Unexpected type \"" + type.getName() + "\"is found.");
 				}
 			} catch (NullPointerException npe) {
 				result.put(name, (String)null);
 			}
 		}
-		// _fragment を追加
-		if (_fragment != null) {
-			for (String key : _fragment.map.keySet()) {
-				result.put(key, _fragment.get(key));
+		// _extra を追加
+		if (_extra != null) {
+			for (String key : _extra.map.keySet()) {
+				result.put(key, _extra.get(key));
 			}
 		}
 		return result;
