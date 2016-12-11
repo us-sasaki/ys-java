@@ -60,7 +60,6 @@ public class JsonObject extends JsonType {
 			JsonType v = map.get(name);
 			if (v instanceof JsonArray) {
 				// すでに JsonArray になっていた場合、要素追加
-				// 毎回heapを新規確保する実装で遅い
 				JsonArray src = (JsonArray)v;
 				src.array.add(t);
 				return this;

@@ -412,35 +412,31 @@ public abstract class JsonType implements Iterable<JsonType> {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、concat できません");
 	}
 	
-	public JsonArray splice(int index, int delete, JsonType... toAdd) {
+	/**
+	 * JavaScript における splice (継ぎ合わせ) です。
+	 * このメソッドでは、新規 JsonArray を生成し返却します。元のオブジェクトは
+	 * push 同様変更されます(破壊的)。
+	 *
+	 * @param	index	挿入するインデックス
+	 * @param	delete	削除する要素数
+	 * @param	toAdd	index の位置に挿入する要素(JsonArray)
+	 */
+	public JsonArray splice(int index, int delete, JsonType toAdd) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
 	}
 	
-	public JsonArray splice(int index, int delete, String... val) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
-	}
-	public JsonArray splice(int index, int delete, byte... val) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
-	}
-	public JsonArray splice(int index, int delete, char... val) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
-	}
-	public JsonArray splice(int index, int delete, short... val) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
-	}
-	public JsonArray splice(int index, int delete, int... val) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
-	}
-	public JsonArray splice(int index, int delete, long... val) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
-	}
-	public JsonArray splice(int index, int delete, float... val) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
-	}
-	public JsonArray splice(int index, int delete, double... val) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
-	}
-	public JsonArray splice(int index, int delete, boolean... val) {
+	/**
+	 * JavaScript における splice (継ぎ合わせ) です。
+	 * このメソッドでは、新規 JsonArray を生成し返却します。元のオブジェクトは
+	 * push 同様変更されます(破壊的)。
+	 * toAdd として、JsonType を１つだけ指定した場合、splice(int,int,JsonType)
+	 * が呼ばれ、JsonType が JsonArray だった場合に配列の解除が行われます。
+	 *
+	 * @param	index	挿入するインデックス
+	 * @param	delete	削除する要素数
+	 * @param	toAdd	index の位置に挿入する複数要素
+	 */
+	public JsonArray splice(int index, int delete, Object... toAdd) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
 	}
 	/**
@@ -565,9 +561,38 @@ public abstract class JsonType implements Iterable<JsonType> {
 	}
 	
 	/**
+	 * new JsonArray を得るための便利関数です。タイプ数を減らす目的で
+	 * 設定されています。
+	 * new JsonArray().push(5).push("hoe") または
+	 * new JsonArray().splice(0,0,5,"hoe") を
+	 * JsonType.a(5, "hoe")
+	 * のように取得できます。
+	 *
+	 * @param		param	配列を構成する要素
+	 */
+	public static JsonArray a(Object... param) {
+		JsonArray result = new JsonArray();
+		for (int i = 0; i < param.length; i++) {
+			Object t = param[i];
+			if (t instanceof JsonType) result.push((JsonType)t);
+			else if (t instanceof String) result.push((String)t);
+			else if (t instanceof Byte) result.push((Byte)t);
+			else if (t instanceof Character) result.push((Character)t);
+			else if (t instanceof Short) result.push((Short)t);
+			else if (t instanceof Integer) result.push((Integer)t);
+			else if (t instanceof Long) result.push((Long)t);
+			else if (t instanceof Float) result.push((Float)t);
+			else if (t instanceof Double) result.push((Double)t);
+			else if (t instanceof Boolean) result.push((Boolean)t);
+			else throw new ClassCastException(t.getClass() + " は JsonArray の要素に指定できません");
+		}
+		return result;
+	}
+	
+	/**
 	 * 指定された JSON 文字列から JsonType を生成します。
 	 *
-	 * @param	str	Json文字列
+	 * @param	str		JSON 文字列
 	 * @return	指定された文字列の表す JsonType
 	 */
 	public static JsonType parse(String str) {

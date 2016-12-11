@@ -196,11 +196,19 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 /*
  * splice
  */
-	public JsonArray splice(int index, int delete, JsonType... toAdd) {
-		if (toAdd.length == 1 && (toAdd[0] instanceof JsonArray)) {
-			// 単独の JsonArray が指定された場合
-			toAdd = ((JsonArray)toAdd[0]).array.toArray(new JsonType[0]);
+	public JsonArray splice(int index, int delete, JsonType toAdd) {
+		if (toAdd instanceof JsonArray) {
+			JsonType[] ja = ((JsonArray)toAdd).array.toArray(new JsonType[0]);
+			return spliceImpl(index, delete, ja);
 		}
+		return spliceImpl(index, delete, new JsonType[] { toAdd });
+	}
+	
+	/**
+	 * splice の実装
+	 * 破壊的にまだなっていない
+	 */
+	private JsonArray spliceImpl(int index, int delete, JsonType[] toAdd) {
 		JsonType[] a = array.toArray(new JsonType[0]);
 		// 最終的な長さを計算
 		int deleteLen = Math.min(a.length - index, delete);
@@ -212,41 +220,35 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 		
 		return new JsonArray(result);
 	}
-	public JsonArray splice(int index, int delete, String... val) {
-		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
-		return splice(index, delete, val);
-	}
-	public JsonArray splice(int index, int delete, byte... val) {
-		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
-		return splice(index, delete, val);
-	}
-	public JsonArray splice(int index, int delete, char... val) {
-		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
-		return splice(index, delete, val);
-	}
-	public JsonArray splice(int index, int delete, short... val) {
-		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
-		return splice(index, delete, val);
-	}
-	public JsonArray splice(int index, int delete, int... val) {
-		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
-		return splice(index, delete, val);
-	}
-	public JsonArray splice(int index, int delete, long... val) {
-		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
-		return splice(index, delete, val);
-	}
-	public JsonArray splice(int index, int delete, float... val) {
-		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
-		return splice(index, delete, val);
-	}
-	public JsonArray splice(int index, int delete, double... val) {
-		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
-		return splice(index, delete, val);
-	}
-	public JsonArray splice(int index, int delete, boolean... val) {
-		JsonType[] a = new JsonArray(val).array.toArray(new JsonType[0]);
-		return splice(index, delete, val);
+	public JsonArray splice(int index, int delete, Object... toAdd) {
+		if (toAdd instanceof JsonType[])
+			return spliceImpl(index, delete, (JsonType[])toAdd);
+		
+		JsonType[] a = new JsonType[toAdd.length];
+		
+		for (int i = 0; i < a.length; i++) {
+			Object t = toAdd[i];
+			if (t instanceof JsonType) a[i] = (JsonType)t;
+			else if (t instanceof String) a[i] = new JsonValue((String)t);
+			else if (t instanceof Byte)
+				a[i] = new JsonValue( ((Byte)t).byteValue() );
+			else if (t instanceof Character)
+				a[i] = new JsonValue( ((Character)t).charValue() );
+			else if (t instanceof Short)
+				a[i] = new JsonValue( ((Short)t).shortValue() );
+			else if (t instanceof Integer)
+				a[i] = new JsonValue( ((Integer)t).intValue() );
+			else if (t instanceof Long)
+				a[i] = new JsonValue( ((Long)t).longValue() );
+			else if (t instanceof Float)
+				a[i] = new JsonValue( ((Float)t).floatValue() );
+			else if (t instanceof Double)
+				a[i] = new JsonValue( ((Double)t).doubleValue() );
+			else if (t instanceof Boolean)
+				a[i] = new JsonValue( ((Boolean)t).booleanValue() );
+			else throw new ClassCastException(t.getClass() + " は JsonArray の要素に指定できません");
+		}
+		return spliceImpl(index, delete, a);
 	}
 	
 /*-----------

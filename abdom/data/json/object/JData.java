@@ -708,6 +708,14 @@ public abstract class JData extends JValue {
 		return result;
 	}
 	
+	public String toString(String indent) {
+		return toJson().toString(indent);
+	}
+	
+	public String toString(String indent, int textwidth) {
+		return toJson().toString(indent, textwidth);
+	}
+	
 /*-----------
  * overrides
  */
