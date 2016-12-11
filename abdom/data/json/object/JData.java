@@ -62,7 +62,7 @@ public abstract class JData extends JValue {
 	 */
 	protected JData() {
 		if (!_fieldChecked.contains(this.getClass())) {
-			Field[] fields = this.getClass().getFields();
+			Field[] fields = this.getClass().getDeclaredFields();
 			
 			for (Field f : fields) {
 				// static ÇÕèúäO
@@ -228,7 +228,7 @@ public abstract class JData extends JValue {
 	public void fill(JsonType json) {
 		JsonObject jobj = (JsonObject)json; // may throw ClassCastException
 		
-		Field[] fields = this.getClass().getFields();
+		Field[] fields = this.getClass().getDeclaredFields();
 		Map<String, Field> fmap = new TreeMap<String, Field>();
 		for (Field f: fields) {
 			// static ïœêîÇÕèúäO
@@ -638,7 +638,7 @@ public abstract class JData extends JValue {
 	private JsonObject toJsonImpl() throws IllegalAccessException {
 		JsonObject result = new JsonObject();
 		
-		Field[] fields = this.getClass().getFields();
+		Field[] fields = this.getClass().getDeclaredFields();
 		for (Field f : fields) {
 			if (Modifier.isStatic(f.getModifiers())) continue;
 			if (Modifier.isTransient(f.getModifiers())) continue;
