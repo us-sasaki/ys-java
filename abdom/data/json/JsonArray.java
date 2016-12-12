@@ -183,7 +183,7 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 	}
 	
 	/**
-	 * JavaScript における concat (結合、元の値を保つ) です。
+	 * JavaScript における concat (結合、非破壊的で元の値を保つ) です。
 	 */
 	public JsonArray concat(JsonType target) {
 		List<JsonType> result = new ArrayList<JsonType>(array);
@@ -196,6 +196,15 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 /*
  * splice
  */
+	/**
+	 * splice
+	 * このメソッドは破壊的(元のインスタンスが変更される)です。
+	 *
+	 * @param	index	挿入する位置
+	 * @param	delete	挿入する位置で削除する要素数
+	 * @param	toAdd	挿入するオブジェクトの配列
+	 * @return	変更後のインスタンス
+	 */
 	public JsonArray splice(int index, int delete, JsonType toAdd) {
 		if (toAdd instanceof JsonArray) {
 			JsonType[] ja = ((JsonArray)toAdd).array.toArray(new JsonType[0]);
@@ -206,19 +215,24 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 	
 	/**
 	 * splice の実装
-	 * 破壊的にまだなっていない
+	 * このメソッドは破壊的(元のインスタンスが変更される)です。
 	 */
 	private JsonArray spliceImpl(int index, int delete, JsonType[] toAdd) {
-		JsonType[] a = array.toArray(new JsonType[0]);
-		// 最終的な長さを計算
-		int deleteLen = Math.min(a.length - index, delete);
-		int len = a.length - deleteLen + toAdd.length;
-		JsonType[] result = new JsonType[len];
-		System.arraycopy(a, 0, result, 0, index);
-		System.arraycopy(toAdd, 0, result, index, toAdd.length);
-		System.arraycopy(a, index+deleteLen, result, index+toAdd.length, a.length-index-deleteLen);
+		if (index < 0 || index >= array.size())
+			throw new ArrayIndexOutOfBoundsException("Out of bounds : " + index + " array size = " + array.size());
+		if (delete < 0)
+			throw new IllegalArgumentException("Delete count must not be negative : " + delete);
 		
-		return new JsonArray(result);
+		// 削除する長さを求める
+		int deleteLen = Math.min(array.size() - index, delete);
+		
+		// 削除
+		for (int i = 0; i < deleteLen; i++) array.remove(index);
+		
+		// 挿入
+		for (int i = 0; i < toAdd.length; i++) array.add(index, toAdd[i]);
+		
+		return this;
 	}
 	public JsonArray splice(int index, int delete, Object... toAdd) {
 		if (toAdd instanceof JsonType[])

@@ -191,9 +191,9 @@ public abstract class JData extends JValue {
 				result[i] = (T)compType.newInstance();
 				result[i].fill(source.get(i));
 			} catch (InstantiationException ie) {
-				throw new IllegalFieldTypeException(ie.toString());
+				throw new JDataDefinitionException("Failed to instantiate \"" + compType.getName() + "\". Default constructor may not be accessible or defined.");
 			} catch (IllegalAccessException iae) {
-				throw new IllegalFieldTypeException(iae.toString());
+				throw new JDataDefinitionException(iae.toString());
 			}
 		}
 		return result;

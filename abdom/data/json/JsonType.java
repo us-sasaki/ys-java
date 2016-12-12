@@ -104,7 +104,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 		} else if (this instanceof JsonArray) {
 			return (((JsonArray)this).array.size() > 0);
 		} else if (this instanceof JsonValue) {
-			return !"\"false\"".equals(toString());
+			return !"false".equals(toString());
 		} else {
 			// never fall back here
 			return true;
@@ -164,6 +164,9 @@ public abstract class JsonType implements Iterable<JsonType> {
 	
 	/**
 	 * ‚±‚Ì JsonType ‚ª JavaScript ‚Ì‚Ç‚ÌŒ^‚Å‚ ‚é‚©‚ğ¦‚·’è”‚ğ•Ô‹p‚µ‚Ü‚·B
+	 * Number Œ^‚É‚Â‚¢‚Ä‚Í TYPE_INT, TYPE_DOUBLE ‚Ì‚¢‚¸‚ê‚©‚É•ª—Ş‚³‚ê‚Ü‚·‚ªA
+	 * Integer.parseInt ‚ª¬Œ÷‚·‚éê‡ATYPE_INT ‚ª•Ô‹p‚³‚ê‚Ü‚·B
+	 * (TYPE_INT ‚ª TYPE_DOUBLE ‚É—Dæ‚µ‚Ü‚·)
 	 *
 	 * @return	Œ^‚ğ¦‚·’è”
 	 * @see		#TYPE_VOID
