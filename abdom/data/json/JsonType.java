@@ -11,8 +11,10 @@ import java.util.ArrayList;
 /**
  * Json形式における型一般(var)を表します。また、ストリーム、文字列からの parse 
  * メソッドを提供します。
- * 利便性のため、キャストせずに利用するアクセスメソッドを提供します。
- * 利用できないオペレーションであった場合、ClassCastException が発生します。
+ * 利便性のため、キャストせずに利用するアクセスメソッドを定義しています。
+ * JsonType でのデフォルトの実装は ClassCastException のスローであり、
+ * 継承した各クラスで可能なオペレーションを実装します。
+ * 利用できないオペレーションでは、ClassCastException が発生します。
  *
  * @version		November 19, 2016
  * @author		Yusuke Sasaki
@@ -56,6 +58,8 @@ public abstract class JsonType implements Iterable<JsonType> {
 	/**
 	 * JsonValue としての値を文字列で取得します。このオブジェクトが
 	 * JsonValue でない場合、ClassCastException がスローされます。
+	 * 文字列の場合、JSON におけるダブルクオーテーション括りを除去した
+	 * 形式になります。
 	 *
 	 * @return	JsonValue としての文字列値
 	 */
@@ -145,6 +149,17 @@ public abstract class JsonType implements Iterable<JsonType> {
 	}
 	
 	/**
+	 * JsonArray として、指定された index の値を取得し、削除します。
+	 * JsonArray でない場合、ClassCastException がスローされます。
+	 *
+	 * @param	index	index値( 0 ～ size()-1 )
+	 * @return	取得される値(JsonType)
+	 */
+	public JsonType cut(int index) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、cut(int) はサポートされません");
+	}
+	
+	/**
 	 * JsonArray として、要素数を返却します。
 	 * JsonArray でない場合、ClassCastException がスローされます。
 	 *
@@ -152,14 +167,6 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 */
 	public int size() {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、size() はサポートされません");
-	}
-	
-	public boolean isArray() {	return (this instanceof JsonArray);	}
-	public boolean isObject() {	return (this instanceof JsonObject); }
-	public boolean isValue() { return (this instanceof JsonValue); }
-	public boolean isNumber() {
-		int type = getType();
-		return (type == TYPE_INT || type == TYPE_DOUBLE);
 	}
 	
 	/**
@@ -207,46 +214,40 @@ public abstract class JsonType implements Iterable<JsonType> {
 /*
  * set(array)
  */
-	public void set(JsonType... array) {
+	/**
+	 * 配列値を指定された引数で設定します。
+	 * 元々持っていた配列値は削除されます。
+	 * このオブジェクトが JsonArray でない場合、ClassCastException
+	 * がスローされます。
+	 *
+	 * @param	array	JsonArray への
+	 */
+	public void set(Object... array) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
 	}
-	public void set(String... array) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
-	}
-	public void set(byte... array) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
-	}
-	public void set(char... array) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
-	}
-	public void set(short... array) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
-	}
-	public void set(int... array) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
-	}
-	public void set(long... array) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
-	}
-	public void set(float... array) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
-	}
-	public void set(double... array) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
-	}
-	public void set(boolean... array) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、set できません");
-	}	
+	
 /*
  * add methods
  */
+	/**
+	 * この JsonObject に要素を追加します。
+	 * put との違いは、すでに name で指定される要素が存在した場合、
+	 * name の値を JsonArray に変換して値を追加する点です。
+	 * すでに name で指定される要素が JsonArray であった場合、
+	 * その JsonArray に指定された要素が追加(push)されます。
+	 *
+	 * @param	name	要素名
+	 * @param	t		値
+	 * @return	要素が追加された JsonObject (this)
+	 * @see		#put(String, boolean)
+	 */
+	public JsonObject add(String name, boolean t) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
+	}
 	public JsonObject add(String name, JsonType t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 	public JsonObject add(String name, String t) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
-	}
-	public JsonObject add(String name, boolean t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 	public JsonObject add(String name, byte t) {
@@ -276,6 +277,16 @@ public abstract class JsonType implements Iterable<JsonType> {
 /*
  * put methods (add と同等だが、値を上書き)
  */
+	/**
+	 * この JsonObject に要素を追加します。
+	 * add との違いは、すでに name で指定される要素が存在した場合、
+	 * name の値を上書きする点です。
+	 *
+	 * @param	name	要素名
+	 * @param	t		値
+	 * @return	要素が追加された JsonObject (this)
+	 * @see		#add(String, boolean)
+	 */
 	public JsonObject put(String name, JsonType t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
@@ -312,13 +323,19 @@ public abstract class JsonType implements Iterable<JsonType> {
 /*
  * push methods (配列の最後尾に値追加)
  */
+	/**
+	 * この JsonArray の最後尾(index が size() - 1 の後ろ)に要素を追加します。
+	 *
+	 * @param	t		値
+	 * @return	要素が追加された JsonArray (this)
+	 */
+	public JsonArray push(boolean t) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
+	}
 	public JsonArray push(JsonType t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	public JsonArray push(String t) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
-	}
-	public JsonArray push(boolean t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	public JsonArray push(byte t) {
@@ -349,6 +366,12 @@ public abstract class JsonType implements Iterable<JsonType> {
 /*
  * pop methods (配列の最後の要素を取得し、削除)
  */
+	/**
+	 * この JsonArray の最後尾(index が size() - 1)の要素を取得し、
+	 * 削除します。配列長は１少なくなります。
+	 *
+	 * @return	要素が少なくなった JsonArray (this)
+	 */
 	public JsonType pop() {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、pop できません");
 	}
@@ -356,13 +379,20 @@ public abstract class JsonType implements Iterable<JsonType> {
 /*
  * shift methods (配列の最初に値追加)
  */
+	/**
+	 * この JsonArray の最初(index が 0)に要素を追加し、後続のインデックスを
+	 * +1 します。
+	 *
+	 * @param	t		値
+	 * @return	要素が追加された JsonArray (this)
+	 */
+	public JsonArray shift(boolean t) {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
+	}
 	public JsonArray shift(JsonType t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	public JsonArray shift(String t) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
-	}
-	public JsonArray shift(boolean t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	public JsonArray shift(byte t) {
@@ -393,6 +423,12 @@ public abstract class JsonType implements Iterable<JsonType> {
 /*
  * unshift methods (配列の最初の要素を取得し、削除)
  */
+	/**
+	 * この JsonArray の最初(index が 0)の要素を取得し、削除します。
+	 * 後続の要素の index は -1 され、配列長は１少なくなります。
+	 *
+	 * @return	要素が少なくなった JsonArray (this)
+	 */
 	public JsonType unshift() {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、unshift できません");
 	}
@@ -402,14 +438,18 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * 
 	 * @param	s	コピーする最初のインデックス(含みます)
 	 * @param	e	コピーする末尾のインデックス(含みません)
-	 * @return	切り取った JsonArray (要素は参照(shallow copy)です)
+	 * @return	切り取った JsonArray (要素は参照です(shallow copy))
 	 */
 	public JsonArray slice(int s, int e) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、slice できません");
 	}
 	
 	/**
-	 * JavaScript における concat (結合、元の値を保つ) です。
+	 * JavaScript における concat (結合、非破壊的で元の値を保つ) です。
+	 * JsonArray 以外を指定すると、ClassCastException がスローされます。
+	 *
+	 * @param	target	結合する JsonArray
+	 * @return	結合後の JsonArray。元の JsonArray (this) は変更されません。
 	 */
 	public JsonArray concat(JsonType target) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、concat できません");
@@ -462,18 +502,18 @@ public abstract class JsonType implements Iterable<JsonType> {
 	public abstract String toString();
 	
 	/**
-	 * 人が見やすいインデントを含んだ形式で文字列化します。
+	 * 人が見やすいインデントを含んだ JSON 形式で文字列化します。
 	 * 最大横幅はデフォルト値(80)が設定されます。
 	 *
 	 * @param	indent	インデント(複数のスペースやタブ)
-	 * @return	インデント、改行を含む文字列
+	 * @return	インデント、改行を含む JSON 文字列
 	 */
 	public String toString(String indent) {
 		return toString(indent, 80);
 	}
 	
 	/**
-	 * 人が見やすいインデントを含んだJSON形式で文字列化します。
+	 * 人が見やすいインデントを含んだ JSON 形式で文字列化します。
 	 * JsonObject, JsonArray 値を一行で表せるなら改行させないための、一行の
 	 * 文字数を指定します。
 	 *
@@ -482,7 +522,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 *						複数行に分けない処理を行うための閾値。
 	 *						0 以下を指定すると、一行化を試みず、常に複数行化
 	 *						されます。(この方が高速)
-	 * @return	インデント、改行を含む文字列
+	 * @return	インデント、改行を含む JSON 文字列
 	 */
 	public final String toString(String indent, int textwidth) {
 		return toString("", indent, textwidth, false);
@@ -567,6 +607,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * new JsonArray を得るための便利関数です。タイプ数を減らす目的で
 	 * 設定されています。
 	 * new JsonArray().push(5).push("hoe") または
+	 * new JsonArray().set(5, "hoe");
 	 * new JsonArray().splice(0,0,5,"hoe") を
 	 * JsonType.a(5, "hoe")
 	 * のように取得できます。
@@ -783,7 +824,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 		skipspaces(pr);
 		int c = pr.read();
 		if (c == ']') {
-			return new JsonArray(array.toArray(new JsonType[0]));
+			return new JsonArray(array.toArray(new Object[0]));
 		}
 		pr.unread(c);
 		while (true) {
@@ -794,7 +835,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 			c = pr.read();
 			if (c == -1) throw new JsonParseException("配列の終りの前に終了を検知しました");
 			if (c == ']') {
-				return new JsonArray(array.toArray(new JsonType[0]));
+				return new JsonArray(array.toArray(new Object[0]));
 			}
 			if (c != ',') throw new JsonParseException("配列内に不正な文字を検出しました : " + (char)c);
 		}

@@ -14,101 +14,101 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 /*-------------
  * constructor
  */
+	/**
+	 * 空(要素数0)の JsonArray を作成します。
+	 */
 	public JsonArray() {
 	}
-	public JsonArray(JsonType... array) {	set(array); }
-	public JsonArray(byte... array) {	set(array);	}
-	public JsonArray(char... array) {	set(array);	}
-	public JsonArray(short... array) {	set(array); }
-	public JsonArray(int... array) {	set(array);	}
-	public JsonArray(long... array) {	set(array);	}
-	public JsonArray(float... array) {	set(array);	}
-	public JsonArray(double... array) {	set(array);	}
-	public JsonArray(boolean... array) {	set(array);	}
-	public JsonArray(String... array) {	set(array);	}
 	
-/*------------------
- * instance methods
+	/**
+	 * 指定された要素を持つ JsonArray を作成します。
+	 *
+	 * @param	array	配列要素の指定
+	 */
+	public JsonArray(Object... array) {
+		set(array);
+	}
+	
+/*-----------
+ * overrides
  */
-	public void set(JsonType... array) {
+	@Override
+	public void set(Object... toSet) {
 		this.array.clear();
-		for (JsonType t : array) this.array.add(t);
-	}
-	public void set(String... array) {
-		this.array.clear();
-		for (String t : array) this.array.add(new JsonValue(t));
-	}
-	public void set(byte... array) {
-		this.array.clear();
-		for (byte t : array) this.array.add(new JsonValue(t));
-	}
-	public void set(char... array) {
-		this.array.clear();
-		for (char t : array) this.array.add(new JsonValue(t));
-	}
-	public void set(short... array) {
-		this.array.clear();
-		for (short t : array) this.array.add(new JsonValue(t));
-	}
-	public void set(int... array) {
-		this.array.clear();
-		for (int t : array) this.array.add(new JsonValue(t));
-	}
-	public void set(long... array) {
-		this.array.clear();
-		for (long t : array) this.array.add(new JsonValue(t));
-	}
-	public void set(float... array) {
-		this.array.clear();
-		for (float t : array) this.array.add(new JsonValue(t));
-	}
-	public void set(double... array) {
-		this.array.clear();
-		for (double t : array) this.array.add(new JsonValue(t));
-	}
-	public void set(boolean... array) {
-		this.array.clear();
-		for (boolean t : array) this.array.add(new JsonValue(t));
+		
+		for (int i = 0; i < toSet.length; i++) {
+			Object t = toSet[i];
+			if (t instanceof JsonType) array.add((JsonType)t);
+			else if (t instanceof String)
+				array.add(new JsonValue((String)t));
+			else if (t instanceof Byte)
+				array.add(new JsonValue( ((Byte)t).byteValue() ));
+			else if (t instanceof Character)
+				array.add(new JsonValue( ((Character)t).charValue() ));
+			else if (t instanceof Short)
+				array.add(new JsonValue( ((Short)t).shortValue() ));
+			else if (t instanceof Integer)
+				array.add(new JsonValue( ((Integer)t).intValue() ));
+			else if (t instanceof Long)
+				array.add(new JsonValue( ((Long)t).longValue() ));
+			else if (t instanceof Float)
+				array.add(new JsonValue( ((Float)t).floatValue() ));
+			else if (t instanceof Double)
+				array.add(new JsonValue( ((Double)t).doubleValue() ));
+			else if (t instanceof Boolean)
+				array.add(new JsonValue( ((Boolean)t).booleanValue() ));
+			else throw new ClassCastException(t.getClass() + " は JsonArray の要素に指定できません");
+		}
 	}
 /*
  * push
  */
+	@Override
 	public JsonArray push(JsonType val) {
 		this.array.add(val);
 		return this;
 	}
+	@Override
 	public JsonArray push(String val) {
 		this.array.add(new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray push(byte val) {
 		this.array.add(new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray push(char val) {
 		this.array.add(new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray push(short val) {
 		this.array.add(new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray push(int val) {
 		this.array.add(new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray push(long val) {
 		this.array.add(new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray push(float val) {
 		this.array.add(new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray push(double val) {
 		this.array.add(new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray push(boolean val) {
 		this.array.add(new JsonValue(val));
 		return this;
@@ -116,6 +116,7 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 /*
  * pop
  */
+	@Override
 	public JsonType pop() {
 		return this.array.remove(array.size()-1);
 	}
@@ -123,42 +124,52 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 /*
  * shift
  */
+	@Override
 	public JsonArray shift(JsonType val) {
 		this.array.add(0,val);
 		return this;
 	}
+	@Override
 	public JsonArray shift(String val) {
 		this.array.add(0, new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray shift(byte val) {
 		this.array.add(0, new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray shift(char val) {
 		this.array.add(0, new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray shift(short val) {
 		this.array.add(0, new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray shift(int val) {
 		this.array.add(0, new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray shift(long val) {
 		this.array.add(0, new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray shift(float val) {
 		this.array.add(0, new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray shift(double val) {
 		this.array.add(0, new JsonValue(val));
 		return this;
 	}
+	@Override
 	public JsonArray shift(boolean val) {
 		this.array.add(0, new JsonValue(val));
 		return this;
@@ -166,6 +177,7 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 /*
  * unshift
  */
+	@Override
 	public JsonType unshift() {
 		return this.array.remove(0);
 	}
@@ -175,16 +187,22 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 	 * 
 	 * @param	s	コピーする最初のインデックス(含みます)
 	 * @param	e	コピーする末尾のインデックス(含みません)
-	 * @return	切り取った JsonArray (要素は参照(shallow copy)です)
+	 * @return	切り取った JsonArray (要素は参照です(shallow copy))
 	 */
+	@Override
 	public JsonArray slice(int s, int e) {
-		JsonType[] a = array.toArray(new JsonType[0]);
+		Object[] a = array.toArray(new Object[0]);
 		return new JsonArray(Arrays.copyOfRange(a, s, e));
 	}
 	
 	/**
 	 * JavaScript における concat (結合、非破壊的で元の値を保つ) です。
+	 * JsonArray 以外を指定すると、ClassCastException がスローされます。
+	 *
+	 * @param	target	結合する JsonArray
+	 * @return	結合後の JsonArray。元の JsonArray (this) は変更されません。
 	 */
+	@Override
 	public JsonArray concat(JsonType target) {
 		List<JsonType> result = new ArrayList<JsonType>(array);
 		result.addAll(((JsonArray)target).array);
@@ -205,6 +223,7 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 	 * @param	toAdd	挿入するオブジェクトの配列
 	 * @return	変更後のインスタンス
 	 */
+	@Override
 	public JsonArray splice(int index, int delete, JsonType toAdd) {
 		if (toAdd instanceof JsonArray) {
 			JsonType[] ja = ((JsonArray)toAdd).array.toArray(new JsonType[0]);
@@ -234,6 +253,8 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 		
 		return this;
 	}
+	
+	@Override
 	public JsonArray splice(int index, int delete, Object... toAdd) {
 		if (toAdd instanceof JsonType[])
 			return spliceImpl(index, delete, (JsonType[])toAdd);
@@ -265,12 +286,14 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 		return spliceImpl(index, delete, a);
 	}
 	
-/*-----------
- * overrides
- */
 	@Override
 	public JsonType get(int index) {
 		return array.get(index);
+	}
+	
+	@Override
+	public JsonType cut(int index) {
+		return array.remove(index);
 	}
 	
 	@Override

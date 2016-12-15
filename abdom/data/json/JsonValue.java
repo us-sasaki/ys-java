@@ -63,6 +63,7 @@ public class JsonValue extends JsonType {
 	 *
 	 * @return	String ’l
 	 */
+	@Override
 	public String getValue() {
 		if ("".equals(quote) && "null".equals(value)) return null;
 		

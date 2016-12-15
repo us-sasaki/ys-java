@@ -23,35 +23,45 @@ public class JsonObject extends JsonType {
 /*
  * add methods
  */
+	@Override
 	public JsonObject add(String name, JsonType obj) {
 		return addImpl(name, obj);
 	}
+	@Override
 	public JsonObject add(String name, String value) {
 		return addImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject add(String name, boolean value) {
 		return addImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject add(String name, byte value) {
 		return addImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject add(String name, char value) {
 		return addImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject add(String name, int value) {
 		return addImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject add(String name, long value) {
 		return addImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject add(String name, float value) {
 		return addImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject add(String name, double value) {
 		return addImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject add(String name, JsonType[] array) {
-		return addImpl(name, new JsonArray(array));
+		return addImpl(name, new JsonArray((Object[])array));
 	}
 	
 	private JsonObject addImpl(String name, JsonType t) {
@@ -82,35 +92,45 @@ public class JsonObject extends JsonType {
 /*
  * put methods
  */
+	@Override
 	public JsonObject put(String name, JsonType obj) {
 		return putImpl(name, obj);
 	}
+	@Override
 	public JsonObject put(String name, String value) {
 		return putImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject put(String name, boolean value) {
 		return putImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject put(String name, byte value) {
 		return putImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject put(String name, char value) {
 		return putImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject put(String name, int value) {
 		return putImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject put(String name, long value) {
 		return putImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject put(String name, float value) {
 		return putImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject put(String name, double value) {
 		return putImpl(name, new JsonValue(value));
 	}
+	@Override
 	public JsonObject put(String name, JsonType[] array) {
-		return putImpl(name, new JsonArray(array));
+		return putImpl(name, new JsonArray((Object[])array));
 	}
 	
 	private JsonObject putImpl(String name, JsonType t) {
