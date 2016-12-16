@@ -6,6 +6,11 @@ import abdom.data.json.object.JData;
  * Cumulocity のデータのスーパークラスです。
  * カテゴリ分けのほか、JData の直列化、c8y 特有のルールに対応するメソッドを
  * 提供します。
+ * C8yData は JData を継承しているため、JSON 直列化をサポートします。
+ * 例えば、<pre>
+ * System.out.println(new ManagedObject().toJson().toString("  "));
+ * </pre>
+ * を実行すると、ManagedObject の JSON 形式が得られます。
  */
 public abstract class C8yData extends JData {
 	

@@ -675,7 +675,7 @@ public abstract class JData extends JValue {
 					result.put(name, new JsonArray(v));
 				} else if (String[].class.isAssignableFrom(type)) {
 					String[] v = (String[])f.get(this);
-					result.put(name, new JsonArray(v));
+					result.put(name, new JsonArray((Object[])v));
 				} else if (JValue[].class.isAssignableFrom(type)) {
 					JValue[] v = (JValue[])f.get(this);
 					JsonArray ja = new JsonArray();
@@ -683,7 +683,7 @@ public abstract class JData extends JValue {
 					result.put(name, ja);
 				} else if (JsonType[].class.isAssignableFrom(type)) {
 					JsonType[] v = (JsonType[])f.get(this);
-					result.put(name, new JsonArray(v));
+					result.put(name, new JsonArray((Object[])v));
 					
 				// List (List<JData> ‚Æ‚Ý‚È‚·)
 				} else if (List.class.isAssignableFrom(type)) {
