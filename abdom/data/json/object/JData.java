@@ -125,7 +125,7 @@ public abstract class JData extends JValue {
 	 */
 	public Set getExtraKeySet() {
 		if (_extra == null) return null;
-		return _extra.map.keySet();
+		return _extra.keySet();
 	}
 	
 	/**
@@ -238,7 +238,7 @@ public abstract class JData extends JValue {
 			fmap.put(f.getName(), f);
 		}
 		
-		for (String key : jobj.map.keySet()) {
+		for (String key : jobj.keySet()) {
 			Field f = fmap.get(key);
 			if (f == null) {
 				// Field がない場合、_extra に格納
@@ -386,7 +386,7 @@ public abstract class JData extends JValue {
 			JsonArray ja = (JsonArray)val;
 			boolean[] instance = new boolean[ja.size()];
 			int i = 0;
-			for (JsonType j : ja.array) {
+			for (JsonType j : ja) {
 				if (!(j instanceof JsonValue))
 					throw new IllegalFieldTypeException("\"" + name + "\" array-field of class \"" + getClass().getName() + "\" expects type of JsonValue(boolean) instead of type " + type);
 				
@@ -422,7 +422,7 @@ public abstract class JData extends JValue {
 			JsonArray ja = (JsonArray)val;
 			int[] instance = new int[ja.size()];
 			int i = 0;
-			for (JsonType j : ja.array) {
+			for (JsonType j : ja) {
 				if (!(j instanceof JsonValue))
 					throw new IllegalFieldTypeException("\"" + name + "\" array-field of class \"" + getClass().getName() + "\" expects type of JsonValue(int). Specified value: " + val);
 				instance[i++] = Integer.parseInt(j.toString());
@@ -448,7 +448,7 @@ public abstract class JData extends JValue {
 			JsonArray ja = (JsonArray)val;
 			double[] instance = new double[ja.size()];
 			int i = 0;
-			for (JsonType j : ja.array) {
+			for (JsonType j : ja) {
 				if (!(j instanceof JsonValue))
 					throw new IllegalFieldTypeException("\"" + name + "\" array-field of class \"" + getClass().getName() + "\" expects type of JsonValue(double) instead of type " + type);
 				instance[i++] = Double.parseDouble(j.toString());
@@ -474,7 +474,7 @@ public abstract class JData extends JValue {
 			JsonArray ja = (JsonArray)val;
 			String[] instance = new String[ja.size()];
 			int i = 0;
-			for (JsonType j : ja.array) {
+			for (JsonType j : ja) {
 				if (j.getType() == JsonType.TYPE_VOID) {
 					instance[i++] = null;
 					continue;
@@ -512,7 +512,7 @@ public abstract class JData extends JValue {
 			JValue[] instance = (JValue[])Array.newInstance(comptype, ja.size());
 			int i = 0;
 			try {
-				for (JsonType j : ja.array) {
+				for (JsonType j : ja) {
 					if (j.getType() == JsonType.TYPE_VOID) {
 						instance[i++] = null;
 						continue;
@@ -548,7 +548,7 @@ public abstract class JData extends JValue {
 			JsonArray ja = (JsonArray)val;
 			JsonType[] instance = new JsonType[ja.size()];
 			int i = 0;
-			for (JsonType j : ja.array) {
+			for (JsonType j : ja) {
 				// JsonType[] の場合、null が指定された場合、Java Object の
 				// null ではなく、JsonValue の null (TYPE_VOID) を入れる
 				JsonType elm = JsonType.parse(j.toString()); // deep copy
@@ -583,7 +583,7 @@ public abstract class JData extends JValue {
 			JsonArray ja = (JsonArray)val;
 			List<JData> instance = new ArrayList<JData>();
 			try {
-				for (JsonType j : ja.array) {
+				for (JsonType j : ja) {
 					if (j.getType() == JsonType.TYPE_VOID) {
 						instance.add(null);
 						continue;
@@ -604,7 +604,7 @@ public abstract class JData extends JValue {
 			}
 		} else {
 			// コンストラクタでチェックしているため、ここには来ないはず
-			new IllegalFieldTypeException("\"" + name + "\" field is not an element of JData category :" + type);
+			throw new IllegalFieldTypeException("\"" + name + "\" field is not an element of JData category :" + type);
 		}
 	}
 	
@@ -701,7 +701,7 @@ public abstract class JData extends JValue {
 		}
 		// _extra を追加
 		if (_extra != null) {
-			for (String key : _extra.map.keySet()) {
+			for (String key : _extra.keySet()) {
 				result.put(key, _extra.get(key));
 			}
 		}

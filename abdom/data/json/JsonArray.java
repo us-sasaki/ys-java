@@ -7,9 +7,10 @@ import java.util.ArrayList;
 /**
  * Json形式における配列を表します。
  * 内部では配列を ArrayList<JsonType> で保持します。
+ * このクラスのオブジェクトはスレッドセーフではありません。
  */
 public class JsonArray extends JsonType implements Iterable<JsonType> {
-	public List<JsonType> array = new ArrayList<JsonType>();
+	protected List<JsonType> array = new ArrayList<JsonType>();
 	
 /*-------------
  * constructor

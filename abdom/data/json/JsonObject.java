@@ -5,9 +5,10 @@ import java.util.TreeMap;
 
 /**
  * Json形式におけるオブジェクトを表します。
+ * このクラスのオブジェクトはスレッドセーフではありません。
  */
 public class JsonObject extends JsonType {
-	public Map<String, JsonType> map;
+	protected Map<String, JsonType> map;
 	
 /*-------------
  * constructor

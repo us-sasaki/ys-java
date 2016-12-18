@@ -4,13 +4,14 @@ package abdom.data.json;
  * Json形式におけるプリミティブ型(文字列,数値)を表します。
  * 文字列は内部的にはコントロールコードをエスケープシーケンスした文字列として
  * 保持します。getValue() でエスケープシーケンスを解除します。
+ * このクラスのオブジェクトは不変です。
  *
  * @version		November 25, 2016
  * @author		Yusuke Sasaki
  */
 public class JsonValue extends JsonType {
-	public String value;
-	public String quote = "";
+	protected String value;
+	protected String quote = "";
 	
 /*-------------
  * constructor
@@ -37,6 +38,9 @@ public class JsonValue extends JsonType {
 	public JsonValue(double value) {	this.value = String.valueOf(value); }
 	public JsonValue(boolean value) {	this.value = value?"true":"false"; }
 	
+/*------------------
+ * instance methods
+ */
 	private static String escapeControlCodes(String value) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < value.length(); i++) {
@@ -57,6 +61,9 @@ public class JsonValue extends JsonType {
 		return sb.toString();
 	}
 	
+/*-----------
+ * overrides
+ */
 	/**
 	 * この JsonValue の持つ文字列値(Java値)を返却します。
 	 * クオーテーションやエスケープシーケンスは解除されます。
@@ -110,9 +117,6 @@ public class JsonValue extends JsonType {
 		return Double.parseDouble(value);
 	}
 	
-/*-----------
- * overrides
- */
 	@Override
 	public String toString() {
 		return quote+value+quote;

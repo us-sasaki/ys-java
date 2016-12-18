@@ -457,8 +457,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	
 	/**
 	 * JavaScript における splice (継ぎ合わせ) です。
-	 * このメソッドでは、新規 JsonArray を生成し返却します。元のオブジェクトは
-	 * push 同様変更されます(破壊的)。
+	 * 元のオブジェクトは push 同様変更されます(破壊的)。
 	 *
 	 * @param	index	挿入するインデックス
 	 * @param	delete	削除する要素数
@@ -470,8 +469,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	
 	/**
 	 * JavaScript における splice (継ぎ合わせ) です。
-	 * このメソッドでは、新規 JsonArray を生成し返却します。元のオブジェクトは
-	 * push 同様変更されます(破壊的)。
+	 * 元のオブジェクトは push 同様変更されます(破壊的)。
 	 * toAdd として、JsonType を１つだけ指定した場合、splice(int,int,JsonType)
 	 * が呼ばれ、JsonType が JsonArray だった場合に配列の解除が行われます。
 	 *
@@ -635,6 +633,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	
 	/**
 	 * 指定された JSON 文字列から JsonType を生成します。
+	 * このメソッドは共有状態を持たずスレッドセーフです。
 	 *
 	 * @param	str		JSON 文字列
 	 * @return	指定された文字列の表す JsonType
@@ -649,8 +648,9 @@ public abstract class JsonType implements Iterable<JsonType> {
 	
 	/**
 	 * 指定された Reader から JSON value を１つ読み込みます。
-	 * Reader はJSON value終了位置まで読み込まれ、close() されません。
+	 * Reader は JSON value 終了位置まで読み込まれ、close() されません。
 	 * Reader は内部的に PushbackReader として利用されます。
+	 * このメソッドは共有状態を持たずスレッドセーフです。
 	 *
 	 * @param	in	Json文字列を入力する Reader。
 	 * @return	生成された JsonType
@@ -662,7 +662,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	
 	/**
 	 * スペース文字をスキップします。
-	 * スペース文字は、space, tab, cr, lf です。
+	 * スペース文字は、space, tab, CR, LF です。
 	 */
 	private static void skipspaces(PushbackReader pr) throws IOException {
 		while (true) {
@@ -880,6 +880,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 /*----------------------
  * implements(Iterable)
  */
+	@Override
 	public java.util.Iterator<JsonType> iterator() {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、iterator を持ちません");
 	}
