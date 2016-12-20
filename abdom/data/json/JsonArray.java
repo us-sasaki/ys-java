@@ -37,8 +37,7 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 	public void set(Object... toSet) {
 		this.array.clear();
 		
-		for (int i = 0; i < toSet.length; i++) {
-			Object t = toSet[i];
+		for (Object t : toSet) {
 			if (t instanceof JsonType) array.add((JsonType)t);
 			else if (t instanceof String)
 				array.add(new JsonValue((String)t));

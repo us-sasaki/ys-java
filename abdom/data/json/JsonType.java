@@ -614,8 +614,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 */
 	public static JsonArray a(Object... param) {
 		JsonArray result = new JsonArray();
-		for (int i = 0; i < param.length; i++) {
-			Object t = param[i];
+		for (Object t : param) {
 			if (t instanceof JsonType) result.push((JsonType)t);
 			else if (t instanceof String) result.push((String)t);
 			else if (t instanceof Byte) result.push((Byte)t);
@@ -820,22 +819,22 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * [ がある前提(Readerの現在位置は [ の次)で、続く配列を取得します。
 	 */
 	private static JsonArray parseArray(PushbackReader pr) throws IOException {
-		List<JsonType> array = new ArrayList<JsonType>();
 		skipspaces(pr);
 		int c = pr.read();
 		if (c == ']') {
-			return new JsonArray(array.toArray(new Object[0]));
+			return new JsonArray(); // 空のJsonArray
 		}
 		pr.unread(c);
+		JsonArray result = new JsonArray();
 		while (true) {
 			skipspaces(pr);
 			JsonType j = parseValue(pr);
-			array.add(j);
+			result.push(j);
 			skipspaces(pr);
 			c = pr.read();
 			if (c == -1) throw new JsonParseException("配列の終りの前に終了を検知しました");
 			if (c == ']') {
-				return new JsonArray(array.toArray(new Object[0]));
+				return result;
 			}
 			if (c != ',') throw new JsonParseException("配列内に不正な文字を検出しました : " + (char)c);
 		}
@@ -859,7 +858,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 			String name = readString(pr);
 			// ここで name として入っていてはならない文字をチェック
 			// しかし、規則が書いてないので手抜き
-			// RFC4627 によると、string とあり、なんでもOKらしい
+			// RFC 7159 によると、string とあり、なんでもOKらしい
 			// "." も OK
 			skipspaces(pr);
 			c = pr.read();
