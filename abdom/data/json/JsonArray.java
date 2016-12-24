@@ -65,6 +65,7 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
  */
 	@Override
 	public JsonArray push(JsonType val) {
+		if (val == null) val = new JsonValue(null);
 		this.array.add(val);
 		return this;
 	}
@@ -309,14 +310,14 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("[");
+		sb.append('[');
 		boolean first = true;
 		for (JsonType obj : array) {
 			if (!first) sb.append(",");
 			else first = false;
 			sb.append(obj.toString());
 		}
-		sb.append("]");
+		sb.append(']');
 		return sb.toString();
 	}
 	
@@ -335,11 +336,11 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 		StringBuffer sb = new StringBuffer();
 		
 		if (!objElement) sb.append(indent);
-		sb.append("[");
+		sb.append('[');
 		boolean first = true;
 		for (JsonType obj : array) {
 			if (!first) {
-				sb.append(",");
+				sb.append(',');
 				sb.append(JsonType.LS);
 			} else {
 				sb.append(JsonType.LS);
@@ -349,7 +350,7 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 		}
 		sb.append(JsonType.LS);
 		sb.append(indent);
-		sb.append("]");
+		sb.append(']');
 		
 		return sb.toString();
 	}

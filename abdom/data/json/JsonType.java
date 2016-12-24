@@ -232,7 +232,8 @@ public abstract class JsonType implements Iterable<JsonType> {
 	/**
 	 * この JsonObject に要素を追加します。
 	 * put との違いは、すでに name で指定される要素が存在した場合、
-	 * name の値を JsonArray に変換して値を追加する点です。
+	 * name の値を JsonArray に変換して値を追加する点と、null 値を
+	 * 指定していた場合、何もしない点です。
 	 * すでに name で指定される要素が JsonArray であった場合、
 	 * その JsonArray に指定された要素が追加(push)されます。
 	 *
@@ -280,7 +281,8 @@ public abstract class JsonType implements Iterable<JsonType> {
 	/**
 	 * この JsonObject に要素を追加します。
 	 * add との違いは、すでに name で指定される要素が存在した場合、
-	 * name の値を上書きする点です。
+	 * name の値を上書きする点と、null 値を指定した場合、JsonValue(null)
+	 * で上書きする点です。
 	 *
 	 * @param	name	要素名
 	 * @param	t		値

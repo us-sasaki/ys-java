@@ -8,6 +8,10 @@ import java.util.TreeMap;
  * このクラスのオブジェクトはスレッドセーフではありません。
  */
 public class JsonObject extends JsonType {
+	/**
+	 * オブジェクトの要素を保持します。null 値を含ませてはいけません。
+	 * その場合、JsonValue(null) を挿入して下さい。
+	 */
 	protected Map<String, JsonType> map;
 	
 /*-------------
@@ -66,6 +70,7 @@ public class JsonObject extends JsonType {
 	}
 	
 	private JsonObject addImpl(String name, JsonType t) {
+		if (t == null) return this; // 何もしない
 		if (map.containsKey(name)) {
 			// 同一 name のエントリがすでにあった場合、value を JsonArray 化する
 			JsonType v = map.get(name);
@@ -135,6 +140,7 @@ public class JsonObject extends JsonType {
 	}
 	
 	private JsonObject putImpl(String name, JsonType t) {
+		if (t == null) t = new JsonValue( null );
 		// 上書き
 		map.put(name, t);
 		return this;
@@ -162,18 +168,18 @@ public class JsonObject extends JsonType {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("{");
+		sb.append('{');
 		boolean first = true;
 		for (String name : map.keySet() ) {
 			if (!first) sb.append(",");
 			else first = false;
-			sb.append("\"");
+			sb.append('\"');
 			sb.append(name);
 			sb.append("\":");
 			JsonType jt = map.get(name);
 			sb.append(jt);
 		}
-		sb.append("}");
+		sb.append('}');
 		
 		return sb.toString();
 	}
@@ -193,7 +199,7 @@ public class JsonObject extends JsonType {
 			sb.append(JsonType.LS);
 			sb.append(indent);
 			sb.append(indentStep);
-			sb.append("\"");
+			sb.append('\"');
 			sb.append(name);
 			sb.append("\": ");
 			JsonType jt = map.get(name);
@@ -216,7 +222,7 @@ public class JsonObject extends JsonType {
 					sb.append(jt.toString(indent+indentStep, indentStep,
 									textwidth, true));
 				}
-			} else if (((JsonArray)jt).array.size() == 0) {
+			} else if (jt.size() == 0) {
 				// JsonArray では、要素数が 0 の場合簡略表示
 				// 1 以上の場合は textwidth 指定による
 				sb.append("[]");
