@@ -10,6 +10,10 @@ import java.util.ArrayList;
  * このクラスのオブジェクトはスレッドセーフではありません。
  */
 public class JsonArray extends JsonType implements Iterable<JsonType> {
+	/**
+	 * 配列の要素を保持します。要素に null を含めてはならず、
+	 * 明示的に含ませる場合、JsonValue(null) を含めます。
+	 */
 	protected List<JsonType> array = new ArrayList<JsonType>();
 	
 /*-------------
@@ -38,7 +42,8 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 		this.array.clear();
 		
 		for (Object t : toSet) {
-			if (t instanceof JsonType) array.add((JsonType)t);
+			if (t == null) array.add(new JsonValue(null));
+			else if (t instanceof JsonType) array.add((JsonType)t);
 			else if (t instanceof String)
 				array.add(new JsonValue((String)t));
 			else if (t instanceof Byte)
@@ -127,7 +132,8 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
  */
 	@Override
 	public JsonArray shift(JsonType val) {
-		this.array.add(0,val);
+		if (val == null) this.array.add(0, new JsonValue(null));
+		else this.array.add(0,val);
 		return this;
 	}
 	@Override
@@ -264,7 +270,8 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 		
 		for (int i = 0; i < a.length; i++) {
 			Object t = toAdd[i];
-			if (t instanceof JsonType) a[i] = (JsonType)t;
+			if (t == null) a[i] = new JsonValue(null);
+			else if (t instanceof JsonType) a[i] = (JsonType)t;
 			else if (t instanceof String) a[i] = new JsonValue((String)t);
 			else if (t instanceof Byte)
 				a[i] = new JsonValue( ((Byte)t).byteValue() );

@@ -18,8 +18,7 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonValue;
 
 /**
- * Java オブジェクトと JSON の相互変換に関する static メソッドを
- * 提供します。
+ * Java オブジェクトと JSON の相互変換に関する static メソッドを提供します。
  * 変換対象となる Java オブジェクトはメンバ変数として次の型(JDataカテゴリ)が
  * 指定できます。<pre>
  *
@@ -65,6 +64,11 @@ public class Jsonizer {
  * class methods
  */
 	public static JsonObject fill(Object instance, JsonType arg) {
+		if (instance instanceof JValue && !(instance instanceof JData)) {
+			((JValue)instance).fill(arg);
+			return null; // extra はない？
+		}
+		
 		Map<String, Accessor> accessors = getAccessors(instance);
 		
 		JsonObject extra = null;
@@ -89,6 +93,9 @@ public class Jsonizer {
 	}
 	
 	public static JsonType toJson(Object instance) {
+		if (instance instanceof JValue && !(instance instanceof JData))
+			return ((JValue)instance).toJson();
+		
 		Map<String, Accessor> accessors = getAccessors(instance);
 		
 		JsonObject result = new JsonObject();
@@ -109,6 +116,13 @@ public class Jsonizer {
 	 */
 	static Map<String, Accessor> getAccessors(Object instance) {
 		Class<?> cls = instance.getClass();
+		
+		// JValue のインスタンスかつ、JData のインスタンスでない
+		// 場合(JValue を直接継承)、Accessor による設定でなく、
+		// fill(), toJson() による変換を行うこととし、null が返却される。
+		if (JValue.class.isAssignableFrom(cls) &&
+			!JData.class.isAssignableFrom(cls) ) return null;
+			
 		synchronized (cls) {
 			Map<String, Accessor> accessors = _fieldAccessors.get(cls);
 			if (accessors != null) return accessors;
@@ -124,6 +138,7 @@ System.out.println("generate accessor of " + instance.getClass());
 			// method が field に優先することとなる		
 			addFieldAccessors(accessors, cls);
 			addMethodAccessors(accessors, cls);
+			
 			synchronized (_fieldAccessors) {
 				_fieldAccessors.put(cls, accessors);
 			}
@@ -155,7 +170,7 @@ System.out.println("generate accessor of " + instance.getClass());
 						"\". JData field must consist of boolean, int, double, String, JValue, JsonObject, their arrays. To prevent the field from Jsonizing, set transient.");
 			String name = f.getName();
 			if (type.isArray()) {
-System.out.println("field array put " + name);
+System.out.println("field put array " + name);
 				accessors.put(name, new ArrayAccessor(f));
 			} else {
 System.out.println("field put " + name);
@@ -231,7 +246,7 @@ System.out.println("field put " + name);
 			}
 		}
 for (String name : pairs.keySet())
-	System.out.println(name + " " + pairs.get(name));
+	System.out.println("method entry : " + name + " " + pairs.get(name).getter + "/" + pairs.get(name).setter);
 		
 		// get の returnType と set の argType が同一のものを選択
 		// Number getNumber() と
@@ -239,6 +254,12 @@ for (String name : pairs.keySet())
 		// 同様に、int getCount()  void setCount(Integer) もマッチしない
 		for (String name : pairs.keySet()) {
 			MethodPair mp = pairs.get(name);
+			
+			// ペアがない場合スキップ
+			if (mp.getter == null || mp.setter.size() == 0) continue;
+			
+			// ペアとなっていた場合、get の retType と set の paramType が
+			// 一致する組み合わせを検索
 			Class<?> retType = mp.getter.getReturnType();
 			Method theOther = null;
 			for (Method setter : mp.setter) {
@@ -249,7 +270,7 @@ for (String name : pairs.keySet())
 			}
 			if (theOther != null) {
 				if (retType.isArray()) {
-System.out.println("method array put " + name);
+System.out.println("method put array " + name);
 					accessors.put(name, new ArrayAccessor(mp.getter, theOther));
 				} else {
 System.out.println("method put " + name);

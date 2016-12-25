@@ -30,10 +30,12 @@ public class JsonObject extends JsonType {
  */
 	@Override
 	public JsonObject add(String name, JsonType obj) {
+		if (obj == null) return this;
 		return addImpl(name, obj);
 	}
 	@Override
 	public JsonObject add(String name, String value) {
+		if (value == null) return this;
 		return addImpl(name, new JsonValue(value));
 	}
 	@Override

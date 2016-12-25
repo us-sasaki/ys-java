@@ -617,7 +617,8 @@ public abstract class JsonType implements Iterable<JsonType> {
 	public static JsonArray a(Object... param) {
 		JsonArray result = new JsonArray();
 		for (Object t : param) {
-			if (t instanceof JsonType) result.push((JsonType)t);
+			if (t == null) result.push(new JsonValue(null));
+			else if (t instanceof JsonType) result.push((JsonType)t);
 			else if (t instanceof String) result.push((String)t);
 			else if (t instanceof Byte) result.push((Byte)t);
 			else if (t instanceof Character) result.push((Character)t);
