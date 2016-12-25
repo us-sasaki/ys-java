@@ -26,6 +26,7 @@ abstract class Accessor {
 	 * 単一プロパティの値を JsonType として取得します。
 	 * オブジェクトが持っている値が null の場合、JsonValue(null) ではなく、
 	 * 単に null 値が返却されます。
+	 * JsonValue(null) 値が必要なコンテキストでは、上位で変換してください。
 	 *
 	 * @param	instance	取得対象のインスタンス
 	 * @return	取得値の Json 表現
@@ -43,9 +44,6 @@ abstract class Accessor {
 	/**
 	 * type 型をもつ Java オブジェクトの value の JSON 表現を返却します。
 	 * value が null の場合、JsonValue(null) が返却されます。
-	 * JsonValue(null) とすると、toJson で null フィールドが表示されて
-	 * しまう。
-	 * null とすると、
 	 *
 	 * @param	value	Object型の Java インスタンス
 	 * @param	type	value のオブジェクト内での宣言型(≒value.getClass())
@@ -67,7 +65,7 @@ abstract class Accessor {
 			return ((JValue)value).toJson();
 		// 一般オブジェクト型
 		
-		return JData.toJson(value);
+		return Jsonizer.toJson(value);
 	}
 }
 
@@ -185,7 +183,7 @@ class SimpleAccessor extends Accessor {
 		if (JValue.class.isAssignableFrom(type)) {
 			((JValue)newInstance).fill(arg);
 		} else {
-			JData.fill(newInstance, arg);
+			Jsonizer.fill(newInstance, arg);
 		}
 		prop.setObj(instance, newInstance);
 	}
@@ -317,7 +315,7 @@ class ArrayAccessor extends Accessor {
 				if (JValue.class.isAssignableFrom(compType)) {
 					((JValue)newObj).fill(elm);
 				} else {
-					JData.fill(newObj, elm);
+					Jsonizer.fill(newObj, elm);
 				}
 				Array.set(result, i++, newObj);
 			}
@@ -337,13 +335,13 @@ class ArrayAccessor extends Accessor {
  */
 abstract class Property {
 	/**
-	 * インスタンスのプロパティ(変数またはgetter/setterで表現)を取得する
+	 * インスタンスからプロパティ(変数またはgetter/setterで表現)を取得する
 	 * メソッドです
 	 */
 	abstract Object getObj(Object instance);
 	
 	/**
-	 * インスタンスのプロパティ(変数またはgetter/setterで表現)を設定する
+	 * インスタンスからプロパティ(変数またはgetter/setterで表現)を設定する
 	 * メソッドです
 	 */
 	abstract void setObj(Object instance, Object arg);
@@ -444,7 +442,7 @@ class MethodProperty extends Property {
 	/**
 	 * Method では、 getter.invoke により値を取得します。
 	 * アクセスできない場合、JDataDefinitionException がスローされます。
-	 * 上位でチェックされているため発生しないはずですが、堅牢性を高める
+	 * 上位でチェックされているため発生しないはずですが、信頼性を高める
 	 * ため二重チェックとしています。
 	 */
 	@Override
@@ -461,7 +459,7 @@ class MethodProperty extends Property {
 	/**
 	 * Field では、 Field.set により値を設定します。
 	 * アクセスできない場合、JDataDefinitionException がスローされます。
-	 * 上位でチェックされているため発生しないはずですが、堅牢性を高める
+	 * 上位でチェックされているため発生しないはずですが、信頼性を高める
 	 * ため二重チェックとしています。
 	 */
 	@Override
@@ -482,7 +480,7 @@ class MethodProperty extends Property {
 	
 	@Override
 	String getName() {
-		return getter.getName() + "/"+setter.getName();
+		return getter.getName() + "/" + setter.getName();
 	}
 }
 
