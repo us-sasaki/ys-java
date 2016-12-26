@@ -115,6 +115,11 @@ public class JsonValue extends JsonType {
 	}
 	
 	@Override
+	public long getLongValue() {
+		return Long.parseLong(value);
+	}
+	
+	@Override
 	public double getDoubleValue() {
 		return Double.parseDouble(value);
 	}

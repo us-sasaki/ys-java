@@ -22,7 +22,7 @@ import abdom.data.json.JsonValue;
  * 変換対象となる Java オブジェクトはメンバ変数として次の型(JDataカテゴリ)が
  * 指定できます。<pre>
  *
- * boolean, int, double, String, JValue(,JData), JsonObject
+ * boolean, int, long, double, String, JValue(,JData), JsonObject
  * および、これらの型の配列
  *
  * </pre>
@@ -167,7 +167,7 @@ System.out.println("generate accessor of " + instance.getClass());
 				throw new IllegalFieldTypeException("Illegal type \"" +
 						type.getName() + "\" has found in field \""+
 						f.getName()+ "\" of class \"" + cls.getName() +
-						"\". JData field must consist of boolean, int, double, String, JValue, JsonObject, their arrays. To prevent the field from Jsonizing, set transient.");
+						"\". JData field must consist of boolean, int, long, double, String, JValue, JsonObject, their arrays. To prevent the field from Jsonizing, set transient.");
 			String name = f.getName();
 			if (type.isArray()) {
 System.out.println("field put array " + name);
@@ -288,6 +288,7 @@ System.out.println("method put " + name);
 		// プリミティブ、String, JsonObject, JValue
 		if ( boolean.class == type ||
 			int.class == type ||
+			long.class == type ||
 			double.class == type ||
 			String.class == type ||
 			JValue.class.isAssignableFrom(type) ||
@@ -296,6 +297,7 @@ System.out.println("method put " + name);
 		// 配列
 		if (boolean[].class == type ||
 			int[].class == type ||
+			long[].class == type ||
 			double[].class == type ||
 			String[].class == type ||
 			JValue[].class.isAssignableFrom(type) ||
