@@ -120,6 +120,11 @@ public class Rest {
 		if (responseCode < 400) return true;
 		return false;
 	}
+	
+	public Response get(String resource) throws IOException {
+		return get(resource, "");
+	}
+	
 	/**
 	 * GET リクエストをします。
 	 * この実装は、resource = /platform, type = platformApi と設定することを
@@ -169,6 +174,15 @@ public class Rest {
 	/**
 	 * POST リクエストをします。
 	 */
+	public Response post(String location, JsonType json)
+							throws IOException {
+		return post(location, "", json.toString());
+	}
+	
+	public Response post(String location, String body)
+							throws IOException {
+		return post(location, "", body);
+	}
 	public Response post(String location, String type, JsonType json)
 							throws IOException {
 		return post(location, type, json.toString());
@@ -181,8 +195,13 @@ public class Rest {
 		con.setDoOutput(true);
 		con.setRequestMethod("POST");
 		
-		con.setRequestProperty("Content-Type", "application/vnd.com.nsn.cumulocity."+type+"+json; charset=UTF-8; ver=0.9");
-		con.setRequestProperty("Accept", "application/vnd.com.nsn.cumulocity."+type+"+json; charset=UTF-8; ver=0.9");
+		if ("".equals(type)) {
+			con.setRequestProperty("Content-Type", "application/json");
+			con.setRequestProperty("Accept", "application/json");
+		} else {
+			con.setRequestProperty("Content-Type", "application/vnd.com.nsn.cumulocity."+type+"+json; charset=UTF-8; ver=0.9");
+			con.setRequestProperty("Accept", "application/vnd.com.nsn.cumulocity."+type+"+json; charset=UTF-8; ver=0.9");
+		}
 		if (user != null && password != null) {
 			String authStr = Base64.getEncoder().encodeToString((tenant + user + ":" + password).getBytes());
 			con.setRequestProperty("Authorization", "Basic " + authStr);
