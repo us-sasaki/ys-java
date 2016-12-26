@@ -72,11 +72,6 @@ public class Jsonizer {
 		Map<String, Accessor> accessors = getAccessors(instance);
 		
 		JsonObject extra = null;
-		try {
-			JsonObject hoe = (JsonObject)arg;
-		} catch (ClassCastException cce) {
-			throw new RuntimeException("instance = " + instance + " class = " + instance.getClass() + "arg = " + arg + " " + arg.getClass());
-		}
 		JsonObject jobj = (JsonObject)arg; // may throw ClassCastException
 		
 		for (String name : jobj.keySet()) {
@@ -127,7 +122,7 @@ public class Jsonizer {
 			Map<String, Accessor> accessors = _fieldAccessors.get(cls);
 			if (accessors != null) return accessors;
 			
-System.out.println("generate accessor of " + instance.getClass());
+			//System.out.println("generate accessor of " + instance.getClass());
 			//
 			// Accessors Çê∂ê¨Ç∑ÇÈ
 			//
@@ -170,10 +165,10 @@ System.out.println("generate accessor of " + instance.getClass());
 						"\". JData field must consist of boolean, int, long, double, String, JValue, JsonObject, their arrays. To prevent the field from Jsonizing, set transient.");
 			String name = f.getName();
 			if (type.isArray()) {
-System.out.println("field put array " + name);
+				//System.out.println("field put array " + name);
 				accessors.put(name, new ArrayAccessor(f));
 			} else {
-System.out.println("field put " + name);
+				//System.out.println("field put " + name);
 				accessors.put(name, new SimpleAccessor(f));
 			}
 		}
@@ -245,8 +240,8 @@ System.out.println("field put " + name);
 				pairs.put(name, mp);
 			}
 		}
-for (String name : pairs.keySet())
-	System.out.println("method entry : " + name + " " + pairs.get(name).getter + "/" + pairs.get(name).setter);
+		//for (String name : pairs.keySet())
+		//	System.out.println("method entry : " + name + " " + pairs.get(name).getter + "/" + pairs.get(name).setter);
 		
 		// get ÇÃ returnType Ç∆ set ÇÃ argType Ç™ìØàÍÇÃÇ‡ÇÃÇëIë
 		// Number getNumber() Ç∆
@@ -270,10 +265,10 @@ for (String name : pairs.keySet())
 			}
 			if (theOther != null) {
 				if (retType.isArray()) {
-System.out.println("method put array " + name);
+					//System.out.println("method put array " + name);
 					accessors.put(name, new ArrayAccessor(mp.getter, theOther));
 				} else {
-System.out.println("method put " + name);
+					//System.out.println("method put " + name);
 					accessors.put(name, new SimpleAccessor(mp.getter, theOther));
 				}
 			}
