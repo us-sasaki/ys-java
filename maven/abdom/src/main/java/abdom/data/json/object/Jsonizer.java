@@ -22,7 +22,7 @@ import abdom.data.json.JsonValue;
  * 変換対象となる Java オブジェクトはメンバ変数として次の型(JDataカテゴリ)が
  * 指定できます。<pre>
  *
- * boolean, int, double, String, JValue(,JData), JsonObject
+ * boolean, int, long, double, String, JValue(,JData), JsonObject
  * および、これらの型の配列
  *
  * </pre>
@@ -64,14 +64,14 @@ public class Jsonizer {
  * class methods
  */
 	public static JsonObject fill(Object instance, JsonType arg) {
+		if (instance instanceof JValue && !(instance instanceof JData)) {
+			((JValue)instance).fill(arg);
+			return null; // extra はない？
+		}
+		
 		Map<String, Accessor> accessors = getAccessors(instance);
 		
 		JsonObject extra = null;
-		try {
-			JsonObject hoe = (JsonObject)arg;
-		} catch (ClassCastException cce) {
-			throw new RuntimeException("instance = " + instance + " class = " + instance.getClass() + "arg = " + arg + " " + arg.getClass());
-		}
 		JsonObject jobj = (JsonObject)arg; // may throw ClassCastException
 		
 		for (String name : jobj.keySet()) {
@@ -88,6 +88,9 @@ public class Jsonizer {
 	}
 	
 	public static JsonType toJson(Object instance) {
+		if (instance instanceof JValue && !(instance instanceof JData))
+			return ((JValue)instance).toJson();
+		
 		Map<String, Accessor> accessors = getAccessors(instance);
 		
 		JsonObject result = new JsonObject();
@@ -108,11 +111,18 @@ public class Jsonizer {
 	 */
 	static Map<String, Accessor> getAccessors(Object instance) {
 		Class<?> cls = instance.getClass();
+		
+		// JValue のインスタンスかつ、JData のインスタンスでない
+		// 場合(JValue を直接継承)、Accessor による設定でなく、
+		// fill(), toJson() による変換を行うこととし、null が返却される。
+		if (JValue.class.isAssignableFrom(cls) &&
+			!JData.class.isAssignableFrom(cls) ) return null;
+			
 		synchronized (cls) {
 			Map<String, Accessor> accessors = _fieldAccessors.get(cls);
 			if (accessors != null) return accessors;
 			
-System.out.println("generate accessor of " + instance.getClass());
+			//System.out.println("generate accessor of " + instance.getClass());
 			//
 			// Accessors を生成する
 			//
@@ -123,6 +133,7 @@ System.out.println("generate accessor of " + instance.getClass());
 			// method が field に優先することとなる		
 			addFieldAccessors(accessors, cls);
 			addMethodAccessors(accessors, cls);
+			
 			synchronized (_fieldAccessors) {
 				_fieldAccessors.put(cls, accessors);
 			}
@@ -151,13 +162,13 @@ System.out.println("generate accessor of " + instance.getClass());
 				throw new IllegalFieldTypeException("Illegal type \"" +
 						type.getName() + "\" has found in field \""+
 						f.getName()+ "\" of class \"" + cls.getName() +
-						"\". JData field must consist of boolean, int, double, String, JValue, JsonObject, their arrays. To prevent the field from Jsonizing, set transient.");
+						"\". JData field must consist of boolean, int, long, double, String, JValue, JsonObject, their arrays. To prevent the field from Jsonizing, set transient.");
 			String name = f.getName();
 			if (type.isArray()) {
-System.out.println("field put array " + name);
+				//System.out.println("field put array " + name);
 				accessors.put(name, new ArrayAccessor(f));
 			} else {
-System.out.println("field put " + name);
+				//System.out.println("field put " + name);
 				accessors.put(name, new SimpleAccessor(f));
 			}
 		}
@@ -229,8 +240,8 @@ System.out.println("field put " + name);
 				pairs.put(name, mp);
 			}
 		}
-for (String name : pairs.keySet())
-	System.out.println("method entry : " + name + " " + pairs.get(name).getter + "/" + pairs.get(name).setter);
+		//for (String name : pairs.keySet())
+		//	System.out.println("method entry : " + name + " " + pairs.get(name).getter + "/" + pairs.get(name).setter);
 		
 		// get の returnType と set の argType が同一のものを選択
 		// Number getNumber() と
@@ -254,10 +265,10 @@ for (String name : pairs.keySet())
 			}
 			if (theOther != null) {
 				if (retType.isArray()) {
-System.out.println("method put array " + name);
+					//System.out.println("method put array " + name);
 					accessors.put(name, new ArrayAccessor(mp.getter, theOther));
 				} else {
-System.out.println("method put " + name);
+					//System.out.println("method put " + name);
 					accessors.put(name, new SimpleAccessor(mp.getter, theOther));
 				}
 			}
@@ -272,6 +283,7 @@ System.out.println("method put " + name);
 		// プリミティブ、String, JsonObject, JValue
 		if ( boolean.class == type ||
 			int.class == type ||
+			long.class == type ||
 			double.class == type ||
 			String.class == type ||
 			JValue.class.isAssignableFrom(type) ||
@@ -280,6 +292,7 @@ System.out.println("method put " + name);
 		// 配列
 		if (boolean[].class == type ||
 			int[].class == type ||
+			long[].class == type ||
 			double[].class == type ||
 			String[].class == type ||
 			JValue[].class.isAssignableFrom(type) ||

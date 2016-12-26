@@ -80,6 +80,18 @@ public abstract class JsonType implements Iterable<JsonType> {
 	}
 	
 	/**
+	 * JsonValue としての値を整数値で取得します。このオブジェクトが
+	 * JsonValue でない場合、ClassCastException がスローされます。
+	 * また、JsonValue でも整数として認識できない場合(Long.parseLong が
+	 * 失敗)、NumberFormatException がスローされます。
+	 *
+	 * @return	JsonValue としての long 値
+	 */
+	public long getLongValue() {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、getLongValue できません");
+	}
+	
+	/**
 	 * JsonValue としての値をdouble値で取得します。このオブジェクトが
 	 * JsonValue でない場合、ClassCastException がスローされます。
 	 * また、JsonValue でも double として認識できない場合
@@ -141,7 +153,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * JsonArray として、指定された index の値を取得します。
 	 * JsonArray でない場合、ClassCastException がスローされます。
 	 *
-	 * @param	index	index値( 0 ～ size()-1 )
+	 * @param	index	index値( 0 〜 size()-1 )
 	 * @return	取得される値(JsonType)
 	 */
 	public JsonType get(int index) {
@@ -152,7 +164,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	 * JsonArray として、指定された index の値を取得し、削除します。
 	 * JsonArray でない場合、ClassCastException がスローされます。
 	 *
-	 * @param	index	index値( 0 ～ size()-1 )
+	 * @param	index	index値( 0 〜 size()-1 )
 	 * @return	取得される値(JsonType)
 	 */
 	public JsonType cut(int index) {
@@ -172,7 +184,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 	/**
 	 * この JsonType が JavaScript のどの型であるかを示す定数を返却します。
 	 * Number 型については TYPE_INT, TYPE_DOUBLE のいずれかに分類されますが、
-	 * Integer.parseInt が成功する場合、TYPE_INT が返却されます。
+	 * Long.parseLong が成功する場合、TYPE_INT が返却されます。
 	 * (TYPE_INT が TYPE_DOUBLE に優先します)
 	 *
 	 * @return	型を示す定数
@@ -193,7 +205,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 			if ("true".equals(j.value)) return TYPE_BOOLEAN;
 			if ("false".equals(j.value)) return TYPE_BOOLEAN;
 			try {
-				Integer.parseInt(j.value);
+				Long.parseLong(j.value);
 				return TYPE_INT;
 			} catch (NumberFormatException nfe) {
 				try {
@@ -768,7 +780,7 @@ public abstract class JsonType implements Iterable<JsonType> {
 				double v = Double.parseDouble(token);
 				return new JsonValue(v);
 			} else {
-				int v = Integer.parseInt(token);
+				long v = Long.parseLong(token);
 				return new JsonValue(v);
 			}
 		} catch (NumberFormatException nfe) {

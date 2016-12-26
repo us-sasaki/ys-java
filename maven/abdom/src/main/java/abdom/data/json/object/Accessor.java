@@ -55,6 +55,8 @@ abstract class Accessor {
 			return new JsonValue( ((Boolean)value).booleanValue() );
 		if (type == int.class)
 			return new JsonValue( ((Integer)value).intValue() );
+		if (type == long.class)
+			return new JsonValue( ((Long)value).longValue() );
 		if (type == double.class)
 			return new JsonValue( ((Double)value).doubleValue() );
 		if (type == String.class)
@@ -132,6 +134,10 @@ class SimpleAccessor extends Accessor {
 			}
 			if (type == int.class) {
 				prop.setObj(instance, arg.getIntValue());
+				return;
+			}
+			if (type == long.class) {
+				prop.setObj(instance, arg.getLongValue());
 				return;
 			}
 			if (type == double.class) {
@@ -280,6 +286,10 @@ class ArrayAccessor extends Accessor {
 			int i = 0;
 			for (JsonType elm : arg)
 				Array.setInt(result, i++, elm.getIntValue());
+		} else if (compType == long.class) {
+			int i = 0;
+			for (JsonType elm : arg)
+				Array.setLong(result, i++, elm.getLongValue());
 		} else if (compType == double.class) {
 			int i = 0;
 			for (JsonType elm : arg)

@@ -67,6 +67,8 @@ public class JsonValue extends JsonType {
 	/**
 	 * この JsonValue の持つ文字列値(Java値)を返却します。
 	 * クオーテーションやエスケープシーケンスは解除されます。
+	 * 特に、このオブジェクトが null (TYPE_VOID) を表す場合、null (Java の)
+	 * が返却されます。
 	 *
 	 * @return	String 値
 	 */
@@ -110,6 +112,11 @@ public class JsonValue extends JsonType {
 	@Override
 	public int getIntValue() {
 		return Integer.parseInt(value);
+	}
+	
+	@Override
+	public long getLongValue() {
+		return Long.parseLong(value);
 	}
 	
 	@Override
