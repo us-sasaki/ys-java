@@ -267,13 +267,17 @@ public class Device2 {
 	 * Step 11 Send Alarms
 	 */
 	private void sendAlarms() throws IOException {
-		Alarm a = new Alarm();
+		Alarm a = new Alarm(managedObject.id, "Test alarm");
 		
+		System.out.println(a.toString("  "));
 		Rest r = getRest();
 		Rest.Response resp = r.post("/alarm/alarms", "alarm", a.toJson());
 		if (resp.code == 201) { // Created
 			return;
 		}
+		System.out.println("Response : " + resp.code);
+		System.out.println("Message  : " + resp.message);
+		
 		throw new IOException("An error occurred while sending alarm."+resp.message);
 	}
 	
@@ -283,9 +287,10 @@ public class Device2 {
 	private void cycle() throws IOException {
 		while (true) {
 			sendMeasurements();
-//			sendEvents();
+			//sendEvents();
+			//sendAlarms();
 			try {
-				Thread.sleep(100L);
+				Thread.sleep(2000L);
 			} catch (InterruptedException ignored) {
 			}
 		}
@@ -331,8 +336,8 @@ public class Device2 {
 		// location update
 		a.updateManagedObject();
 		
-//		a.cycle();
-		a.uploadBinary("binarySample.txt", "text/plain", "This is a sample binary.".getBytes());
+		a.cycle();
+//		a.uploadBinary("binarySample.txt", "text/plain", "This is a sample binary.".getBytes());
 		
 	}
 }
