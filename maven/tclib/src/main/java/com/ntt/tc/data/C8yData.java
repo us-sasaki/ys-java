@@ -26,7 +26,7 @@ public abstract class C8yData extends JData {
 	/**
 	 * このオブジェクトを指定されたオブジェクトに値が一致させる
 	 * JsonObject を抽出します。返り値を ret とした場合、一般に
-	 * this.fill(ret).equals(another) が成立します。ただし、fill の制約である
+	 * another.fill(ret).equals(this) が成立します。ただし、fill の制約である
 	 * 要素に JsonValue(null) を明示的に設定できないことは同様です。
 	 *
 	 * @param	another		比較対象
@@ -35,8 +35,8 @@ public abstract class C8yData extends JData {
 	public JsonObject getDifference(C8yData another) {
 		if (getClass() != another.getClass())
 			throw new IllegalArgumentException("getDifference() requires "+getClass() + " instance.");
-		JsonType a = this.toJson();
-		JsonType b = another.toJson();
+		JsonType a = another.toJson();
+		JsonType b = this.toJson();
 		
 		JsonObject result = new JsonObject();
 		
@@ -61,15 +61,6 @@ public abstract class C8yData extends JData {
 			else result.put(field, jb);
 		}
 		return result;
-/*		try {
-			@SuppressWarnings("unchecked")
-			T newInstance = (T)(getClass().newInstance());
-			newInstance.fill(result);
-			
-			return newInstance;
-		} catch (ReflectiveOperationException roe) {
-			throw new JDataDefinitionException();
-		}*/
 	}
 	
 }
