@@ -18,32 +18,32 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonValue;
 
 /**
- * Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ JSON ã®ç›¸äº’å¤‰æ›ã«é–¢ã™ã‚‹ static ãƒ¡ã‚½ãƒƒãƒ‰ã‚’æä¾›ã—ã¾ã™ã€‚
- * Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãŠã„ã¦æ¬¡ã«å®šç¾©ã™ã‚‹ã€Œãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã€ãŒå¤‰æ›å¯¾è±¡ã¨ãªã‚Šã¾ã™ã€‚<br>
- * 1.public ãƒ¡ãƒ³ãƒå¤‰æ•°ã€‚ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£åã¯å¤‰æ•°åã«ãªã‚Šã¾ã™ã€‚<br>
- * 2.public getter, setter ãƒ¡ã‚½ãƒƒãƒ‰ã®å¯¾ã€‚ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£åã¯ Java Beans å‘½åè¦å‰‡<br>
- *   ã«ã‚ˆã‚Šã¾ã™ã€‚ã•ã‚‰ã«å¯¾ã¯ getter ã¯å¼•æ•°ãªã—ã€setter ã¯å¼•æ•°ã‚ã‚Šã§ getter <br>
- * ã€€ã®è¿”å€¤å‹ã¨ setter ã®å¼•æ•°å‹ãŒä¸€è‡´ã—ã€JData ã‚«ãƒ†ã‚´ãƒªã«å«ã¾ã‚Œã‚‹ã‚‚ã®<br>
+ * Java ƒIƒuƒWƒFƒNƒg‚Æ JSON ‚Ì‘ŠŒİ•ÏŠ·‚ÉŠÖ‚·‚é static ƒƒ\ƒbƒh‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * Java ƒIƒuƒWƒFƒNƒg‚É‚¨‚¢‚ÄŸ‚É’è‹`‚·‚éuƒvƒƒpƒeƒBv‚ª•ÏŠ·‘ÎÛ‚Æ‚È‚è‚Ü‚·B<br>
+ * 1.public ƒƒ“ƒo•Ï”BƒvƒƒpƒeƒB–¼‚Í•Ï”–¼‚É‚È‚è‚Ü‚·B<br>
+ * 2.public getter, setter ƒƒ\ƒbƒh‚Ì‘ÎBƒvƒƒpƒeƒB–¼‚Í Java Beans –½–¼‹K‘¥<br>
+ *   ‚É‚æ‚è‚Ü‚·B‚³‚ç‚É‘Î‚Í getter ‚Íˆø”‚È‚µAsetter ‚Íˆø”‚ ‚è‚Å getter <br>
+ * @‚Ì•Ô’lŒ^‚Æ setter ‚Ìˆø”Œ^‚ªˆê’v‚µAJData ƒJƒeƒSƒŠ‚ÉŠÜ‚Ü‚ê‚é‚à‚Ì<br>
  * <br>
- * JData ã‚«ãƒ†ã‚´ãƒªã¯ã€ä»¥ä¸‹ã®å‹ã§ã™ã€‚<pre>
+ * JData ƒJƒeƒSƒŠ‚ÍAˆÈ‰º‚ÌŒ^‚Å‚·B<pre>
  *
  * boolean, int, long, float, double, String, JValue(,JData), JsonObject
- * ãŠã‚ˆã³ã€ã“ã‚Œã‚‰ã®å‹ã®é…åˆ—
+ * ‚¨‚æ‚ÑA‚±‚ê‚ç‚ÌŒ^‚Ì”z—ñ
  *
  * </pre>
- * JSONå½¢å¼ã¨ã®ç›¸äº’å¤‰æ›å¯¾è±¡å¤–ã¨ã™ã‚‹å¤‰æ•°ã‚’å®šç¾©ã—ãŸã„å ´åˆã€
- * transient ä¿®é£¾å­ã‚’ã¤ã‘ã¦ä¸‹ã•ã„ã€‚ã¾ãŸã€ãƒ¡ã‚½ãƒƒãƒ‰ã§ã¯ strictfp ä¿®é£¾å­ãŒ
- * getter, setter ã®ã„ãšã‚Œã‹ã«å«ã¾ã‚Œã‚‹ã¨å¤‰æ›å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™(è£æŠ€)ã€‚
+ * JSONŒ`®‚Æ‚Ì‘ŠŒİ•ÏŠ·‘ÎÛŠO‚Æ‚·‚é•Ï”‚ğ’è‹`‚µ‚½‚¢ê‡A
+ * transient Cüq‚ğ‚Â‚¯‚Ä‰º‚³‚¢B‚Ü‚½Aƒƒ\ƒbƒh‚Å‚Í strictfp Cüq‚ª
+ * getter, setter ‚Ì‚¢‚¸‚ê‚©‚ÉŠÜ‚Ü‚ê‚é‚Æ•ÏŠ·‘ÎÛŠO‚Æ‚È‚è‚Ü‚·(— ‹Z)B
  * <pre>
- * null å€¤ã«ã¤ã„ã¦ã¯ã€æ¬¡ã®ã‚ˆã†ã«å–ã‚Šæ‰±ã„ã¾ã™ã€‚
+ * null ’l‚É‚Â‚¢‚Ä‚ÍAŸ‚Ì‚æ‚¤‚Éæ‚èˆµ‚¢‚Ü‚·B
  *       Java Object                    toJson()
- *  Object null;              ->   ç¾ã‚Œãªã„
- *  JsonObject null;          ->   ç¾ã‚Œãªã„
+ *  Object null;              ->   Œ»‚ê‚È‚¢
+ *  JsonObject null;          ->   Œ»‚ê‚È‚¢
  *
- *       ã€€ã€€JSON                    fill()
- *  ç¾ã‚Œãªã„                  ->   è¨­å®šã—ãªã„
- *  null                      ->   Object null; ã‚’è¨­å®š
- *                                 JsonObject null; ã‚’è¨­å®š
+ *       @@JSON                    fill()
+ *  Œ»‚ê‚È‚¢                  ->   İ’è‚µ‚È‚¢
+ *  null                      ->   Object null; ‚ğİ’è
+ *                                 JsonObject null; ‚ğİ’è
  * </pre>
  *
  * @version	December 24, 2016
@@ -52,9 +52,9 @@ import abdom.data.json.JsonValue;
 public class Jsonizer {
 
 	/**
-	 * Field ãƒã‚§ãƒƒã‚¯ã¯ã‚¯ãƒ©ã‚¹ã”ã¨ã«ï¼‘åº¦ã ã‘è¡Œãˆã°ã‚ˆã„ãŸã‚ã€
-	 * è¡Œã£ãŸã‹ã©ã†ã‹ã‚’ã‚¯ãƒ©ã‚¹å˜ä½ã§ä¿æŒã™ã‚‹ã€‚
-	 * ã“ã® Set ã«å«ã¾ã‚Œã‚‹ Class ã¯ãƒã‚§ãƒƒã‚¯æ¸ˆã€‚
+	 * Field ƒ`ƒFƒbƒN‚ÍƒNƒ‰ƒX‚²‚Æ‚É‚P“x‚¾‚¯s‚¦‚Î‚æ‚¢‚½‚ßA
+	 * s‚Á‚½‚©‚Ç‚¤‚©‚ğƒNƒ‰ƒX’PˆÊ‚Å•Û‚·‚éB
+	 * ‚±‚Ì Set ‚ÉŠÜ‚Ü‚ê‚é Class ‚Íƒ`ƒFƒbƒNÏB
 	 */
 	private static Map<Class<?>, Map<String, Accessor>> _fieldAccessors;
 	static {
@@ -70,17 +70,17 @@ public class Jsonizer {
  * class methods
  */
 	/**
-	 * Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’ã€æŒ‡å®šã•ã‚ŒãŸ JsonType ã§è¨­å®šã—ã¾ã™ã€‚
+	 * Java ƒIƒuƒWƒFƒNƒg‚ÌƒvƒƒpƒeƒB‚ğAw’è‚³‚ê‚½ JsonType ‚Åİ’è‚µ‚Ü‚·B
 	 *
-	 * @param	instance	è¨­å®šå¯¾è±¡ã® Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-	 * @param	arg			è¨­å®šå€¤ã‚’æŒã¤ JsonType
-	 * @return	è¨­å®šå€¤ã®ä¸­ã§ã€Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾å¿œã™ã‚‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒãªã
-	 *			è¨­å®šã—ãªã‹ã£ãŸé …ç›®
+	 * @param	instance	İ’è‘ÎÛ‚Ì Java ƒIƒuƒWƒFƒNƒg
+	 * @param	arg			İ’è’l‚ğ‚Â JsonType
+	 * @return	İ’è’l‚Ì’†‚ÅAJava ƒIƒuƒWƒFƒNƒg‚É‘Î‰‚·‚éƒvƒƒpƒeƒB‚ª‚È‚­
+	 *			İ’è‚µ‚È‚©‚Á‚½€–Ú
 	 */
 	public static JsonObject fill(Object instance, JsonType arg) {
 		if (instance instanceof JValue && !(instance instanceof JData)) {
 			((JValue)instance).fill(arg);
-			return null; // JValue ã¯ extra ã‚’æŒãŸãªã„
+			return null; // JValue ‚Í extra ‚ğ‚½‚È‚¢
 		}
 		
 		Map<String, Accessor> accessors = getAccessors(instance);
@@ -91,7 +91,7 @@ public class Jsonizer {
 		for (String name : jobj.keySet()) {
 			Accessor a = accessors.get(name);
 			if (a == null) {
-				// Field ãŒãªã„å ´åˆã€_extra ã«æ ¼ç´
+				// Field ‚ª‚È‚¢ê‡A_extra ‚ÉŠi”[
 				if (extra == null) extra = new JsonObject();
 				extra.put(name, jobj.get(name));
 			} else {
@@ -102,11 +102,11 @@ public class Jsonizer {
 	}
 	
 	/**
-	 * æŒ‡å®šã•ã‚ŒãŸ Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£å€¤ã«åŸºã¥ã„ã¦ JsonType ã«
-	 * å¤‰æ›ã—ã¾ã™ã€‚å¤‰æ›è¦å‰‡ã¯ã€ã“ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®èª¬æ˜ã‚’å‚ç…§ã—ã¦ãã ã•ã„ã€‚
+	 * w’è‚³‚ê‚½ Java ƒIƒuƒWƒFƒNƒg‚ÌƒvƒƒpƒeƒB’l‚ÉŠî‚Ã‚¢‚Ä JsonType ‚É
+	 * •ÏŠ·‚µ‚Ü‚·B•ÏŠ·‹K‘¥‚ÍA‚±‚ÌƒpƒbƒP[ƒW‚Ìà–¾‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B
 	 *
-	 * @param	instance	JsonType ã«å¤‰æ›ã™ã‚‹ Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-	 * @return	å¤‰æ›ã•ã‚ŒãŸ JsonType
+	 * @param	instance	JsonType ‚É•ÏŠ·‚·‚é Java ƒIƒuƒWƒFƒNƒg
+	 * @return	•ÏŠ·‚³‚ê‚½ JsonType
 	 */
 	public static JsonType toJson(Object instance) {
 		if (instance instanceof JValue && !(instance instanceof JData))
@@ -124,18 +124,18 @@ public class Jsonizer {
 	}
 	
 	/**
-	 * ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ã‚¯ãƒ©ã‚¹ã«é–¢é€£ã™ã‚‹ Accessor (å€¤å–å¾—/è¨­å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)
-	 * ã‚’å–å¾—ã—ã¾ã™ã€‚
-	 * ãªã„å ´åˆã€ç”Ÿæˆã—ã¾ã™ã€‚
+	 * ‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÌƒNƒ‰ƒX‚ÉŠÖ˜A‚·‚é Accessor (’læ“¾/İ’èƒIƒuƒWƒFƒNƒg)
+	 * ‚ğæ“¾‚µ‚Ü‚·B
+	 * ‚È‚¢ê‡A¶¬‚µ‚Ü‚·B
 	 *
-	 * @param	instance	Jsonå¤‰æ›ã‚’è¡Œã†ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
+	 * @param	instance	Json•ÏŠ·‚ğs‚¤ƒCƒ“ƒXƒ^ƒ“ƒX
 	 */
 	static Map<String, Accessor> getAccessors(Object instance) {
 		Class<?> cls = instance.getClass();
 		
-		// JValue ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‹ã¤ã€JData ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã§ãªã„
-		// å ´åˆ(JValue ã‚’ç›´æ¥ç¶™æ‰¿)ã€Accessor ã«ã‚ˆã‚‹è¨­å®šã§ãªãã€
-		// fill(), toJson() ã«ã‚ˆã‚‹å¤‰æ›ã‚’è¡Œã†ã“ã¨ã¨ã—ã€null ãŒè¿”å´ã•ã‚Œã‚‹ã€‚
+		// JValue ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚©‚ÂAJData ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Å‚È‚¢
+		// ê‡(JValue ‚ğ’¼ÚŒp³)AAccessor ‚É‚æ‚éİ’è‚Å‚È‚­A
+		// fill(), toJson() ‚É‚æ‚é•ÏŠ·‚ğs‚¤‚±‚Æ‚Æ‚µAnull ‚ª•Ô‹p‚³‚ê‚éB
 		if (JValue.class.isAssignableFrom(cls) &&
 			!JData.class.isAssignableFrom(cls) ) return null;
 			
@@ -145,13 +145,13 @@ public class Jsonizer {
 			
 			//System.out.println("generate accessor of " + instance.getClass());
 			//
-			// Accessors ã‚’ç”Ÿæˆã™ã‚‹
+			// Accessors ‚ğ¶¬‚·‚é
 			//
 			accessors = new HashMap<String, Accessor>();
 			
-			// Accessor ã‚’è¨­å®šã™ã‚‹ã€‚
-			// ä»¥ä¸‹ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯åŒä¸€åã§ä¸Šæ›¸ãã™ã‚‹ãŸã‚ã€åŒä¸€åç§°ã§ã¯
-			// method ãŒ field ã«å„ªå…ˆã™ã‚‹ã“ã¨ã¨ãªã‚‹		
+			// Accessor ‚ğİ’è‚·‚éB
+			// ˆÈ‰º‚Ìƒƒ\ƒbƒh‚Í“¯ˆê–¼‚Åã‘‚«‚·‚é‚½‚ßA“¯ˆê–¼Ì‚Å‚Í
+			// method ‚ª field ‚É—Dæ‚·‚é‚±‚Æ‚Æ‚È‚é		
 			addFieldAccessors(accessors, cls);
 			addMethodAccessors(accessors, cls);
 			
@@ -163,19 +163,19 @@ public class Jsonizer {
 	}
 	
 	/**
-	 * ä¸ãˆã‚‰ã‚ŒãŸ Accessor ã«æŒ‡å®šã•ã‚ŒãŸã‚¯ãƒ©ã‚¹ã® public ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«å¯¾ã™ã‚‹
-	 * Accessor ã‚’è¿½åŠ ã—ã¾ã™ã€‚
+	 * —^‚¦‚ç‚ê‚½ Accessor ‚Éw’è‚³‚ê‚½ƒNƒ‰ƒX‚Ì public ƒtƒB[ƒ‹ƒh‚É‘Î‚·‚é
+	 * Accessor ‚ğ’Ç‰Á‚µ‚Ü‚·B
 	 */
 	private static void addFieldAccessors(
 							Map<String, Accessor> accessors,
 							Class<?> cls) {
-		// public ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’èµ°æŸ»
-		Field[] fields = cls.getFields(); // public field ã‚’å–å¾—
+		// public ƒtƒB[ƒ‹ƒh‚ğ‘–¸
+		Field[] fields = cls.getFields(); // public field ‚ğæ“¾
 		
 		for (Field f : fields) {
-			// static ã¯é™¤å¤–
+			// static ‚ÍœŠO
 			if (Modifier.isStatic(f.getModifiers())) continue;
-			// transient ã‚‚é™¤å¤–
+			// transient ‚àœŠO
 			if (Modifier.isTransient(f.getModifiers())) continue;
 			
 			Class type = f.getType();
@@ -196,43 +196,43 @@ public class Jsonizer {
 	}
 	
 	/**
-	 * ä¸ãˆã‚‰ã‚ŒãŸ Accessor ã«æŒ‡å®šã•ã‚ŒãŸã‚¯ãƒ©ã‚¹ã® public setter/getter ãƒ¡ã‚½ãƒƒãƒ‰
-	 * ã§æ§‹æˆã•ã‚Œã‚‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã¸ã® Accessor ã‚’è¿½åŠ ã—ã¾ã™ã€‚
+	 * —^‚¦‚ç‚ê‚½ Accessor ‚Éw’è‚³‚ê‚½ƒNƒ‰ƒX‚Ì public setter/getter ƒƒ\ƒbƒh
+	 * ‚Å\¬‚³‚ê‚éƒvƒƒpƒeƒB‚Ö‚Ì Accessor ‚ğ’Ç‰Á‚µ‚Ü‚·B
 	 */
 	private static void addMethodAccessors(
 							Map<String, Accessor> accessors,
 							Class<?> cls) {
-		// getter/setter ãƒ¡ã‚½ãƒƒãƒ‰ã‚’èµ°æŸ»
-		Method[] methods = cls.getMethods(); // public methods ã‚’å–å¾—
+		// getter/setter ƒƒ\ƒbƒh‚ğ‘–¸
+		Method[] methods = cls.getMethods(); // public methods ‚ğæ“¾
 		
-		// ãƒšã‚¢(å€™è£œ)ã‚’æ ¼ç´
+		// ƒyƒA(Œó•â)‚ğŠi”[
 		Map<String, MethodPair> pairs = new HashMap<String, MethodPair>();
 		
 		for (Method m : methods) {
-			// static ã¯é™¤å¤–
+			// static ‚ÍœŠO
 			if (Modifier.isStatic(m.getModifiers())) continue;
-			// strictfp ã‚‚é™¤å¤–(è£æŠ€ç”¨)
+			// strictfp ‚àœŠO(— ‹Z—p)
 			if (Modifier.isStrict(m.getModifiers())) continue;
 			
-			// å¼•æ•°å‹ã€ãƒªã‚¿ãƒ¼ãƒ³å‹ã‚’ãƒã‚§ãƒƒã‚¯
+			// ˆø”Œ^AƒŠƒ^[ƒ“Œ^‚ğƒ`ƒFƒbƒN
 			// 
 			String methodName = m.getName();
-			if (methodName.length() < 4) continue; // ãƒ¡ã‚½ãƒƒãƒ‰åï¼”æ–‡å­—æœªæº€ã¯é™¤å¤–
+			if (methodName.length() < 4) continue; // ƒƒ\ƒbƒh–¼‚S•¶š–¢–‚ÍœŠO
 			char c = methodName.charAt(3);
-			if (Character.isLowerCase(c)) continue; // 4æ–‡å­—ç›®å°æ–‡å­—ã¯é™¤å¤–
-			// geta() ã¨ getA() ãŒç•°ãªã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã ãŒåŒä¸€ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã¨ãªã‚‹ãŸã‚
+			if (Character.isLowerCase(c)) continue; // 4•¶š–Ú¬•¶š‚ÍœŠO
+			// geta() ‚Æ getA() ‚ªˆÙ‚È‚éƒƒ\ƒbƒh‚¾‚ª“¯ˆêƒvƒƒpƒeƒB‚Æ‚È‚é‚½‚ß
 			
-			// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£åã‚’ Java Beans è¦å‰‡ã«ã®ã£ã¨ã‚Šç”Ÿæˆ
+			// ƒvƒƒpƒeƒB–¼‚ğ Java Beans ‹K‘¥‚É‚Ì‚Á‚Æ‚è¶¬
 			String name;
 			if (methodName.length() == 4) name = methodName;
 			else {
 				if (Character.isUpperCase(methodName.charAt(4))) {
-					// äºŒæ–‡å­—ç›®ãŒå¤§æ–‡å­—ã®å ´åˆã€ãã®ã¾ã¾
-					// ä¾‹ getURL() / setURL()ã€€-> URL
+					// “ñ•¶š–Ú‚ª‘å•¶š‚Ìê‡A‚»‚Ì‚Ü‚Ü
+					// —á getURL() / setURL()@-> URL
 					name = methodName.substring(3);
 				} else {
-					// ä¸€æ–‡å­—ç›®ã‚’å°æ–‡å­—ã«
-					// ä¾‹ getCount() / setCount() -> count
+					// ˆê•¶š–Ú‚ğ¬•¶š‚É
+					// —á getCount() / setCount() -> count
 					name = ""+Character.toLowerCase(c)+methodName.substring(4);
 				}
 			}
@@ -242,20 +242,20 @@ public class Jsonizer {
 			
 			if (methodName.startsWith("get")) { // get
 			
-				if (params.length != 0) continue; // å¼•æ•°ä»˜ãã¯é™¤å¤–
-				if (!isJDataCategory(retType)) continue; // JData catã§ãªã„ã‚‚ã®ã¯é™¤å¤–
-				// set ã¨ãƒšã‚¢ã«ãªã‚‹ã¾ã§ã¯é™¤å¤–
-				// å¼•æ•°ã®ãªã„ get ãƒ¡ã‚½ãƒƒãƒ‰ã¯1ã¤ã—ã‹ãªã„(overloadãŒãªã„)
+				if (params.length != 0) continue; // ˆø”•t‚«‚ÍœŠO
+				if (!isJDataCategory(retType)) continue; // JData cat‚Å‚È‚¢‚à‚Ì‚ÍœŠO
+				// set ‚ÆƒyƒA‚É‚È‚é‚Ü‚Å‚ÍœŠO
+				// ˆø”‚Ì‚È‚¢ get ƒƒ\ƒbƒh‚Í1‚Â‚µ‚©‚È‚¢(overload‚ª‚È‚¢)
 				MethodPair mp = pairs.get(name);
 				if (mp == null) mp = new MethodPair();
 				mp.getter	= m;
-				pairs.put(name, mp); // getter ã‚’ç™»éŒ²
+				pairs.put(name, mp); // getter ‚ğ“o˜^
 				
 			} else if (methodName.startsWith("set")) { // set
 			
-				if (params.length != 1) continue; // å¼•æ•°ã¯ï¼‘ã¤é™å®š
-				if (!isJDataCategory(params[0])) continue; // JData catã§ãªã„ã‚‚ã®ã¯é™¤å¤–
-				// get ã¨ãƒšã‚¢ã«ãªã‚‹ã¾ã§ã¯é™¤å¤–
+				if (params.length != 1) continue; // ˆø”‚Í‚P‚ÂŒÀ’è
+				if (!isJDataCategory(params[0])) continue; // JData cat‚Å‚È‚¢‚à‚Ì‚ÍœŠO
+				// get ‚ÆƒyƒA‚É‚È‚é‚Ü‚Å‚ÍœŠO
 				//
 				MethodPair mp = pairs.get(name);
 				if (mp == null) mp = new MethodPair();
@@ -266,18 +266,18 @@ public class Jsonizer {
 		//for (String name : pairs.keySet())
 		//	System.out.println("method entry : " + name + " " + pairs.get(name).getter + "/" + pairs.get(name).setter);
 		
-		// get ã® returnType ã¨ set ã® argType ãŒåŒä¸€ã®ã‚‚ã®ã‚’é¸æŠ
-		// Number getNumber() ã¨
-		// setNumber(Integer) ã¯ãƒãƒƒãƒã—ãªã„ã“ã¨ã¨æ±ºã‚ã‚‹ã€‚
-		// åŒæ§˜ã«ã€int getCount()  void setCount(Integer) ã‚‚ãƒãƒƒãƒã—ãªã„
+		// get ‚Ì returnType ‚Æ set ‚Ì argType ‚ª“¯ˆê‚Ì‚à‚Ì‚ğ‘I‘ğ
+		// Number getNumber() ‚Æ
+		// setNumber(Integer) ‚Íƒ}ƒbƒ`‚µ‚È‚¢‚±‚Æ‚ÆŒˆ‚ß‚éB
+		// “¯—l‚ÉAint getCount()  void setCount(Integer) ‚àƒ}ƒbƒ`‚µ‚È‚¢
 		for (String name : pairs.keySet()) {
 			MethodPair mp = pairs.get(name);
 			
-			// ãƒšã‚¢ãŒãªã„å ´åˆã‚¹ã‚­ãƒƒãƒ—
+			// ƒyƒA‚ª‚È‚¢ê‡ƒXƒLƒbƒv
 			if (mp.getter == null || mp.setter.size() == 0) continue;
 			
-			// ãƒšã‚¢ã¨ãªã£ã¦ã„ãŸå ´åˆã€get ã® retType ã¨ set ã® paramType ãŒ
-			// ä¸€è‡´ã™ã‚‹çµ„ã¿åˆã‚ã›ã‚’æ¤œç´¢
+			// ƒyƒA‚Æ‚È‚Á‚Ä‚¢‚½ê‡Aget ‚Ì retType ‚Æ set ‚Ì paramType ‚ª
+			// ˆê’v‚·‚é‘g‚İ‡‚í‚¹‚ğŒŸõ
 			Class<?> retType = mp.getter.getReturnType();
 			Method theOther = null;
 			for (Method setter : mp.setter) {
@@ -299,11 +299,11 @@ public class Jsonizer {
 	}
 	
 	/**
-	 * æŒ‡å®šã•ã‚ŒãŸ Class ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒ JData ã‚«ãƒ†ã‚´ãƒªã«å«ã¾ã‚Œã‚‹ã‹
-	 * ãƒã‚§ãƒƒã‚¯ã—ã¾ã™ã€‚
+	 * w’è‚³‚ê‚½ Class ƒIƒuƒWƒFƒNƒg‚ª JData ƒJƒeƒSƒŠ‚ÉŠÜ‚Ü‚ê‚é‚©
+	 * ƒ`ƒFƒbƒN‚µ‚Ü‚·B
 	 */
 	private static boolean isJDataCategory(Class type) {
-		// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã€String, JsonObject, JValue
+		// ƒvƒŠƒ~ƒeƒBƒuAString, JsonObject, JValue
 		if ( boolean.class == type ||
 			int.class == type ||
 			long.class == type ||
@@ -313,7 +313,7 @@ public class Jsonizer {
 			JValue.class.isAssignableFrom(type) ||
 			JsonObject.class.isAssignableFrom(type) ) return true;
 		
-		// é…åˆ—
+		// ”z—ñ
 		if (boolean[].class == type ||
 			int[].class == type ||
 			long[].class == type ||
@@ -327,17 +327,17 @@ public class Jsonizer {
 	}
 	
 	/**
-	 * JsonType(JsonArray) ã‹ã‚‰ã€Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆé…åˆ—ã‚’ç”Ÿæˆã™ã‚‹ä¾¿åˆ©é–¢æ•°ã§ã™ã€‚
-	 * æŒ‡å®šã™ã‚‹ JsonType ã¯ã€JsonObject ã‚’è¦ç´ ã«æŒã¤ JsonArray ã§ã‚ã‚‹
-	 * å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
-	 * è¿”ã•ã‚Œã‚‹é…åˆ—ã®å®Ÿè¡Œæ™‚ã®å‹ã¯ã€æŒ‡å®šã•ã‚ŒãŸé…åˆ—ã®å‹ã«ãªã‚Šã¾ã™ã€‚
-	 * æŒ‡å®šã•ã‚ŒãŸé…åˆ—ã«ãƒªã‚¹ãƒˆãŒåã¾ã‚‹å ´åˆã¯ã€ãã®é…åˆ—ã§è¿”ã•ã‚Œã¾ã™ã€‚ãã‚Œ
-	 * ä»¥å¤–ã®å ´åˆã¯ã€æŒ‡å®šã•ã‚ŒãŸé…åˆ—ã®å®Ÿè¡Œæ™‚ã®å‹ã¨ JsonArray ã®ã‚µã‚¤ã‚ºã‚’
-	 * ä½¿ã£ã¦æ–°ã—ã„é…åˆ—ãŒå‰²ã‚Šå½“ã¦ã‚‰ã‚Œã¾ã™ã€‚ 
+	 * JsonType(JsonArray) ‚©‚çAJava ƒIƒuƒWƒFƒNƒg”z—ñ‚ğ¶¬‚·‚é•Ö—˜ŠÖ”‚Å‚·B
+	 * w’è‚·‚é JsonType ‚ÍAJsonObject ‚ğ—v‘f‚É‚Â JsonArray ‚Å‚ ‚é
+	 * •K—v‚ª‚ ‚è‚Ü‚·B
+	 * •Ô‚³‚ê‚é”z—ñ‚ÌÀs‚ÌŒ^‚ÍAw’è‚³‚ê‚½”z—ñ‚ÌŒ^‚É‚È‚è‚Ü‚·B
+	 * w’è‚³‚ê‚½”z—ñ‚ÉƒŠƒXƒg‚ªû‚Ü‚éê‡‚ÍA‚»‚Ì”z—ñ‚Å•Ô‚³‚ê‚Ü‚·B‚»‚ê
+	 * ˆÈŠO‚Ìê‡‚ÍAw’è‚³‚ê‚½”z—ñ‚ÌÀs‚ÌŒ^‚Æ JsonArray ‚ÌƒTƒCƒY‚ğ
+	 * g‚Á‚ÄV‚µ‚¢”z—ñ‚ªŠ„‚è“–‚Ä‚ç‚ê‚Ü‚·B 
 	 *
-	 * @param	source	å€¤ã‚’ä¿æŒã—ã¦ã„ã‚‹ JsonType
-	 * @param	array	å€¤ã‚’æ ¼ç´ã™ã‚‹é…åˆ—(ã®å‹)
-	 * @return	JsonType ã®å€¤ãŒè¨­å®šã•ã‚ŒãŸ JData ã®å­ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®é…åˆ—
+	 * @param	source	’l‚ğ•Û‚µ‚Ä‚¢‚é JsonType
+	 * @param	array	’l‚ğŠi”[‚·‚é”z—ñ(‚ÌŒ^)
+	 * @return	JsonType ‚Ì’l‚ªİ’è‚³‚ê‚½ JData ‚ÌqƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ì”z—ñ
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T[] toArray(JsonType source, T[] array) {
@@ -363,16 +363,16 @@ public class Jsonizer {
 	}
 	
 	/**
-	 * JSON æ–‡å­—åˆ—ã‹ã‚‰ã€Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é…åˆ—ã‚’ç”Ÿæˆã™ã‚‹ä¾¿åˆ©é–¢æ•°ã§ã™ã€‚
-	 * æŒ‡å®šã™ã‚‹ JSON æ–‡å­—åˆ—ã¯ã€object ã® array ã§ã‚ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
-	 * è¿”ã•ã‚Œã‚‹é…åˆ—ã®å®Ÿè¡Œæ™‚ã®å‹ã¯ã€æŒ‡å®šã•ã‚ŒãŸé…åˆ—ã®å‹ã«ãªã‚Šã¾ã™ã€‚
-	 * æŒ‡å®šã•ã‚ŒãŸé…åˆ—ã«ãƒªã‚¹ãƒˆãŒåã¾ã‚‹å ´åˆã¯ã€ãã®é…åˆ—ã§è¿”ã•ã‚Œã¾ã™ã€‚ãã‚Œ
-	 * ä»¥å¤–ã®å ´åˆã¯ã€æŒ‡å®šã•ã‚ŒãŸé…åˆ—ã®å®Ÿè¡Œæ™‚ã®å‹ã¨ JSON arrayã®ã‚µã‚¤ã‚ºã‚’
-	 * ä½¿ã£ã¦æ–°ã—ã„é…åˆ—ãŒå‰²ã‚Šå½“ã¦ã‚‰ã‚Œã¾ã™ã€‚ 
+	 * JSON •¶š—ñ‚©‚çAJava ƒIƒuƒWƒFƒNƒg‚Ì”z—ñ‚ğ¶¬‚·‚é•Ö—˜ŠÖ”‚Å‚·B
+	 * w’è‚·‚é JSON •¶š—ñ‚ÍAobject ‚Ì array ‚Å‚ ‚é•K—v‚ª‚ ‚è‚Ü‚·B
+	 * •Ô‚³‚ê‚é”z—ñ‚ÌÀs‚ÌŒ^‚ÍAw’è‚³‚ê‚½”z—ñ‚ÌŒ^‚É‚È‚è‚Ü‚·B
+	 * w’è‚³‚ê‚½”z—ñ‚ÉƒŠƒXƒg‚ªû‚Ü‚éê‡‚ÍA‚»‚Ì”z—ñ‚Å•Ô‚³‚ê‚Ü‚·B‚»‚ê
+	 * ˆÈŠO‚Ìê‡‚ÍAw’è‚³‚ê‚½”z—ñ‚ÌÀs‚ÌŒ^‚Æ JSON array‚ÌƒTƒCƒY‚ğ
+	 * g‚Á‚ÄV‚µ‚¢”z—ñ‚ªŠ„‚è“–‚Ä‚ç‚ê‚Ü‚·B 
 	 *
-	 * @param	source	å€¤ã‚’ä¿æŒã—ã¦ã„ã‚‹ JsonType
-	 * @param	array	å€¤ã‚’æ ¼ç´ã™ã‚‹é…åˆ—(ã®å‹)
-	 * @return	JsonType ã®å€¤ãŒå…¥ã‚Œã‚‰ã‚ŒãŸ Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é…åˆ—
+	 * @param	source	’l‚ğ•Û‚µ‚Ä‚¢‚é JsonType
+	 * @param	array	’l‚ğŠi”[‚·‚é”z—ñ(‚ÌŒ^)
+	 * @return	JsonType ‚Ì’l‚ª“ü‚ê‚ç‚ê‚½ Java ƒIƒuƒWƒFƒNƒg‚Ì”z—ñ
 	 */
 	public static <T> T[] toArray(String source, T[] array) {
 		return toArray(JsonType.parse(source), array);
