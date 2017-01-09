@@ -4,13 +4,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Json�`���ɂ�����I�u�W�F�N�g��\���܂��B
- * ���̃N���X�̃I�u�W�F�N�g�̓X���b�h�Z�[�t�ł͂���܂���B
+ * Json形式におけるオブジェクトを表します。
+ * このクラスのオブジェクトはスレッドセーフではありません。
  */
 public class JsonObject extends JsonType {
 	/**
-	 * �I�u�W�F�N�g�̗v�f��ێ����܂��Bnull �l���܂܂��Ă͂����܂���B
-	 * ���̏ꍇ�AJsonValue(null) ��}�����ĉ������B
+	 * オブジェクトの要素を保持します。null 値を含ませてはいけません。
+	 * その場合、JsonValue(null) を挿入して下さい。
 	 */
 	protected Map<String, JsonType> map;
 	
@@ -72,17 +72,17 @@ public class JsonObject extends JsonType {
 	}
 	
 	private JsonObject addImpl(String name, JsonType t) {
-		if (t == null) return this; // �������Ȃ�
+		if (t == null) return this; // 何もしない
 		if (map.containsKey(name)) {
-			// ���� name �̃G���g�������łɂ������ꍇ�Avalue �� JsonArray ������
+			// 同一 name のエントリがすでにあった場合、value を JsonArray 化する
 			JsonType v = map.get(name);
 			if (v instanceof JsonArray) {
-				// ���ł� JsonArray �ɂȂ��Ă����ꍇ�A�v�f�ǉ�
+				// すでに JsonArray になっていた場合、要素追加
 				JsonArray src = (JsonArray)v;
 				src.array.add(t);
 				return this;
 			} else {
-				// JsonArray �ɂȂ��Ă��Ȃ��ꍇ�AJsonArray������
+				// JsonArray になっていない場合、JsonArray化する
 				JsonArray newArray = new JsonArray();
 				newArray.array.add(v);
 				newArray.array.add(t);
@@ -91,7 +91,7 @@ public class JsonObject extends JsonType {
 				return this;
 			}
 		} else {
-			// ���񏉂߂Ă̒ǉ�(�ʗႱ�̏ꍇ�ƂȂ�)
+			// 今回初めての追加(通例この場合となる)
 			map.put(name, t);
 			return this;
 		}
@@ -143,7 +143,7 @@ public class JsonObject extends JsonType {
 	
 	private JsonObject putImpl(String name, JsonType t) {
 		if (t == null) t = new JsonValue( null );
-		// �㏑��
+		// 上書き
 		map.put(name, t);
 		return this;
 	}
@@ -191,7 +191,7 @@ public class JsonObject extends JsonType {
 						int textwidth, boolean objElement) {
 		StringBuilder sb = new StringBuilder();
 		
-		// object �ŁA"name": �̌ゾ���C���f���g�����Ȃ����߂̃t���O
+		// object で、"name": の後だけインデントをつけないためのフラグ
 		if (!objElement) sb.append(indent);
 		sb.append('{');
 		boolean first = true;
@@ -207,10 +207,10 @@ public class JsonObject extends JsonType {
 			JsonType jt = map.get(name);
 			if (jt instanceof JsonValue) sb.append(jt);
 			else if (jt instanceof JsonObject) {
-				// JsonObject �̏ꍇ
+				// JsonObject の場合
 				if (((JsonObject)jt).map.size() == 0) sb.append("{}");
 				else if (textwidth > 0) {
-					// JsonObject �ŁAtextWidth �w��͈̔͂ň�s�������݂�
+					// JsonObject で、textWidth 指定の範囲で一行化を試みる
 					int len = indent.length() + indentStep.length() +
 								5 + name.length();
 					String tryShort = jt.toString();
@@ -225,24 +225,24 @@ public class JsonObject extends JsonType {
 									textwidth, true));
 				}
 			} else if (jt.size() == 0) {
-				// JsonArray �ł́A�v�f���� 0 �̏ꍇ�ȗ��\��
-				// 1 �ȏ�̏ꍇ�� textwidth �w��ɂ��
+				// JsonArray では、要素数が 0 の場合簡略表示
+				// 1 以上の場合は textwidth 指定による
 				sb.append("[]");
 			} else if (textwidth > 0) {
-				// JsonArray �ŁAtextwidth �w��͈̔͂ň�s�������݂�
+				// JsonArray で、textwidth 指定の範囲で一行化を試みる
 				
-				// ��s�������݂�(toString() �ɂ��A�������J�E���g)
+				// 一行化を試みる(toString() により、文字数カウント)
 				int len = indent.length() + indentStep.length()
 							+ 5 + name.length();
 				String tryShort = jt.toString();
 				if (len + tryShort.length() <= textwidth) {
-					// textwidth �ȓ��ɂ͂܂�
+					// textwidth 以内にはまる
 					sb.append(tryShort);
 				} else {
 					sb.append(jt.toString(indent+indentStep, indentStep, textwidth, true));
 				}
 			} else {
-				// textwidth �� 0�ȉ����w�肷��ƁA��s�������݂Ȃ�(����)
+				// textwidth に 0以下を指定すると、一行化を試みない(早い)
 				sb.append(jt.toString(indent+indentStep, indentStep, textwidth, true));
 			}
 		}

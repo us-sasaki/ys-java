@@ -18,35 +18,35 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonValue;
 
 /**
- * JSON ƒIƒuƒWƒFƒNƒg‚ğ Java ƒIƒuƒWƒFƒNƒg‚É‚æ‚Á‚Ä–Í•í‚µ‚Ü‚·B
- * ‚±‚ÌƒNƒ‰ƒX‚ğŒp³‚·‚é‚±‚Æ‚ÅAJava ƒIƒuƒWƒFƒNƒg‚Æ JSON Œ`®‚Ì‘ŠŒİ•ÏŠ·‚ª
- * —eˆÕ‚É‚È‚è‚Ü‚·B‚Â‚Ü‚èAJava ƒIƒuƒWƒFƒNƒg‚ÌƒCƒ“ƒXƒ^ƒ“ƒX•Ï”‚ªA
- * JSON Œ`®‚Æ‚µ‚Ä’¼—ñ‰»‚Å‚«A‚Ü‚½‹t‚É JSON Œ`®‚©‚ç Java ƒIƒuƒWƒFƒNƒg‚Ì
- * ƒtƒB[ƒ‹ƒh‚ğİ’è‚Å‚«‚é‚æ‚¤‚É‚È‚è‚Ü‚·B
- * Java ƒIƒuƒWƒFƒNƒg‚É‚¨‚¢‚ÄŸ‚É’è‹`‚·‚éuƒvƒƒpƒeƒBv‚ª•ÏŠ·‘ÎÛ‚Æ‚È‚è‚Ü‚·B<br>
- * 1.public ƒƒ“ƒo•Ï”BƒvƒƒpƒeƒB–¼‚Í•Ï”–¼‚É‚È‚è‚Ü‚·B<br>
- * 2.public getter, setter ƒƒ\ƒbƒh‚Ì‘ÎBƒvƒƒpƒeƒB–¼‚Í Java Beans –½–¼‹K‘¥<br>
- *   ‚É‚æ‚è‚Ü‚·B‚³‚ç‚É‘Î‚Í getter ‚Íˆø”‚È‚µAsetter ‚Íˆø”‚ ‚è‚Å getter <br>
- * @‚Ì•Ô’lŒ^‚Æ setter ‚Ìˆø”Œ^‚ªˆê’v‚µAJData ƒJƒeƒSƒŠ‚ÉŠÜ‚Ü‚ê‚é‚à‚Ì<br>
+ * JSON ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚ˆã£ã¦æ¨¡å€£ã—ã¾ã™ã€‚
+ * ã“ã®ã‚¯ãƒ©ã‚¹ã‚’ç¶™æ‰¿ã™ã‚‹ã“ã¨ã§ã€Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ JSON å½¢å¼ã®ç›¸äº’å¤‰æ›ãŒ
+ * å®¹æ˜“ã«ãªã‚Šã¾ã™ã€‚ã¤ã¾ã‚Šã€Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°ãŒã€
+ * JSON å½¢å¼ã¨ã—ã¦ç›´åˆ—åŒ–ã§ãã€ã¾ãŸé€†ã« JSON å½¢å¼ã‹ã‚‰ Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®
+ * ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’è¨­å®šã§ãã‚‹ã‚ˆã†ã«ãªã‚Šã¾ã™ã€‚
+ * Java ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãŠã„ã¦æ¬¡ã«å®šç¾©ã™ã‚‹ã€Œãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã€ãŒå¤‰æ›å¯¾è±¡ã¨ãªã‚Šã¾ã™ã€‚<br>
+ * 1.public ãƒ¡ãƒ³ãƒå¤‰æ•°ã€‚ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£åã¯å¤‰æ•°åã«ãªã‚Šã¾ã™ã€‚<br>
+ * 2.public getter, setter ãƒ¡ã‚½ãƒƒãƒ‰ã®å¯¾ã€‚ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£åã¯ Java Beans å‘½åè¦å‰‡<br>
+ *   ã«ã‚ˆã‚Šã¾ã™ã€‚ã•ã‚‰ã«å¯¾ã¯ getter ã¯å¼•æ•°ãªã—ã€setter ã¯å¼•æ•°ã‚ã‚Šã§ getter <br>
+ * ã€€ã®è¿”å€¤å‹ã¨ setter ã®å¼•æ•°å‹ãŒä¸€è‡´ã—ã€JData ã‚«ãƒ†ã‚´ãƒªã«å«ã¾ã‚Œã‚‹ã‚‚ã®<br>
  * <br>
- * JData ƒJƒeƒSƒŠ‚ÍAˆÈ‰º‚ÌŒ^‚Å‚·B<pre>
+ * JData ã‚«ãƒ†ã‚´ãƒªã¯ã€ä»¥ä¸‹ã®å‹ã§ã™ã€‚<pre>
  *
  * boolean, int, long, float, double, String, JValue(,JData), JsonObject
- * ‚¨‚æ‚ÑA‚±‚ê‚ç‚ÌŒ^‚Ì”z—ñ
+ * ãŠã‚ˆã³ã€ã“ã‚Œã‚‰ã®å‹ã®é…åˆ—
  *
- * </pre>ˆÃ–Ù‚ÌƒtƒB[ƒ‹ƒh‚Æ‚µ‚ÄA_extra (JsonObjectŒ^) ‚ğ‚Á‚Ä‚¨‚è
- * fill() ‚ÌÛ‚É–¢’è‹`‚ÌƒtƒB[ƒ‹ƒh’l‚Í‚·‚×‚Ä‚±‚±‚ÉŠi”[‚³‚ê‚Ü‚·B
- * ‚Ü‚½AtoJson() ‚Å‚Í _extra ƒtƒB[ƒ‹ƒh‚Í‘¶İ‚·‚é(not null)ê‡‚Ì‚İJSON
- * ƒƒ“ƒo‚Æ‚µ‚ÄŒ»‚ê‚Ü‚·B
- * qƒNƒ‰ƒX‚ÅAJSONŒ`®‚Æ‚Ì‘ŠŒİ•ÏŠ·‘ÎÛŠO‚Æ‚·‚é•Ï”‚ğ’è‹`‚µ‚½‚¢ê‡A
- * transient Cüq‚ğ‚Â‚¯‚Ä‰º‚³‚¢B
+ * </pre>æš—é»™ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã¨ã—ã¦ã€_extra (JsonObjectå‹) ã‚’æŒã£ã¦ãŠã‚Š
+ * fill() ã®éš›ã«æœªå®šç¾©ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å€¤ã¯ã™ã¹ã¦ã“ã“ã«æ ¼ç´ã•ã‚Œã¾ã™ã€‚
+ * ã¾ãŸã€toJson() ã§ã¯ _extra ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã¯å­˜åœ¨ã™ã‚‹(not null)å ´åˆã®ã¿JSON
+ * ãƒ¡ãƒ³ãƒã¨ã—ã¦ç¾ã‚Œã¾ã™ã€‚
+ * å­ã‚¯ãƒ©ã‚¹ã§ã€JSONå½¢å¼ã¨ã®ç›¸äº’å¤‰æ›å¯¾è±¡å¤–ã¨ã™ã‚‹å¤‰æ•°ã‚’å®šç¾©ã—ãŸã„å ´åˆã€
+ * transient ä¿®é£¾å­ã‚’ã¤ã‘ã¦ä¸‹ã•ã„ã€‚
  *
  * @version	December 23, 2016
  * @author	Yusuke Sasaki
  */
 public abstract class JData extends JValue {
 
-	/** fill ‚Å‚«‚È‚©‚Á‚½’l‚ğŠi”[‚·‚é—\–ñ—Ìˆæ */
+	/** fill ã§ããªã‹ã£ãŸå€¤ã‚’æ ¼ç´ã™ã‚‹äºˆç´„é ˜åŸŸ */
 	protected transient JsonObject _extra;
 	
 /*-------------
@@ -60,18 +60,18 @@ public abstract class JData extends JValue {
  * instance methods
  */
 	/**
-	 * extra ‚ğ‚Â‚©‚Ç‚¤‚©ƒeƒXƒg‚µ‚Ü‚·B
+	 * extra ã‚’æŒã¤ã‹ã©ã†ã‹ãƒ†ã‚¹ãƒˆã—ã¾ã™ã€‚
 	 *
-	 * @return	extra ‚ğ‚Âê‡Atrue
+	 * @return	extra ã‚’æŒã¤å ´åˆã€true
 	 */
 	public boolean hasExtras() {
 		return (_extra != null);
 	}
 	
 	/**
-	 * extra ‚Ì keySet ‚ğ•Ô‹p‚µ‚Ü‚·B‚È‚¢ê‡Anull ‚Æ‚È‚è‚Ü‚·B
+	 * extra ã® keySet ã‚’è¿”å´ã—ã¾ã™ã€‚ãªã„å ´åˆã€null ã¨ãªã‚Šã¾ã™ã€‚
 	 *
-	 * @return	extra ‚ÌƒL[(extra ‚ª‘¶İ‚µ‚È‚¢ê‡Anull)
+	 * @return	extra ã®ã‚­ãƒ¼(extra ãŒå­˜åœ¨ã—ãªã„å ´åˆã€null)
 	 */
 	public Set getExtraKeySet() {
 		if (_extra == null) return null;
@@ -79,12 +79,12 @@ public abstract class JData extends JValue {
 	}
 	
 	/**
-	 * extra ƒAƒNƒZƒXƒƒ\ƒbƒh‚ÅAJsonType ’l‚ğæ“¾‚µ‚Ü‚·B
-	 * extra ‚ª‚È‚¢ê‡A‚ ‚Á‚Ä‚àw’è‚³‚ê‚½ƒL[‚ğ‚½‚È‚¢ê‡A
-	 * null ‚ª•Ô‹p‚³‚ê‚Ü‚·B
+	 * extra ã‚¢ã‚¯ã‚»ã‚¹ãƒ¡ã‚½ãƒƒãƒ‰ã§ã€JsonType å€¤ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * extra ãŒãªã„å ´åˆã€ã‚ã£ã¦ã‚‚æŒ‡å®šã•ã‚ŒãŸã‚­ãƒ¼ã‚’æŒãŸãªã„å ´åˆã€
+	 * null ãŒè¿”å´ã•ã‚Œã¾ã™ã€‚
 	 *
-	 * @param	key	extra ‚Ì key î•ñ
-	 * @return	key ‚É‘Î‰‚·‚é’l(null ‚Ìê‡‚ª‚ ‚è‚Ü‚·)
+	 * @param	key	extra ã® key æƒ…å ±
+	 * @return	key ã«å¯¾å¿œã™ã‚‹å€¤(null ã®å ´åˆãŒã‚ã‚Šã¾ã™)
 	 */
 	public JsonType getExtra(String key) {
 		if (_extra == null) return null;
@@ -92,10 +92,10 @@ public abstract class JData extends JValue {
 	}
 	
 	/**
-	 * extra ƒAƒNƒZƒXƒƒ\ƒbƒh‚ÅAJsonType ’l‚ğİ’è‚µ‚Ü‚·B
+	 * extra ã‚¢ã‚¯ã‚»ã‚¹ãƒ¡ã‚½ãƒƒãƒ‰ã§ã€JsonType å€¤ã‚’è¨­å®šã—ã¾ã™ã€‚
 	 *
-	 * @param	key	extra ‚Ì key î•ñ
-	 * @param	jt	İ’è‚·‚é’l
+	 * @param	key	extra ã® key æƒ…å ±
+	 * @param	jt	è¨­å®šã™ã‚‹å€¤
 	 */
 	public void putExtra(String key, JsonType jt) {
 		if (_extra == null) _extra = new JsonObject();
@@ -103,11 +103,11 @@ public abstract class JData extends JValue {
 	}
 	
 	/**
-	 * ‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ª‚Â extra ƒIƒuƒWƒFƒNƒg(JsonObject)
-	 * ‚ÌQÆ‚ğ•Ô‹p‚µ‚Ü‚·B“à—e‚ÌQÆ/•ÏX‚ğŠÈ•Ö‚És‚¤‚±‚Æ‚ğ‘z’è‚µ‚½
-	 * ƒƒ\ƒbƒh‚Å‚·B
+	 * ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒæŒã¤ extra ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(JsonObject)
+	 * ã®å‚ç…§ã‚’è¿”å´ã—ã¾ã™ã€‚å†…å®¹ã®å‚ç…§/å¤‰æ›´ã‚’ç°¡ä¾¿ã«è¡Œã†ã“ã¨ã‚’æƒ³å®šã—ãŸ
+	 * ãƒ¡ã‚½ãƒƒãƒ‰ã§ã™ã€‚
 	 *
-	 * @return	extra ƒIƒuƒWƒFƒNƒg(JsonObject)Bnull ‚Ìê‡‚ª‚ ‚è‚Ü‚·B
+	 * @return	extra ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(JsonObject)ã€‚null ã®å ´åˆãŒã‚ã‚Šã¾ã™ã€‚
 	 */
 	public JsonObject getExtras() {
 		return _extra;
@@ -115,13 +115,13 @@ public abstract class JData extends JValue {
 	
 	
 	/**
-	 * w’è‚³‚ê‚½ JsonObject ‚Ì“à—e‚ğ‚±‚ÌƒIƒuƒWƒFƒNƒg‚Éİ’è‚µ‚Ü‚·B
-	 * ˆø”‚ÌŒ^‚ÍA—˜•Ö«‚Ì‚½‚ß JsonType ‚Æ‚µ‚Ä‚¢‚Ü‚·‚ªAJsonObject
-	 * ˆÈŠO‚ğw’è‚·‚é‚ÆAClassCastException ‚ªƒXƒ[‚³‚ê‚Ü‚·B
-	 * ‚±‚Ìƒƒ\ƒbƒh‚Í’l‚ğ’Ç‰Á‚µAŠù‘¶’l‚Íã‘‚«‚³‚ê‚È‚¯‚ê‚Î•Û‘¶‚³‚ê‚é
-	 * ‚±‚Æ‚É’ˆÓ‚µ‚Ä‚­‚¾‚³‚¢B_extra ‚à“¯—l‚Å‚·B
+	 * æŒ‡å®šã•ã‚ŒãŸ JsonObject ã®å†…å®¹ã‚’ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«è¨­å®šã—ã¾ã™ã€‚
+	 * å¼•æ•°ã®å‹ã¯ã€åˆ©ä¾¿æ€§ã®ãŸã‚ JsonType ã¨ã—ã¦ã„ã¾ã™ãŒã€JsonObject
+	 * ä»¥å¤–ã‚’æŒ‡å®šã™ã‚‹ã¨ã€ClassCastException ãŒã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯å€¤ã‚’è¿½åŠ ã—ã€æ—¢å­˜å€¤ã¯ä¸Šæ›¸ãã•ã‚Œãªã‘ã‚Œã°ä¿å­˜ã•ã‚Œã‚‹
+	 * ã“ã¨ã«æ³¨æ„ã—ã¦ãã ã•ã„ã€‚_extra ã‚‚åŒæ§˜ã§ã™ã€‚
 	 *
-	 * @param	json	‚±‚ÌƒIƒuƒWƒFƒNƒg‚É’l‚ğ—^‚¦‚é JsonType
+	 * @param	json	ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å€¤ã‚’ä¸ãˆã‚‹ JsonType
 	 */
 	@Override
 	public void fill(JsonType json) {
@@ -141,14 +141,14 @@ public abstract class JData extends JValue {
 	}
 	
 	/**
-	 * ‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ JsonObject ‚É•ÏŠ·‚µ‚Ü‚·B
+	 * ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ JsonObject ã«å¤‰æ›ã—ã¾ã™ã€‚
 	 *
 	 * @return	JsonObject
 	 */
 	@Override
 	public JsonType toJson() {
 		JsonType json = Jsonizer.toJson(this);
-		// _extra ‚ğ’Ç‰Á
+		// _extra ã‚’è¿½åŠ 
 		if (_extra == null) return json;
 		for (String key : _extra.keySet()) {
 			json.put(key, _extra.get(key));

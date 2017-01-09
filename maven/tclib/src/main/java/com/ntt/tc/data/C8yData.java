@@ -11,26 +11,26 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonValue;
 
 /**
- * Cumulocity ‚Ìƒf[ƒ^‚ÌƒX[ƒp[ƒNƒ‰ƒX‚Å‚·B
- * ƒJƒeƒSƒŠ•ª‚¯‚Ì‚Ù‚©AJData ‚Ì’¼—ñ‰»Ac8y “Á—L‚Ìƒ‹[ƒ‹‚É‘Î‰‚·‚éƒƒ\ƒbƒh‚ğ
- * ’ñ‹Ÿ‚µ‚Ü‚·B
- * C8yData ‚Í JData ‚ğŒp³‚µ‚Ä‚¢‚é‚½‚ßAJSON ’¼—ñ‰»‚ğƒTƒ|[ƒg‚µ‚Ü‚·B
- * —á‚¦‚ÎA<pre>
+ * Cumulocity ã®ãƒ‡ãƒ¼ã‚¿ã®ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹ã§ã™ã€‚
+ * ã‚«ãƒ†ã‚´ãƒªåˆ†ã‘ã®ã»ã‹ã€JData ã®ç›´åˆ—åŒ–ã€c8y ç‰¹æœ‰ã®ãƒ«ãƒ¼ãƒ«ã«å¯¾å¿œã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã‚’
+ * æä¾›ã—ã¾ã™ã€‚
+ * C8yData ã¯ JData ã‚’ç¶™æ‰¿ã—ã¦ã„ã‚‹ãŸã‚ã€JSON ç›´åˆ—åŒ–ã‚’ã‚µãƒãƒ¼ãƒˆã—ã¾ã™ã€‚
+ * ä¾‹ãˆã°ã€<pre>
  * System.out.println(new ManagedObject().toJson().toString("  "));
  * </pre>
- * ‚ğÀs‚·‚é‚ÆAManagedObject ‚Ì JSON Œ`®‚ª“¾‚ç‚ê‚Ü‚·B
+ * ã‚’å®Ÿè¡Œã™ã‚‹ã¨ã€ManagedObject ã® JSON å½¢å¼ãŒå¾—ã‚‰ã‚Œã¾ã™ã€‚
  */
 public abstract class C8yData extends JData {
 	private static final JsonValue CACHED_NULL = new JsonValue(null);
 	
 	/**
-	 * ‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğw’è‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚É’l‚ªˆê’v‚³‚¹‚é
-	 * JsonObject ‚ğ’Šo‚µ‚Ü‚·B•Ô‚è’l‚ğ ret ‚Æ‚µ‚½ê‡Aˆê”Ê‚É
-	 * another.fill(ret).equals(this) ‚ª¬—§‚µ‚Ü‚·B‚½‚¾‚µAfill ‚Ì§–ñ‚Å‚ ‚é
-	 * —v‘f‚É JsonValue(null) ‚ğ–¾¦“I‚Éİ’è‚Å‚«‚È‚¢‚±‚Æ‚Í“¯—l‚Å‚·B
+	 * ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æŒ‡å®šã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å€¤ãŒä¸€è‡´ã•ã›ã‚‹
+	 * JsonObject ã‚’æŠ½å‡ºã—ã¾ã™ã€‚è¿”ã‚Šå€¤ã‚’ ret ã¨ã—ãŸå ´åˆã€ä¸€èˆ¬ã«
+	 * another.fill(ret).equals(this) ãŒæˆç«‹ã—ã¾ã™ã€‚ãŸã ã—ã€fill ã®åˆ¶ç´„ã§ã‚ã‚‹
+	 * è¦ç´ ã« JsonValue(null) ã‚’æ˜ç¤ºçš„ã«è¨­å®šã§ããªã„ã“ã¨ã¯åŒæ§˜ã§ã™ã€‚
 	 *
-	 * @param	another		”äŠr‘ÎÛ
-	 * @return	·•ª‚ğ•\‚· JsonObjectB
+	 * @param	another		æ¯”è¼ƒå¯¾è±¡
+	 * @return	å·®åˆ†ã‚’è¡¨ã™ JsonObjectã€‚
 	 */
 	public JsonObject getDifference(C8yData another) {
 		if (getClass() != another.getClass())
@@ -40,7 +40,7 @@ public abstract class C8yData extends JData {
 		
 		JsonObject result = new JsonObject();
 		
-		// ƒL[‚ğƒ}[ƒW‚µ‚½ map ‚ğ¶¬
+		// ã‚­ãƒ¼ã‚’ãƒãƒ¼ã‚¸ã—ãŸ map ã‚’ç”Ÿæˆ
 		Set<String> merged = new HashSet<String>(a.keySet());
 //System.out.println("merged(a) = " + merged);
 		for (String toAdd : b.keySet() ) {

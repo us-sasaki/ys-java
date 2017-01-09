@@ -155,8 +155,8 @@ public class ConvEncoding {
 			ConvEncoding.useBackup = usebackup;
 			if (!usebackup) {
 				File f = new File(args[0]);
-				if (!f.getAbsolutePath().startsWith("G:\\programs\\maven\\")) {
-					System.out.println("This tool is danger, so it must be applied to subdirectory of G:\\programs\\maven\\  :"+f.getAbsolutePath());
+				if (!f.getAbsolutePath().startsWith("C:\\Users\\Yusuke\\Documents\\GitHub\\ys-java\\maven")) {
+					System.out.println("This tool is danger, so it must be applied to subdirectory of C:\\Users\\Yusuke\\Documents\\GitHub\\ys-java\\maven  :"+f.getAbsolutePath());
 					System.exit(-1);
 				}
 			}

@@ -15,25 +15,25 @@ import abdom.data.json.JsonObject;
 import static java.net.HttpURLConnection.*;
 
 /**
- * REST ‚É‚æ‚é—v‹‚ğŠÈ’P‚És‚¤‚½‚ß‚ÌƒNƒ‰ƒXBŒy—Ê‰»‚Ì‚½‚ßAŠO•”ƒ‰ƒCƒuƒ‰ƒŠ‚É
- * ”ñˆË‘¶‚Å‚Â‚­‚é(java.net.HttpURLConnection ƒx[ƒX)
- * Œ±—˜—pó‘Ô‚¾‚ªAŠeí REST API ‚Í‚½‚½‚¯‚Ä‚¢‚éB
+ * REST ã«ã‚ˆã‚‹è¦æ±‚ã‚’ç°¡å˜ã«è¡Œã†ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚è»½é‡åŒ–ã®ãŸã‚ã€å¤–éƒ¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã«
+ * éä¾å­˜ã§ã¤ãã‚‹(java.net.HttpURLConnection ãƒ™ãƒ¼ã‚¹)
+ * è©¦é¨“åˆ©ç”¨çŠ¶æ…‹ã ãŒã€å„ç¨® REST API ã¯ãŸãŸã‘ã¦ã„ã‚‹ã€‚
  *
  * @version	29, November 2016
  * @author	Yusuke Sasaki
  */
 public class Rest {
 	
-	/** host ‚ğ¦‚· URL •¶š—ñ(http:// or https://) */
+	/** host ã‚’ç¤ºã™ URL æ–‡å­—åˆ—(http:// or https://) */
 	protected String urlStr;
 	
-	/** Cumulocity ‚É‚¨‚¯‚éƒeƒiƒ“ƒg–¼ */
+	/** Cumulocity ã«ãŠã‘ã‚‹ãƒ†ãƒŠãƒ³ãƒˆå */
 	protected String tenant;
 	
-	/** Cumulocity ƒ†[ƒUƒAƒJƒEƒ“ƒg */
+	/** Cumulocity ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ */
 	protected String user;
 	
-	/** Cumulocity ƒ†[ƒUƒpƒXƒ[ƒh */
+	/** Cumulocity ãƒ¦ãƒ¼ã‚¶ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ */
 	protected String password;
 	
 	/** Cumulocity App-key */
@@ -43,11 +43,11 @@ public class Rest {
 	protected boolean modeIsTransient = false;
 	
 	/**
-	 * HTTP ƒŒƒXƒ|ƒ“ƒX‚ğ•\‚·“à•”ƒNƒ‰ƒX
+	 * HTTP ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚’è¡¨ã™å†…éƒ¨ã‚¯ãƒ©ã‚¹
 	 */
 	public static class Response {
 		/**
-		 * HTTP ƒŒƒXƒ|ƒ“ƒXƒR[ƒh‚ğ•Ô‹p‚µ‚Ü‚·B
+		 * HTTP ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚³ãƒ¼ãƒ‰ã‚’è¿”å´ã—ã¾ã™ã€‚
 		 *
 		 * @see		java.net.HttpURLConnection
 		 */
@@ -57,13 +57,13 @@ public class Rest {
 		protected byte[] body;
 		
 		/**
-		 * Œ‹‰Ê‚Ì body ‚ğ byte[] ‚Åæ“¾‚µ‚Ü‚·B
+		 * çµæœã® body ã‚’ byte[] ã§å–å¾—ã—ã¾ã™ã€‚
 		 */
 		public byte[] toByteArray() {
 			return body;
 		}
 		/**
-		 * Œ‹‰Ê‚Ì body ‚ğ String ‚Åæ“¾‚µ‚Ü‚·
+		 * çµæœã® body ã‚’ String ã§å–å¾—ã—ã¾ã™
 		 */
 		public String toString() {
 			try {
@@ -74,9 +74,9 @@ public class Rest {
 		}
 		
 		/**
-		 * Œ‹‰Ê‚Ì body ‚ğ JsonType ‚Åæ“¾‚µ‚Ü‚·B
-		 * ƒGƒ‰[ƒŒƒXƒ|ƒ“ƒX‚ÉŠÖ‚·‚éŒ‹‰Ê‚Í•s’è‚ÅA’Êí JsonParseExcception
-		 * ‚ªƒXƒ[‚³‚ê‚Ü‚·B
+		 * çµæœã® body ã‚’ JsonType ã§å–å¾—ã—ã¾ã™ã€‚
+		 * ã‚¨ãƒ©ãƒ¼ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã«é–¢ã™ã‚‹çµæœã¯ä¸å®šã§ã€é€šå¸¸ JsonParseExcception
+		 * ãŒã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 		 */
 		public JsonType toJson() {
 			return JsonType.parse(toString());
@@ -87,8 +87,8 @@ public class Rest {
  * Constructor
  */
 	/**
-	 * w’è‚³‚ê‚½ host, user, password ‚ğ•Û‚·‚é Rest ‚ğì¬‚µ‚Ü‚·B
-	 * tenant ‚Í host ‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é‚à‚Ì‚Æ‚µ‚Ü‚·B
+	 * æŒ‡å®šã•ã‚ŒãŸ host, user, password ã‚’ä¿æŒã™ã‚‹ Rest ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * tenant ã¯ host ã«å«ã¾ã‚Œã¦ã„ã‚‹ã‚‚ã®ã¨ã—ã¾ã™ã€‚
 	 */
 	public Rest(String urlStr, String user, String password) {
 		this.urlStr = urlStr;
@@ -109,7 +109,7 @@ public class Rest {
  */
 	/**
 	 * https://nttcom.cumuloity.com
-	 * ‚ÉÚ‘±‚·‚éAdemouserƒAƒJƒEƒ“ƒg‚ÅƒƒOƒCƒ“‚·‚éVƒCƒ“ƒXƒ^ƒ“ƒX‚ğ•Ô‹p‚µ‚Ü‚·B
+	 * ã«æ¥ç¶šã™ã‚‹ã€demouserã‚¢ã‚«ã‚¦ãƒ³ãƒˆã§ãƒ­ã‚°ã‚¤ãƒ³ã™ã‚‹æ–°ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”å´ã—ã¾ã™ã€‚
 	 */
 	public static Rest getDefaultC8YInstance() {
 		return new Rest("https://nttcom.cumulocity.com", "demouser", "demouser");
@@ -119,75 +119,75 @@ public class Rest {
  * instance methods
  */
 	/**
-	 * ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒL[‚ğİ’è‚µ‚Ü‚·B
+	 * ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚­ãƒ¼ã‚’è¨­å®šã—ã¾ã™ã€‚
 	 */
 	public void setApplicationKey(String key) {
 		this.appKey = key;
 	}
 	
 	/**
-	 * ƒvƒƒZƒbƒVƒ“ƒOƒ‚[ƒh‚ğİ’è‚µ‚Ü‚·B
+	 * ãƒ—ãƒ­ã‚»ãƒƒã‚·ãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰ã‚’è¨­å®šã—ã¾ã™ã€‚
 	 *
-	 * @param	isTransient	TRANSIENTƒ‚[ƒh(DB‚É‘‚«‚Ü‚È‚¢)‚ğ—˜—p‚·‚é‚©
+	 * @param	isTransient	TRANSIENTãƒ¢ãƒ¼ãƒ‰(DBã«æ›¸ãè¾¼ã¾ãªã„)ã‚’åˆ©ç”¨ã™ã‚‹ã‹
 	 */
 	public void setProcessingMode(boolean isTransient) {
 		modeIsTransient = isTransient;
 	}
 	
 	/**
-	 * GET ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * GET ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 *
-	 * @param	resource	GET‚·‚éƒŠƒ\[ƒX
-	 * @return	Rest.Response ƒIƒuƒWƒFƒNƒg
+	 * @param	resource	GETã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹
+	 * @return	Rest.Response ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public Response get(String resource) throws IOException {
 		return get(resource, "");
 	}
 	
 	/**
-	 * GET ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * GET ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 */
 	public Response get(String location, String type) throws IOException {
 		return requestImpl(location, "GET", type, null);
 	}
 	
 	/**
-	 * DELETE ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * DELETE ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 */
 	public Response delete(String location) throws IOException {
 		return delete(location, "");
 	}
 	
 	/**
-	 * DELETE ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * DELETE ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 */
 	public Response delete(String location, String type) throws IOException {
 		return requestImpl(location, "DELETE", type, null);
 	}
 	
 	/**
-	 * PUT ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * PUT ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 */
 	public Response put(String resource, JsonType json)
 							throws IOException {
 		return put(resource, "", json);
 	}
 	/**
-	 * PUT ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * PUT ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 */
 	public Response put(String resource, String body)
 							throws IOException {
 		return put(resource, "", body);
 	}
 	/**
-	 * PUT ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * PUT ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 */
 	public Response put(String resource, String type, JsonType json)
 							throws IOException {
 		return put(resource, type, json.toString());
 	}
 	/**
-	 * PUT ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * PUT ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 */
 	public Response put(String resource, String type, String body)
 							throws IOException {
@@ -195,7 +195,7 @@ public class Rest {
 	}
 	
 	/**
-	 * POST ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * POST ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 */
 	public Response post(String location, JsonType json)
 							throws IOException {
@@ -203,7 +203,7 @@ public class Rest {
 	}
 	
 	/**
-	 * POST ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * POST ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 */
 	public Response post(String location, String body)
 							throws IOException {
@@ -211,7 +211,7 @@ public class Rest {
 	}
 	
 	/**
-	 * POST ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * POST ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 */
 	public Response post(String location, String type, JsonType json)
 							throws IOException {
@@ -219,7 +219,7 @@ public class Rest {
 	}
 	
 	/**
-	 * POST ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * POST ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 */
 	public Response post(String location, String type, String body)
 							throws IOException {
@@ -227,7 +227,7 @@ public class Rest {
 	}
 	
 	/**
-	 * HttpƒŠƒNƒGƒXƒg‚ÌÀˆ—‚ğs‚¢‚Ü‚·B
+	 * Httpãƒªã‚¯ã‚¨ã‚¹ãƒˆã®å®Ÿå‡¦ç†ã‚’è¡Œã„ã¾ã™ã€‚
 	 */
 	private Response requestImpl(String location, String method)
 							throws IOException {
@@ -235,7 +235,7 @@ public class Rest {
 	}
 	
 	/**
-	 * HttpƒŠƒNƒGƒXƒg‚ÌÀˆ—‚ğs‚¢‚Ü‚·B
+	 * Httpãƒªã‚¯ã‚¨ã‚¹ãƒˆã®å®Ÿå‡¦ç†ã‚’è¡Œã„ã¾ã™ã€‚
 	 */
 	private Response requestImpl(String location, String method, String type)
 							throws IOException {
@@ -243,7 +243,7 @@ public class Rest {
 	}
 	
 	/**
-	 * HttpƒŠƒNƒGƒXƒg‚ÌÀˆ—‚ğs‚¢‚Ü‚·B
+	 * Httpãƒªã‚¯ã‚¨ã‚¹ãƒˆã®å®Ÿå‡¦ç†ã‚’è¡Œã„ã¾ã™ã€‚
 	 */
 	private Response requestImpl(String location, String method,
 								String type, String body)
@@ -255,13 +255,13 @@ public class Rest {
 	}
 	
 	/**
-	 * HttpƒŠƒNƒGƒXƒg‚ÌÀˆ—‚ğs‚¢‚Ü‚·B
-	 * Cumulocity ŒÅ—L‚Ìƒwƒbƒ_‚ğ•t‰Á‚µ‚Ü‚·B
+	 * Httpãƒªã‚¯ã‚¨ã‚¹ãƒˆã®å®Ÿå‡¦ç†ã‚’è¡Œã„ã¾ã™ã€‚
+	 * Cumulocity å›ºæœ‰ã®ãƒ˜ãƒƒãƒ€ã‚’ä»˜åŠ ã—ã¾ã™ã€‚
 	 *
-	 * @param	location	ƒŠƒ\[ƒX‚ÌêŠ /platform “™
+	 * @param	location	ãƒªã‚½ãƒ¼ã‚¹ã®å ´æ‰€ /platform ç­‰
 	 * @param	method		GET/POST/PUT/DELETE
-	 * @param	type		ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒ^ƒCƒv(platformApi“™)
-	 * @param	body		body ‚Éİ’è‚·‚éƒf[ƒ^
+	 * @param	type		ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒ—(platformApiç­‰)
+	 * @param	body		body ã«è¨­å®šã™ã‚‹ãƒ‡ãƒ¼ã‚¿
 	 */
 	private Response requestImpl(String location, String method,
 								String contentType, String accept,
@@ -269,11 +269,11 @@ public class Rest {
 		URL url = new URL(urlStr + location);
 		HttpURLConnection con = (HttpURLConnection)url.openConnection();
 		
-		// o—Íİ’è
+		// å‡ºåŠ›è¨­å®š
 		boolean doOutput = (body != null && body.length > 0);
 		if (doOutput) con.setDoOutput(true);
 		
-		// ƒƒ\ƒbƒh
+		// ãƒ¡ã‚½ãƒƒãƒ‰
 		con.setRequestMethod(method);
 		
 		// Content-Type
@@ -298,20 +298,20 @@ public class Rest {
 		}
 		
 		
-		// Šî–{”FØ
+		// åŸºæœ¬èªè¨¼
 		if (user != null && password != null) {
 			String authStr = Base64.getEncoder().encodeToString((tenant + user + ":" + password).getBytes());
 			con.setRequestProperty("Authorization", "Basic " + authStr);
 		}
 		
-		// o—Í
+		// å‡ºåŠ›
 		if (doOutput) {
 			BufferedOutputStream bo = new BufferedOutputStream(con.getOutputStream());
 			bo.write(body);
 			bo.flush();
 		}
 		
-		// Œ‹‰ÊƒIƒuƒWƒFƒNƒg‚Ì¶¬
+		// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 		Response resp = new Response();
 		resp.code = con.getResponseCode();
 		if (resp.code < 400) {
@@ -335,12 +335,12 @@ public class Rest {
 	}
 	
 	/**
-	 * ƒoƒCƒiƒŠƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚ğPOST‚µ‚Ü‚·
+	 * ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‚’POSTã—ã¾ã™
 	 */
 	public Response postBinary(String filename, String mimetype, byte[] data)
 							throws IOException {
 		
-		// body ‚ğ¶¬‚·‚é
+		// body ã‚’ç”Ÿæˆã™ã‚‹
 		String bry = "----boundary----13243546"+(long)(Math.random() * 1000000000)+"5789554----";
 		
 		ByteArrayOutputStream out2 = new ByteArrayOutputStream();
@@ -349,7 +349,7 @@ public class Rest {
 		PrintWriter pw = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
 		
 		// object part
-		pw.println("--"+bry); // multipart‚Ì‰üsƒR[ƒh CR+LF
+		pw.println("--"+bry); // multipartã®æ”¹è¡Œã‚³ãƒ¼ãƒ‰ CR+LF
 		pw.println("Content-Disposition: form-data; name=\"object\"");
 		pw.println();
 		JsonType mo = JsonType.o("name", filename)
@@ -370,7 +370,7 @@ public class Rest {
 		pw.println();
 		pw.flush();
 		
-		// ƒtƒ@ƒCƒ‹À‘Ì
+		// ãƒ•ã‚¡ã‚¤ãƒ«å®Ÿä½“
 		out.write(data);
 		out.write("\r\n".getBytes());
 		out.flush();
