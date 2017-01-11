@@ -1,72 +1,75 @@
 package com.ntt.tc.data.rest;
 
 import com.ntt.tc.data.C8yData;
-import com.ntt.tc.data.ManagedObject;
 
+/**
+ * Event class
+ * This source is machine-generated.
+ */
 public class Event extends C8yData {
 	/**
 	 * Uniquely identifies an event.
-	 *
+	 * <pre>
 	 * Occurs : 1
-	 * PUT/POST : No
+	 * </pre>
 	 */
 	public String id;
 	
 	/**
 	 * Link to this resource.
-	 *
+	 * <pre>
 	 * Occurs : 1
-	 * PUT/POST : No
+	 * </pre>
 	 */
 	public String self;
 	
 	/**
 	 * Time when event was created in the database.
-	 *
+	 * <pre>
 	 * Occurs : 1
-	 * PUT/POST : No
+	 * </pre>
 	 */
 	public String creationTime;
 	
 	/**
 	 * Identifies the type of this event.
-	 *
+	 * <pre>
 	 * Occurs : 1
-	 * PUT/POST : POST: Mandatory PUT: No
+	 * </pre>
 	 */
 	public String type;
 	
 	/**
 	 * Time of the event.
-	 *
+	 * <pre>
 	 * Occurs : 1
-	 * PUT/POST : POST: Mandatory PUT: No
+	 * </pre>
 	 */
 	public String time;
 	
 	/**
 	 * Text description of the event.
-	 *
+	 * <pre>
 	 * Occurs : 1
-	 * PUT/POST : POST: Mandatory PUT: Optional
+	 * </pre>
 	 */
 	public String text;
 	
 	/**
 	 * The ManagedObject that the event originated from, as object containing
 	 * properties "id", "self", "name", and "type".
-	 *
+	 * <pre>
 	 * Occurs : 1
-	 * PUT/POST : POST: Mandatory PUT: No
+	 * </pre>
 	 */
 	public ManagedObject source;
 	
 	/**
 	 * Additional properties of the event.
-	 *
+	 * <pre>
 	 * Occurs : 0..n
-	 * PUT/POST : POST: Optional PUT: Optional
+	 * </pre>
 	 */
-	public Object *;
+	//omitted since type, field equals "*"
 	
 }

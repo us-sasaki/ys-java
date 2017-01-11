@@ -1,55 +1,63 @@
 package com.ntt.tc.data.rest;
 
 import com.ntt.tc.data.C8yData;
-import com.ntt.tc.data.ManagedObjectCollection;
-import com.ntt.tc.data.ManagedObjectCollectionURI-Template;
 
+/**
+ * InventoryAPI class
+ * This source is machine-generated.
+ */
 public class InventoryAPI extends C8yData {
 	/**
 	 * Link to this resource.
-	 *
+	 * <pre>
 	 * Occurs : 1
+	 * </pre>
 	 */
 	public String self;
 	
 	/**
 	 * Collection of all managed objects.
-	 *
+	 * <pre>
 	 * Occurs : 1
+	 * </pre>
 	 */
 	public ManagedObjectCollection managedObjects;
 	
 	/**
 	 * Read-only collection of all managed objects of a particular type
 	 * (placeholder {type}).
-	 *
+	 * <pre>
 	 * Occurs : 1
+	 * </pre>
 	 */
-	public ManagedObjectCollectionURI-Template managedObjectsForType;
+	public String managedObjectsForType;
 	
 	/**
 	 * Read-only collection of all managed objects with a particular fragment
 	 * type or capability (placeholder {fragmentType}).
-	 *
+	 * <pre>
 	 * Occurs : 1
+	 * </pre>
 	 */
-	public ManagedObjectCollectionURI-Template managedObjectsForFragmentType;
+	public String managedObjectsForFragmentType;
 	
 	/**
 	 * Read-only collection of managed objects fetched for a given list of ids
 	 * (placeholder {ids}),for example "?ids=41,43,68".
-	 *
+	 * <pre>
 	 * Occurs : 1
+	 * </pre>
 	 */
-	public ManagedObjectCollectionURI-Template managedObjectsForListOfIds;
+	public String managedObjectsForListOfIds;
 	
 	/**
 	 * Read-only collection of managed objects containing a text value starting
 	 * with the given text (placeholder {text}). Text value is any alphanumeric
 	 * string starting with a latin letter (A-Z or a-z).
-	 *
+	 * <pre>
 	 * Occurs : 1
+	 * </pre>
 	 */
-	public ManagedObjectCollectionURI-Template managedObjectsForText;
+	public String managedObjectsForText;
 	
 }
