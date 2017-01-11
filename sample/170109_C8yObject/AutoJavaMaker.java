@@ -7,7 +7,10 @@ public class AutoJavaMaker {
 	static {
 		PRIMITIVE_TYPES = new HashMap<String, String>();
 		PRIMITIVE_TYPES.put("String", "String");
+		PRIMITIVE_TYPES.put("Integer", "int");
 		PRIMITIVE_TYPES.put("Long", "long");
+		PRIMITIVE_TYPES.put("Boolean", "boolean");
+		PRIMITIVE_TYPES.put("Double", "double");
 		PRIMITIVE_TYPES.put("Object", "Object");
 		PRIMITIVE_TYPES.put("Number", "double");
 		PRIMITIVE_TYPES.put("URI", "String");
