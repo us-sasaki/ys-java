@@ -34,7 +34,6 @@ public class AutoJavaMaker {
 	private static Map<String, String> packages;
 	static {
 		packages = new HashMap<String, String>();
-		packages.put("PagingStatistics", "");
 		packages.put("C8yData", "");
 		packages.put("TC_Date", "");
 		packages.put("JsonObject", "abdom.data.json");
@@ -360,8 +359,8 @@ public class AutoJavaMaker {
 			String[] list = dir.list();
 			for (String f : list) {
 				File file = new File(dir, f);
-				if (file.isDirectory()) continue;
-				if (file.getPath().endsWith(".java")) file.delete();
+				if (file.isDirectory()) deleteDirectory(file);
+				else if (file.getPath().endsWith(".java")) file.delete();
 				else if (file.getPath().endsWith(".class")) file.delete();
 			}
 		}
