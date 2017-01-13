@@ -1,10 +1,10 @@
-package com.ntt.tc.data.users;
+package users;
 
 import com.ntt.tc.data.C8yData;
 
 /**
  * Role class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class Role extends C8yData {
 	/**

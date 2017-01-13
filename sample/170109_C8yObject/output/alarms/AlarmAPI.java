@@ -1,11 +1,12 @@
-package com.ntt.tc.data.alarms;
+package alarms;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.alarms.AlarmCollection;
+import com.ntt.tc.data.TC_Date;
 
 /**
  * AlarmAPI class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class AlarmAPI extends C8yData {
 	/**
@@ -58,7 +59,7 @@ public class AlarmAPI extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String alarmsForTime;
+	public TC_Date alarmsForTime;
 	
 	/**
 	 * Read-only collection of all alarms for a particular status and time
@@ -67,7 +68,7 @@ public class AlarmAPI extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String alarmsForStatusAndTime;
+	public TC_Date alarmsForStatusAndTime;
 	
 	/**
 	 * Read-only collection of all alarms for a particular source and time
@@ -76,7 +77,7 @@ public class AlarmAPI extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String alarmsForSourceAndTime;
+	public TC_Date alarmsForSourceAndTime;
 	
 	/**
 	 * Read-only collection of all alarms for a particular source, status and
@@ -86,6 +87,6 @@ public class AlarmAPI extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String alarmsForSourceAndStatusAndTime;
+	public TC_Date alarmsForSourceAndStatusAndTime;
 	
 }

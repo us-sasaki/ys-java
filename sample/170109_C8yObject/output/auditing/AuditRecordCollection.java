@@ -1,4 +1,4 @@
-package com.ntt.tc.data.auditing;
+package auditing;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.auditing.AuditRecord;
@@ -6,7 +6,7 @@ import com.ntt.tc.data.rest.PagingStatistics;
 
 /**
  * AuditRecordCollection class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class AuditRecordCollection extends C8yData {
 	/**

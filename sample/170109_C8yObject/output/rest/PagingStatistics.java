@@ -1,10 +1,10 @@
-package com.ntt.tc.data.rest;
+package rest;
 
 import com.ntt.tc.data.C8yData;
 
 /**
  * PagingStatistics class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class PagingStatistics extends C8yData {
 	/**
@@ -13,7 +13,7 @@ public class PagingStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Int totalRecords;
+	public int totalRecords;
 	
 	/**
 	 * Maximum number of records contained in this query.
@@ -21,7 +21,7 @@ public class PagingStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Int pageSize;
+	public int pageSize;
 	
 	/**
 	 * The current returned page within the full result set, starting at "1".
@@ -29,6 +29,6 @@ public class PagingStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Int currentPage;
+	public int currentPage;
 	
 }

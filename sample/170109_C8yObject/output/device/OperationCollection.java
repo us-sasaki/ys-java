@@ -1,11 +1,11 @@
-package com.ntt.tc.data.device;
+package device;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.rest.PagingStatistics;
 
 /**
  * OperationCollection class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class OperationCollection extends C8yData {
 	/**

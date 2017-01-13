@@ -1,4 +1,4 @@
-package com.ntt.tc.data.tenants;
+package tenants;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.tenants.UsageStatistics;
@@ -6,7 +6,7 @@ import com.ntt.tc.data.rest.PagingStatistics;
 
 /**
  * TenantUsageStatisticsCollection class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class TenantUsageStatisticsCollection extends C8yData {
 	/**

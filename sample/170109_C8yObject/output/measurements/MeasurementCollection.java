@@ -1,4 +1,4 @@
-package com.ntt.tc.data.measurements;
+package measurements;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.measurements.Measurement;
@@ -6,7 +6,7 @@ import com.ntt.tc.data.rest.PagingStatistics;
 
 /**
  * MeasurementCollection class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class MeasurementCollection extends C8yData {
 	/**

@@ -1,11 +1,12 @@
-package com.ntt.tc.data.auditing;
+package auditing;
 
 import com.ntt.tc.data.C8yData;
+import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.inventory.ManagedObject;
 
 /**
  * AuditRecord class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class AuditRecord extends C8yData {
 	/**
@@ -33,7 +34,7 @@ public class AuditRecord extends C8yData {
 	 * PUT/POST : No
 	 * </pre>
 	 */
-	public String creationTime;
+	public TC_Date creationTime;
 	
 	/**
 	 * Identifies the type of this audit record.
@@ -51,7 +52,7 @@ public class AuditRecord extends C8yData {
 	 * PUT/POST : POST: Mandatory PUT: No
 	 * </pre>
 	 */
-	public String time;
+	public TC_Date time;
 	
 	/**
 	 * Text description of the audit record.

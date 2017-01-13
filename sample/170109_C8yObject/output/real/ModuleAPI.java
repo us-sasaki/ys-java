@@ -1,11 +1,11 @@
-package com.ntt.tc.data.real;
+package real;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.real.ModuleCollection;
 
 /**
  * ModuleAPI class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class ModuleAPI extends C8yData {
 	/**

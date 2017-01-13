@@ -1,11 +1,11 @@
-package com.ntt.tc.data.tenants;
+package tenants;
 
 import com.ntt.tc.data.C8yData;
-import com.ntt.tc.dataabdom.data.json.JsonObject;
+import abdom.data.json.JsonObject;
 
 /**
  * UsageStatistics class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class UsageStatistics extends C8yData {
 	/**
@@ -22,7 +22,7 @@ public class UsageStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Double deviceCount;
+	public double deviceCount;
 	
 	/**
 	 * Number of requests that were issued only by devices against the tenant.
@@ -30,7 +30,7 @@ public class UsageStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Double deviceRequestCount;
+	public double deviceRequestCount;
 	
 	/**
 	 * Number of devices with all children.
@@ -38,7 +38,7 @@ public class UsageStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Double deviceWithChildrenCount;
+	public double deviceWithChildrenCount;
 	
 	/**
 	 * Number of requests that were issued against the tenant.
@@ -46,7 +46,7 @@ public class UsageStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Double requestCount;
+	public double requestCount;
 	
 	/**
 	 * Database storage in use by the tenant, in bytes.
@@ -54,7 +54,7 @@ public class UsageStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Double storageSize;
+	public double storageSize;
 	
 	/**
 	 * Names of tenant subscribed applications.

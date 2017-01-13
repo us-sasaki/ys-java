@@ -1,10 +1,10 @@
-package com.ntt.tc.data.rest;
+package rest;
 
 import com.ntt.tc.data.C8yData;
 
 /**
  * Error class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class Error extends C8yData {
 	/**

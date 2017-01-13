@@ -1,4 +1,4 @@
-package com.ntt.tc.data.alarms;
+package alarms;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.alarms.Alarm;
@@ -6,7 +6,7 @@ import com.ntt.tc.data.rest.PagingStatistics;
 
 /**
  * AlarmCollection class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class AlarmCollection extends C8yData {
 	/**

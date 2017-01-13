@@ -1,10 +1,10 @@
-package com.ntt.tc.data.retention;
+package retention;
 
 import com.ntt.tc.data.C8yData;
 
 /**
  * RetentionRule class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class RetentionRule extends C8yData {
 	/**
@@ -23,7 +23,7 @@ public class RetentionRule extends C8yData {
 	 * Visibility : Public
 	 * </pre>
 	 */
-	public Long id;
+	public long id;
 	
 	/**
 	 * RetentionRule will be applied to this type of documents, possible values
@@ -69,6 +69,6 @@ public class RetentionRule extends C8yData {
 	 * Visibility : Public
 	 * </pre>
 	 */
-	public Long maximumAge;
+	public long maximumAge;
 	
 }

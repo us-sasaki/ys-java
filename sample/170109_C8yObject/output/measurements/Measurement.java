@@ -1,11 +1,12 @@
-package com.ntt.tc.data.measurements;
+package measurements;
 
 import com.ntt.tc.data.C8yData;
+import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.inventory.ManagedObject;
 
 /**
  * Measurement class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class Measurement extends C8yData {
 	/**
@@ -33,7 +34,7 @@ public class Measurement extends C8yData {
 	 * PUT/POST : Mandatory
 	 * </pre>
 	 */
-	public String time;
+	public TC_Date time;
 	
 	/**
 	 * The most specific type of this entire measurement.

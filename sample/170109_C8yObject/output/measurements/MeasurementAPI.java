@@ -1,11 +1,11 @@
-package com.ntt.tc.data.measurements;
+package measurements;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.measurements.MeasurementCollection;
 
 /**
  * MeasurementAPI class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class MeasurementAPI extends C8yData {
 	/**

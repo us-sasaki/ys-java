@@ -1,4 +1,4 @@
-package com.ntt.tc.data.applications;
+package applications;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.applications.Application;
@@ -6,7 +6,7 @@ import com.ntt.tc.data.rest.PagingStatistics;
 
 /**
  * ApplicationCollection class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class ApplicationCollection extends C8yData {
 	/**

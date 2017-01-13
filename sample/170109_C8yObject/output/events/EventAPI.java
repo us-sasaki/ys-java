@@ -1,11 +1,12 @@
-package com.ntt.tc.data.events;
+package events;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.events.EventCollection;
+import com.ntt.tc.data.TC_Date;
 
 /**
  * EventAPI class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class EventAPI extends C8yData {
 	/**
@@ -58,7 +59,7 @@ public class EventAPI extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String eventsForTime;
+	public TC_Date eventsForTime;
 	
 	/**
 	 * Read-only collection of all events containing a particular fragment type
@@ -76,7 +77,7 @@ public class EventAPI extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String eventsForSourceAndTime;
+	public TC_Date eventsForSourceAndTime;
 	
 	/**
 	 * Read-only collection of all events of a particular source object
@@ -114,7 +115,7 @@ public class EventAPI extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String eventsForTimeAndType;
+	public TC_Date eventsForTimeAndType;
 	
 	/**
 	 * Read-only collection of all events from a particular source object,
@@ -155,7 +156,7 @@ public class EventAPI extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String eventsForSourceAndTimeAndType;
+	public TC_Date eventsForSourceAndTimeAndType;
 	
 	/**
 	 * Read-only collection of all events from a particular type, containing a

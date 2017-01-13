@@ -1,22 +1,22 @@
-package com.ntt.tc.data.real;
+package real;
 
 import com.ntt.tc.data.C8yData;
 
 /**
- * Unsubscribe class
- * This source is machine-generated.
+ * SubscriveRequest class
+ * This source is machine-generated from c8y-markdown docs.
  */
-public class Unsubscribe extends C8yData {
+public class SubscriveRequest extends C8yData {
 	/**
 	 * Id of message, required to match reponse message
 	 * <pre>
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Int id;
+	public int id;
 	
 	/**
-	 * Name of channel, required value "/meta/unsubscribe".
+	 * Name of channel, required value "/meta/subscribe"
 	 * <pre>
 	 * Occurs : 1
 	 * </pre>
@@ -24,7 +24,7 @@ public class Unsubscribe extends C8yData {
 	public String channel;
 	
 	/**
-	 * Unique client ID received during handshake.
+	 * Unique ID of client received during handshake.
 	 * <pre>
 	 * Occurs : 1
 	 * </pre>
@@ -32,7 +32,7 @@ public class Unsubscribe extends C8yData {
 	public String clientId;
 	
 	/**
-	 * Name of channel.
+	 * Name of channel to subscribe to.
 	 * <pre>
 	 * Occurs : 1
 	 * </pre>

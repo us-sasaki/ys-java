@@ -1,4 +1,4 @@
-package com.ntt.tc.data.rest;
+package rest;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.inventory.InventoryAPI;
@@ -12,7 +12,7 @@ import com.ntt.tc.data.device.DeviceControlAPI;
 
 /**
  * Platform class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class Platform extends C8yData {
 	/**

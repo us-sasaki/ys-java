@@ -1,4 +1,4 @@
-package com.ntt.tc.data.retention;
+package retention;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.retention.RetentionRule;
@@ -6,7 +6,7 @@ import com.ntt.tc.data.rest.PagingStatistics;
 
 /**
  * RetentionRuleCollection class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class RetentionRuleCollection extends C8yData {
 	/**

@@ -1,11 +1,11 @@
-package com.ntt.tc.data.users;
+package users;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.users.Role;
 
 /**
  * User class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class User extends C8yData {
 	/**
@@ -88,7 +88,7 @@ public class User extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Boolean enabled;
+	public boolean enabled;
 	
 	/**
 	 * List of device permissions

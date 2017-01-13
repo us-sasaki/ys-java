@@ -1,19 +1,19 @@
-package com.ntt.tc.data.real;
+package real;
 
 import com.ntt.tc.data.C8yData;
 
 /**
- * Handshake class
- * This source is machine-generated.
+ * HandshakeRequest class
+ * This source is machine-generated from c8y-markdown docs.
  */
-public class Handshake extends C8yData {
+public class HandshakeRequest extends C8yData {
 	/**
 	 * Id of message, required to match response messageÂ?
 	 * <pre>
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Int id;
+	public int id;
 	
 	/**
 	 * Name of channel, required value "/meta/handshake".
@@ -45,7 +45,7 @@ public class Handshake extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Array supportedConnectionTypes;
+	public String[] supportedConnectionTypes;
 	
 	/**
 	 * Session configuration parameters.

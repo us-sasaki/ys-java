@@ -1,11 +1,12 @@
-package com.ntt.tc.data.events;
+package events;
 
 import com.ntt.tc.data.C8yData;
+import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.inventory.ManagedObject;
 
 /**
  * Event class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class Event extends C8yData {
 	/**
@@ -30,7 +31,7 @@ public class Event extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String creationTime;
+	public TC_Date creationTime;
 	
 	/**
 	 * Identifies the type of this event.
@@ -46,7 +47,7 @@ public class Event extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String time;
+	public TC_Date time;
 	
 	/**
 	 * Text description of the event.

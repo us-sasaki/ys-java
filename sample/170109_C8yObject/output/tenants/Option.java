@@ -1,10 +1,10 @@
-package com.ntt.tc.data.tenants;
+package tenants;
 
 import com.ntt.tc.data.C8yData;
 
 /**
  * Option class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class Option extends C8yData {
 	/**

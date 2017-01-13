@@ -1,4 +1,4 @@
-package com.ntt.tc.data.tenants;
+package tenants;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.tenants.Option;
@@ -6,7 +6,7 @@ import com.ntt.tc.data.rest.PagingStatistics;
 
 /**
  * OptionCollection class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class OptionCollection extends C8yData {
 	/**

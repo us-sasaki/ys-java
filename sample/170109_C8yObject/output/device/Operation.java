@@ -1,11 +1,12 @@
-package com.ntt.tc.data.device;
+package device;
 
 import com.ntt.tc.data.C8yData;
+import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.identity.ExternalIDCollection;
 
 /**
  * Operation class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class Operation extends C8yData {
 	/**
@@ -33,7 +34,7 @@ public class Operation extends C8yData {
 	 * PUT/POST : No
 	 * </pre>
 	 */
-	public String creationTime;
+	public TC_Date creationTime;
 	
 	/**
 	 * Identifies the target device on which this operation should be

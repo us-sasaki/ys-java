@@ -1,11 +1,11 @@
-package com.ntt.tc.data.tenants;
+package tenants;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.tenants.ApplicationReferenceCollection;
 
 /**
  * Tenant class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class Tenant extends C8yData {
 	/**
@@ -61,7 +61,7 @@ public class Tenant extends C8yData {
 	 * Visibility : Private
 	 * </pre>
 	 */
-	public Boolean allowCreateTenants;
+	public boolean allowCreateTenants;
 	
 	/**
 	 * Storage quota per device the user has.
@@ -88,7 +88,7 @@ public class Tenant extends C8yData {
 	 * Visibility : Private
 	 * </pre>
 	 */
-	public Boolean sendPasswordResetEmail;
+	public boolean sendPasswordResetEmail;
 	
 	/**
 	 * URL of tenants domain.

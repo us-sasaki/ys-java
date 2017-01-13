@@ -1,12 +1,13 @@
-package com.ntt.tc.data.alarms;
+package alarms;
 
 import com.ntt.tc.data.C8yData;
+import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.inventory.ManagedObject;
 import com.ntt.tc.data.auditing.AuditRecordCollection;
 
 /**
  * Alarm class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class Alarm extends C8yData {
 	/**
@@ -34,7 +35,7 @@ public class Alarm extends C8yData {
 	 * PUT/POST : No
 	 * </pre>
 	 */
-	public String creationTime;
+	public TC_Date creationTime;
 	
 	/**
 	 * Identifies the type of this alarm, e.g.,
@@ -53,7 +54,7 @@ public class Alarm extends C8yData {
 	 * PUT/POST : POST: Mandatory PUT: No
 	 * </pre>
 	 */
-	public String time;
+	public TC_Date time;
 	
 	/**
 	 * Text description of the alarm.
@@ -101,7 +102,7 @@ public class Alarm extends C8yData {
 	 * PUT/POST : No
 	 * </pre>
 	 */
-	public Long count;
+	public long count;
 	
 	/**
 	 * The first time that this alarm occurred (i.e., where "count" was 1).
@@ -110,7 +111,7 @@ public class Alarm extends C8yData {
 	 * PUT/POST : No
 	 * </pre>
 	 */
-	public String firstOccurenceTime;
+	public TC_Date firstOccurenceTime;
 	
 	/**
 	 * History of modifications tracing property changes.

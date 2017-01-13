@@ -1,10 +1,10 @@
-package com.ntt.tc.data.device;
+package device;
 
 import com.ntt.tc.data.C8yData;
 
 /**
  * BulkOperation class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class BulkOperation extends C8yData {
 	/**
@@ -60,7 +60,7 @@ public class BulkOperation extends C8yData {
 	 * PUT/POST : POST: Mandatory PUT: No
 	 * </pre>
 	 */
-	public Double creationRamp;
+	public double creationRamp;
 	
 	/**
 	 * Operation to be executed for every device in a group.

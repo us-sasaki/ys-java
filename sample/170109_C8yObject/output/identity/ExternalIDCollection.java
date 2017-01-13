@@ -1,10 +1,10 @@
-package com.ntt.tc.data.identity;
+package identity;
 
 import com.ntt.tc.data.C8yData;
 
 /**
  * ExternalIDCollection class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class ExternalIDCollection extends C8yData {
 	/**

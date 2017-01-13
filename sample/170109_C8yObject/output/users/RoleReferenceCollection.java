@@ -1,4 +1,4 @@
-package com.ntt.tc.data.users;
+package users;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.users.RoleReference;
@@ -6,7 +6,7 @@ import com.ntt.tc.data.rest.PagingStatistics;
 
 /**
  * RoleReferenceCollection class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class RoleReferenceCollection extends C8yData {
 	/**

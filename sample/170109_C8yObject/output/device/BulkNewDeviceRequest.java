@@ -1,11 +1,11 @@
-package com.ntt.tc.data.device;
+package device;
 
 import com.ntt.tc.data.C8yData;
-import com.ntt.tc.dataabdom.data.json.JsonObject;
+import abdom.data.json.JsonObject;
 
 /**
  * BulkNewDeviceRequest class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class BulkNewDeviceRequest extends C8yData {
 	/**
@@ -15,7 +15,7 @@ public class BulkNewDeviceRequest extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Double numberOfAll;
+	public double numberOfAll;
 	
 	/**
 	 * Number of created device credentials
@@ -23,7 +23,7 @@ public class BulkNewDeviceRequest extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Double numberOfCreated;
+	public double numberOfCreated;
 	
 	/**
 	 * Number of failed creation of device credentials
@@ -31,7 +31,7 @@ public class BulkNewDeviceRequest extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Double numberOfFailed;
+	public double numberOfFailed;
 	
 	/**
 	 * Number of successful creation of device credentials, contains create and
@@ -40,7 +40,7 @@ public class BulkNewDeviceRequest extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public Double numberOfSuccessful;
+	public double numberOfSuccessful;
 	
 	/**
 	 * Array with updated device credentials

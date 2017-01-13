@@ -1,11 +1,11 @@
-package com.ntt.tc.data.applications;
+package applications;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.applications.ApplicationCollection;
 
 /**
  * ApplicationAPI class
- * This source is machine-generated.
+ * This source is machine-generated from c8y-markdown docs.
  */
 public class ApplicationAPI extends C8yData {
 	/**

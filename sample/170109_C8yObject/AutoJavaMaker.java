@@ -2,11 +2,15 @@ import java.io.*;
 import java.util.*;
 
 public class AutoJavaMaker {
-	private static final String PACKAGE = "com.ntt.tc.data";
 	private static final Map<String, String> PRIMITIVE_TYPES;
 	static {
 		PRIMITIVE_TYPES = new HashMap<String, String>();
 		PRIMITIVE_TYPES.put("String", "String");
+		PRIMITIVE_TYPES.put("int", "int");
+		PRIMITIVE_TYPES.put("integer", "int");
+		PRIMITIVE_TYPES.put("long", "long");
+		PRIMITIVE_TYPES.put("boolean", "boolean");
+		PRIMITIVE_TYPES.put("double", "double");
 		PRIMITIVE_TYPES.put("Int", "int");
 		PRIMITIVE_TYPES.put("Integer", "int");
 		PRIMITIVE_TYPES.put("Long", "long");
@@ -19,8 +23,9 @@ public class AutoJavaMaker {
 		PRIMITIVE_TYPES.put("TimeStamp", "TC_Date");
 		PRIMITIVE_TYPES.put("List", "JsonObject");
 		PRIMITIVE_TYPES.put("Array", "String[]");
-		
 	}
+	
+	private static Map<String, Iterator<String>> enumName;
 	
 	private String packageName;
 	private String className;
@@ -34,8 +39,8 @@ public class AutoJavaMaker {
 	private static Map<String, String> packages;
 	static {
 		packages = new HashMap<String, String>();
-		packages.put("C8yData", "");
-		packages.put("TC_Date", "");
+		packages.put("C8yData", "com.ntt.tc.data");
+		packages.put("TC_Date", "com.ntt.tc.data");
 		packages.put("JsonObject", "abdom.data.json");
 	}
 	
@@ -48,6 +53,21 @@ public class AutoJavaMaker {
 		if (i >= 0) p = p.substring(0, i);
 		packageName = p;
 	}
+	
+	private static void resetEnumName() {
+		enumName = new HashMap<String, Iterator<String>>();
+		enumName.put("Request", 
+			Arrays.asList("HandshakeRequest",	"SubscriveRequest",
+						"UnsubscribeRequest",	"ConnectRequest",
+						"DisconnectRequest", "1","2"	).iterator());
+		enumName.put("Advice",
+			Arrays.asList("HandshakeAdvice",	"ConnectAdvice", "1", "2").iterator());
+		enumName.put("Response", 
+			Arrays.asList("HandshakeResponse",	"SubscriveResponse",
+						"UnsubscribeResponse",	"ConnectResponse",
+						"DisconnectResponse","1","2"	).iterator());
+	}
+	
 	
 	/**
 	 * １オブジェクト分の情報を読み込みます。
@@ -90,7 +110,7 @@ public class AutoJavaMaker {
 				if (line.indexOf("|") != -1 &&
 						line.toLowerCase().indexOf("type") != -1 &&
 						line.toLowerCase().indexOf("desc") != -1) {
-					if (mayApCount - mayClassCount > 6) {
+					if (mayApCount - mayClassCount > 4) {
 						mayClassName = null;
 					}
 					if (mayClassName == null && mayApName != null) {
@@ -98,10 +118,13 @@ public class AutoJavaMaker {
 						if (ind > -1) {
 							mayClassName = mayApName.substring(0, ind-1);
 							mayClassCount = mayApCount - 2;
+						} else {
+							mayClassName = mayApName;
+							mayClassCount = mayApCount - 2;
 						}
 					}
 					if (mayClassName == null || mayApName == null) continue loop;
-					if (count - mayApCount > 6) continue loop;
+					if (count - mayApCount > 4) continue loop;
 					if (mayApCount < mayClassCount) continue loop;
 					className = mayClassName;
 					int index = mayApName.indexOf("[");
@@ -138,12 +161,7 @@ public class AutoJavaMaker {
 				try {
 					col = cols.next();
 				} catch (NoSuchElementException nsee) {
-					//System.err.println(className);
-					//System.err.println(apName);
-					//System.err.println(line);
-					
 					continue;
-					//throw nsee;
 				}
 				switch (col.toLowerCase()) {
 				case "field name":
@@ -163,8 +181,20 @@ public class AutoJavaMaker {
 			attributes.add(attr);
 		}
 		
+		// 特定の field 名に対し type を変更
+		for (int i = 0; i < typeNames.size(); i++) {
+			if (fieldNames.get(i).toLowerCase().contains("time")) {
+				typeNames.remove(i);
+				typeNames.add(i, "TC_Date");
+			}
+		}
+		
+		// Request など同一名のオブジェクトが複数あるものを分ける
+		if (enumName.get(className) != null) {
+			className = enumName.get(className).next();
+		}
 		// パッケージを登録
-		packages.put(convJclassStyle(className), "."+packageName);
+		packages.put(convJclassStyle(className), "com.ntt.tc.data."+packageName);
 		
 		return true;
 	}
@@ -183,7 +213,7 @@ public class AutoJavaMaker {
 		PrintWriter p = new PrintWriter("output/" + fname);
 		
 		// package
-		p.println("package " + PACKAGE + "." + packageName + ";");
+		p.println("package " + packageName + ";");
 		p.println();
 		
 		// import
@@ -203,7 +233,7 @@ public class AutoJavaMaker {
 			}
 			if (packages.get(typeName).equals(packageName)) continue;
 			
-			p.println("import "+PACKAGE+ packages.get(typeName) + "." + typeName + ";");
+			p.println("import "+ packages.get(typeName) + "." + typeName + ";");
 			imported.add(typeName);
 		}
 		p.println();
@@ -211,7 +241,7 @@ public class AutoJavaMaker {
 		// クラス名コメント
 		p.println("/**");
 		p.println(" * " + getJclassName() + " class");
-		p.println(" * This source is machine-generated.");
+		p.println(" * This source is machine-generated from c8y-markdown docs.");
 		p.println(" */");
 		
 		// クラス宣言
@@ -248,9 +278,8 @@ public class AutoJavaMaker {
 			// type, field に * が入ることがある
 			// Occurs 1..n で配列を表す
 			if (type.contains("*") || type.equalsIgnoreCase("Object")) {
-//System.out.println("["+f+"]");
 				if (f.contains("*")) {
-					p.println("\t//omitted since type, field equals \"*\"");
+					p.println("\t//This field has omitted because of type and field = \"*\"");
 					p.println("\t");
 					continue;
 				} else {
@@ -284,14 +313,14 @@ public class AutoJavaMaker {
 	 */
 	private String convJclassStyle(String source) {
 		String type;
-		if (source.startsWith("String")) {
+		if (source.startsWith("String:")) {
 			type = "String"; // String:MaxLength="32" のような形式がある
 		} else if (source.contains("URI") && source.contains("emplate")) {
 			type = "String";
 		} else if (PRIMITIVE_TYPES.get(source) == null) {
 			type = source;
 		} else {
-			type = PRIMITIVE_TYPES.get(source);
+			return PRIMITIVE_TYPES.get(source);
 		}
 		
 		StringBuffer sb = new StringBuffer();
@@ -372,7 +401,9 @@ public class AutoJavaMaker {
 	public static void main(String[] args) throws Exception {
 		deleteDirectory(new File("output"));
 		
+		resetEnumName();
 		processDirectory(new File("."), false);
+		resetEnumName();
 		processDirectory(new File("."), true);
 	}
 	
