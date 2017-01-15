@@ -1,7 +1,5 @@
 javac ConvEncoding.java
 java ConvEncoding tclib/src false
-
-cd tclib
-mvn javadoc:javadoc
+java ConvEncoding tclib0.9/src false
 
 pause
