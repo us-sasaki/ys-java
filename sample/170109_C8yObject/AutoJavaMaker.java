@@ -18,11 +18,16 @@ public class AutoJavaMaker {
 		PRIMITIVE_TYPES.put("Double", "double");
 		PRIMITIVE_TYPES.put("Object", "Object");
 		PRIMITIVE_TYPES.put("Number", "double");
+		PRIMITIVE_TYPES.put("number", "long"); // tenant.storageLimitPerDevice
 		PRIMITIVE_TYPES.put("URI", "String");
 		PRIMITIVE_TYPES.put("URL", "String");
 		PRIMITIVE_TYPES.put("TimeStamp", "TC_Date");
 		PRIMITIVE_TYPES.put("List", "JsonObject");
 		PRIMITIVE_TYPES.put("Array", "String[]");
+		// may be typemiss in device control
+		PRIMITIVE_TYPES.put("Operations", "Operation");
+		PRIMITIVE_TYPES.put("ExternalId", "ExternalID");
+		
 	}
 	
 	private static Map<String, Iterator<String>> enumName;
@@ -44,7 +49,9 @@ public class AutoJavaMaker {
 		packages.put("JsonObject", "abdom.data.json");
 	}
 	
-	
+/*-------------
+ * constructor
+ */
 	public AutoJavaMaker(String filename) {
 		int i = filename.indexOf(".");
 		String p = filename;
@@ -54,18 +61,24 @@ public class AutoJavaMaker {
 		packageName = p;
 	}
 	
+	/**
+	 * 同一名称のオブジェクトがあるため、別名をつけるためのテーブル
+	 * real-notification には Request, Response となっているオブジェクトが
+	 * 複数ある。
+	 * 各名称(Requestなど)ごとに、出現順序によって別名をつける。
+	 */
 	private static void resetEnumName() {
 		enumName = new HashMap<String, Iterator<String>>();
 		enumName.put("Request", 
-			Arrays.asList("HandshakeRequest",	"SubscriveRequest",
+			Arrays.asList("HandshakeRequest",	"SubscribeRequest",
 						"UnsubscribeRequest",	"ConnectRequest",
-						"DisconnectRequest", "1","2"	).iterator());
+						"DisconnectRequest"	).iterator());
 		enumName.put("Advice",
-			Arrays.asList("HandshakeAdvice",	"ConnectAdvice", "1", "2").iterator());
+			Arrays.asList("HandshakeAdvice",	"ConnectAdvice").iterator());
 		enumName.put("Response", 
 			Arrays.asList("HandshakeResponse",	"SubscriveResponse",
 						"UnsubscribeResponse",	"ConnectResponse",
-						"DisconnectResponse","1","2"	).iterator());
+						"DisconnectResponse").iterator());
 	}
 	
 	
@@ -164,7 +177,7 @@ public class AutoJavaMaker {
 					continue;
 				}
 				switch (col.toLowerCase()) {
-				case "field name":
+				case "field name": // Field Name になっている場合がある
 				case "name":
 					fieldNames.add(content);
 					break;
@@ -180,12 +193,33 @@ public class AutoJavaMaker {
 			}
 			attributes.add(attr);
 		}
+		//
+		// type, field, desc をまたがる変換はここで行う
+		//
 		
 		// 特定の field 名に対し type を変更
 		for (int i = 0; i < typeNames.size(); i++) {
-			if (fieldNames.get(i).toLowerCase().contains("time")) {
+			if (fieldNames.get(i).toLowerCase().contains("time") &&
+				!fieldNames.get(i).toLowerCase().contains("for")) {
 				typeNames.remove(i);
 				typeNames.add(i, "TC_Date");
+			}
+		}
+		// 以下は、c8y 文書での記法への対応
+		// type, field に * が入ることがある
+		// Occurs 1..n で配列を表す
+		for (int i = 0; i < typeNames.size(); i++) {
+			String type = typeNames.get(i);
+			String f	= fieldNames.get(i);
+			if (type.contains("*") || type.equalsIgnoreCase("Object")) {
+				typeNames.remove(i);
+				typeNames.add(i, "JsonObject");
+			} else if (type.startsWith("String:")) {
+				// String:MaxLength="32" のような形式がある
+				String[] kv = type.substring(7).split("=");
+				attributes.get(i).put(kv[0].trim(), kv[1].trim());
+				typeNames.remove(i);
+				typeNames.add(i, "String");
 			}
 		}
 		
@@ -213,7 +247,7 @@ public class AutoJavaMaker {
 		PrintWriter p = new PrintWriter("output/" + fname);
 		
 		// package
-		p.println("package " + packageName + ";");
+		p.println("package com.ntt.tc.data." + packageName + ";");
 		p.println();
 		
 		// import
@@ -274,17 +308,13 @@ public class AutoJavaMaker {
 			type = PRIMITIVE_TYPES.get(type) == null? type : PRIMITIVE_TYPES.get(type);
 			String f = cutSpace(field);
 			
-			// 以下は、c8y 文書での記法への対応
-			// type, field に * が入ることがある
-			// Occurs 1..n で配列を表す
-			if (type.contains("*") || type.equalsIgnoreCase("Object")) {
-				if (f.contains("*")) {
-					p.println("\t//This field has omitted because of type and field = \"*\"");
-					p.println("\t");
-					continue;
-				} else {
-					type = "JsonObject";
-				}
+			// field が * の場合、省略
+			if ((type.contains("*") || type.equals("JsonObject") ||
+					type.equalsIgnoreCase("Object")) &&
+					f.contains("*")) {
+				p.println("\t//This field has omitted because of type and field = \"*\"");
+				p.println("\t");
+				continue;
 			}
 			
 			if (attr.get("Occurs") != null &&
@@ -313,9 +343,7 @@ public class AutoJavaMaker {
 	 */
 	private String convJclassStyle(String source) {
 		String type;
-		if (source.startsWith("String:")) {
-			type = "String"; // String:MaxLength="32" のような形式がある
-		} else if (source.contains("URI") && source.contains("emplate")) {
+		if (source.contains("URI") && source.contains("emplate")) {
 			type = "String";
 		} else if (PRIMITIVE_TYPES.get(source) == null) {
 			type = source;
@@ -399,7 +427,7 @@ public class AutoJavaMaker {
 	 * メインプログラムです。
 	 */
 	public static void main(String[] args) throws Exception {
-		deleteDirectory(new File("output"));
+		//deleteDirectory(new File("output")); // 怖いのでやめる
 		
 		resetEnumName();
 		processDirectory(new File("."), false);
