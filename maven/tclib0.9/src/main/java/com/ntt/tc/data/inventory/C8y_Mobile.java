@@ -1,5 +1,6 @@
-package com.ntt.tc.data;
+package com.ntt.tc.data.inventory;
 
+import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.sensor.Value;
 
 /**

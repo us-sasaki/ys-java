@@ -1,4 +1,6 @@
-package com.ntt.tc.data;
+package com.ntt.tc.data.inventory;
+
+import com.ntt.tc.data.C8yData;
 
 /**
  * c8y_Configuration permits a text-based configuration of the device.
