@@ -122,7 +122,7 @@ function getLatLngAtTime(t) {
 		if (jsonData[l].time >= tm) { ind = l; break; }
 		if (jsonData[r].time <= tm) { ind = r; break; }
 		var next = Math.floor((l+r)/2);
-		if (jsonData[next].time >= tm) r = next;
+		if (jsonData[next].time > tm) r = next;
 		else l = next;
 		if (r - l <= 1) { ind = l; break; }
 	}
@@ -375,3 +375,46 @@ function pathInfo(crds, pos) {
 	
 	return '時刻'+d.getHours()+':'+('0'+d.getMinutes()).slice(-2)+'<br>速度'+(Math.floor(v*36))/10+'km/h<br>高度'+Math.floor(a)+"m "+gradm;
 }
+
+/**---------------------------------------------------------↓
+ * Icon Relocator Class
+ *
+ * (lat, lng) を与えると、重ならないようにずらした位置を返却する
+ * クラス。写真のアイコンが重なって見えてしまう現象を回避するために
+ * 作成。
+ *
+ * 使い方：
+ * var iconRelocator = new IconRelocator();
+ * locatedCoords = locate(coords);
+ *
+ */
+var IconRelocator = function() {
+	
+/*------------------------------------
+ * Constructor(兼 instance variables)
+ */
+	this.originalLoc = [];
+	this.located = [];
+	
+	this.projection = function() {
+	};
+};
+
+/*------------------
+ * instance methods
+ */
+	IconRelocator.prototype.locate = function(location) {
+	};
+	
+	IconRelocator.prototype.clear = function() {
+		this.originalLoc = [];
+		this.located = [];
+	};
+	IconRelocator.prototype.setProjection = function() {
+		
+		this.clear();
+	};
+
+/* Icon Relocator Class
+ *----------------------------------------------------------↑
+ */

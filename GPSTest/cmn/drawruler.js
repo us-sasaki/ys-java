@@ -61,7 +61,12 @@ function initChart() {
 	// svelo フィールド追加(生データはがたがたしすぎるので滑らかに)
 	var v = 0;
 	for (var i = 0; i < jsonData.length; i++) {
-		v = 0.9*v + 0.1*(jsonData[i].velo*36/10); // 過去データに9割ひきずられる
+		//
+		var rate = 0.9;
+		if (i > 0) {
+			rate = Math.exp(Math.log(0.9)*(jsonData[i].time - jsonData[i-1].time)/3000);
+		}
+		v = rate*v + (1-rate)*(jsonData[i].velo*36/10); // 過去データに9割(3秒あたり)ひきずられる
 		jsonData[i].svelo = v;
 	}
 	cursorX = lpad;
