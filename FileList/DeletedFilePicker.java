@@ -7,8 +7,8 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 /**
- * íœ‚³‚ê‚½ƒtƒ@ƒCƒ‹‚Í•s—v‚Èƒtƒ@ƒCƒ‹‚Æ”»’f‚³‚ê‚½A‚Æ‚İ‚È‚µA‹³tƒf[ƒ^‚É‚·‚éB
- * ‚½‚Ü‚É‚µ‚©Às‚µ‚È‚¢‚Ì‚ÅA«”\‚Í‹‚ß‚È‚¢
+ * å‰Šé™¤ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã¯ä¸è¦ãªãƒ•ã‚¡ã‚¤ãƒ«ã¨åˆ¤æ–­ã•ã‚ŒãŸã€ã¨ã¿ãªã—ã€æ•™å¸«ãƒ‡ãƒ¼ã‚¿ã«ã™ã‚‹ã€‚
+ * ãŸã¾ã«ã—ã‹å®Ÿè¡Œã—ãªã„ã®ã§ã€æ€§èƒ½ã¯æ±‚ã‚ãªã„
  */
 public class DeletedFilePicker {
 	public static void main(String[] args) throws Exception {
@@ -23,7 +23,7 @@ public class DeletedFilePicker {
 			
 			List<Long> sl = e.sizeList;
 			
-			// ‚Ç‚±‚©‚Å 0 ‚É‚È‚é‚à‚Ì
+			// ã©ã“ã‹ã§ 0 ã«ãªã‚‹ã‚‚ã®
 			boolean exist = false;
 			boolean deleted = false;
 			for (int i = 0; i < sl.size(); i++) {
@@ -33,23 +33,23 @@ public class DeletedFilePicker {
 			
 			if (!deleted) continue;
 			
-			// ‚©‚Â‘¼‚Ì‚Æ‚±‚ë‚É‚È‚¢‚à‚Ì‚ğ’T‚·
+			// ã‹ã¤ä»–ã®ã¨ã“ã‚ã«ãªã„ã‚‚ã®ã‚’æ¢ã™
 			boolean moved = false;
 			for (FileEntry f : a.list) {
-				if (e == f) continue; // “¯‚¶ƒIƒuƒWƒFƒNƒg‚ÍƒXƒLƒbƒv
+				if (e == f) continue; // åŒã˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ã‚¹ã‚­ãƒƒãƒ—
 				String ename = FileList.filename(e.path);
 				String fname = FileList.filename(f.path);
 				if (ename.equals(fname) && e.size==f.size) {
-					// ƒtƒ@ƒCƒ‹–¼‚ÆƒTƒCƒY‚ªˆê’v‚µ‚Ä‚¢‚½‚çAˆÚ“®‚µ‚½‚Æ‚İ‚È‚·
+					// ãƒ•ã‚¡ã‚¤ãƒ«åã¨ã‚µã‚¤ã‚ºãŒä¸€è‡´ã—ã¦ã„ãŸã‚‰ã€ç§»å‹•ã—ãŸã¨ã¿ãªã™
 					moved = true;
 					break;
 				}
 			}
-			// Á‚¦‚Ä‚¢‚ÄˆÚ“®‚µ‚½‚í‚¯‚Å‚Í‚È‚¢Ëíœ‚³‚ê‚½
+			// æ¶ˆãˆã¦ã„ã¦ç§»å‹•ã—ãŸã‚ã‘ã§ã¯ãªã„â‡’å‰Šé™¤ã•ã‚ŒãŸ
 			if (!moved) list.add(e);
 		}
 		
-		// •\¦Aƒtƒ@ƒCƒ‹o—Í
+		// è¡¨ç¤ºã€ãƒ•ã‚¡ã‚¤ãƒ«å‡ºåŠ›
 		PrintWriter p = new PrintWriter(new FileWriter("deletedFiles"+date+".txt"));
 		
 		for (FileEntry e : list) {
@@ -70,7 +70,7 @@ public class DeletedFilePicker {
 			
 			long size = 0;
 			List<Long> sl = e.sizeList;
-			// ‚Ç‚±‚©‚Å 0 ‚É‚È‚é‚à‚Ì
+			// ã©ã“ã‹ã§ 0 ã«ãªã‚‹ã‚‚ã®
 			boolean exist = false;
 			for (int i = 0; i < sl.size(); i++) {
 				if (sl.get(i) > 0) {

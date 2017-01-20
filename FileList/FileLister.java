@@ -9,13 +9,13 @@ import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.FileTime;
 
 /**
- * w’è‚³‚ê‚½ƒfƒBƒŒƒNƒgƒŠˆÈ‰º‚Ìƒtƒ@ƒCƒ‹ƒpƒXAƒtƒ@ƒCƒ‹ƒTƒCƒY(ƒfƒBƒŒƒNƒgƒŠ‚Ìê‡‚Í”z‰º‚Ì
- * ƒtƒ@ƒCƒ‹ƒTƒCƒY‚Ì‘˜a)‚ğ csv Œ`®‚Åƒtƒ@ƒCƒ‹‚Éo—Í‚·‚éB
- * ƒtƒ@ƒCƒ‹–¼‚Í listyyyyMMdd.csv ‚Æ‚·‚éB
+ * æŒ‡å®šã•ã‚ŒãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªä»¥ä¸‹ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚º(ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å ´åˆã¯é…ä¸‹ã®
+ * ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºã®ç·å’Œ)ã‚’ csv å½¢å¼ã§ãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ›ã™ã‚‹ã€‚
+ * ãƒ•ã‚¡ã‚¤ãƒ«åã¯ listyyyyMMdd.csv ã¨ã™ã‚‹ã€‚
  *
- * @version 2016/3/14 C³(,‚â'‚ªƒtƒ@ƒCƒ‹–¼‚É‚ ‚éê‡AƒJƒbƒg)
- *          2016/5/20 ƒI[ƒi[‚ğ’Ç‰Á
- *          2016/6/03 lastModified (ƒtƒ@ƒCƒ‹ÅIXV)‚ğ’Ç‰Á
+ * @version 2016/3/14 ä¿®æ­£(,ã‚„'ãŒãƒ•ã‚¡ã‚¤ãƒ«åã«ã‚ã‚‹å ´åˆã€ã‚«ãƒƒãƒˆ)
+ *          2016/5/20 ã‚ªãƒ¼ãƒŠãƒ¼ã‚’è¿½åŠ 
+ *          2016/6/03 lastModified (ãƒ•ã‚¡ã‚¤ãƒ«æœ€çµ‚æ›´æ–°æ™‚)ã‚’è¿½åŠ 
  */
 public class FileLister {
 	
@@ -34,7 +34,7 @@ public class FileLister {
 	
 	private long list(File f, int depth) throws IOException {
 		if (f.isDirectory()) {
-			// ƒfƒBƒŒƒNƒgƒŠ‚Ìê‡
+			// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å ´åˆ
 			File[] file = f.listFiles();
 			if (file == null) return 0L;
 			
@@ -48,7 +48,7 @@ public class FileLister {
 			return size;
 			
 		} else {
-			// ’Êí‚Ìƒtƒ@ƒCƒ‹‚Ìê‡
+			// é€šå¸¸ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®å ´åˆ
 			long size = f.length();
 			printFile(f, size, depth);
 			return size;
@@ -81,7 +81,7 @@ public class FileLister {
 	}
 	
 	/**
-	 * ƒtƒ@ƒCƒ‹‚Ì•¶š—ñ‚©‚ç“Á’è‚Ì•¶š—ñ ' , ‚ğreplace‚·‚é
+	 * ãƒ•ã‚¡ã‚¤ãƒ«ã®æ–‡å­—åˆ—ã‹ã‚‰ç‰¹å®šã®æ–‡å­—åˆ— ' , ã‚’replaceã™ã‚‹
 	 */
 	private String cutIllegalChar(String target) {
 		return target.replace("\'","<Q>").replace(",","<c>");

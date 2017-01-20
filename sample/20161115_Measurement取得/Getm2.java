@@ -5,7 +5,7 @@ import com.ntt.tc.data.*;
 import com.ntt.tc.data.rest.*;
 
 /**
- * ğŒ•t‚«æ“¾‚ğ‚·
+ * æ¡ä»¶ä»˜ãå–å¾—ã‚’è©¦ã™
  * http://nttcom.cumulocity.com/measurement/measurements?source={source}&fragmentType={fragmentType}&type={type}
  *
  *     {
@@ -33,7 +33,7 @@ import com.ntt.tc.data.rest.*;
  *      "type": "c8y_Measurement"
  *    },
  *
- * 13•bA‚¿‚å‚Á‚Æ’x‚¢
+ * 13ç§’ã€ã¡ã‚‡ã£ã¨é…ã„
  */
 public class Getm2 {
 	public static void main(String[] args) throws Exception {
@@ -46,7 +46,7 @@ public class Getm2 {
 		MeasurementsResp meas = new MeasurementsResp();
 		meas.fill(resp.toJson());
 		System.out.println("measures.measurements.length = " + meas.measurements.length);
-		// statistics.pageSize ‚Å‚í‚©‚é
+		// statistics.pageSize ã§ã‚ã‹ã‚‹
 		System.out.println("measures.statistics.pageSize = " + meas.statistics.pageSize);
 	}
 }

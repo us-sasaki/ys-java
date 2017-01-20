@@ -1,5 +1,5 @@
 /**
- * JsonŒ`®‚É‚¨‚¯‚éƒvƒŠƒ~ƒeƒBƒuŒ^(•¶š—ñ,”’l)‚ğ•\‚µ‚Ü‚·
+ * Jsonå½¢å¼ã«ãŠã‘ã‚‹ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–å‹(æ–‡å­—åˆ—,æ•°å€¤)ã‚’è¡¨ã—ã¾ã™
  */
 public class JsonValue extends JsonType {
 	public String value;
@@ -9,8 +9,8 @@ public class JsonValue extends JsonType {
  * constructor
  */
 	/**
-	 * \ ‚ÅƒGƒXƒP[ƒv‚·‚×‚«•¶š‚à‚»‚Ì‚Ü‚Ü•Û‘¶‚µAtoString ‚Å•Ô‚µ‚Ä‚µ‚Ü‚¤B
-	 * ‚Ì‚ÅA\", \', \\ ‚Í toString() ‚ÉƒGƒXƒP[ƒv‚·‚é‚æ‚¤•ÏX‚·‚é
+	 * \ ã§ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã™ã¹ãæ–‡å­—ã‚‚ãã®ã¾ã¾ä¿å­˜ã—ã€toString ã§è¿”ã—ã¦ã—ã¾ã†ã€‚
+	 * ã®ã§ã€\", \', \\ ã¯ toString() æ™‚ã«ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã™ã‚‹ã‚ˆã†å¤‰æ›´ã™ã‚‹
 	 */
 	public JsonValue(String value) {
 		this.value = value;
@@ -20,7 +20,7 @@ public class JsonValue extends JsonType {
 	public JsonValue(byte value) {	this.value = String.valueOf(value);	}
 	public JsonValue(char value) {
 		this.value = String.valueOf(value);
-		quote = "\""; // string ˆµ‚¢
+		quote = "\""; // string æ‰±ã„
 	}
 	public JsonValue(int  value) {	this.value = String.valueOf(value); }
 	public JsonValue(long value) {	this.value = String.valueOf(value); }
@@ -36,6 +36,6 @@ public class JsonValue extends JsonType {
 	}
 	@Override
 	public String toString(String indent) {
-		return indent+quote+value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\'", "\\\'")+quote; // "string" / number ‚ÌŒ`®
+		return indent+quote+value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\'", "\\\'")+quote; // "string" / number ã®å½¢å¼
 	}
 }

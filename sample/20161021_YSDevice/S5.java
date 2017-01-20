@@ -2,26 +2,26 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonType;
 
 /**
- * Step 5: �q�f�o�C�X�𔭌����A�C���x���g���ɐ���/�X�V����
+ * Step 5: 子デバイスを発見し、インベントリに生成/更新する
  * 
- * �Z���T�l�b�g���[�N�͕��G�Ȃ̂ŁA�f�o�C�X�͎����ɕR�Â��q�f�o�C�X�������Ă���
- * ���Ƃ�����܂��B�悢��́A�z�[���I�[�g���[�V�����ł��B
- * �ƒ�̗l�X�ȕ����ɁA�����̈قȂ�Z���T�A�R���g���[����������z�[���I�[�g
- * ���[�V�����Q�[�g�E�F�C������ł��傤�B�q�f�o�C�X�̓o�^�̊�{�́A���C���f�o
- * �C�X�̓o�^�Ɏ��Ă��܂��B�q�f�o�C�X�͒ʏ�A�G�[�W�F���g�C���X�^���X��
- * ���s���܂���B(���������āA"com_cumulocity_model_Agent" �t���O�����g��
- * �폜����Ă��܂�)
- * �f�o�C�X���q���Ƀ����N����ɂ́A�I�u�W�F�N�g�𐶐�����ۂɕԋp�����q�f�o
- * �C�X�� URL �� POST ���N�G�X�g�𑗐M���Ă��������B(��Q��)
+ * センサネットワークは複雑なので、デバイスは自分に紐づく子デバイスをもっている
+ * ことがあります。よい例は、ホームオートメーションです。
+ * 家庭の様々な部屋に、多数の異なるセンサ、コントロールを備えたホームオート
+ * メーションゲートウェイがあるでしょう。子デバイスの登録の基本は、メインデバ
+ * イスの登録に似ています。子デバイスは通常、エージェントインスタンスを
+ * 実行しません。(したがって、"com_cumulocity_model_Agent" フラグメントが
+ * 削除されています)
+ * デバイスを子供にリンクするには、オブジェクトを生成する際に返却される子デバ
+ * イスの URL に POST リクエストを送信してください。(上参照)
  * 
- * �Ⴆ�΁AURL "https://.../inventory/managedObjects/2543801" �����q�f�o�C�X
- * ���o�^���ꂽ�Ƃ��܂��B���̃f�o�C�X�ɐe�������N����ɂ́A���𔭍s���Ă��������B
+ * 例えば、URL "https://.../inventory/managedObjects/2543801" を持つ子デバイス
+ * が登録されたとします。このデバイスに親をリンクするには、次を発行してください。
  *
  * <code></code>
  * 
- * �Ō�ɁA�f�o�C�X�⃊�t�@�����X�́A���������� URL �� DELETE ���N�G�X�g��
- * ���s���邱�Ƃō폜�ł��܂��B�Ⴆ�΁A������������e�f�o�C�X����q�f�o�C�X��
- * �̃��t�@�����X�́A���𔭍s���邱�Ƃō폜�ł��܂��B
+ * 最後に、デバイスやリファレンスは、それらを示す URL に DELETE リクエストを
+ * 発行することで削除できます。例えば、さっき作った親デバイスから子デバイスへ
+ * のリファレンスは、次を発行することで削除できます。
  * 
  */
 public class S5 {

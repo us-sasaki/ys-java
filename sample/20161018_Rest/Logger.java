@@ -2,12 +2,12 @@ import java.io.*;
 import java.net.*;
 
 /**
- * ���ȈՂȃT�[�o�B�N����A�P���Socket�ڑ����󂯁A���͓��e��
- * System.out �Ƀ_���v����B�_���v�͓��̓R�[�h�����̂܂܏o�͂���B
- * (ASCII������œ��͂���邱�Ƃ�z�肵�Ă���)
+ * 超簡易なサーバ。起動後、１回のSocket接続を受け、入力内容を
+ * System.out にダンプする。ダンプは入力コードをそのまま出力する。
+ * (ASCII文字列で入力されることを想定している)
  *
  *
- * Cumulocity �� REST Request �d���擾�p��ړI�Ƃ���B
+ * Cumulocity の REST Request 電文取得用を目的とする。
  */
 public class Logger {
 	public static void main(String[] args) throws Exception {

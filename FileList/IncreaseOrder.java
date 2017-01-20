@@ -1,7 +1,7 @@
 import java.util.Comparator;
 
 /**
- * ‘•ª, [‚³, ƒpƒX–¼ ‚Ì‡‚É•À‚×‚é Comparator
+ * å¢—åˆ†, æ·±ã•, ãƒ‘ã‚¹å ã®é †ã«ä¸¦ã¹ã‚‹ Comparator
  */
 class IncreaseOrder implements Comparator<FileEntry> {
 	@Override

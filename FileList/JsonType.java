@@ -1,8 +1,8 @@
 import java.util.Deque;
 
 /**
- * JsonŒ`®‚É‚¨‚¯‚éŒ^ˆê”Ê‚ğ•\‚µ‚Ü‚·(composite pat.)
- * —˜•Ö«‚Ì‚½‚ßAƒAƒNƒZƒXƒƒ\ƒbƒh‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * Jsonå½¢å¼ã«ãŠã‘ã‚‹å‹ä¸€èˆ¬ã‚’è¡¨ã—ã¾ã™(composite pat.)
+ * åˆ©ä¾¿æ€§ã®ãŸã‚ã€ã‚¢ã‚¯ã‚»ã‚¹ãƒ¡ã‚½ãƒƒãƒ‰ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 public abstract class JsonType {
 
@@ -34,21 +34,21 @@ public abstract class JsonType {
 	}
 	private static class ObjectField extends JsonType {
 		String name;
-		String value; // ƒNƒH[ƒe[ƒVƒ‡ƒ“‚ª‚ ‚Á‚½‚è‚È‚©‚Á‚½‚è‚·‚é
+		String value; // ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ãŒã‚ã£ãŸã‚Šãªã‹ã£ãŸã‚Šã™ã‚‹
 		private ObjectField(String name, String value) {
 			this.name = name;
 			this.value = value;
 		}
 	}
 	private static class JString extends JsonType {
-		String name; // ƒNƒH[ƒe[ƒVƒ‡ƒ“‚ª‚ ‚Á‚½‚è‚È‚©‚Á‚½‚è‚·‚é
+		String name; // ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ãŒã‚ã£ãŸã‚Šãªã‹ã£ãŸã‚Šã™ã‚‹
 		private JString(String name) { this.name = name; }
 	}
 /*	public static JsonType parse(String json) {
 		Deque<JsonType> stack = new Deque<JsonType>();
 		//
-		// ‚Ü‚¸A—v‘f•ª‰ğ‚µ‚Ä List ‚ÉŠi”[
-		// —v‘f
+		// ã¾ãšã€è¦ç´ åˆ†è§£ã—ã¦ List ã«æ ¼ç´
+		// è¦ç´ 
 		// [ ] { } , : "--" number
 		//
 		List<JsonType> split = new ArrayList<JsonType>();
@@ -58,19 +58,19 @@ public abstract class JsonType {
 		for (int i = 0; i < json.length(); i++) {
 			char c = json.charAt(i);
 			if (inString) {
-				// ƒ_ƒuƒ‹ƒNƒH[ƒe[ƒVƒ‡ƒ“‚Ì“r’†
+				// ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ã®é€”ä¸­
 				
 			} else if (inNumber) {
-				// ”’lŒ^‚Ì“r’†
+				// æ•°å€¤å‹ã®é€”ä¸­
 				if (c >= '0' && c <= '9') sb.append(c);
 				else {
 					inNumber = false;
 					if (c == ' ' || c == '\e' || c == '\r' || c == '\t') continue;
 					if (c == ',' || c == ']' || c == '}') {
-						i--; // Ä•]‰¿‚³‚¹‚é‚½‚ß–ß‚·
+						i--; // å†è©•ä¾¡ã•ã›ã‚‹ãŸã‚æˆ»ã™
 						continue;
 					}
-					throw new RuntimeException("”’lƒtƒH[ƒ}ƒbƒgƒGƒ‰[");
+					throw new RuntimeException("æ•°å€¤ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚¨ãƒ©ãƒ¼");
 				}
 			} else {
 				if (c == ' ' || c == '\e' || c == '\r' || c == '\t') continue;
@@ -102,24 +102,24 @@ public abstract class JsonType {
 		for (int i = 0; i < json.length(); i++) {
 			char c = json.charAt(i);
 			if (quoted) {
-				// ƒ_ƒuƒ‹ƒNƒH[ƒe[ƒVƒ‡ƒ“‚Ì“r’†
+				// ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ã®é€”ä¸­
 				if (c == '\\') {
 					if (i == json.length()-1)
-						throw new RuntimeException("––”ö‚É\\‚ª‚ ‚è‚Ü‚·");
-					c = json.charAt(++i); // ƒGƒXƒP[ƒv•¶š
+						throw new RuntimeException("æœ«å°¾ã«\\ãŒã‚ã‚Šã¾ã™");
+					c = json.charAt(++i); // ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—æ–‡å­—
 					if (c == '\\') sb.append(c);
 					else if (c == '\'') sb.append('\'');
 					else if (c == '\"') sb.append('\"');
 					else if (c == 'n') sb.append('\n');
 					else if (c == 'r') sb.append('\r');
 					else if (c == 't') sb.append('\t');
-					else throw new RuntimeException("\\‚ÌŸ‚É—ˆ‚Ä‚¢‚é•¶š‚ª•s³‚Å‚·:"+c);
+					else throw new RuntimeException("\\ã®æ¬¡ã«æ¥ã¦ã„ã‚‹æ–‡å­—ãŒä¸æ­£ã§ã™:"+c);
 				} else {
 					if (c == '\"') {
-						// •¶š—ñ‚ğ’Šo‚µ‚½
+						// æ–‡å­—åˆ—ã‚’æŠ½å‡ºã—ãŸ
 						quoted = false;
 						if (afterColon) {
-							// : ‚Ì‚ ‚Æ
+							// : ã®ã‚ã¨
 							JsonType jt = stack.pop();
 							FieldName f = (FieldName)jt;
 							stack.push(new ObjectField(f.name, sb.toString());
@@ -128,22 +128,22 @@ public abstract class JsonType {
 							stack.push(new JString(sb.toString());
 						}
 					}
-					sb.append(c); // •¶š—ñ‚Ì“r’†‚È‚Ì‚ÅA‚·‚×‚Ä‚Ì•¶š‚ğ’Ç‰Á
-					// ‰üs‚ÍƒGƒ‰[‚Æ‚·‚×‚«
+					sb.append(c); // æ–‡å­—åˆ—ã®é€”ä¸­ãªã®ã§ã€ã™ã¹ã¦ã®æ–‡å­—ã‚’è¿½åŠ 
+					// æ”¹è¡Œã¯ã‚¨ãƒ©ãƒ¼ã¨ã™ã¹ã
 				}
 			}
 			else {
-				// ’Êíó‘Ô
+				// é€šå¸¸çŠ¶æ…‹
 				if (c == ' ' || c == '\e' || c == '\r' || c == '\t') continue;
 				if (c == '\"') quoted = true;
 		}
 	}
 
 	/**
-	 * l‚ªŒ©‚â‚·‚¢ indent ‚É‘Î‰‚·‚é‚½‚ß‚Ìƒƒ\ƒbƒh
+	 * äººãŒè¦‹ã‚„ã™ã„ indent ã«å¯¾å¿œã™ã‚‹ãŸã‚ã®ãƒ¡ã‚½ãƒƒãƒ‰
 	 */
 	public String toString(String indent) {
-		return indent + toString(); // ƒfƒtƒHƒ‹ƒg‚ÌÀ‘•
+		return indent + toString(); // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å®Ÿè£…
 	}
 
 }

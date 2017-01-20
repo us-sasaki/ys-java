@@ -1,5 +1,5 @@
 /**
- * JsonŒ`Ž®‚É‚¨‚¯‚é”z—ñ‚ð•\‚µ‚Ü‚·B
+ * Jsonå½¢å¼ã«ãŠã‘ã‚‹é…åˆ—ã‚’è¡¨ã—ã¾ã™ã€‚
  */
 public class JsonArray extends JsonType {
 	public JsonType[] array;

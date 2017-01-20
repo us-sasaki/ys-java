@@ -3,7 +3,7 @@ import java.io.IOException;
 import abdom.data.json.JsonObject;
 
 /**
- * Long-polling によるイベントです。
+ * Long-polling 縺ｫ繧医ｋ繧､繝吶Φ繝医〒縺吶�
  *
  * @version		13 December, 2016
  * @author		Yusuke Sasaki

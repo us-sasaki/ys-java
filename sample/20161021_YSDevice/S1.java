@@ -2,32 +2,32 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonType;
 
 /**
- * Step 1: �f�o�C�X���o�^����Ă��邩�m�F����
+ * Step 1: デバイスが登録されているか確認する
  * 
- * �f�o�C�X�̃��j�[�NID�́A�C���x���g���ւ̃f�o�C�X�̓o�^�ɑ΂��Ă��g�p����܂��B
- * ���̓o�^�� Identity API ���g�p���Ď��s�ł��܂��BIdentity API �ł́A�Ǘ��I�u
- * �W�F�N�g�� type �ŋ�ʂ���镡����ID�Ɋ֘A�����邱�Ƃ��ł��܂��B
- * type �Ƃ��ėႦ�΁A���i�V���A���ԍ��ɑ΂��� "c8y_Serial" ��AMAC�A�h���X��
- * �΂��� "c8y_MAC" ��AIMEI�ɑ΂��� "c8y_IMEI" ������܂��B
- * �f�o�C�X���o�^����Ă��邱�Ƃ��m�F���邽�߁Aidentity API �� GET ���N�G�X�g��
- * �f�o�C�XID�₻��type���g���čs���Ă��������B
- * ���̗�́ARaspberry Pi �̐��i�V���A���ԍ��� 0000000017b79d5 �ł��邱�Ƃ��m�F
- * ���܂��B
+ * デバイスのユニークIDは、インベントリへのデバイスの登録に対しても使用されます。
+ * この登録は Identity API を使用して実行できます。Identity API では、管理オブ
+ * ジェクトは type で区別される複数のIDに関連させることができます。
+ * type として例えば、製品シリアル番号に対する "c8y_Serial" や、MACアドレスに
+ * 対する "c8y_MAC" や、IMEIに対する "c8y_IMEI" があります。
+ * デバイスが登録されていることを確認するため、identity API に GET リクエストを
+ * デバイスIDやそのtypeを使って行ってください。
+ * 次の例は、Raspberry Pi の製品シリアル番号が 0000000017b79d5 であることを確認
+ * します。
  *
  * <code></code>
  *
- * �ˁ@���ʂ� Response : 404
+ * ⇒　結果は Response : 404
  *            Message  : Not Found
  *
- * MAC�A�h���X�̓O���[�o�����j�[�N�ɕt�^�����̂ɑ΂��A���i�V���A���ԍ��́A
- * �قȂ鐻�i�Ԃŏd�����邩���m��Ȃ����Ƃɒ��ӂ��ĉ������B
- * ���������āA��̗�ł́A�V���A���ԍ��ɐړ��� raspi- ��t���Ă��܂��B
- * ���̃P�[�X�ł́A�f�o�C�X�͊��ɓo�^����Ă���X�e�[�^�X�R�[�h 200 ��
- * �ԋp����Ă��܂��B���X�|���X���ŁA�C���x���g���̃f�o�C�X�ւ�URL��
- * "managedObject.self" �ŕԋp����Ă��܂��B����URL�͌�Ńf�o�C�X�ɓ���������
- * ���߂ɗ��p�ł��܂��B
- * �f�o�C�X���܂��o�^����Ă��Ȃ��ꍇ�A404 Not Found �X�e�[�^�X�R�[�h��
- * �G���[���b�Z�[�W���ԋp����܂��B
+ * MACアドレスはグローバルユニークに付与されるのに対し、製品シリアル番号は、
+ * 異なる製品間で重複するかも知れないことに注意して下さい。
+ * したがって、上の例では、シリアル番号に接頭辞 raspi- を付けています。
+ * このケースでは、デバイスは既に登録されておりステータスコード 200 が
+ * 返却されています。レスポンス内で、インベントリのデバイスへのURLは
+ * "managedObject.self" で返却されています。このURLは後でデバイスに働きかける
+ * ために利用できます。
+ * デバイスがまだ登録されていない場合、404 Not Found ステータスコードと
+ * エラーメッセージが返却されます。
  *
  * <code></code>
  *

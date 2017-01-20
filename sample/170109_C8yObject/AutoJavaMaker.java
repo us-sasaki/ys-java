@@ -62,10 +62,10 @@ public class AutoJavaMaker {
 	}
 	
 	/**
-	 * “¯ˆê–¼Ì‚ÌƒIƒuƒWƒFƒNƒg‚ª‚ ‚é‚½‚ßA•Ê–¼‚ğ‚Â‚¯‚é‚½‚ß‚Ìƒe[ƒuƒ‹
-	 * real-notification ‚É‚Í Request, Response ‚Æ‚È‚Á‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ª
-	 * •¡”‚ ‚éB
-	 * Še–¼Ì(Request‚È‚Ç)‚²‚Æ‚ÉAoŒ»‡˜‚É‚æ‚Á‚Ä•Ê–¼‚ğ‚Â‚¯‚éB
+	 * åŒä¸€åç§°ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚‹ãŸã‚ã€åˆ¥åã‚’ã¤ã‘ã‚‹ãŸã‚ã®ãƒ†ãƒ¼ãƒ–ãƒ«
+	 * real-notification ã«ã¯ Request, Response ã¨ãªã£ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒ
+	 * è¤‡æ•°ã‚ã‚‹ã€‚
+	 * å„åç§°(Requestãªã©)ã”ã¨ã«ã€å‡ºç¾é †åºã«ã‚ˆã£ã¦åˆ¥åã‚’ã¤ã‘ã‚‹ã€‚
 	 */
 	private static void resetEnumName() {
 		enumName = new HashMap<String, Iterator<String>>();
@@ -83,16 +83,16 @@ public class AutoJavaMaker {
 	
 	
 	/**
-	 * ‚PƒIƒuƒWƒFƒNƒg•ª‚Ìî•ñ‚ğ“Ç‚İ‚İ‚Ü‚·B
-	 * î•ñ‚ÌƒtƒH[ƒ}ƒbƒg‚ÍAc8y•¶‘‚ÌƒIƒuƒWƒFƒNƒg’è‹`‚ğ Chrome ‚Å•\¦A
-	 * ƒhƒ‰ƒbƒO‚µ‚ÄƒRƒs[AƒeƒLƒXƒgƒtƒ@ƒCƒ‹‚Éƒy[ƒXƒg‚µ‚½Œ`®‚Å‚·B
+	 * ï¼‘ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆ†ã®æƒ…å ±ã‚’èª­ã¿è¾¼ã¿ã¾ã™ã€‚
+	 * æƒ…å ±ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã¯ã€c8yæ–‡æ›¸ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå®šç¾©ã‚’ Chrome ã§è¡¨ç¤ºã€
+	 * ãƒ‰ãƒ©ãƒƒã‚°ã—ã¦ã‚³ãƒ”ãƒ¼ã€ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã«ãƒšãƒ¼ã‚¹ãƒˆã—ãŸå½¢å¼ã§ã™ã€‚
 	 *
-	 * @return	ƒIƒuƒWƒFƒNƒg‚ª‚ ‚Á‚½ê‡AtrueAEOF ‚Í false
+	 * @return	ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã£ãŸå ´åˆã€trueã€EOF ã¯ false
 	 */
 	public boolean parse(BufferedReader br) throws IOException {
 		String line;
 		
-		// ƒNƒ‰ƒX–¼‚ğŒŸõ
+		// ã‚¯ãƒ©ã‚¹åã‚’æ¤œç´¢
 	loop:
 		for (;;) {
 			String mayClassName = null;
@@ -102,24 +102,24 @@ public class AutoJavaMaker {
 			int mayApCount = 0;
 			
 			int count = 0;
-			// •\‚Ìƒ^ƒCƒgƒ‹‚ğæ“¾
+			// è¡¨ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’å–å¾—
 			for (;;) {
 				line = br.readLine();
 				count++;
 				if (line == null) return false;
 				if (line.equals("")) continue;
-				if (line.startsWith("## ")) { // class –¼‚©‚à
+				if (line.startsWith("## ")) { // class åã‹ã‚‚
 					mayClassName = line.substring(3);
 					mayClassCount = count;
 					continue;
 				}
-				if (line.startsWith("### ")) { // ap –¼‚©‚à
+				if (line.startsWith("### ")) { // ap åã‹ã‚‚
 					mayApName = line.substring(4);
 					mayApCount = count;
 					continue;
 				}
-				// •\‚ÌŒŸo
-				// •\‚Í | ‚Æ Type ‚Æ Desc ‚ğŠÜ‚Şs‚Æ‚µ‚ÄŒŸo‚·‚éB
+				// è¡¨ã®æ¤œå‡º
+				// è¡¨ã¯ | ã¨ Type ã¨ Desc ã‚’å«ã‚€è¡Œã¨ã—ã¦æ¤œå‡ºã™ã‚‹ã€‚
 				if (line.indexOf("|") != -1 &&
 						line.toLowerCase().indexOf("type") != -1 &&
 						line.toLowerCase().indexOf("desc") != -1) {
@@ -156,7 +156,7 @@ public class AutoJavaMaker {
 		}
 		br.readLine();
 		
-		// •\‚ğ“Ç‚İ‚Ş
+		// è¡¨ã‚’èª­ã¿è¾¼ã‚€
 		typeNames	= new ArrayList<String>();
 		fieldNames	= new ArrayList<String>();
 		descriptions= new ArrayList<String>();
@@ -177,7 +177,7 @@ public class AutoJavaMaker {
 					continue;
 				}
 				switch (col.toLowerCase()) {
-				case "field name": // Field Name ‚É‚È‚Á‚Ä‚¢‚éê‡‚ª‚ ‚é
+				case "field name": // Field Name ã«ãªã£ã¦ã„ã‚‹å ´åˆãŒã‚ã‚‹
 				case "name":
 					fieldNames.add(content);
 					break;
@@ -194,10 +194,10 @@ public class AutoJavaMaker {
 			attributes.add(attr);
 		}
 		//
-		// type, field, desc ‚ğ‚Ü‚½‚ª‚é•ÏŠ·‚Í‚±‚±‚Ås‚¤
+		// type, field, desc ã‚’ã¾ãŸãŒã‚‹å¤‰æ›ã¯ã“ã“ã§è¡Œã†
 		//
 		
-		// “Á’è‚Ì field –¼‚É‘Î‚µ type ‚ğ•ÏX
+		// ç‰¹å®šã® field åã«å¯¾ã— type ã‚’å¤‰æ›´
 		for (int i = 0; i < typeNames.size(); i++) {
 			if (fieldNames.get(i).toLowerCase().contains("time") &&
 				!fieldNames.get(i).toLowerCase().contains("for")) {
@@ -205,9 +205,9 @@ public class AutoJavaMaker {
 				typeNames.add(i, "TC_Date");
 			}
 		}
-		// ˆÈ‰º‚ÍAc8y •¶‘‚Å‚Ì‹L–@‚Ö‚Ì‘Î‰
-		// type, field ‚É * ‚ª“ü‚é‚±‚Æ‚ª‚ ‚é
-		// Occurs 1..n ‚Å”z—ñ‚ğ•\‚·
+		// ä»¥ä¸‹ã¯ã€c8y æ–‡æ›¸ã§ã®è¨˜æ³•ã¸ã®å¯¾å¿œ
+		// type, field ã« * ãŒå…¥ã‚‹ã“ã¨ãŒã‚ã‚‹
+		// Occurs 1..n ã§é…åˆ—ã‚’è¡¨ã™
 		for (int i = 0; i < typeNames.size(); i++) {
 			String type = typeNames.get(i);
 			String f	= fieldNames.get(i);
@@ -215,7 +215,7 @@ public class AutoJavaMaker {
 				typeNames.remove(i);
 				typeNames.add(i, "JsonObject");
 			} else if (type.startsWith("String:")) {
-				// String:MaxLength="32" ‚Ì‚æ‚¤‚ÈŒ`®‚ª‚ ‚é
+				// String:MaxLength="32" ã®ã‚ˆã†ãªå½¢å¼ãŒã‚ã‚‹
 				String[] kv = type.substring(7).split("=");
 				attributes.get(i).put(kv[0].trim(), kv[1].trim());
 				typeNames.remove(i);
@@ -223,25 +223,25 @@ public class AutoJavaMaker {
 			}
 		}
 		
-		// Request ‚È‚Ç“¯ˆê–¼‚ÌƒIƒuƒWƒFƒNƒg‚ª•¡”‚ ‚é‚à‚Ì‚ğ•ª‚¯‚é
+		// Request ãªã©åŒä¸€åã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¤‡æ•°ã‚ã‚‹ã‚‚ã®ã‚’åˆ†ã‘ã‚‹
 		if (enumName.get(className) != null) {
 			className = enumName.get(className).next();
 		}
-		// ƒpƒbƒP[ƒW‚ğ“o˜^
+		// ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’ç™»éŒ²
 		packages.put(convJclassStyle(className), "com.ntt.tc.data."+packageName);
 		
 		return true;
 	}
 	
 	/**
-	 * “Ç‚İ‚Ü‚ê‚½‚PƒIƒuƒWƒFƒNƒg•ª‚Ìî•ñ‚ğƒtƒ@ƒCƒ‹‚Æ‚µ‚Äo—Í‚µ‚Ü‚·B
+	 * èª­ã¿è¾¼ã¾ã‚ŒãŸï¼‘ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆ†ã®æƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦å‡ºåŠ›ã—ã¾ã™ã€‚
 	 */
 	public void output() throws IOException {
-		// ƒfƒBƒŒƒNƒgƒŠ‚ª‚È‚¯‚ê‚Îì‚é
+		// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒãªã‘ã‚Œã°ä½œã‚‹
 		File packdir = new File("output/"+packageName);
 		if (!packdir.exists()) packdir.mkdir();
 		
-		// ƒtƒ@ƒCƒ‹–¼
+		// ãƒ•ã‚¡ã‚¤ãƒ«å
 		String fname = packageName + "/" + getJclassName() + ".java";
 		
 		PrintWriter p = new PrintWriter("output/" + fname);
@@ -256,11 +256,11 @@ public class AutoJavaMaker {
 		HashSet<String> imported = new HashSet<String>();
 		for (String typeName : typeNames) {
 			typeName = convJclassStyle(typeName);
-			// primitive ‚È‚ç import ‚µ‚È‚¢
+			// primitive ãªã‚‰ import ã—ãªã„
 			if (PRIMITIVE_TYPES.get(typeName) != null) continue;
-			// import Ï‚¾‚Á‚½‚ç“ñd import ‚µ‚È‚¢
+			// import æ¸ˆã ã£ãŸã‚‰äºŒé‡ import ã—ãªã„
 			if (imported.contains(typeName)) continue;
-			// “¯ˆêƒpƒbƒP[ƒW‚È‚ç import ‚µ‚È‚¢
+			// åŒä¸€ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãªã‚‰ import ã—ãªã„
 			if (packages.get(typeName) == null) {
 				System.out.println(typeName);
 				continue;
@@ -272,22 +272,22 @@ public class AutoJavaMaker {
 		}
 		p.println();
 		
-		// ƒNƒ‰ƒX–¼ƒRƒƒ“ƒg
+		// ã‚¯ãƒ©ã‚¹åã‚³ãƒ¡ãƒ³ãƒˆ
 		p.println("/**");
 		p.println(" * " + getJclassName() + " class");
 		p.println(" * This source is machine-generated from c8y-markdown docs.");
 		p.println(" */");
 		
-		// ƒNƒ‰ƒXéŒ¾
+		// ã‚¯ãƒ©ã‚¹å®£è¨€
 		p.println("public class " + getJclassName() + " extends C8yData {");
 		
-		// •Ï”éŒ¾
+		// å¤‰æ•°å®£è¨€
 		Iterator<String> types = typeNames.iterator();
 		Iterator<String> descs  = descriptions.iterator();
 		Iterator<TreeMap<String, String>> attrs = attributes.iterator();
 		
 		for (String field : fieldNames) {
-			// •Ï”‚ÌƒRƒƒ“ƒg
+			// å¤‰æ•°ã®ã‚³ãƒ¡ãƒ³ãƒˆ
 			p.println("\t/**");
 			String[] dividedDescs = divideTokensByLength(descs.next(), 80-4-3);
 			for (String desc : dividedDescs) {
@@ -303,12 +303,12 @@ public class AutoJavaMaker {
 			}
 			p.println("\t */");
 			
-			// •Ï”éŒ¾–{‘Ì
+			// å¤‰æ•°å®£è¨€æœ¬ä½“
 			String type = types.next();
 			type = PRIMITIVE_TYPES.get(type) == null? type : PRIMITIVE_TYPES.get(type);
 			String f = cutSpace(field);
 			
-			// field ‚ª * ‚Ìê‡AÈ—ª
+			// field ãŒ * ã®å ´åˆã€çœç•¥
 			if ((type.contains("*") || type.equals("JsonObject") ||
 					type.equalsIgnoreCase("Object")) &&
 					f.contains("*")) {
@@ -332,14 +332,14 @@ public class AutoJavaMaker {
 	}
 	
 	/**
-	 * Java Class –¼‚Ì‘®‚ğæ“¾‚µ‚Ü‚·B
+	 * Java Class åã®æ›¸å¼ã‚’å–å¾—ã—ã¾ã™ã€‚
 	 */
 	private String getJclassName() {
 		return convJclassStyle(className);
 	}
 	
 	/**
-	 * Java Class –¼‚É•ÏŠ·‚µ‚Ü‚·
+	 * Java Class åã«å¤‰æ›ã—ã¾ã™
 	 */
 	private String convJclassStyle(String source) {
 		String type;
@@ -424,10 +424,10 @@ public class AutoJavaMaker {
 	}
 	
 	/**
-	 * ƒƒCƒ“ƒvƒƒOƒ‰ƒ€‚Å‚·B
+	 * ãƒ¡ã‚¤ãƒ³ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã§ã™ã€‚
 	 */
 	public static void main(String[] args) throws Exception {
-		//deleteDirectory(new File("output")); // •|‚¢‚Ì‚Å‚â‚ß‚é
+		//deleteDirectory(new File("output")); // æ€–ã„ã®ã§ã‚„ã‚ã‚‹
 		
 		resetEnumName();
 		processDirectory(new File("."), false);
@@ -437,7 +437,7 @@ public class AutoJavaMaker {
 	
 	private static void processDirectory(File f, boolean output) throws IOException{
 		if (!f.isDirectory())
-			throw new IllegalArgumentException(String.valueOf(f) + "‚ÍƒfƒBƒŒƒNƒgƒŠ‚Å‚Í‚ ‚è‚Ü‚¹‚ñ");
+			throw new IllegalArgumentException(String.valueOf(f) + "ã¯ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã§ã¯ã‚ã‚Šã¾ã›ã‚“");
 		
 		String[] fnames = f.list();
 		for (String fname : fnames) {

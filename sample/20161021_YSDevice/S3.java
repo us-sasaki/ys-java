@@ -2,13 +2,13 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonType;
 
 /**
- * Step 3: �f�o�C�X��o�^����
+ * Step 3: デバイスを登録する
  * 
- * �V�����f�o�C�X���쐬���ꂽ��AStep 1 �ɋL�ڂ������莯�ʎq�ɂ���Ċ֘A�t��
- * ���܂��B����ɂ��A���̓d���I���̌�� Cumulocity �ł̎��g�̃f�o�C�X��
- * �������܂��B
- * ��̗�ł̓n�[�h�E�F�A�V���A���ԍ��Ɋ֘A����f�o�C�X"2480300"���V��������
- * �t�����܂��B
+ * 新しいデバイスが作成された後、Step 1 に記載した既定識別子によって関連付け
+ * られます。これにより、次の電源オンの後に Cumulocity での自身のデバイスを
+ * 見つけられます。
+ * 上の例ではハードウェアシリアル番号に関連するデバイス"2480300"が新しく割り
+ * 付けられます。
  */
 public class S3 {
 	public static void main(String[] args) throws Exception {

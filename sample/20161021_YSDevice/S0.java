@@ -2,45 +2,45 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonType;
 
 /**
- * Step 0: �f�o�C�X�N���f���V������v������
+ * Step 0: デバイスクレデンシャルを要求する
  *
- * Cumulocity �ɑ΂��邷�ׂẴ��N�G�X�g�ɂ͔F�؂��K�v�Ȃ��߁A�f�o�C�X�����
- * �v������͂�F�؂��K�v�ł��B�f�o�C�X�Ɍʂ̔F�؏���t�^�������ꍇ�A
- * �V�����F�؏��������Ő�������Adevice credentials API �𗘗p�ł��܂��B
- * ������s���ɂ́A�ŏ��̋N�����Ƀf�o�C�X�̔F�؏���API�Ń��N�G�X�g���A�ȍ~
- * �̃��N�G�X�g�̂��߂Ƀ��[�J���Ńf�o�C�X�Ɋi�[���ĉ������B
- * �����͎��̂悤�ɐi�߂܂��F
- * �ECumulocity�́A�e�f�o�C�X�����炩�̌`���̃��j�[�N��ID�������Ă���Ɖ���
- *   ���Ă��܂��B�悢�f�o�C�XID�́A�l�b�g���[�N�J�[�h��MAC�A�h���X�A���o�C��
- *   �f�o�C�X��IMEI�A���i�V���A���ԍ��̂悤�Ȃ��̂ł��B
- * �E�V�����f�o�C�X���g���n�߂�Ƃ��A���̃��j�[�NID�� Cumulocity ��
- *   "Device registration" �ɓ���Ă���f�o�C�X���J�n���Ă��������B
- * �E�f�o�C�X�� Cumulocity �ɐڑ����A���j�[�NID�𑱂��đ��M���܂��B
- *   ���̖ړI�̂��߁ACumulocity �ɂ͌Œ�I�ȃz�X�g������܂��B���̃z�X�g��
- *   support@cumulocity.com �ɕ����Ă��������B
- * �E"Device Registration" �̒��ŁA�f�o�C�X����̐ڑ������Ȃ��͏��F�ł��܂��B
- *   ���̏ꍇ�A Cumulocity �̓f�o�C�X�ɐ��������F�؏��𑗐M���܂��B
+ * Cumulocity に対するすべてのリクエストには認証が必要なため、デバイスからの
+ * 要求もやはり認証が必要です。デバイスに個別の認証情報を付与したい場合、
+ * 新しい認証情報を自動で生成する、device credentials API を利用できます。
+ * これを行うには、最初の起動時にデバイスの認証情報をAPIでリクエストし、以降
+ * のリクエストのためにローカルでデバイスに格納して下さい。
+ * 処理は次のように進めます：
+ * ・Cumulocityは、各デバイスが何らかの形式のユニークなIDを持っていると仮定
+ *   しています。よいデバイスIDは、ネットワークカードのMACアドレス、モバイル
+ *   デバイスのIMEI、製品シリアル番号のようなものです。
+ * ・新しいデバイスを使い始めるとき、このユニークIDを Cumulocity の
+ *   "Device registration" に入れてからデバイスを開始してください。
+ * ・デバイスが Cumulocity に接続し、ユニークIDを続けて送信します。
+ *   この目的のため、Cumulocity には固定的なホストがあります。このホストは
+ *   support@cumulocity.com に聞いてください。
+ * ・"Device Registration" の中で、デバイスからの接続をあなたは承認できます。
+ *   この場合、 Cumulocity はデバイスに生成した認証情報を送信します。
  *
- * �f�o�C�X����݂��ꍇ�A����͒P��� REST ���N�G�X�g�ł��B
- *
- * <code>
- * </code>
- *
- * �f�o�C�X�͂��̃��N�G�X�g���J��Ԃ����s���܂��B���[�U�����̃f�o�C�X��
- * �o�^�A���F���Ȃ������́A���̃��N�G�X�g��"404 Not Found." ��ԋp���܂��B
- * �f�o�C�X�����F���ꂽ�̂��́A���̂悤�ȃ��X�|���X���ԋp����܂��B
+ * デバイスからみた場合、これは単一の REST リクエストです。
  *
  * <code>
  * </code>
  *
- * ����Ńf�o�C�X��Cumulocity�ɑ΂��AtenantID, username, password ���g�p����
- * �ڑ����邱�Ƃ��ł��܂��B
+ * デバイスはこのリクエストを繰り返し発行します。ユーザがそのデバイスを
+ * 登録、承認しないうちは、このリクエストは"404 Not Found." を返却します。
+ * デバイスが承認されたのちは、次のようなレスポンスが返却されます。
  *
- * �ˁ@���� 403 forbidden ���Ԃ��ꂽ�Bnttcom.cumulo... �� management.cumulo..
- *     �����ŁB
- * �ˁ@Authorization ��t�����ɑ���ƁA401 Unauthorized ���ԋp�B
+ * <code>
+ * </code>
  *
- * agent �̐^���������Ƃ���A�ȉ��̃R�[�h���ԋp���ꂽ
+ * これでデバイスはCumulocityに対し、tenantID, username, password を使用して
+ * 接続することができます。
+ *
+ * ⇒　早速 403 forbidden が返された。nttcom.cumulo... と management.cumulo..
+ *     両方で。
+ * ⇒　Authorization を付けずに送ると、401 Unauthorized が返却。
+ *
+ * agent の真似をしたところ、以下のコードが返却された
  * <pre>
  * {
  *   "id":"5102173",
@@ -50,7 +50,7 @@ import abdom.data.json.JsonType;
  *   "username":"device_5102173"
  * }
  * </pre>
- * �܂��A�ȉ��͕ʂ̃f�o�C�XID��o�^��������
+ * また、以下は別のデバイスIDを登録したもの
  * <pre>
  * {
  *   "id":"ysdev000001",

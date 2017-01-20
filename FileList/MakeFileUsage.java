@@ -14,17 +14,17 @@ import java.util.function.Predicate;
 import static java.util.Map.Entry;
 
 /**
- * ƒtƒ@ƒCƒ‹—˜—pó‹µ•\¦—pƒf[ƒ^‚ğ¶¬‚·‚éƒƒCƒ“ƒvƒƒOƒ‰ƒ€
+ * ãƒ•ã‚¡ã‚¤ãƒ«åˆ©ç”¨çŠ¶æ³è¡¨ç¤ºç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ç”Ÿæˆã™ã‚‹ãƒ¡ã‚¤ãƒ³ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
  *
  * @author	Yusuke Sasaki
  * @version	June 19th, 2016
  */
 public class MakeFileUsage {
-	/** FileList ƒIƒuƒWƒFƒNƒg */
+	/** FileList ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ */
 	FileList		a;
-	/** Àƒtƒ@ƒCƒ‹‚Ì‚İ(!isDirectory)‚Ì List */
+	/** å®Ÿãƒ•ã‚¡ã‚¤ãƒ«ã®ã¿(!isDirectory)ã® List */
 	List<FileEntry> list;
-	/** ƒtƒ@ƒCƒ‹–¼‚Ég—p‚·‚é“ú•t•¶š—ñ(yyMMdd) */
+	/** ãƒ•ã‚¡ã‚¤ãƒ«åã«ä½¿ç”¨ã™ã‚‹æ—¥ä»˜æ–‡å­—åˆ—(yyMMdd) */
 	String			date;
 
 /*------------------
@@ -47,14 +47,14 @@ public class MakeFileUsage {
 	}
 	
 	/**
-	 * ƒtƒ@ƒCƒ‹“ÇA‰Šú‰»
+	 * ãƒ•ã‚¡ã‚¤ãƒ«èª­è¾¼ã€åˆæœŸåŒ–
 	 */
 	public void init() throws IOException {
-		// csv ƒtƒ@ƒCƒ‹“Ç
+		// csv ãƒ•ã‚¡ã‚¤ãƒ«èª­è¾¼
 		a = FileList.readFiles(".");
 		a.setReferencePoint(18); // 2016/10/31
-		list = a.selectFile(true); // ƒtƒ@ƒCƒ‹‚¾‚¯’Šo
-		list.sort(new SizeOrder().reversed()); // ƒTƒCƒY~‡
+		list = a.selectFile(true); // ãƒ•ã‚¡ã‚¤ãƒ«ã ã‘æŠ½å‡º
+		list.sort(new SizeOrder().reversed()); // ã‚µã‚¤ã‚ºé™é †
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
 		
@@ -63,7 +63,7 @@ public class MakeFileUsage {
 	
 	private void makeCharts() throws IOException {
 		//
-		// ƒtƒ@ƒCƒ‹–½–¼‹K‘¥
+		// ãƒ•ã‚¡ã‚¤ãƒ«å‘½åè¦å‰‡
 		// [dataType][Level][SortTarget][yyMMdd].json
 		//
 		// [dataType] ... pos (for stacked or cumulative chart)
@@ -73,65 +73,65 @@ public class MakeFileUsage {
 		// [SortTarget].. Size / Inc(rease)
 		//
 		
-		// ƒŒƒxƒ‹1‚ÅƒTƒCƒY‡‚É•\¦
+		// ãƒ¬ãƒ™ãƒ«1ã§ã‚µã‚¤ã‚ºé †ã«è¡¨ç¤º
 		List<FileEntry> l1 = a.selectLevel(1);
 		l1 = FileList.cutFile(l1, true);
-		l1.sort(new SizeOrder().reversed()); // size ~‡‚Åƒ\[ƒg
+		l1.sort(new SizeOrder().reversed()); // size é™é †ã§ã‚½ãƒ¼ãƒˆ
 		
 //		FileList.writePosJsonFile(a.dateList, l1, "posL1Size"+date+".json");
 		FileList.writeJsonFile(a.dateList, l1, 1, "posL1Size"+date+".json");
 		List<FileEntry> l1dir = FileList.cutFile(l1, true);
 		FileList.writePieChartJsonFile(l1dir, 1, "pieL1Size"+date+".json");
 		
-		// ƒŒƒxƒ‹2‚ÅãˆÊ3ƒtƒHƒ‹ƒ_‚ğƒTƒCƒY‡‚É•\¦
+		// ãƒ¬ãƒ™ãƒ«2ã§ä¸Šä½3ãƒ•ã‚©ãƒ«ãƒ€ã‚’ã‚µã‚¤ã‚ºé †ã«è¡¨ç¤º
 		int n = 3;
 		if (n > l1dir.size()) n = l1dir.size();
 		for (int i = 0; i < n; i++) {
 			final String dir = l1dir.get(i).path;
 			List<FileEntry> l2big = a.selectAs(
 				 e -> { return (e.level == 2 && e.path.startsWith(dir));} );
-				 // ‚Å‚«‚é‚Ì‚©(dirw’è)A‚Å‚«‚é‚ç‚µ‚¢(final‚Ìê‡(È—ª‰Â”\))
+				 // ã§ãã‚‹ã®ã‹(diræŒ‡å®š)ã€ã§ãã‚‹ã‚‰ã—ã„(finalã®å ´åˆ(çœç•¥å¯èƒ½))
 			
 			l2big.sort(new SizeOrder().reversed());
 			FileList.writePieChartJsonFile(FileList.cut(l2big, 5), 1, "pieL2Size"+date+"_"+i+".json");
 		}
 		
-		// ƒŒƒxƒ‹2‚Å‘•ª‚Ì‘å‚«‚¢‡‚É10ŒÂ•\¦
+		// ãƒ¬ãƒ™ãƒ«2ã§å¢—åˆ†ã®å¤§ãã„é †ã«10å€‹è¡¨ç¤º
 		List<FileEntry> l2 = a.selectLevel(2);
 		l2.sort(new IncreaseOrder().reversed());
 		FileList.writeJsonFile(a.dateList, FileList.cut(l2, 10), 1, "lineL2Inc"+date+".json");
 		
-		// ƒŒƒxƒ‹3‚Å‘•ª‚Ì‘å‚«‚¢‡‚É10ŒÂ•\¦
+		// ãƒ¬ãƒ™ãƒ«3ã§å¢—åˆ†ã®å¤§ãã„é †ã«10å€‹è¡¨ç¤º
 		List<FileEntry> l3 = a.selectLevel(3);
 		l3.sort(new IncreaseOrder().reversed());
 		FileList.writeJsonFile(a.dateList, FileList.cut(l3, 10), 2, "lineL3Inc"+date+".json");
 	}
 	
 	/**
-	 * “¯ˆêƒtƒ@ƒCƒ‹‹^˜f‚ğ’T‚·
+	 * åŒä¸€ãƒ•ã‚¡ã‚¤ãƒ«ç–‘æƒ‘ã‚’æ¢ã™
 	 */
 	private void findSameFiles() throws IOException {
 		String lastFile = "";
 		FileEntry lastF = null;
 		
-		// TableChart ‚É‚à“o˜^
+		// TableChart ã«ã‚‚ç™»éŒ²
 		//
-		// TableChart‚ÌJSONŒ`®‚ÍˆÈ‰º
+		// TableChartã®JSONå½¢å¼ã¯ä»¥ä¸‹
 		//
 		// top = array[] { table }
 		// table    = {	"key":"top",
-		//				"label":"ƒtƒ@ƒCƒ‹g—p—ÊíŒ¸‚ÉŒü‚¯‚½ƒqƒ“ƒg"
+		//				"label":"ãƒ•ã‚¡ã‚¤ãƒ«ä½¿ç”¨é‡å‰Šæ¸›ã«å‘ã‘ãŸãƒ’ãƒ³ãƒˆ"
 		//				"values": [ group1, group2, group3, ... ] }
 		//
 		// group(n) = { "key":"key",
-		//				"label":"•\¦‚·‚éƒ‰ƒxƒ‹–¼",
+		//				"label":"è¡¨ç¤ºã™ã‚‹ãƒ©ãƒ™ãƒ«å",
 		//				"values": [ entry1, entry2, entry3, ... ] }
 		//
-		// entry(n) = { "label":"•\¦‚·‚éƒ‰ƒxƒ‹–¼",
-		//				"value":"ƒtƒ@ƒCƒ‹ƒTƒCƒY",
-		//				"owner":"Š—LÒ–¼" }
+		// entry(n) = { "label":"è¡¨ç¤ºã™ã‚‹ãƒ©ãƒ™ãƒ«å",
+		//				"value":"ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚º",
+		//				"owner":"æ‰€æœ‰è€…å" }
 		
-		JsonObject tableContainer = new JsonObject().add("key","top").add("label","“¯ˆê‚Æv‚í‚ê‚éƒtƒ@ƒCƒ‹FƒVƒ‡[ƒgƒJƒbƒg‰»—vŒŸ“¢"); // values(Array) ‚ÍŒã‚Åw’è
+		JsonObject tableContainer = new JsonObject().add("key","top").add("label","åŒä¸€ã¨æ€ã‚ã‚Œã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ï¼šã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆåŒ–è¦æ¤œè¨"); // values(Array) ã¯å¾Œã§æŒ‡å®š
 		
 		JsonArray top = new JsonArray(new JsonType[]{tableContainer});
 		
@@ -153,13 +153,13 @@ public class MakeFileUsage {
 					jt[1] = new JsonObject().add("label", f.path)
 								.add("value", f.size/1024/1024)
 								.add("owner", FileList.reveal(f.owner));
-					same.add("_values", jt); // •¡”‚Ìê‡A©“®Array‰»(1ŒÂ‚¾‚Æ‚¤‚Ü‚­‚¢‚©‚È‚¢‚Æv‚í‚ê‚é)
-					// Å‰‚Í JsonObject ‚Æ‚µ‚Ä“o˜^‚³‚ê‚é‚ªA2‰ñ–Ú‚É“¯ˆê key ‚Å“o˜^
-					// ‚·‚é‚Æ‚«AJsonArray ‚É•ÏŠ·‚³‚ê‚éB
-					// table chart ‚Å‚Í JsonArray ‚Å‚ ‚é‚±‚Æ‚ª•K—vB
+					same.add("_values", jt); // è¤‡æ•°ã®å ´åˆã€è‡ªå‹•ArrayåŒ–(1å€‹ã ã¨ã†ã¾ãã„ã‹ãªã„ã¨æ€ã‚ã‚Œã‚‹)
+					// æœ€åˆã¯ JsonObject ã¨ã—ã¦ç™»éŒ²ã•ã‚Œã‚‹ãŒã€2å›ç›®ã«åŒä¸€ key ã§ç™»éŒ²
+					// ã™ã‚‹ã¨ãã€JsonArray ã«å¤‰æ›ã•ã‚Œã‚‹ã€‚
+					// table chart ã§ã¯ JsonArray ã§ã‚ã‚‹ã“ã¨ãŒå¿…è¦ã€‚
 					tableContainer.add("values", same); // _ means folded
 					c++;
-					if (c >= 10) break; // 10ŒÂ‚Ü‚Å
+					if (c >= 10) break; // 10å€‹ã¾ã§
 					
 				}
 				lastFile	= filename;
@@ -171,17 +171,17 @@ public class MakeFileUsage {
 			}
 		}
 		//
-		// JSON ƒtƒ@ƒCƒ‹‚Æ‚µ‚Äo—Í
+		// JSON ãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦å‡ºåŠ›
 		//
 		FileList.writeJsonType(top, "sameFile"+date+".json");
 	}
 	
 	/**
-	 * —‚Ä‚¢‚éƒtƒ@ƒCƒ‹‚ğ’T‚·
+	 * ä¼¼ã¦ã„ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¢ã™
 	 */
 	private void findSimilarFiles() throws IOException {
 		
-		// æ‚ÉŒó•â‚ği‚é‚Æ‘‚¢
+		// å…ˆã«å€™è£œã‚’çµã‚‹ã¨æ—©ã„
 		List<FileEntry> largeFiles =
 				FileList.selectAs(a.list,
 						e ->
@@ -197,8 +197,8 @@ public class MakeFileUsage {
 		
 		TreeMap<String, Integer> appearPaths = new TreeMap<String, Integer>();
 		for (SimilarFilePicker.FileDistance fd : fdl) {
-			if (fd.dist > 5000) break; // dist 5000’´‚¦‚Í—‚Ä‚¢‚È‚¢ƒtƒ@ƒCƒ‹
-			// fd.a ‚Ì path ‚ğ“o˜^
+			if (fd.dist > 5000) break; // dist 5000è¶…ãˆã¯ä¼¼ã¦ã„ãªã„ãƒ•ã‚¡ã‚¤ãƒ«
+			// fd.a ã® path ã‚’ç™»éŒ²
 			String path = fd.a.path;
 			int idx = path.lastIndexOf('\\');
 			if (idx >= 0) {
@@ -207,7 +207,7 @@ public class MakeFileUsage {
 				if (count == null) appearPaths.put(path, 1);
 				else appearPaths.put(path, count+1);
 			}
-			// fd.b ‚Ì path ‚ğ“o˜^
+			// fd.b ã® path ã‚’ç™»éŒ²
 			path = fd.b.path;
 			idx = path.lastIndexOf('\\');
 			if (idx >= 0) {
@@ -217,7 +217,7 @@ public class MakeFileUsage {
 				else appearPaths.put(path, count+1);
 			}
 		}
-		// List ‚É•ÏŠ·‚µ‚Äƒ\[ƒg‚·‚é(~‡)
+		// List ã«å¤‰æ›ã—ã¦ã‚½ãƒ¼ãƒˆã™ã‚‹(é™é †)
 		Set<Entry<String, Integer>> viewSet = appearPaths.entrySet();
 		
 		List<Entry<String, Integer>> view = new ArrayList<Entry<String, Integer>>();
@@ -234,12 +234,12 @@ public class MakeFileUsage {
 //					}
 		}.reversed() );
 		
-		JsonObject tableContainer = new JsonObject().add("key","top").add("label","ƒ`ƒFƒbƒNƒtƒHƒ‹ƒ_");
+		JsonObject tableContainer = new JsonObject().add("key","top").add("label","ãƒã‚§ãƒƒã‚¯ãƒ•ã‚©ãƒ«ãƒ€");
 		JsonArray top = new JsonArray(new JsonType[]{tableContainer});
 		
 		JsonObject folder = new JsonObject();
 		folder.add("key","file");
-		folder.add("label", "íœŒó•â‚ª‘½‚¢‚Æ„’è‚³‚ê‚é10ƒtƒHƒ‹ƒ_(ÀŒ±’†)");
+		folder.add("label", "å‰Šé™¤å€™è£œãŒå¤šã„ã¨æ¨å®šã•ã‚Œã‚‹10ãƒ•ã‚©ãƒ«ãƒ€(å®Ÿé¨“ä¸­)");
 		
 		int count = 0;
 		for (Entry<String, Integer> e : view) {
@@ -247,27 +247,27 @@ public class MakeFileUsage {
 			jt.add("label", e.getKey());
 			jt.add("value", e.getValue());
 			
-			folder.add("_values", jt); // ©“®Array‰»‚ÉŠú‘Ò
+			folder.add("_values", jt); // è‡ªå‹•ArrayåŒ–ã«æœŸå¾…
 			count++;
 			if (count >= 10) break;
 		}
 		tableContainer.add("values", new JsonArray(new JsonType[] {folder}));
 		//
-		// JSON ƒtƒ@ƒCƒ‹‚Æ‚µ‚Äo—Í
+		// JSON ãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦å‡ºåŠ›
 		//
 		FileList.writeJsonType(top, "similarFile"+date+".json");
 	}
 	
 	/**
-	 * ƒTƒCƒY‚Ì‘å‚«‚Èƒtƒ@ƒCƒ‹‚ğo—Í
+	 * ã‚µã‚¤ã‚ºã®å¤§ããªãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‡ºåŠ›
 	 */
 	private void listBigFiles() throws IOException {
-		JsonObject tableContainer = new JsonObject().add("key","top").add("label","Œ»İ•Û‘¶‚³‚ê‚Ä‚¢‚éƒTƒCƒY‚Ì‘å‚«‚¢ƒtƒ@ƒCƒ‹");
+		JsonObject tableContainer = new JsonObject().add("key","top").add("label","ç¾åœ¨ä¿å­˜ã•ã‚Œã¦ã„ã‚‹ã‚µã‚¤ã‚ºã®å¤§ãã„ãƒ•ã‚¡ã‚¤ãƒ«");
 		JsonArray top = new JsonArray(new JsonType[]{tableContainer});
 		
 		JsonObject jo = new JsonObject();
 		jo.add("key","file");
-		jo.add("label", "(Ql)ƒTƒCƒY‚Ì‘å‚«‚Èƒtƒ@ƒCƒ‹");
+		jo.add("label", "(å‚è€ƒ)ã‚µã‚¤ã‚ºã®å¤§ããªãƒ•ã‚¡ã‚¤ãƒ«");
 
 		jo.add("_values", jsonObjectArray(FileList.cut(list, 20),
 			// lambda expression
@@ -280,56 +280,56 @@ public class MakeFileUsage {
 		tableContainer.add("values", new JsonArray(new JsonType[] {jo}));
 		
 		//
-		// JSON ƒtƒ@ƒCƒ‹‚Æ‚µ‚Äo—Í
+		// JSON ãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦å‡ºåŠ›
 		//
 		FileList.writeJsonType(top, "bigFile"+date+".json");
 	}
 	
 	/**
-	 * l–ˆ‚Ìƒtƒ@ƒCƒ‹g—p—Ê‚ğŒ©‚é
+	 * äººæ¯ã®ãƒ•ã‚¡ã‚¤ãƒ«ä½¿ç”¨é‡ã‚’è¦‹ã‚‹
 	 */
 	private void listFileUsage() throws IOException {
 		Map<String, Long> usage = new TreeMap<String, Long>();
 		Map<String, Long> lastUsage = new TreeMap<String, Long>();
 		Map<String, Long> actSize = new TreeMap<String, Long>();
 		
-		// referencePoint(2016/6/7) ‚©‚ç‚ÌŒ¸­—Ê‚ğæ“¾
-		// name         : ƒtƒ@ƒCƒ‹‚ÌŠ—LÒ–¼
-		// usage        : ‚»‚Ìg—pÒ‚Ìƒtƒ@ƒCƒ‹ƒTƒCƒY‡Œv
-		// lastUsage    : referencePoint‚Ìƒtƒ@ƒCƒ‹ƒTƒCƒY‡Œv
-		// reductionRate: ‘O‰ñ‚©‚ç‚Ç‚ê‚¾‚¯ƒTƒCƒY‚ªŒ¸­‚µ‚½‚©
-		// actSize      : ‘O‰ñ‚©‚çƒtƒ@ƒCƒ‹íœ‚âˆÚ“®‚ğ‚Ç‚ê‚¾‚¯‚µ‚½‚©
+		// referencePoint(2016/6/7) ã‹ã‚‰ã®æ¸›å°‘é‡ã‚’å–å¾—
+		// name         : ãƒ•ã‚¡ã‚¤ãƒ«ã®æ‰€æœ‰è€…å
+		// usage        : ãã®ä½¿ç”¨è€…ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºåˆè¨ˆ
+		// lastUsage    : referencePointæ™‚ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºåˆè¨ˆ
+		// reductionRate: å‰å›ã‹ã‚‰ã©ã‚Œã ã‘ã‚µã‚¤ã‚ºãŒæ¸›å°‘ã—ãŸã‹
+		// actSize      : å‰å›ã‹ã‚‰ãƒ•ã‚¡ã‚¤ãƒ«å‰Šé™¤ã‚„ç§»å‹•ã‚’ã©ã‚Œã ã‘ã—ãŸã‹
 		int referencePoint = a.getReferencePoint();
 		for (FileEntry f : list) {
 			String owner = FileList.reveal(f.owner);
-			// usage ‚ğæ“¾
+			// usage ã‚’å–å¾—
 			Long size = usage.get(owner);
 			if (size == null) usage.put(owner, f.size);
 			else usage.put(owner, size + f.size);
 			
-			// lastUsage ‚ğæ“¾
+			// lastUsage ã‚’å–å¾—
 			Long lastSize = lastUsage.get(owner);
 			if (size == null) lastUsage.put(owner, f.sizeList.get(referencePoint));
 			else lastUsage.put(owner, lastSize + f.sizeList.get(referencePoint));
 			
-			// actSize ‚ğæ“¾(‘‚¦‚½•ª‚ÍƒJƒEƒ“ƒg‚µ‚È‚¢)
+			// actSize ã‚’å–å¾—(å¢—ãˆãŸåˆ†ã¯ã‚«ã‚¦ãƒ³ãƒˆã—ãªã„)
 			boolean exists  = false;
 			long    maxSize = 0;
 			for (int i = referencePoint; i < f.sizeList.size(); i++) {
-				if (f.sizeList.get(i) > 0) { // ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚½
+				if (f.sizeList.get(i) > 0) { // ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãŸ
 					if (!exists) exists = true;
 					if (maxSize < f.sizeList.get(i)) maxSize = f.sizeList.get(i);
 				} else if (exists) {
-					// ˆê“x‘¶İ‚µ‚½ŒãÁ‚¦‚½ -> deleted
+					// ä¸€åº¦å­˜åœ¨ã—ãŸå¾Œæ¶ˆãˆãŸ -> deleted
 					Long s = actSize.get(owner);
 					if (s == null) actSize.put(owner, 1L); //maxSize);
 					else actSize.put(owner, s + 1L); //maxSize);
-					break; // “ñ“x–Ú‚ÍƒJƒEƒ“ƒg‚µ‚È‚¢
+					break; // äºŒåº¦ç›®ã¯ã‚«ã‚¦ãƒ³ãƒˆã—ãªã„
 				}
 			}
 		}
 		
-		// JsonŒ`®‚Å•Û‘¶(©ìŒ`®)
+		// Jsonå½¢å¼ã§ä¿å­˜(è‡ªä½œå½¢å¼)
 		JsonObject[] memberArray = new JsonObject[usage.keySet().size()];
 		
 		int idx = 0;
@@ -348,7 +348,7 @@ public class MakeFileUsage {
 		}
 		FileList.writeJsonType(new JsonArray(memberArray), "usage"+date+".json");
 		
-		// JsonŒ`®‚Å•Û‘¶(scatterChartŒ`®)
+		// Jsonå½¢å¼ã§ä¿å­˜(scatterChartå½¢å¼)
 		
 		
 		
@@ -387,23 +387,23 @@ public class MakeFileUsage {
 	}
 	
 	/**
-	 * —‚Ä‚¢‚éƒtƒ@ƒCƒ‹‚ğ’Šo‚µAì‹Æ’†ƒtƒ@ƒCƒ‹‹^˜f‚ğ”­M
+	 * ä¼¼ã¦ã„ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŠ½å‡ºã—ã€ä½œæ¥­ä¸­ãƒ•ã‚¡ã‚¤ãƒ«ç–‘æƒ‘ã‚’ç™ºä¿¡
 	 *
-	 * —‚Ä‚¢‚éƒtƒ@ƒCƒ‹
-	 * @(1) Šg’£q‚ª“¯‚¶‚Å‚ ‚é‚±‚Æ
-	 * @(2) ƒtƒ@ƒCƒ‹–¼‚ª—‚Ä‚¢‚é‚±‚Æ(“TŒ^—áF“ú•t‚¾‚¯ˆá‚¤)
-	 * @(3) ƒTƒCƒY‚ª—‚Ä‚¢‚é‚±‚Æ
+	 * ä¼¼ã¦ã„ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«
+	 * ã€€(1) æ‹¡å¼µå­ãŒåŒã˜ã§ã‚ã‚‹ã“ã¨
+	 * ã€€(2) ãƒ•ã‚¡ã‚¤ãƒ«åãŒä¼¼ã¦ã„ã‚‹ã“ã¨(å…¸å‹ä¾‹ï¼šæ—¥ä»˜ã ã‘é•ã†)
+	 * ã€€(3) ã‚µã‚¤ã‚ºãŒä¼¼ã¦ã„ã‚‹ã“ã¨
 	 *
-	 * @ã‹LA—‚Ä‚¢‚é or —‚Ä‚¢‚È‚¢ ‚ğ”»’èBè‡’l‚Í“Œv“I‚ÉŒvZ‚·‚éB
+	 * ã€€ä¸Šè¨˜ã€ä¼¼ã¦ã„ã‚‹ or ä¼¼ã¦ã„ãªã„ ã‚’åˆ¤å®šã€‚é–¾å€¤ã¯çµ±è¨ˆçš„ã«è¨ˆç®—ã™ã‚‹ã€‚
 	 */
 	
 	
 	/**
-	 * w’è‚³‚ê‚½ List ‚©‚çw’è‚Ìƒ‹[ƒ‹‚Åƒf[ƒ^‚ğ’Šo‚µAJsonArray Œ`®‚Å•Ô‹p‚·‚éB
+	 * æŒ‡å®šã•ã‚ŒãŸ List ã‹ã‚‰æŒ‡å®šã®ãƒ«ãƒ¼ãƒ«ã§ãƒ‡ãƒ¼ã‚¿ã‚’æŠ½å‡ºã—ã€JsonArray å½¢å¼ã§è¿”å´ã™ã‚‹ã€‚
 	 *
-	 * @param	l	FileEntry‚ÌList
-	 * @param	p	List‚©‚çƒf[ƒ^‚ğ’ŠoAJsonObject‰»‚µ‚ÄJsonArray‚É’Ç‰Á‚·‚éÀ‘•
-	 * @return	‚Å‚«‚ ‚ª‚Á‚½ JsonArray
+	 * @param	l	FileEntryã®List
+	 * @param	p	Listã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’æŠ½å‡ºã€JsonObjectåŒ–ã—ã¦JsonArrayã«è¿½åŠ ã™ã‚‹å®Ÿè£…
+	 * @return	ã§ãã‚ãŒã£ãŸ JsonArray
 	 */
 	private static JsonArray jsonObjectArray(List<FileEntry> l,
 							java.util.function.BiConsumer<JsonObject, FileEntry> p) {

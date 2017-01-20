@@ -1,7 +1,7 @@
 import java.io.IOException;
 
 /**
- * Long-polling によるイベントの受け取り手です。
+ * Long-polling 縺ｫ繧医ｋ繧､繝吶Φ繝医�ｮ蜿励￠蜿悶ｊ謇九〒縺吶�
  *
  * @version		13 December, 2016
  * @author		Yusuke Sasaki

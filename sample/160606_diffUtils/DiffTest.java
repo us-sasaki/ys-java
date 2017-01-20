@@ -20,14 +20,14 @@ public class DiffTest {
         
         Patch patch = DiffUtils.diff(oldLines, newLines);
         for (Delta delta : patch.getDeltas()) {
-            System.out.println(String.format("[•ÏX‘O(%d)s–Ú]", delta.getOriginal().getPosition() + 1));
+            System.out.println(String.format("[å¤‰æ›´å‰(%d)è¡Œç›®]", delta.getOriginal().getPosition() + 1));
             for (Object line : delta.getOriginal().getLines()) {
                 System.out.println(line);
             }
             
-            System.out.println("@«");
+            System.out.println("ã€€â†“");
             
-            System.out.println(String.format("[•ÏXŒã(%d)s–Ú]", delta.getRevised().getPosition() + 1));
+            System.out.println(String.format("[å¤‰æ›´å¾Œ(%d)è¡Œç›®]", delta.getRevised().getPosition() + 1));
             for (Object line : delta.getRevised().getLines()) {
                 System.out.println(line);
             }

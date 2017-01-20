@@ -1,7 +1,7 @@
 import java.util.Comparator;
 
 /**
- * ƒTƒCƒY, [‚³, ƒpƒX–¼ ‚Ì‡‚É•À‚×‚é Comparator
+ * ã‚µã‚¤ã‚º, æ·±ã•, ãƒ‘ã‚¹å ã®é †ã«ä¸¦ã¹ã‚‹ Comparator
  */
 class SizeOrder implements Comparator<FileEntry> {
 	@Override

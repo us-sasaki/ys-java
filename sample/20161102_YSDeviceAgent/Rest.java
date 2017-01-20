@@ -13,33 +13,33 @@ import abdom.data.json.JsonObject;
 import static java.net.HttpURLConnection.*;
 
 /**
- * REST ‚É‚æ‚é—v‹‚ğŠÈ’P‚És‚¤‚½‚ß‚ÌƒNƒ‰ƒX
- * GET /platform ‚Í¬Œ÷
- * POST ‚Í–¢ŒŸØ
+ * REST ã«ã‚ˆã‚‹è¦æ±‚ã‚’ç°¡å˜ã«è¡Œã†ãŸã‚ã®ã‚¯ãƒ©ã‚¹
+ * GET /platform ã¯æˆåŠŸ
+ * POST ã¯æœªæ¤œè¨¼
  *
  * @version	20, October 2016
  * @author	Yusuke Sasaki
  */
 public class Rest {
 	
-	/** host ‚ğ¦‚· URL •¶š—ñ(http:// or https://) */
+	/** host ã‚’ç¤ºã™ URL æ–‡å­—åˆ—(http:// or https://) */
 	protected String urlStr;
 	
-	/** Cumulocity ‚É‚¨‚¯‚éƒeƒiƒ“ƒg–¼ */
+	/** Cumulocity ã«ãŠã‘ã‚‹ãƒ†ãƒŠãƒ³ãƒˆå */
 	protected String tenant;
 	
-	/** Cumulocity ƒ†[ƒUƒAƒJƒEƒ“ƒg */
+	/** Cumulocity ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ */
 	protected String user;
 	
-	/** Cumulocity ƒ†[ƒUƒpƒXƒ[ƒh */
+	/** Cumulocity ãƒ¦ãƒ¼ã‚¶ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ */
 	protected String password;
 	
 	/**
-	 * HTTP ƒŒƒXƒ|ƒ“ƒX‚ğ•\‚·“à•”ƒNƒ‰ƒX
+	 * HTTP ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚’è¡¨ã™å†…éƒ¨ã‚¯ãƒ©ã‚¹
 	 */
 	public static class Response {
 		/**
-		 * HTTP ƒŒƒXƒ|ƒ“ƒXƒR[ƒh‚ğ•Ô‹p‚µ‚Ü‚·B
+		 * HTTP ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚³ãƒ¼ãƒ‰ã‚’è¿”å´ã—ã¾ã™ã€‚
 		 *
 		 * @see		java.net.HttpURLConnection
 		 */
@@ -49,13 +49,13 @@ public class Rest {
 		protected byte[] body;
 		
 		/**
-		 * Œ‹‰Ê‚Ì body ‚ğ byte[] ‚Åæ“¾‚µ‚Ü‚·B
+		 * çµæœã® body ã‚’ byte[] ã§å–å¾—ã—ã¾ã™ã€‚
 		 */
 		public byte[] toByteArray() {
 			return body;
 		}
 		/**
-		 * Œ‹‰Ê‚Ì body ‚ğ String ‚Åæ“¾‚µ‚Ü‚·
+		 * çµæœã® body ã‚’ String ã§å–å¾—ã—ã¾ã™
 		 */
 		public String toString() {
 			try {
@@ -66,9 +66,9 @@ public class Rest {
 		}
 		
 		/**
-		 * Œ‹‰Ê‚Ì body ‚ğ JsonType ‚Åæ“¾‚µ‚Ü‚·B
-		 * ƒGƒ‰[ƒŒƒXƒ|ƒ“ƒX‚ÉŠÖ‚·‚éŒ‹‰Ê‚Í•s’è‚ÅA’Êí JsonParseExcception
-		 * ‚ªƒXƒ[‚³‚ê‚Ü‚·B
+		 * çµæœã® body ã‚’ JsonType ã§å–å¾—ã—ã¾ã™ã€‚
+		 * ã‚¨ãƒ©ãƒ¼ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã«é–¢ã™ã‚‹çµæœã¯ä¸å®šã§ã€é€šå¸¸ JsonParseExcception
+		 * ãŒã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 		 */
 		public JsonType toJson() {
 			return JsonType.parse(toString());
@@ -79,8 +79,8 @@ public class Rest {
  * Constructor
  */
 	/**
-	 * w’è‚³‚ê‚½ host, user, password ‚ğ•Û‚·‚é Rest ‚ğì¬‚µ‚Ü‚·B
-	 * tenant ‚Í host ‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é‚à‚Ì‚Æ‚µ‚Ü‚·B
+	 * æŒ‡å®šã•ã‚ŒãŸ host, user, password ã‚’ä¿æŒã™ã‚‹ Rest ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * tenant ã¯ host ã«å«ã¾ã‚Œã¦ã„ã‚‹ã‚‚ã®ã¨ã—ã¾ã™ã€‚
 	 */
 	public Rest(String urlStr, String user, String password) {
 		this.urlStr = urlStr;
@@ -101,7 +101,7 @@ public class Rest {
  */
 	/**
 	 * https://nttcom.cumuloity.com
-	 * ‚ÉÚ‘±‚·‚éA²X–ØƒAƒJƒEƒ“ƒg‚ÅƒƒOƒCƒ“‚·‚éVƒCƒ“ƒXƒ^ƒ“ƒX‚ğ•Ô‹p‚µ‚Ü‚·B
+	 * ã«æ¥ç¶šã™ã‚‹ã€ä½ã€…æœ¨ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã§ãƒ­ã‚°ã‚¤ãƒ³ã™ã‚‹æ–°ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”å´ã—ã¾ã™ã€‚
 	 */
 	public static Rest getDefaultC8YInstance() {
 		return new Rest("https://nttcom.cumulocity.com", "us.sasaki@ntt.com", "nttcomsasaki3");
@@ -122,9 +122,9 @@ public class Rest {
 		return false;
 	}
 	/**
-	 * GET ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
-	 * ‚±‚ÌÀ‘•‚ÍAresource = /platform, type = platformApi ‚Æİ’è‚·‚é‚±‚Æ‚ğ
-	 * ‘z’è‚µ‚Ä‚¢‚Ü‚·B
+	 * GET ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
+	 * ã“ã®å®Ÿè£…ã¯ã€resource = /platform, type = platformApi ã¨è¨­å®šã™ã‚‹ã“ã¨ã‚’
+	 * æƒ³å®šã—ã¦ã„ã¾ã™ã€‚
 	 */
 	public Response get(String resource, String type) throws IOException {
 		URL url = new URL(urlStr + resource);
@@ -141,7 +141,7 @@ public class Rest {
 		}
 		con.connect();
 		
-		// Œ‹‰ÊƒIƒuƒWƒFƒNƒg‚Ì¶¬
+		// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 		Response resp = new Response();
 		resp.code = con.getResponseCode();
 		
@@ -168,7 +168,7 @@ public class Rest {
 	}
 	
 	/**
-	 * POST ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * POST ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 */
 	public Response post(String location, String type, JsonType json)
 							throws IOException {
@@ -193,7 +193,7 @@ public class Rest {
 		bw.write(body);
 		bw.flush();
 		
-		// Œ‹‰ÊƒIƒuƒWƒFƒNƒg‚Ì¶¬
+		// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 		Response resp = new Response();
 		resp.code = con.getResponseCode();
 		
@@ -219,7 +219,7 @@ public class Rest {
 	}
 	
 	/**
-	 * PUT ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
+	 * PUT ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
 	 */
 	public Response put(String resource, String type, JsonType json)
 							throws IOException {
@@ -244,7 +244,7 @@ public class Rest {
 		bw.write(body);
 		bw.close();
 		
-		// Œ‹‰ÊƒIƒuƒWƒFƒNƒg‚Ì¶¬
+		// çµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 		Response resp = new Response();
 		resp.code = con.getResponseCode();
 		
@@ -277,7 +277,7 @@ public class Rest {
 		else System.out.println(resp.toJson());
 	}
 	public static void main(String[] args) throws Exception {
-		// Step 0 ƒfƒoƒCƒXƒNƒŒƒfƒ“ƒVƒƒƒ‹—v‹
+		// Step 0 ãƒ‡ãƒã‚¤ã‚¹ã‚¯ãƒ¬ãƒ‡ãƒ³ã‚·ãƒ£ãƒ«è¦æ±‚
 		System.out.println("------ Step 0 ------");
 		
 		Rest r = new Rest("https://nttcom.cumulocity.com", "management", "devicebootstrap", "Fhdt1bb1f"); //"us.sasaki@ntt.com", "nttcomsasaki3");
@@ -285,7 +285,7 @@ public class Rest {
 		Response resp = r.post("/devicecontrol/deviceCredentials", "deviceCredentials", jo);
 		printResp(resp);
 		
-		// ƒfƒoƒCƒXƒNƒŒƒfƒ“ƒVƒƒƒ‹‚Í–³‹‚µ‚ÄAdefaultInstance ‚ÅŠeƒXƒeƒbƒv‚ğˆ—
+		// ãƒ‡ãƒã‚¤ã‚¹ã‚¯ãƒ¬ãƒ‡ãƒ³ã‚·ãƒ£ãƒ«ã¯ç„¡è¦–ã—ã¦ã€defaultInstance ã§å„ã‚¹ãƒ†ãƒƒãƒ—ã‚’å‡¦ç†
 		// Step 1
 		System.out.println("------ Step 1 ------");
 		r = Rest.getDefaultC8YInstance();

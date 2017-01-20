@@ -1,7 +1,7 @@
 import java.util.Comparator;
 
 /**
- * ƒpƒX–¼ ‚Ì«‘®‡˜‚Å•À‚×‚é Comparator
+ * ãƒ‘ã‚¹å ã®è¾æ›¸å¼é †åºã§ä¸¦ã¹ã‚‹ Comparator
  */
 class PathOrder implements Comparator<FileEntry> {
 	@Override

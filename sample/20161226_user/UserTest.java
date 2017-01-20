@@ -6,7 +6,7 @@ import com.ntt.tc.net.Rest;
 import abdom.data.json.*;
 
 /**
- * ˆê“xÀs‚·‚é‚Æ‚Q“x–Ú‚©‚ç‚Í 409 Conflict ‚ÅˆÙíI—¹‚·‚é‚Ì‚Å’ˆÓ‚·‚é‚±‚Æ
+ * ä¸€åº¦å®Ÿè¡Œã™ã‚‹ã¨ï¼’åº¦ç›®ã‹ã‚‰ã¯ 409 Conflict ã§ç•°å¸¸çµ‚äº†ã™ã‚‹ã®ã§æ³¨æ„ã™ã‚‹ã“ã¨
  */
 public class UserTest {
 	public static void main(String[] args) throws Exception {
@@ -17,8 +17,8 @@ public class UserTest {
 	}
 	
 	/**
-	 * ƒeƒXƒgƒ†[ƒU‚ğ CREATE ‚µ‚Ü‚·B
-	 * ƒpƒXƒ[ƒh‚Ì§–ñ‚âAƒ[ƒ‹ƒAƒhƒŒƒX‚ªˆê’v‚·‚é‚Æ NG
+	 * ãƒ†ã‚¹ãƒˆãƒ¦ãƒ¼ã‚¶ã‚’ CREATE ã—ã¾ã™ã€‚
+	 * ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®åˆ¶ç´„ã‚„ã€ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒä¸€è‡´ã™ã‚‹ã¨ NG
 	 */
 	private static void createTestUser(Rest r, int no) throws IOException {
 		String noStr = "000" + no;

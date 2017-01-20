@@ -81,4 +81,26 @@ public class JDataTest extends TestCase{
 		assertEquals(Jsonizer.toJson(k).toString(), "{\"MSG\":\"hogetarou\",\"a\":[5,65],\"b\":true,\"doublevalue\":3.141592653589793,\"jo\":{\"key\":\"value\"},\"messages\":[\"hogetarou\",\"fixed msg\"],\"str\":\"hoe\"}");
 		assertEquals(frag.toString(), "{\"fragment\":\"c8y?\"}");
 	}
+	
+	static class J2 extends JData {
+		public int a;
+		public double doublevalue;
+	}
+	
+	/**
+	 * put extra のテスト
+	 * すでにプロパティとして存在する key を使って putExtra() すると
+	 * Exception が発生することを確認するテスト。
+	 */
+	public void testPutExtra() {
+		J2 j = new J2();
+		
+		j.putExtra("extra", new JsonValue(1));
+		try {
+			j.putExtra("doublevalue", new JsonValue(0.2));
+			fail();
+		} catch (IllegalFieldTypeException e) {
+		}
+		assertEquals(j.toString(), "{\"a\":0,\"doublevalue\":0.0,\"extra\":1}");
+	}
 }

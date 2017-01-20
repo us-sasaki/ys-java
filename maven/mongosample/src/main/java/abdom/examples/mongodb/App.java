@@ -3,7 +3,7 @@ package abdom.examples.mongodb;
 import com.mongodb.*;
 
 /**
- * Œ‹‰Ê‚ÍˆÈ‰º‚É‚È‚Á‚½B
+ * çµæœã¯ä»¥ä¸‹ã«ãªã£ãŸã€‚
  * { "_id" : { "$oid" : "58144bb36f2e916e1de91edc"} , "name" : "yusuke" , 
  * "age" : 46.0 , "height" : 201.0}
  * { "_id" : { "$oid" : "58144bcf6f2e916e1de91edd"} , "values" :

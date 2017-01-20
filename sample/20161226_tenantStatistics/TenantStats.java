@@ -26,7 +26,7 @@ public class TenantStats {
 			if (tsr.next == null || tsr.next.equals("")) break;
 		}
 		
-		// ‘«‚µ‚Ä‚àˆÓ–¡‚È‚¢B–ˆ“ú‚Ì—š—ğƒf[ƒ^‚Ì‚½‚ßB
+		// è¶³ã—ã¦ã‚‚æ„å‘³ãªã„ã€‚æ¯æ—¥ã®å±¥æ­´ãƒ‡ãƒ¼ã‚¿ã®ãŸã‚ã€‚
 		System.out.println("storage size sum = " + storageSizeSum);
 	}
 }

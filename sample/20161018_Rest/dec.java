@@ -23,7 +23,7 @@ public class dec {
 	}
 	
 	private void parseValue(PushbackReader r) {
-		skipsp(r); // 空白、タブ、改行をスキップ
+		skipsp(r); // 遨ｺ逋ｽ縲√ち繝悶∵隼陦後ｒ繧ｹ繧ｭ繝�繝�
 		int c = r.read();
 		if (c == -1) throw new java.io.EOFException();
 		switch (c) {

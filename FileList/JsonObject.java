@@ -2,7 +2,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * JsonŒ`®‚É‚¨‚¯‚éƒIƒuƒWƒFƒNƒg‚ğ•\‚µ‚Ü‚·B
+ * Jsonå½¢å¼ã«ãŠã‘ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¡¨ã—ã¾ã™ã€‚
  */
 public class JsonObject extends JsonType {
 	public Map<String, JsonType> map;
@@ -47,11 +47,11 @@ public class JsonObject extends JsonType {
 	
 	private JsonObject put(String name, JsonType t) {
 		if (map.containsKey(name)) {
-			// “¯ˆê name ‚ÌƒGƒ“ƒgƒŠ‚ª‚·‚Å‚É‚ ‚Á‚½ê‡Avalue ‚ğ JsonArray ‰»‚·‚é
+			// åŒä¸€ name ã®ã‚¨ãƒ³ãƒˆãƒªãŒã™ã§ã«ã‚ã£ãŸå ´åˆã€value ã‚’ JsonArray åŒ–ã™ã‚‹
 			JsonType v = map.get(name);
 			if (v instanceof JsonArray) {
-				// ‚·‚Å‚É JsonArray ‚É‚È‚Á‚Ä‚¢‚½ê‡A—v‘f’Ç‰Á
-				// –ˆ‰ñheap‚ğV‹KŠm•Û‚·‚éÀ‘•‚Å’x‚¢
+				// ã™ã§ã« JsonArray ã«ãªã£ã¦ã„ãŸå ´åˆã€è¦ç´ è¿½åŠ 
+				// æ¯å›heapã‚’æ–°è¦ç¢ºä¿ã™ã‚‹å®Ÿè£…ã§é…ã„
 				JsonArray src = (JsonArray)v;
 				JsonType[] newArray = new JsonType[src.array.length + 1];
 				System.arraycopy(src.array, 0, newArray, 0, src.array.length);
@@ -60,7 +60,7 @@ public class JsonObject extends JsonType {
 				map.put(name, new JsonArray(newArray));
 				return this;
 			} else {
-				// JsonArray ‚É‚È‚Á‚Ä‚¢‚È‚¢ê‡AJsonArray‰»‚·‚é
+				// JsonArray ã«ãªã£ã¦ã„ãªã„å ´åˆã€JsonArrayåŒ–ã™ã‚‹
 				JsonType[] newArray = new JsonType[2];
 				newArray[0] = v;
 				newArray[1] = t;
@@ -69,7 +69,7 @@ public class JsonObject extends JsonType {
 				return this;
 			}
 		} else {
-			// ¡‰ñ‰‚ß‚Ä‚Ì’Ç‰Á(’Ê—á‚±‚Ìê‡‚Æ‚È‚é)
+			// ä»Šå›åˆã‚ã¦ã®è¿½åŠ (é€šä¾‹ã“ã®å ´åˆã¨ãªã‚‹)
 			map.put(name, t);
 			return this;
 		}

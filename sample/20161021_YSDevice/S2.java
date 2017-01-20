@@ -2,31 +2,31 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonType;
 
 /**
- * Step 2: �C���x���g���Ƀf�o�C�X���쐬����
+ * Step 2: インベントリにデバイスを作成する
  * 
- * ������L Step1 �Ńf�o�C�X��\������Ǘ��I�u�W�F�N�g���Ȃ��A�Ǝ����ꂽ��A
- * Cumulocity ���ɊǗ��I�u�W�F�N�g���쐬���ĉ������B�Ǘ��I�u�W�F�N�g��
- * �f�o�C�X�̃C���X�^���X�f�[�^�ƃ��^�f�[�^�̗�����\���܂��B
- * �C���X�^���X�f�[�^�́A�V���A���ԍ��A�f�o�C�X�ݒ���̂悤�ȃn�[�h
- * �E�F�A�A�\�t�g�E�F�A�����܂݂܂��B���^�f�[�^�́A�T�|�[�g����鑀��
- * �̂悤�ȁA�f�o�C�X�̋@�\��\���܂��B
- * �Ǘ��I�u�W�F�N�g���쐬����ɂ́A�C���x���g��API�̊Ǘ��I�u�W�F�N�g�R���N�V����
- * ��POST���N�G�X�g�𔭍s���ĉ������B
- * ���̗�́@Linux�G�[�W�F���g ���g�p�����ꍇ�� RaspberryPi �̍쐬�ł��B
+ * もし上記 Step1 でデバイスを表現する管理オブジェクトがない、と示されたら、
+ * Cumulocity 内に管理オブジェクトを作成して下さい。管理オブジェクトは
+ * デバイスのインスタンスデータとメタデータの両方を表します。
+ * インスタンスデータは、シリアル番号、デバイス設定情報のようなハード
+ * ウェア、ソフトウェア情報を含みます。メタデータは、サポートされる操作
+ * のような、デバイスの機能を表します。
+ * 管理オブジェクトを作成するには、インベントリAPIの管理オブジェクトコレクション
+ * にPOSTリクエストを発行して下さい。
+ * 次の例は　Linuxエージェント を使用した場合の RaspberryPi の作成です。
  * 
  *<code></code>
  *
- * ��̗�́A�f�o�C�X�̃��^�f�[�^���ڂ��܂�ł��܂��B
- * �E"c8y_IsDevice" �́ACumulocity �̃f�o�C�X�Ǘ��ŊǗ��ł��邱�Ƃ������܂�
- * �Ecom_cumulocity_model_Agent" �́ACumulocity �G�[�W�F���g�Ŏ��s���Ă���
- *   �f�o�C�X�������Ă��܂��B
- * �E"c8y_SupportedOperations" �́A���̃f�o�C�X���ċN����ݒ肪�ł��邱�Ƃ�
- *   �q�ׂĂ��܂��B����ɁA�\�t�g�E�F�A�̎��s��t�@�[���E�F�A�̃A�b�v�f�[�g
- *   ���ł��܂��B
- * ����Ȃ���́A�f�o�C�X�Ǘ����C�u�����@���Q�Ɖ������B
- * �f�o�C�X�����܂������ƁA�X�e�[�^�X�R�[�h201���ԋp����܂��B
- * �͂��߂̃��N�G�X�g�ɗ�̂悤�� Accept �w�b�_���܂܂��ꍇ�A�쐬���ꂽ
- * �I�u�W�F�N�g�S�̂� ID �� �����̃I�u�W�F�N�g�\���ւ� URL ���Ƃ��ɕԋp����܂��B
+ * 上の例は、デバイスのメタデータ項目を含んでいます。
+ * ・"c8y_IsDevice" は、Cumulocity のデバイス管理で管理できることを示します
+ * ・com_cumulocity_model_Agent" は、Cumulocity エージェントで実行している
+ *   デバイスを示しています。
+ * ・"c8y_SupportedOperations" は、このデバイスが再起動や設定ができることを
+ *   述べています。さらに、ソフトウェアの実行やファームウェアのアップデート
+ *   ができます。
+ * さらなる情報は、デバイス管理ライブラリ　を参照下さい。
+ * デバイスがうまく作られると、ステータスコード201が返却されます。
+ * はじめのリクエストに例のように Accept ヘッダが含まれる場合、作成された
+ * オブジェクト全体が ID と 将来のオブジェクト表現への URL をともに返却されます。
  */
 public class S2 {
 	public static void main(String[] args) throws Exception {

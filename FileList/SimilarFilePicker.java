@@ -26,7 +26,7 @@ public class SimilarFilePicker {
 		
 		System.out.println("SimilarFilePicker: calculating distances");
 		
-		// list ’†Adirectory, ¡‘¶İ‚µ‚È‚¢ƒtƒ@ƒCƒ‹‚ğœŠO‚·‚é
+		// list ä¸­ã€directory, ä»Šå­˜åœ¨ã—ãªã„ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é™¤å¤–ã™ã‚‹
 		list = FileList.selectAs(list, fe -> (fe.size != 0 && !fe.isDirectory) );
 		int size = list.size();
 		
@@ -34,14 +34,14 @@ public class SimilarFilePicker {
 		int count = 0;
 		int percentage = 0;
 		
-		// ’x‚¢BCPU 25%‚µ‚©g‚Á‚Ä‚È‚¢‚Ì‚ÅAStream‚É‚µ‚½•û‚ª‚æ‚¢‚©‚à
+		// é…ã„ã€‚CPU 25%ã—ã‹ä½¿ã£ã¦ãªã„ã®ã§ã€Streamã«ã—ãŸæ–¹ãŒã‚ˆã„ã‹ã‚‚
 		for (int i = 0; i < size - 1; i++) {
 			FileEntry a = list.get(i);
 			
 			for (int j = i+1; j < size; j++) {
 				FileEntry b = list.get(j);
 				
-				dist.add(new FileDistance(a, b, d(a,b) )); // ’xI
+				dist.add(new FileDistance(a, b, d(a,b) )); // é…ï¼
 				
 				count++;
 				if (count >= loopCount/100*percentage) {
@@ -54,7 +54,7 @@ public class SimilarFilePicker {
 		System.out.println();
 		System.out.println("SimilarFilePicker: sorting by distance");
 		
-		// dist ‚Åƒ\[ƒg(¸‡)
+		// dist ã§ã‚½ãƒ¼ãƒˆ(æ˜‡é †)
 		dist.sort(new Comparator<FileDistance>() {
 				public int compare(FileDistance a, FileDistance b) {
 					return (a.dist - b.dist);
@@ -78,7 +78,7 @@ public class SimilarFilePicker {
  */
 	public static String longestCommonSubsequence(String a, String b) {
 		if (a.length() > b.length() ) {
-			// a <= b ‚Æ‚È‚é‚æ‚¤‚É‚·‚é
+			// a <= b ã¨ãªã‚‹ã‚ˆã†ã«ã™ã‚‹
 			String c = a; a = b; b = c;
 		}
 		
@@ -88,23 +88,23 @@ public class SimilarFilePicker {
 		int blen = b.length();
 		
 		for (int i = 0; i < alen; i++) {
-			//if (alen - i < maxLen) break; // Œã‰ß‚¬‚Ä‹L˜^XV‚Å‚«‚È‚¢
-			// ª(‹t‚É’x‚­‚È‚è‚»‚¤‚È‚Ì‚Åcut)
+			//if (alen - i < maxLen) break; // å¾Œéãã¦è¨˜éŒ²æ›´æ–°ã§ããªã„
+			// â†‘(é€†ã«é…ããªã‚Šãã†ãªã®ã§cut)
 			char c = a.charAt(i);
 			int bidx = b.indexOf(c);
 			if (bidx == -1) continue;
-			if (blen - bidx < maxLen) break; // Œã‰ß‚¬‚Ä‹L˜^XV‚Å‚«‚È‚¢
+			if (blen - bidx < maxLen) break; // å¾Œéãã¦è¨˜éŒ²æ›´æ–°ã§ããªã„
 			
-			// 1•¶š‡‚Á‚½
+			// 1æ–‡å­—åˆã£ãŸ
 			int len = 1;
 			bidx++;
-			for (int j = i+1; j < alen; j++) { // ‚Ç‚±‚Ü‚Å‡‚¢‚Â‚Ã‚¯‚é‚©
+			for (int j = i+1; j < alen; j++) { // ã©ã“ã¾ã§åˆã„ã¤ã¥ã‘ã‚‹ã‹
 				if (bidx >= blen) break;
 				if (a.charAt(j) != b.charAt(bidx)) break;
 				len++;
 				bidx++;
 			}
-			if (len > maxLen) { // ‹L˜^XV
+			if (len > maxLen) { // è¨˜éŒ²æ›´æ–°
 				maxLen = len;
 				maxLenStartIdxA = i;
 			}
@@ -115,19 +115,19 @@ public class SimilarFilePicker {
 	}
 	
 	/**
-	 * ‚Q‚Â‚ÌFileEntry‚Ì‹——£‚ğ‘ª‚éB
-	 * ‚½‚¾‚µA !FileEntry.isDirectory ‚Å‚ ‚é•K—v‚ª‚ ‚éB
+	 * ï¼’ã¤ã®FileEntryã®è·é›¢ã‚’æ¸¬ã‚‹ã€‚
+	 * ãŸã ã—ã€ !FileEntry.isDirectory ã§ã‚ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
 	 */
 	public static int d(FileEntry a, FileEntry b) {
 		//
-		// ‘Oˆ—
+		// å‰å‡¦ç†
 		//
 		
-		// ƒtƒ@ƒCƒ‹–¼‚ğæ“¾
+		// ãƒ•ã‚¡ã‚¤ãƒ«åã‚’å–å¾—
 		String na = FileList.filename(a.path);
 		String nb = FileList.filename(b.path);
 		
-		// extension ‚Æ–¼‘O–{‘Ì‚ğæ“¾
+		// extension ã¨åå‰æœ¬ä½“ã‚’å–å¾—
 		int ind = na.lastIndexOf('.');
 		String pa = na;
 		String ea = "";
@@ -138,68 +138,68 @@ public class SimilarFilePicker {
 		if (ind > -1) { pb = nb.substring(0,ind); eb = nb.substring(ind+1); }
 		
 		//
-		// ‹——£Zo
+		// è·é›¢ç®—å‡º
 		//
 		int d = 0;
 		
-		// extension ‚ªˆá‚¤‚Æ‚©‚È‚èˆá‚¤ƒtƒ@ƒCƒ‹
-		// (ƒf[ƒ^‚ª‚ ‚ê‚Î’è”‚ğŠwK‚³‚¹‚½•û‚ª‚æ‚¢H)
+		// extension ãŒé•ã†ã¨ã‹ãªã‚Šé•ã†ãƒ•ã‚¡ã‚¤ãƒ«
+		// (ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚Œã°å®šæ•°ã‚’å­¦ç¿’ã•ã›ãŸæ–¹ãŒã‚ˆã„ï¼Ÿ)
 		if (!ea.equals(eb)) d += 10000;
 		
-		// Å’·‹¤’Ê•¶š—ñ‚ğ’T‚·
+		// æœ€é•·å…±é€šæ–‡å­—åˆ—ã‚’æ¢ã™
 		String sub = longestCommonSubsequence(pa, pb);
 		
 		int dd = 0;
 		if (sub.length() > 3) {
 			int ia = pa.indexOf(sub);
 			int ib = pb.indexOf(sub);
-			// ·•ª•¶š—ñ
+			// å·®åˆ†æ–‡å­—åˆ—
 			String diff = pa.substring(0, ia) + pa.substring(ia+sub.length())
 							+ pb.substring(0, ib) + pb.substring(ib+sub.length());
-			// ·•ª•¶š—ñ‚Ìí—Ş‚É‚æ‚Á‚Ä‹——£‚ªˆÙ‚È‚é
-			// ‹³tƒf[ƒ^‚ª‚ ‚ê‚Î•¶ší‚Æ‹——£‚ÍŠwK‚³‚¹‚éè‚à‚ ‚é‚©‚à’m‚ê‚È‚¢
+			// å·®åˆ†æ–‡å­—åˆ—ã®ç¨®é¡ã«ã‚ˆã£ã¦è·é›¢ãŒç•°ãªã‚‹
+			// æ•™å¸«ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚Œã°æ–‡å­—ç¨®ã¨è·é›¢ã¯å­¦ç¿’ã•ã›ã‚‹æ‰‹ã‚‚ã‚ã‚‹ã‹ã‚‚çŸ¥ã‚Œãªã„
 			for (int i = 0; i < diff.length(); i++) {
 				char c = diff.charAt(i);
 				if (c >= '0' && c <= '9') dd += 2;
 				else if (c == '_')  dd += 2;
 				else if (c == '-')  dd += 2;
 				else if (c == ' ')  dd += 2;
-				else if (c == '@') dd += 2;
+				else if (c == 'ã€€') dd += 2;
 				else if (c == '(')  dd += 2;
 				else if (c == ')')  dd += 2;
-				else if (c == 'i') dd += 2;
-				else if (c == 'j') dd += 2;
+				else if (c == 'ï¼ˆ') dd += 2;
+				else if (c == 'ï¼‰') dd += 2;
 				else if (c == '[')  dd += 2;
 				else if (c == ']')  dd += 2;
-				else if (c == 'u') dd += 2;
-				else if (c == 'v') dd += 2;
+				else if (c == 'ã€Œ') dd += 2;
+				else if (c == 'ã€') dd += 2;
 				else if (c == '<')  dd += 2;
 				else if (c == '>')  dd += 2;
-				else if (c == 'ƒ') dd += 2;
-				else if (c == '„') dd += 2;
+				else if (c == 'ï¼œ') dd += 2;
+				else if (c == 'ï¼') dd += 2;
 				else dd += 20;
 			}
 		} else {
 			dd += 100;
 		}
 		
-		// ˆê’v‚µ‚Ä‚¢‚é•”•ª‚ª¬‚³‚¢‚Æ‹——£‚Í’·‚¢(®‚Í“K“–)
-		d += dd * 1000 / (sub.length() * sub.length() + 2); // ŠwK‚Ì—]’n‚ ‚èH
+		// ä¸€è‡´ã—ã¦ã„ã‚‹éƒ¨åˆ†ãŒå°ã•ã„ã¨è·é›¢ã¯é•·ã„(å¼ã¯é©å½“)
+		d += dd * 1000 / (sub.length() * sub.length() + 2); // å­¦ç¿’ã®ä½™åœ°ã‚ã‚Šï¼Ÿ
 		
-		// ƒTƒCƒY‚É‚æ‚é”»’è‚à‰Á–¡‚·‚é
+		// ã‚µã‚¤ã‚ºã«ã‚ˆã‚‹åˆ¤å®šã‚‚åŠ å‘³ã™ã‚‹
 		long sizeGap = a.size - b.size;
 		long minSize = b.size;
 		if (sizeGap < 0) {
 			sizeGap = -sizeGap;
 			minSize = a.size;
 		}
-		if (sizeGap > 0) d += (int)(Math.log(sizeGap) * 200); // ŠwK‚Ì—]’n‚ ‚èH
+		if (sizeGap > 0) d += (int)(Math.log(sizeGap) * 200); // å­¦ç¿’ã®ä½™åœ°ã‚ã‚Šï¼Ÿ
 		
-		// XV“ú‚É‚æ‚é”»’è‚à’Ç‰Á
+		// æ›´æ–°æ—¥æ™‚ã«ã‚ˆã‚‹åˆ¤å®šã‚‚è¿½åŠ 
 		long dateGap = a.lastModified - b.lastModified;
 		if (dateGap < 0) dateGap = -dateGap;
 		
-		if (dateGap > 0) d += (int)(Math.log(dateGap) * 100); // ŠwK‚Ì—]’n‚ ‚èH
+		if (dateGap > 0) d += (int)(Math.log(dateGap) * 100); // å­¦ç¿’ã®ä½™åœ°ã‚ã‚Šï¼Ÿ
 		
 		return d;
 	}
@@ -213,7 +213,7 @@ public class SimilarFilePicker {
 		while (true) {
 			FileDistance f = fdl.get(cnt++);
 			if (cnt >= fdl.size()) break;
-			if (f.a.size + f.b.size < 2 * 200 * 1024) continue; // 200KˆÈ‰º‚ÍƒXƒLƒbƒv
+			if (f.a.size + f.b.size < 2 * 200 * 1024) continue; // 200Kä»¥ä¸‹ã¯ã‚¹ã‚­ãƒƒãƒ—
 			System.out.println("---------------------------------------");
 			System.out.println("           " + f.dist + "             ");
 			System.out.println("---------------------------------------");

@@ -6,9 +6,9 @@ import abdom.data.json.JsonObject;
 import com.ntt.tc.net.Rest;
 
 /**
- * Long-polling ‚É‚æ‚éƒCƒxƒ“ƒgŠÄ‹ƒXƒŒƒbƒh‚ğ¶¬‚µ‚Ü‚·B
- * ‚±‚ÌƒIƒuƒWƒFƒNƒg‚ÉƒŠƒXƒi[‚ğİ’è‚·‚é‚±‚Æ‚ÅAOperation ‚ğƒnƒ“ƒhƒŠƒ“ƒO
- * ‚Å‚«‚Ü‚·B
+ * Long-polling ã«ã‚ˆã‚‹ã‚¤ãƒ™ãƒ³ãƒˆç›£è¦–ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+ * ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒªã‚¹ãƒŠãƒ¼ã‚’è¨­å®šã™ã‚‹ã“ã¨ã§ã€Operation ã‚’ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°
+ * ã§ãã¾ã™ã€‚
  *
  * @version		29 November, 2016
  * @author		Yusuke Sasaki
@@ -16,10 +16,10 @@ import com.ntt.tc.net.Rest;
 public class OperationWatcher implements Runnable {
 	protected Device2 device;
 	
-	/** ƒŠƒXƒi[‚Í‚PŒÂ‚¾‚¯“o˜^‚Å‚«‚é */
+	/** ãƒªã‚¹ãƒŠãƒ¼ã¯ï¼‘å€‹ã ã‘ç™»éŒ²ã§ãã‚‹ */
 	protected OperationListener listener;
 	
-	/** ƒfƒoƒCƒXƒNƒŒƒfƒ“ƒVƒƒƒ‹—v‹—p‚ÌƒfƒoƒCƒXID(³®–¼ÌH) */
+	/** ãƒ‡ãƒã‚¤ã‚¹ã‚¯ãƒ¬ãƒ‡ãƒ³ã‚·ãƒ£ãƒ«è¦æ±‚ç”¨ã®ãƒ‡ãƒã‚¤ã‚¹ID(æ­£å¼åç§°ï¼Ÿ) */
 	protected DeviceCredentialsResp credential;
 	
 /*-------------
@@ -34,8 +34,8 @@ public class OperationWatcher implements Runnable {
  * instance methods
  */
 	/**
-	 * long-polling ‚ğŠJn‚µ‚Ü‚·B
-	 * ‚±‚Ìƒƒ\ƒbƒh‚ÍAƒfƒoƒCƒXƒNƒŒƒfƒ“ƒVƒƒƒ‹æ“¾Œã‚ÉŒÄ‚ñ‚Å‚­‚¾‚³‚¢B
+	 * long-polling ã‚’é–‹å§‹ã—ã¾ã™ã€‚
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯ã€ãƒ‡ãƒã‚¤ã‚¹ã‚¯ãƒ¬ãƒ‡ãƒ³ã‚·ãƒ£ãƒ«å–å¾—å¾Œã«å‘¼ã‚“ã§ãã ã•ã„ã€‚
 	 */
 	public void watch() {
 		Thread t = new Thread(this);
@@ -47,7 +47,7 @@ public class OperationWatcher implements Runnable {
  */
 	@Override
 	public void run() {
-		// Device ‚©‚çƒNƒŒƒfƒ“ƒVƒƒƒ‹•t‚«‚Ì Rest ‚ğæ“¾
+		// Device ã‹ã‚‰ã‚¯ãƒ¬ãƒ‡ãƒ³ã‚·ãƒ£ãƒ«ä»˜ãã® Rest ã‚’å–å¾—
 		Rest r = device.getRest();
 		
 		// long-polling

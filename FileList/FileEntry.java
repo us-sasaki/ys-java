@@ -1,18 +1,18 @@
 import java.util.List;
 import java.util.Date;
 
-/** Šeíˆ——p‚É•Ö—˜‚È’l‚ğ’Ç‰Á. key‚Ípath */
+/** å„ç¨®å‡¦ç†ç”¨ã«ä¾¿åˆ©ãªå€¤ã‚’è¿½åŠ . keyã¯path */
 public class FileEntry {
 	String		path;
-	int			level;		// [‚³
-	boolean		isDirectory; // ƒfƒBƒŒƒNƒgƒŠ‚©H
-	List<Long>	sizeList;	// ‰ß‹‚ÌƒTƒCƒY—š—ğ
+	int			level;		// æ·±ã•
+	boolean		isDirectory; // ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹ï¼Ÿ
+	List<Long>	sizeList;	// éå»ã®ã‚µã‚¤ã‚ºå±¥æ­´
 	long		size;
-	long		increase;	// ’¼‹ß‚Ì‘•ª
+	long		increase;	// ç›´è¿‘ã®å¢—åˆ†
 	
-	// ˆÈ‰ºAŠg’£ƒtƒB[ƒ‹ƒh‚ÅÌ‚Ì csv ‚É‚ÍŠÜ‚Ü‚ê‚Ä‚¢‚È‚¢
-	String		owner	= "unknown";	// ƒtƒ@ƒCƒ‹Š—LÒ since 16/05/27
-	long		lastModified	= 614201724000000L;	// ÅIXV“ú since 16/06/03
+	// ä»¥ä¸‹ã€æ‹¡å¼µãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã§æ˜”ã® csv ã«ã¯å«ã¾ã‚Œã¦ã„ãªã„
+	String		owner	= "unknown";	// ãƒ•ã‚¡ã‚¤ãƒ«æ‰€æœ‰è€… since 16/05/27
+	long		lastModified	= 614201724000000L;	// æœ€çµ‚æ›´æ–°æ—¥ since 16/06/03
 	
 /*-----------
  * overrides

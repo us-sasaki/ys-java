@@ -15,8 +15,8 @@ import com.ntt.tc.data.rest.*;
 import com.ntt.tc.data.sensor.*;
 
 /**
- * Cumulocity Device ƒTƒ“ƒvƒ‹À‘•
- * JData ”Å
+ * Cumulocity Device ã‚µãƒ³ãƒ—ãƒ«å®Ÿè£…
+ * JData ç‰ˆ
  *
  * @author	Yusuke Sasaki
  */
@@ -24,11 +24,11 @@ public class Device2 {
 	public static final String CONFIG_FILE = "Device.conf";
 	
 	protected ExternalIds	hard;
-	/** ƒfƒoƒCƒXƒNƒŒƒfƒ“ƒVƒƒƒ‹—v‹—p‚ÌƒfƒoƒCƒXID(³®–¼ÌH) */
+	/** ãƒ‡ãƒã‚¤ã‚¹ã‚¯ãƒ¬ãƒ‡ãƒ³ã‚·ãƒ£ãƒ«è¦æ±‚ç”¨ã®ãƒ‡ãƒã‚¤ã‚¹ID(æ­£å¼åç§°ï¼Ÿ) */
 	protected DeviceCredentialsResp credential;
 	protected ManagedObject managedObject;
 	
-	/** ‚±‚ÌƒIƒuƒWƒFƒNƒg‚Ì ManagedObject */
+	/** ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® ManagedObject */
 	
 	protected Rest rest;
 	
@@ -56,7 +56,7 @@ public class Device2 {
 			if (conf.get("managedObject") != null) {
 				managedObject.fill(conf.get("managedObject"));
 			} else {
-				// ƒfƒtƒHƒ‹ƒg‚Ì ManagedObject ‚ğ¶¬‚µ‚Ü‚·B
+				// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã® ManagedObject ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
 				managedObject.name = "YS Java device " + credential.id;
 				managedObject.type = "windows"; // c8y_Linux in doc's sample.
 				managedObject.c8y_IsDevice = new JsonObject();
@@ -79,8 +79,8 @@ public class Device2 {
  * instance methods
  */
 	/**
-	 * Json‚Ì’l‚ğæ“¾‚µ‚Ü‚·BƒL[‚ª‚È‚¢ê‡Anull ‚ª•Ô‚è‚Ü‚·B
-	 * ‚½‚Ô‚ñ•s—v
+	 * Jsonã®å€¤ã‚’å–å¾—ã—ã¾ã™ã€‚ã‚­ãƒ¼ãŒãªã„å ´åˆã€null ãŒè¿”ã‚Šã¾ã™ã€‚
+	 * ãŸã¶ã‚“ä¸è¦
 	 */
 //	private String getStr(JsonType jt, String field) {
 //		JsonType j = jt.get(field);
@@ -93,7 +93,7 @@ public class Device2 {
 //	}
 	
 	/**
-	 * conf ‚ğ CONFIG_FILE ‚Å¦‚³‚ê‚éƒtƒ@ƒCƒ‹‚Æ‚µ‚Äo—Í
+	 * conf ã‚’ CONFIG_FILE ã§ç¤ºã•ã‚Œã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦å‡ºåŠ›
 	 */
 	private void writeConf() throws IOException {
 		JsonObject conf = new JsonObject();
@@ -108,7 +108,7 @@ public class Device2 {
 	}
 	
 	/**
-	 * Rest.Response ‚ğ•\¦
+	 * Rest.Response ã‚’è¡¨ç¤º
 	 */
 	private void printResp(Rest.Response resp) {
 		if (resp.body == null) System.out.println(resp.code + ":" + resp.message);
@@ -124,8 +124,8 @@ public class Device2 {
 	
 	/**
 	 * Step 0.
-	 * ‚±‚Ì Device ‚ªƒfƒoƒCƒXƒNƒŒƒfƒ“ƒVƒƒƒ‹‚ğ‚Á‚Ä‚¢‚È‚¢ê‡AƒT[ƒo‚É—v‹‚µ‚Ü‚·B
-	 * —v‹‚Í‚T•b‚²‚Æ‚És‚¢A³í•Ô‹p‚ª‚ ‚é‚Ü‚Å‘±‚¯‚Ü‚·B
+	 * ã“ã® Device ãŒãƒ‡ãƒã‚¤ã‚¹ã‚¯ãƒ¬ãƒ‡ãƒ³ã‚·ãƒ£ãƒ«ã‚’æŒã£ã¦ã„ãªã„å ´åˆã€ã‚µãƒ¼ãƒã«è¦æ±‚ã—ã¾ã™ã€‚
+	 * è¦æ±‚ã¯ï¼•ç§’ã”ã¨ã«è¡Œã„ã€æ­£å¸¸è¿”å´ãŒã‚ã‚‹ã¾ã§ç¶šã‘ã¾ã™ã€‚
 	 */
 	private void getDeviceCredential() throws IOException {
 		if (credential.username != null &&
@@ -155,11 +155,11 @@ public class Device2 {
 	
 	/**
 	 * Step 1.
-	 * externalId ‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚©Šm”F‚µA‚È‚¯‚ê‚Î“o˜^‚µ‚Ü‚·B
-	 * ManagedObject “o˜^ ¨ externalId •t—^‚Ì‡‚Ì‚½‚ßAexternalId ‚ª‚È‚¢
-	 * ‚±‚Æ‚Í ManagedObject ‚à‚È‚¢‚±‚Æ‚ğ¦‚µ‚Ü‚·B
-	 * externalId ‚ÍAconfig ƒtƒ@ƒCƒ‹‚Åw’è‚ª‚È‚©‚Á‚½ê‡A
-	 * ƒfƒtƒHƒ‹ƒg’l "ext-"+id ‚ğ c8y_Serial ‚Æ‚µ‚ÄŠm”F‚µ‚Ü‚·B
+	 * externalId ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèªã—ã€ãªã‘ã‚Œã°ç™»éŒ²ã—ã¾ã™ã€‚
+	 * ManagedObject ç™»éŒ² â†’ externalId ä»˜ä¸ã®é †ã®ãŸã‚ã€externalId ãŒãªã„
+	 * ã“ã¨ã¯ ManagedObject ã‚‚ãªã„ã“ã¨ã‚’ç¤ºã—ã¾ã™ã€‚
+	 * externalId ã¯ã€config ãƒ•ã‚¡ã‚¤ãƒ«ã§æŒ‡å®šãŒãªã‹ã£ãŸå ´åˆã€
+	 * ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ "ext-"+id ã‚’ c8y_Serial ã¨ã—ã¦ç¢ºèªã—ã¾ã™ã€‚
 	 *
 	 */
 	private boolean existsExternalId() throws IOException {
@@ -174,7 +174,7 @@ public class Device2 {
 	
 	/**
 	 * Step 2.
-	 * ŠÇ—ƒIƒuƒWƒFƒNƒg‚ğV‹K“o˜^‚µ‚Ü‚·B
+	 * ç®¡ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ–°è¦ç™»éŒ²ã—ã¾ã™ã€‚
 	 */
 	private void registerManagedObject() throws IOException {
 		Rest r = getRest();
@@ -191,7 +191,7 @@ public class Device2 {
 	
 	/**
 	 * Step 3.
-	 * ManagerObject ‚É externalId ‚ğ•R‚Ã‚¯‚Ü‚·
+	 * ManagerObject ã« externalId ã‚’ç´ã¥ã‘ã¾ã™
 	 */
 	private void registerExternalId() throws IOException {
 		Rest r = getRest();
@@ -207,8 +207,8 @@ public class Device2 {
 	
 	/**
 	 * Step 4.
-	 * ManagedObject ‚ğÅV‰»‚µ‚Ü‚·
-	 * XV‚µ‚½‚¢ managedObject id ‚ÉAXV•”•ª‚Ì‚İ‚ğ‘—M‚·‚ê‚ÎOK
+	 * ManagedObject ã‚’æœ€æ–°åŒ–ã—ã¾ã™
+	 * æ›´æ–°ã—ãŸã„ managedObject id ã«ã€æ›´æ–°éƒ¨åˆ†ã®ã¿ã‚’é€ä¿¡ã™ã‚Œã°OK
 	 */
 	private void updateManagedObject() throws IOException {
 		
@@ -254,8 +254,8 @@ public class Device2 {
 	/**
 	 * Step 10 Send Events
 	 */
-	// Ÿ‚ÍAevent ‚Å Location update ‚ğ‚µ‚½‚¢
-	// ‚ ‚ÆAƒoƒCƒiƒŠƒtƒ@ƒCƒ‹‚ğ‘—óM‚µ‚½‚¢
+	// æ¬¡ã¯ã€event ã§ Location update ã‚’ã—ãŸã„
+	// ã‚ã¨ã€ãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«ã‚’é€å—ä¿¡ã—ãŸã„
 	private void sendEvents() throws IOException {
 		Event e = new Event(managedObject, "c8y_LocationUpdate", "location Changed event.");
 		e.c8y_Position = new C8y_Position();
@@ -301,7 +301,7 @@ public class Device2 {
 	}
 	
 	/**
-	 * Binary ƒAƒbƒvƒ[ƒh
+	 * Binary ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰
 	 */
 	private void uploadBinary(String filename,
 						String mimetype,
@@ -326,17 +326,17 @@ public class Device2 {
 		Device2 a = new Device2();
 		a.getDeviceCredential();
 		if (!a.existsExternalId()) {
-			// ‰‰ñ“o˜^
+			// åˆå›ç™»éŒ²
 			a.registerManagedObject();
 			a.registerExternalId();
 		}
-		// ƒAƒbƒvƒf[ƒg‚ª‚ ‚ê‚ÎAmanagedObject ‚ğXV
-		// ƒAƒbƒvƒf[ƒg‚ª‚ ‚é‚©‚Ç‚¤‚©‚Ì”»’è‚Ís‚Á‚Ä‚¨‚ç‚¸A•K‚¸XV
+		// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆãŒã‚ã‚Œã°ã€managedObject ã‚’æ›´æ–°
+		// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆãŒã‚ã‚‹ã‹ã©ã†ã‹ã®åˆ¤å®šã¯è¡Œã£ã¦ãŠã‚‰ãšã€å¿…ãšæ›´æ–°
 		
 		//a.updateManagedObject();
 		// An error occurred while updating mo.Unprocessable Entity
-		// ‚ªo‚éBid ‚Ì‚æ‚¤‚ÈXV•s”\‚Ì‚à‚Ì‚à‚Ü‚Æ‚ß‚Ä‘—‚Á‚Ä‚¢‚é‚©‚ç‚Æ
-		// v‚í‚ê‚éB
+		// ãŒå‡ºã‚‹ã€‚id ã®ã‚ˆã†ãªæ›´æ–°ä¸èƒ½ã®ã‚‚ã®ã‚‚ã¾ã¨ã‚ã¦é€ã£ã¦ã„ã‚‹ã‹ã‚‰ã¨
+		// æ€ã‚ã‚Œã‚‹ã€‚
 		
 		// location update
 		a.updateManagedObject();

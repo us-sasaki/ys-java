@@ -19,9 +19,9 @@ import abdom.location.interval.Interval;
 
 public class Gpstest {
 	/**
-	 * mainB’Êí‹N“®‚Å‚ÍA‘S©“®‚Å‰ğÍAƒtƒ@ƒCƒ‹Ši”[‚ğs‚¤B
-	 * args ‚ªw’è‚³‚ê‚Ä‚¢‚éê‡A‚»‚Ìƒtƒ@ƒCƒ‹‚É‘Î‚µAmanual() ‚ğŒÄ‚ÔB
-	 * manual() ‚Í’€ŸÀs‚µAÚ×‚È—áŠO‰ğÍ‚É–ğ—§‚Ä‚éB
+	 * mainã€‚é€šå¸¸èµ·å‹•ã§ã¯ã€å…¨è‡ªå‹•ã§è§£æã€ãƒ•ã‚¡ã‚¤ãƒ«æ ¼ç´ã‚’è¡Œã†ã€‚
+	 * args ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã€ãã®ãƒ•ã‚¡ã‚¤ãƒ«ã«å¯¾ã—ã€manual() ã‚’å‘¼ã¶ã€‚
+	 * manual() ã¯é€æ¬¡å®Ÿè¡Œã—ã€è©³ç´°ãªä¾‹å¤–è§£æã«å½¹ç«‹ã¦ã‚‹ã€‚
 	 */
 	public static void main(String[] args) throws Exception {
 		if (args.length == 0) {
@@ -29,7 +29,7 @@ public class Gpstest {
 			d.addPhotoDirectory(".");
 			d.processAllLogs("gpslog/", "json/");
 			
-			// Firefox ‹N“®
+			// Firefox èµ·å‹•
 			Runtime.getRuntime().exec("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe bicycle.html");
 		} else {
 			manual(args[0]);
@@ -37,7 +37,7 @@ public class Gpstest {
 	}
 	
 	/**
-	 * ’€Ÿ‰ğÍ‚·‚é‚½‚ß‚Ìƒƒ\ƒbƒh
+	 * é€æ¬¡è§£æã™ã‚‹ãŸã‚ã®ãƒ¡ã‚½ãƒƒãƒ‰
 	 */
 	private static void manual(String fname) throws Exception {
 		GPSRefiner g = new GPSRefiner();
@@ -51,7 +51,7 @@ public class Gpstest {
 		g.addAlgorithm(new PrintPlotsFilter("--- Cut Same Plot ---"));
 		g.addAlgorithm(new CutOutlierPlotsFilter(0.05d, 0.05d)); //0.05d));
 		g.addAlgorithm(new PrintPlotsFilter("--- Cut Outlier ---"));
-//		g.addAlgorithm(new MarkerPlotsFilter(1)); // ƒ}[ƒJ[‚ğ‚Â‚¯‚é
+//		g.addAlgorithm(new MarkerPlotsFilter(1)); // ãƒãƒ¼ã‚«ãƒ¼ã‚’ã¤ã‘ã‚‹
 		g.addAlgorithm(new ULMPlotsFilter(10d));
 		g.addAlgorithm(new PrintPlotsFilter("--- ULM modifying ---"));
 //		g.addAlgorithm(new AveragingPlotsFilter(15));
@@ -62,20 +62,20 @@ public class Gpstest {
 		g.readGPSLog(fname);
 		
 		GPSDecorator d = new GPSDecorator();
-		d.addPhotoDirectory("G:\\programs\\misc\\160922_šššGPSƒvƒƒOƒ‰ƒ€“‡\\photo\\");
+		d.addPhotoDirectory("G:\\programs\\misc\\160922_â˜…â˜…â˜…GPSãƒ—ãƒ­ã‚°ãƒ©ãƒ çµ±åˆ\\photo\\");
 		System.out.println("--- set stops ---");
 		d.setStops(g);
 		System.out.println("--- set photo file name ---");
 		d.setPhotoFileName(g);
 		System.out.println(d.getMetaInfoAsJson(g));
-		// ƒtƒ@ƒCƒ‹‘‚«‚İ
+		// ãƒ•ã‚¡ã‚¤ãƒ«æ›¸ãè¾¼ã¿
 		abdom.data.json.JsonArray j = g.getPlotsAsJson();
 		
 		PlotUtils.writeString("json/"+fname, ".json", j.toString());
 		
 		g.writeVelocity(fname);
 		
-		// Firefox ‹N“®
+		// Firefox èµ·å‹•
 		Runtime.getRuntime().exec("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe bicycle.html?fname="+fname.substring(0,fname.lastIndexOf('.'))+".json");
 	}
 }

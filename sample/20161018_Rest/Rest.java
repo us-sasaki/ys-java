@@ -7,32 +7,32 @@ import javax.net.ssl.HttpsURLConnection;
 import static java.net.HttpURLConnection.*;
 
 /**
- * REST ‚É‚æ‚é—v‹‚ğŠÈ’P‚És‚¤‚½‚ß‚ÌƒNƒ‰ƒX
- * GET /platform ‚Í¬Œ÷
- * POST ‚Í–¢ŒŸØ
+ * REST ã«ã‚ˆã‚‹è¦æ±‚ã‚’ç°¡å˜ã«è¡Œã†ãŸã‚ã®ã‚¯ãƒ©ã‚¹
+ * GET /platform ã¯æˆåŠŸ
+ * POST ã¯æœªæ¤œè¨¼
  *
  * @version	19, October 2016
  * @author	Yusuke Sasaki
  */
 public class Rest {
 	
-	/** host ‚ğ¦‚· URL •¶š—ñ(http:// or https://) */
+	/** host ã‚’ç¤ºã™ URL æ–‡å­—åˆ—(http:// or https://) */
 	protected String urlStr;
 	
-	/** Cumulocity ‚É‚¨‚¯‚éƒeƒiƒ“ƒg–¼ */
+	/** Cumulocity ã«ãŠã‘ã‚‹ãƒ†ãƒŠãƒ³ãƒˆå */
 	protected String tenant;
 	
-	/** Cumulocity ƒ†[ƒUƒAƒJƒEƒ“ƒg */
+	/** Cumulocity ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ */
 	protected String user;
 	
-	/** Cumulocity ƒ†[ƒUƒpƒXƒ[ƒh */
+	/** Cumulocity ãƒ¦ãƒ¼ã‚¶ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ */
 	protected String password;
 	
 /*-------------
  * Constructor
  */
 	/**
-	 * w’è‚³‚ê‚½ host, tenant, user, password ‚ğ•Û‚·‚é Rest ‚ğì¬‚µ‚Ü‚·B
+	 * æŒ‡å®šã•ã‚ŒãŸ host, tenant, user, password ã‚’ä¿æŒã™ã‚‹ Rest ã‚’ä½œæˆã—ã¾ã™ã€‚
 	 */
 	public Rest(String urlStr, String tenant, String user, String password) {
 		this.urlStr = urlStr;
@@ -46,7 +46,7 @@ public class Rest {
  */
 	/**
 	 * https://nttcom.cumuloity.com
-	 * ‚ÉÚ‘±‚·‚éA²X–ØƒAƒJƒEƒ“ƒg‚ÅƒƒOƒCƒ“‚·‚éVƒCƒ“ƒXƒ^ƒ“ƒX‚ğ•Ô‹p‚µ‚Ü‚·B
+	 * ã«æ¥ç¶šã™ã‚‹ã€ä½ã€…æœ¨ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã§ãƒ­ã‚°ã‚¤ãƒ³ã™ã‚‹æ–°ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”å´ã—ã¾ã™ã€‚
 	 */
 	public static Rest getDefaultC8YInstance() {
 		return new Rest("https://nttcom.cumulocity.com", "nttcom", "us.sasaki@ntt.com", "nttcomsasaki3");
@@ -56,8 +56,8 @@ public class Rest {
  * instance methods
  */
 	/**
-	 * GET ‚ğg—p‚µ‚½ƒŠƒNƒGƒXƒg‚ğ‚µ‚Ü‚·B
-	 * ‚±‚ÌÀ‘•‚ÍA/platformAPI Œˆ‚ß‘Å‚¿‚É‚È‚Á‚Ä‚¢‚Ü‚·B
+	 * GET ã‚’ä½¿ç”¨ã—ãŸãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ã—ã¾ã™ã€‚
+	 * ã“ã®å®Ÿè£…ã¯ã€/platformAPI æ±ºã‚æ‰“ã¡ã«ãªã£ã¦ã„ã¾ã™ã€‚
 	 */
 	public void get(String resource) throws IOException {
 		URL url = new URL(urlStr + resource);

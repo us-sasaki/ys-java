@@ -2,29 +2,29 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonType;
 
 /**
- * Step 4: ƒCƒ“ƒxƒ“ƒgƒŠ‚ÌƒfƒoƒCƒX‚ğXV‚·‚é
+ * Step 4: ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã®ãƒ‡ãƒã‚¤ã‚¹ã‚’æ›´æ–°ã™ã‚‹
  * 
- * ã‚ÌStep1‚ÅƒfƒoƒCƒX‚ª‚·‚Å‚É“o˜^‚³‚ê‚Ä‚¢‚éA‚Æ•Ô‹p‚³‚ê‚½ê‡AƒCƒ“ƒxƒ“ƒgƒŠ‚Ì
- * ƒfƒoƒCƒX‚Ì•\Œ»‚ªŒ»İ‚ÌÀƒfƒoƒCƒX‚Ìó‘Ô‚É‘Î‚µ‚ÄÅV‚Å‚ ‚é‚±‚Æ‚ğŠm”F‚·‚é
- * •K—v‚ª‚ ‚è‚Ü‚·B
- * ‚±‚Ì‚½‚ßAƒCƒ“ƒxƒ“ƒgƒŠ‚ÌƒfƒoƒCƒX‚Ì URL ‚É PUTƒŠƒNƒGƒXƒg‚ª‘—M‚³‚ê‚Ü‚·B
- * ÀÛ‚É•ÏX‚Ì‚ ‚Á‚½ƒtƒ‰ƒOƒƒ“ƒg‚Ì‚İ‚ª‘—M‚³‚ê‚é‚±‚Æ‚É’ˆÓ‚µ‚Ä‚­‚¾‚³‚¢B
- * (ƒtƒ‰ƒOƒƒ“ƒg‚Ì‚³‚ç‚È‚éî•ñ‚ÍACumulocity ‚ÌƒhƒƒCƒ“ƒ‚ƒfƒ‹‚ğQÆ‚­‚¾‚³‚¢)
- * —á‚¦‚ÎAƒfƒoƒCƒX‚Ìƒn[ƒhƒEƒFƒAî•ñ‚Í’Êí•ÏX‚³‚ê‚Ü‚¹‚ñ‚ªAƒ\ƒtƒgƒEƒFƒAƒCƒ“
- * ƒXƒg[ƒ‹î•ñ‚Í•ÏX‚³‚ê‚é‰Â”\«‚ª‚ ‚è‚Ü‚·B‚µ‚½‚ª‚Á‚ÄAƒCƒ“ƒxƒ“ƒgƒŠ‚Ìƒ\ƒtƒg
- * ƒEƒFƒAî•ñ‚ğƒfƒoƒCƒXƒŠƒu[ƒgŒã‚ÉÅVó‘Ô‚É‡‚í‚¹‚é‚±‚Æ‚ğ‚¨‚í‚©‚è‚¢‚½‚¾‚¯‚é
- * ‚Å‚µ‚å‚¤B
+ * ä¸Šã®Step1ã§ãƒ‡ãƒã‚¤ã‚¹ãŒã™ã§ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã€ã¨è¿”å´ã•ã‚ŒãŸå ´åˆã€ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã®
+ * ãƒ‡ãƒã‚¤ã‚¹ã®è¡¨ç¾ãŒç¾åœ¨ã®å®Ÿãƒ‡ãƒã‚¤ã‚¹ã®çŠ¶æ…‹ã«å¯¾ã—ã¦æœ€æ–°ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèªã™ã‚‹
+ * å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
+ * ã“ã®ãŸã‚ã€ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã®ãƒ‡ãƒã‚¤ã‚¹ã® URL ã« PUTãƒªã‚¯ã‚¨ã‚¹ãƒˆãŒé€ä¿¡ã•ã‚Œã¾ã™ã€‚
+ * å®Ÿéš›ã«å¤‰æ›´ã®ã‚ã£ãŸãƒ•ãƒ©ã‚°ãƒ¡ãƒ³ãƒˆã®ã¿ãŒé€ä¿¡ã•ã‚Œã‚‹ã“ã¨ã«æ³¨æ„ã—ã¦ãã ã•ã„ã€‚
+ * (ãƒ•ãƒ©ã‚°ãƒ¡ãƒ³ãƒˆã®ã•ã‚‰ãªã‚‹æƒ…å ±ã¯ã€Cumulocity ã®ãƒ‰ãƒ¡ã‚¤ãƒ³ãƒ¢ãƒ‡ãƒ«ã‚’å‚ç…§ãã ã•ã„)
+ * ä¾‹ãˆã°ã€ãƒ‡ãƒã‚¤ã‚¹ã®ãƒãƒ¼ãƒ‰ã‚¦ã‚§ã‚¢æƒ…å ±ã¯é€šå¸¸å¤‰æ›´ã•ã‚Œã¾ã›ã‚“ãŒã€ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚¤ãƒ³
+ * ã‚¹ãƒˆãƒ¼ãƒ«æƒ…å ±ã¯å¤‰æ›´ã•ã‚Œã‚‹å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚ã—ãŸãŒã£ã¦ã€ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã®ã‚½ãƒ•ãƒˆ
+ * ã‚¦ã‚§ã‚¢æƒ…å ±ã‚’ãƒ‡ãƒã‚¤ã‚¹ãƒªãƒ–ãƒ¼ãƒˆå¾Œã«æœ€æ–°çŠ¶æ…‹ã«åˆã‚ã›ã‚‹ã“ã¨ã‚’ãŠã‚ã‹ã‚Šã„ãŸã ã‘ã‚‹
+ * ã§ã—ã‚‡ã†ã€‚
  *
  * <code></code>
  *
- * ƒG[ƒWƒFƒ“ƒg‚©‚çAƒfƒoƒCƒX‚Ì–¼‘O‚ğXV‚µ‚È‚¢‚Å‚­‚¾‚³‚¢I ƒG[ƒWƒFƒ“ƒg‚Í
- * ƒfƒoƒCƒX‚É‘Î‚µƒfƒtƒHƒ‹ƒg–¼‚ğ¶¬‚µAƒCƒ“ƒxƒ“ƒgƒŠ‚Å¯•Ê‚Å‚«‚é‚æ‚¤‚É‚µ‚Ü‚·B
- * ‚µ‚©‚µ‚È‚ª‚çAƒ†[ƒU‚Í‘YŠÇ—‚Ìî•ñ‚Å–¼‘O‚ğ•ÒW‚µ‚½‚èXV‚µ‚½‚è‚Å‚«‚é
- * ‚æ‚¤‚É‚·‚×‚«‚Å‚·B
+ * ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã‹ã‚‰ã€ãƒ‡ãƒã‚¤ã‚¹ã®åå‰ã‚’æ›´æ–°ã—ãªã„ã§ãã ã•ã„ï¼ ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã¯
+ * ãƒ‡ãƒã‚¤ã‚¹ã«å¯¾ã—ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆåã‚’ç”Ÿæˆã—ã€ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã§è­˜åˆ¥ã§ãã‚‹ã‚ˆã†ã«ã—ã¾ã™ã€‚
+ * ã—ã‹ã—ãªãŒã‚‰ã€ãƒ¦ãƒ¼ã‚¶ã¯è³‡ç”£ç®¡ç†ã®æƒ…å ±ã§åå‰ã‚’ç·¨é›†ã—ãŸã‚Šæ›´æ–°ã—ãŸã‚Šã§ãã‚‹
+ * ã‚ˆã†ã«ã™ã¹ãã§ã™ã€‚
  *
  * Response : 406
  * Message  : Not Acceptable
- * ‚Æ‚È‚Á‚Ä‚µ‚Ü‚Á‚½B‚Ì‚ÅAAccept ƒwƒbƒ_‚ğ•t—^ -> ‚¤‚Ü‚­‚¢‚Á‚½
+ * ã¨ãªã£ã¦ã—ã¾ã£ãŸã€‚ã®ã§ã€Accept ãƒ˜ãƒƒãƒ€ã‚’ä»˜ä¸ -> ã†ã¾ãã„ã£ãŸ
  */
 public class S4 {
 	public static void main(String[] args) throws Exception {
@@ -37,6 +37,6 @@ public class S4 {
 	}
 }
 
-/* Œ‹‰Ê
+/* çµæœ
 {"assetParents":{"references":[],"self":"http://nttcom.cumulocity.com/inventory/managedObjects/12244450/assetParents"},"childAssets":{"references":[],"self":"http://nttcom.cumulocity.com/inventory/managedObjects/12244450/childAssets"},"childDevices":{"references":[{"managedObject":{"id":"9941768","self":"http://nttcom.cumulocity.com/inventory/managedObjects/9941768"},"self":"http://nttcom.cumulocity.com/inventory/managedObjects/12244450/childDevices/9941768"}],"self":"http://nttcom.cumulocity.com/inventory/managedObjects/12244450/childDevices"},"creationTime":"2016-10-24T08:51:18.349+02:00","deviceParents":{"references":[],"self":"http://nttcom.cumulocity.com/inventory/managedObjects/12244450/deviceParents"},"id":"12244450","lastUpdated":"2016-11-02T08:40:03.452+01:00","name":"VAIO YS's 5102173","owner":"device_ysdev000001","self":"http://nttcom.cumulocity.com/inventory/managedObjects/12244450","type":"YSAP","c8y_IsDevice":{},"c8y_Notes":"REST\u306b\u3088\u308a\u30c7\u30d0\u30a4\u30b9\u30af\u30ec\u30c7\u30f3\u30b7\u30e3\u30eb\u3067\u767b\u9332\u3057\u305f\u30c7\u30d0\u30a4\u30b9\u3002\nYS First Device \u3092\u5b50\u30c7\u30d0\u30a4\u30b9\u3068\u3057\u3066\u767b\u9332\u3057\u3066\u3044\u308b\u3002","c8y_Hardware":{"serialNumber":"5102173","CPU":"Core i5"},"c8y_Configuration":{"config":"on the YS Desk"},"c8y_Software":{"virtual-driver":"vd-1.0"}}
 */

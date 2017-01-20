@@ -3,8 +3,8 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 
 /**
- * •¡”‰ñ‚ÌƒfƒBƒŒƒNƒgƒŠ“àƒtƒ@ƒCƒ‹ƒTƒCƒYî•ñ‚ğŠi”[‚·‚éB
- * ‚Ü‚½AFileList ‚â List<FileEntry> ‚ÉŠÖ‚·‚é•Ö—˜‚È‘€ì‚ğs‚¤ƒƒ\ƒbƒh‚ğ’ñ‹Ÿ‚·‚éB
+ * è¤‡æ•°å›ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºæƒ…å ±ã‚’æ ¼ç´ã™ã‚‹ã€‚
+ * ã¾ãŸã€FileList ã‚„ List<FileEntry> ã«é–¢ã™ã‚‹ä¾¿åˆ©ãªæ“ä½œã‚’è¡Œã†ãƒ¡ã‚½ãƒƒãƒ‰ã‚’æä¾›ã™ã‚‹ã€‚
  */
 public class FileList {
 	public static int MAX_DEPTH = FileLister.MAX_DEPTH;
@@ -14,19 +14,19 @@ public class FileList {
 	List<Long>		dateList;
 	List<FileEntry> list;
 	int sizeListCount;
-	int referencePoint; // increase ‚ğŒvZ‚·‚éŠî€, list ‚Ì index ‚Åw’è
+	int referencePoint; // increase ã‚’è¨ˆç®—ã™ã‚‹åŸºæº–, list ã® index ã§æŒ‡å®š
 	
 /*-------------
  * constructor
  */
 	/**
-	 * ‹ó‚Ì FileList ‚ğì‚è‚Ü‚·B
+	 * ç©ºã® FileList ã‚’ä½œã‚Šã¾ã™ã€‚
 	 */
 	public FileList() {
 		list = null;
 		dateList = null;
 		sizeListCount = 0;
-		referencePoint = 0; // ‰Šú’lFÅ‰‚ÌƒTƒCƒY‚Æ”äŠr‚µ‚Ä increase ‚ğŒvZ
+		referencePoint = 0; // åˆæœŸå€¤ï¼šæœ€åˆã®ã‚µã‚¤ã‚ºã¨æ¯”è¼ƒã—ã¦ increase ã‚’è¨ˆç®—
 	}
 	
 /*------------------
@@ -37,7 +37,7 @@ public class FileList {
 		calcIncrease();
 	}
 	public void setReferencePoint(int position) {
-		if (position < 0 || position >= dateList.size()) throw new IndexOutOfBoundsException("setReferencePoint(int) Œ»İAƒf[ƒ^ƒtƒ@ƒCƒ‹‚Í"+dateList.size()+"ŒÂİ’è‚³‚ê‚Ä‚¢‚Ü‚·B‚±‚Ì”–¢–‚Ì”ñ•‰®”‚ğİ’è‚µ‚Ä‚­‚¾‚³‚¢");
+		if (position < 0 || position >= dateList.size()) throw new IndexOutOfBoundsException("setReferencePoint(int) ç¾åœ¨ã€ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã¯"+dateList.size()+"å€‹è¨­å®šã•ã‚Œã¦ã„ã¾ã™ã€‚ã“ã®æ•°æœªæº€ã®éè² æ•´æ•°ã‚’è¨­å®šã—ã¦ãã ã•ã„");
 		referencePoint = position;
 		calcIncrease();
 	}
@@ -46,12 +46,12 @@ public class FileList {
 	}
 	
 	/**
-	 * listyyyyMMdd.csv Œ`®(FileLister ‚Å¶¬)‚Ìƒtƒ@ƒCƒ‹‚Ìî•ñ‚ğ“Ç‚İ‚İ‚Ü‚·B
+	 * listyyyyMMdd.csv å½¢å¼(FileLister ã§ç”Ÿæˆ)ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®æƒ…å ±ã‚’èª­ã¿è¾¼ã¿ã¾ã™ã€‚
 	 */
 	public void addFile(String fname) throws IOException {
 		if (list == null) list = new ArrayList<FileEntry>();
 		
-		// ’x‚¢‚½‚ßA“à•”ˆ—‚Å Map ‚ğg‚¤À‘•‚É•ÏX
+		// é…ã„ãŸã‚ã€å†…éƒ¨å‡¦ç†ã§ Map ã‚’ä½¿ã†å®Ÿè£…ã«å¤‰æ›´
 		Map<String, FileEntry> map = new TreeMap<String, FileEntry>();
 		for (FileEntry fe : list) map.put(fe.path, fe);
 		
@@ -64,7 +64,7 @@ public class FileList {
 			
 			String[] token = line.split(",");
 			
-			// ‚Ü‚¸ path ‚ğ¶¬‚·‚é
+			// ã¾ãš path ã‚’ç”Ÿæˆã™ã‚‹
 			String p = "";
 			for (int i = 1; i <= MAX_DEPTH; i++) {
 				if (token[i].equals("")) continue;
@@ -74,13 +74,13 @@ public class FileList {
 			
 			FileEntry entry = map.get(p);
 			if (entry == null) {
-				// V‚µ‚¢ path
+				// æ–°ã—ã„ path
 				entry = new FileEntry();
-				map.put(p, entry); // entry ‚ÌQÆ‚¾‚¯æ‚É“o˜^A’†g‚ÍˆÈ~•ÏX
+				map.put(p, entry); // entry ã®å‚ç…§ã ã‘å…ˆã«ç™»éŒ²ã€ä¸­èº«ã¯ä»¥é™å¤‰æ›´
 				
 				entry.level = Integer.parseInt(token[0]);
 				entry.path = p;
-				entry.isDirectory = false; // ‚¿‚á‚ñ‚Æˆ—‚µ‚Ä‚È‚¢
+				entry.isDirectory = false; // ã¡ã‚ƒã‚“ã¨å‡¦ç†ã—ã¦ãªã„
 				entry.sizeList = new ArrayList<Long>();
 				for (int i = 0; i < sizeListCount; i++) {
 					entry.sizeList.add(0L);
@@ -88,10 +88,10 @@ public class FileList {
 			}
 			entry.sizeList.add(Long.decode(token[MAX_DEPTH + 1]));
 			
-			// owner ‚ğã‘‚«‚·‚é
+			// owner ã‚’ä¸Šæ›¸ãã™ã‚‹
 			if (token.length >= MAX_DEPTH + 3)
 				entry.owner = token[MAX_DEPTH + 2];
-			// lastModified ‚ğã‘‚«‚·‚é
+			// lastModified ã‚’ä¸Šæ›¸ãã™ã‚‹
 			if (token.length >= MAX_DEPTH + 4)
 				entry.lastModified = Long.parseLong(token[MAX_DEPTH + 3]);
 		}
@@ -101,21 +101,21 @@ public class FileList {
 		fr.close();
 		br.close();
 		
-		// map ‚ğ list ‚ÉÄİ’è
+		// map ã‚’ list ã«å†è¨­å®š
 		list.clear();
 		for (FileEntry entry : map.values()) {
 			list.add(entry);
 		}
 		
-		// sizeList ‚Ì’·‚³‚ğ‚»‚ë‚¦AisDirectory ‚ğİ’è
+		// sizeList ã®é•·ã•ã‚’ãã‚ãˆã€isDirectory ã‚’è¨­å®š
 		makeup();
 		
-		// ƒtƒ@ƒCƒ‹–¼‚©‚çAdate ‚ğæ“¾
+		// ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ã€date ã‚’å–å¾—
 		addDateList(fname);
 	}
 	
 	/**
-	 * w’è‚µ‚½ƒtƒ@ƒCƒ‹–¼‚©‚ç“ú•t•”•ª‚ğæ‚èo‚µAlong’l‚Ì dateList ‚É’Ç‰Á
+	 * æŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰æ—¥ä»˜éƒ¨åˆ†ã‚’å–ã‚Šå‡ºã—ã€longå€¤ã® dateList ã«è¿½åŠ 
 	 */
 	private void addDateList(String filename) {
 		if (dateList == null) dateList = new ArrayList<Long>();
@@ -129,24 +129,24 @@ public class FileList {
 
 	
 	/**
-	 * list ‚ğ path ‚Ì«‘®‡˜‚É®—ñ‚µA
-	 * sizeList ‚Ì’·‚³‚ğ sizeListCount (addFile ‚µ‚½‰ñ”) ‚É‘µ‚¦A
-	 * Še FileEntry ‚Ì isDirectory ƒtƒ‰ƒO‚ğİ’è‚·‚éB‚±‚Ìƒtƒ‰ƒOİ’è‚ÍA
-	 * path ‚Ì«‘®‡‚É•À‚×‚½‚Æ‚«A©•ªˆÈ~‚É©•ª‚ğŠÜ‚Ş path ‚ª‘¶İ
-	 * ‚µ‚È‚¢ê‡‚Éƒtƒ@ƒCƒ‹(isDirectory = false)‚Æ‚µ‚Ä‚¢‚éB<BR>
-	 * —á)												<br>
+	 * list ã‚’ path ã®è¾æ›¸å¼é †åºã«æ•´åˆ—ã—ã€
+	 * sizeList ã®é•·ã•ã‚’ sizeListCount (addFile ã—ãŸå›æ•°) ã«æƒãˆã€
+	 * å„ FileEntry ã® isDirectory ãƒ•ãƒ©ã‚°ã‚’è¨­å®šã™ã‚‹ã€‚ã“ã®ãƒ•ãƒ©ã‚°è¨­å®šã¯ã€
+	 * path ã®è¾æ›¸å¼é †ã«ä¸¦ã¹ãŸã¨ãã€è‡ªåˆ†ä»¥é™ã«è‡ªåˆ†ã‚’å«ã‚€ path ãŒå­˜åœ¨
+	 * ã—ãªã„å ´åˆã«ãƒ•ã‚¡ã‚¤ãƒ«(isDirectory = false)ã¨ã—ã¦ã„ã‚‹ã€‚<BR>
+	 * ä¾‹)												<br>
 	 * path1 = Y:\hoge\tarou.hoe						<br>
 	 * path2 = Y:\hoge\tarou.hoe\bar					<br>
 	 * path3 = Y:\hoge\tarou.hoe\foo					<br>
-	 * path4 =(Y:\hoge\tarou.hoe\foo ‚Ån‚Ü‚ç‚È‚¢‚à‚Ì)	<br>
+	 * path4 =(Y:\hoge\tarou.hoe\foo ã§å§‹ã¾ã‚‰ãªã„ã‚‚ã®)	<br>
 	 *
-	 * ‚Ì‚æ‚¤‚É‚È‚Á‚Ä‚¢‚½ê‡Apath1 ‚Ì‚İ directory, path2/3 ‚Í file ‚Æ”»’è‚·‚é
-	 * ‚Â‚Ü‚èA‹ó‚ÌƒfƒBƒŒƒNƒgƒŠ‚Íƒtƒ@ƒCƒ‹‚Æ”»’è‚³‚ê‚é•¾ŠQ‚ª‚ ‚é‚ªApath ‚Ì‚İ‚©‚ç
-	 * directory ‚ğ”»’è‚·‚éè’i‚Í‚È‚­A‚±‚Ìƒtƒ@ƒCƒ‹(ƒfƒBƒŒƒNƒgƒŠ)‚Íí‚ÉƒTƒCƒY‚ª0
-	 * ‚È‚Ì‚ÅAŒã‘±ˆ—‚É‰e‹¿‚µ‚È‚¢‚½‚ßA–â‘è‚È‚¢B
+	 * ã®ã‚ˆã†ã«ãªã£ã¦ã„ãŸå ´åˆã€path1 ã®ã¿ directory, path2/3 ã¯ file ã¨åˆ¤å®šã™ã‚‹
+	 * ã¤ã¾ã‚Šã€ç©ºã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã¯ãƒ•ã‚¡ã‚¤ãƒ«ã¨åˆ¤å®šã•ã‚Œã‚‹å¼Šå®³ãŒã‚ã‚‹ãŒã€path ã®ã¿ã‹ã‚‰
+	 * directory ã‚’åˆ¤å®šã™ã‚‹æ‰‹æ®µã¯ãªãã€ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«(ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª)ã¯å¸¸ã«ã‚µã‚¤ã‚ºãŒ0
+	 * ãªã®ã§ã€å¾Œç¶šå‡¦ç†ã«å½±éŸ¿ã—ãªã„ãŸã‚ã€å•é¡Œãªã„ã€‚
 	 */
 	private void makeup() {
-		// path ‚Ì«‘®‡˜‚Åƒ\[ƒg
+		// path ã®è¾æ›¸å¼é †åºã§ã‚½ãƒ¼ãƒˆ
 		list.sort(new PathOrder());
 		
 		for (FileEntry e : list) {
@@ -167,31 +167,31 @@ public class FileList {
 	}
 	
 	private void calcIncrease() {
-		// increase ‚ğŒvZ
+		// increase ã‚’è¨ˆç®—
 		for (FileEntry e : list) {
 			List<Long> l = e.sizeList;
-			e.size	= l.get(sizeListCount - 1); // ÅŒã(ÅV)‚ÌƒTƒCƒY
+			e.size	= l.get(sizeListCount - 1); // æœ€å¾Œ(æœ€æ–°)ã®ã‚µã‚¤ã‚º
 			e.increase = e.size - l.get(referencePoint);
 		}
 	}
 	
 	/**
-	 * ‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ª•Û‚µ‚Ä‚¢‚é list ‚Ö‚ÌQÆ‚ğ•Ô‹p‚µ‚Ü‚·B
-	 * •Ô‹p‚³‚ê‚½ list ‚Ì FileEntry “à—e‚ğ•ÏX‚µ‚½ê‡A‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ì list ‚ª
-	 * •ÏX‚³‚ê‚é‚±‚Æ‚É’ˆÓ‚ª•K—v‚Å‚·B
+	 * ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒä¿æŒã—ã¦ã„ã‚‹ list ã¸ã®å‚ç…§ã‚’è¿”å´ã—ã¾ã™ã€‚
+	 * è¿”å´ã•ã‚ŒãŸ list ã® FileEntry å†…å®¹ã‚’å¤‰æ›´ã—ãŸå ´åˆã€ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã® list ãŒ
+	 * å¤‰æ›´ã•ã‚Œã‚‹ã“ã¨ã«æ³¨æ„ãŒå¿…è¦ã§ã™ã€‚
 	 */
 	public List<FileEntry> getList() {
 		return list;
 	}
 	
 	/**
-	 * ƒtƒ@ƒCƒ‹‚Ì[‚³(ŠK‘wAlevel)‚ğw’è‚µ‚ÄAŠY“–‚·‚é FileEntry ‚©‚ç‚È‚é
-	 * list ‚ğ•Ô‹p‚µ‚Ü‚·B
-	 * •Ô‹p‚³‚ê‚½ list ‚Ì FileEntry “à—e‚ğ•ÏX‚µ‚½ê‡A‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ì list ‚ª
-	 * •ÏX‚³‚ê‚é‚±‚Æ‚É’ˆÓ‚ª•K—v‚Å‚·B
+	 * ãƒ•ã‚¡ã‚¤ãƒ«ã®æ·±ã•(éšå±¤ã€level)ã‚’æŒ‡å®šã—ã¦ã€è©²å½“ã™ã‚‹ FileEntry ã‹ã‚‰ãªã‚‹
+	 * list ã‚’è¿”å´ã—ã¾ã™ã€‚
+	 * è¿”å´ã•ã‚ŒãŸ list ã® FileEntry å†…å®¹ã‚’å¤‰æ›´ã—ãŸå ´åˆã€ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã® list ãŒ
+	 * å¤‰æ›´ã•ã‚Œã‚‹ã“ã¨ã«æ³¨æ„ãŒå¿…è¦ã§ã™ã€‚
 	 */
 	public List<FileEntry> selectLevel(int level) {
-		if (list == null) throw new IllegalStateException("addFile ‚É‚æ‚Á‚Ä’l‚ğŠi”[‚µ‚Ä‚­‚¾‚³‚¢");
+		if (list == null) throw new IllegalStateException("addFile ã«ã‚ˆã£ã¦å€¤ã‚’æ ¼ç´ã—ã¦ãã ã•ã„");
 		ArrayList<FileEntry> result = new ArrayList<FileEntry>();
 		
 		for (FileEntry f : list) {
@@ -201,13 +201,13 @@ public class FileList {
 	}
 	
 	/**
-	 * ƒtƒ@ƒCƒ‹‚Ìí—Ş(ƒtƒ@ƒCƒ‹/ƒfƒBƒŒƒNƒgƒŠ)‚ğw’è‚µ‚ÄAŠY“–‚·‚é FileEntry ‚©‚ç‚È‚é
-	 * list ‚ğ•Ô‹p‚µ‚Ü‚·B
-	 * •Ô‹p‚³‚ê‚½ list ‚Ì FileEntry “à—e‚ğ•ÏX‚µ‚½ê‡A‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ì list ‚ª
-	 * •ÏX‚³‚ê‚é‚±‚Æ‚É’ˆÓ‚ª•K—v‚Å‚·B
+	 * ãƒ•ã‚¡ã‚¤ãƒ«ã®ç¨®é¡(ãƒ•ã‚¡ã‚¤ãƒ«/ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª)ã‚’æŒ‡å®šã—ã¦ã€è©²å½“ã™ã‚‹ FileEntry ã‹ã‚‰ãªã‚‹
+	 * list ã‚’è¿”å´ã—ã¾ã™ã€‚
+	 * è¿”å´ã•ã‚ŒãŸ list ã® FileEntry å†…å®¹ã‚’å¤‰æ›´ã—ãŸå ´åˆã€ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã® list ãŒ
+	 * å¤‰æ›´ã•ã‚Œã‚‹ã“ã¨ã«æ³¨æ„ãŒå¿…è¦ã§ã™ã€‚
 	 */
 	public List<FileEntry> selectFile(boolean isFile) {
-		if (list == null) throw new IllegalStateException("addFile ‚É‚æ‚Á‚Ä’l‚ğŠi”[‚µ‚Ä‚­‚¾‚³‚¢");
+		if (list == null) throw new IllegalStateException("addFile ã«ã‚ˆã£ã¦å€¤ã‚’æ ¼ç´ã—ã¦ãã ã•ã„");
 		ArrayList<FileEntry> result = new ArrayList<FileEntry>();
 		
 		for (FileEntry f : list) {
@@ -217,13 +217,13 @@ public class FileList {
 	}
 	
 	/**
-	 * ”CˆÓ‚Ìƒ‹[ƒ‹(Predicate<FileEntry>)‚É]‚Á‚Äƒtƒ@ƒCƒ‹‚ğ’Šo‚·‚é
+	 * ä»»æ„ã®ãƒ«ãƒ¼ãƒ«(Predicate<FileEntry>)ã«å¾“ã£ã¦ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŠ½å‡ºã™ã‚‹
 	 *
-	 * @param	fes		ƒtƒ@ƒCƒ‹’Šoƒ‹[ƒ‹
-	 * @return	’Šo‚³‚ê‚½ FileEntry ‚Ì List (shallow copy)
+	 * @param	fes		ãƒ•ã‚¡ã‚¤ãƒ«æŠ½å‡ºãƒ«ãƒ¼ãƒ«
+	 * @return	æŠ½å‡ºã•ã‚ŒãŸ FileEntry ã® List (shallow copy)
 	 */
 	public List<FileEntry> selectAs(java.util.function.Predicate<FileEntry> fes) {
-		if (list == null) throw new IllegalStateException("addFile ‚É‚æ‚Á‚Ä’l‚ğŠi”[‚µ‚Ä‚­‚¾‚³‚¢");
+		if (list == null) throw new IllegalStateException("addFile ã«ã‚ˆã£ã¦å€¤ã‚’æ ¼ç´ã—ã¦ãã ã•ã„");
 		ArrayList<FileEntry> result = new ArrayList<FileEntry>();
 		
 		for (FileEntry f : list) {
@@ -233,7 +233,7 @@ public class FileList {
 	}
 	
 	/**
-	 * ”CˆÓ‚Ìƒ‹[ƒ‹‚É]‚Á‚ÄAsublist ‚ğæ“¾‚·‚éB
+	 * ä»»æ„ã®ãƒ«ãƒ¼ãƒ«ã«å¾“ã£ã¦ã€sublist ã‚’å–å¾—ã™ã‚‹ã€‚
 	 */
 	public static List<FileEntry> selectAs(List<FileEntry> src, java.util.function.Predicate<FileEntry> p) {
 		ArrayList<FileEntry> result = new ArrayList<FileEntry>();
@@ -248,7 +248,7 @@ public class FileList {
  * class methods
  *
 	/**
-	 * path •¶š—ñ‚©‚çƒtƒ@ƒCƒ‹–¼‚ğæ“¾
+	 * path æ–‡å­—åˆ—ã‹ã‚‰ãƒ•ã‚¡ã‚¤ãƒ«åã‚’å–å¾—
 	 */
 	public static String filename(String pathString) {
 		int idx = pathString.lastIndexOf('\\');
@@ -276,7 +276,7 @@ public class FileList {
 	}
 	
 	/**
-	 * NVD3 line chart —p JSON ƒtƒ@ƒCƒ‹o—Í
+	 * NVD3 line chart ç”¨ JSON ãƒ•ã‚¡ã‚¤ãƒ«å‡ºåŠ›
 	 */
 	public static void writeJsonFile(List<Long> dateList,
 							List<FileEntry> target, int depth,
@@ -299,7 +299,7 @@ public class FileList {
 	}
 	
 	/**
-	 * NVD3 Pie Chart —p JSON ƒtƒ@ƒCƒ‹o—Í
+	 * NVD3 Pie Chart ç”¨ JSON ãƒ•ã‚¡ã‚¤ãƒ«å‡ºåŠ›
 	 */
 	public static void writePieChartJsonFile(List<FileEntry> target, int depth,
 							String filename) throws IOException {
@@ -315,7 +315,7 @@ public class FileList {
 	}
 	
 	/**
-	 * owner •¶š—ñ‚©‚ç–¼‘O‚ğƒ}ƒbƒsƒ“ƒO‚·‚é
+	 * owner æ–‡å­—åˆ—ã‹ã‚‰åå‰ã‚’ãƒãƒƒãƒ”ãƒ³ã‚°ã™ã‚‹
 	 */
 	public static String reveal(String owner) {
 		int codeIndex = owner.lastIndexOf("\\");
@@ -324,7 +324,7 @@ public class FileList {
 	}
 	
 	/**
-	 * JsonObject ‚ğƒtƒ@ƒCƒ‹‚Éo—Í‚·‚é
+	 * JsonObject ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ›ã™ã‚‹
 	 */
 	public static void writeJsonType(JsonType obj, String filename) throws IOException {
 		FileOutputStream fos = new FileOutputStream(filename);
@@ -351,8 +351,8 @@ public class FileList {
 	}
 	
 	/**
-	 * w’è‚³‚ê‚½ƒfƒBƒŒƒNƒgƒŠ‚Ìƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
-	 * list20yyMMdd.csv ‚Ì‚æ‚¤‚ÈŒ`‚Ìƒtƒ@ƒCƒ‹‚ğ‚·‚×‚Ä“Ç‚İ‚Ş
+	 * æŒ‡å®šã•ã‚ŒãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
+	 * list20yyMMdd.csv ã®ã‚ˆã†ãªå½¢ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã™ã¹ã¦èª­ã¿è¾¼ã‚€
 	 */
 	public static FileList readFiles(String path) throws IOException {
 		File dir = new File(path);

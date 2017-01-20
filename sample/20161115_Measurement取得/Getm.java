@@ -44,7 +44,7 @@ public class Getm {
 		MeasurementsResp meas = new MeasurementsResp();
 		meas.fill(resp.toJson());
 		System.out.println("measures.measurements.length = " + meas.measurements.length);
-		// statistics.pageSize �ł킩��
+		// statistics.pageSize でわかる
 		System.out.println("measures.statistics.pageSize = " + meas.statistics.pageSize);
 	}
 }

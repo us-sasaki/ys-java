@@ -136,6 +136,20 @@ public class Jsonizer {
 	}
 	
 	/**
+	 * 指定されたオブジェクトのプロパティとして、key が含まれるかテスト
+	 * します。
+	 * このメソッドは、指定するオブジェクトのクラスに対する getAccessors
+	 * が呼ばれていない状態で使用した場合、NullPointerException が発生します。
+	 *
+	 * @param	instance	テスト対象のオブジェクト
+	 * @param	key			プロパティ名
+	 * @return	key で示される名のプロパティを持つ場合 true
+	 */
+	static boolean hasProperty(Object instance, String key) {
+		return (_fieldAccessors.get(instance.getClass()).get(key) != null);
+	}
+	
+	/**
 	 * このインスタンスのクラスに関連する Accessor (値取得/設定オブジェクト)
 	 * を取得します。
 	 * ない場合、生成します。

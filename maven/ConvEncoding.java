@@ -4,20 +4,20 @@ import java.util.Arrays;
 import abdom.data.ByteArray;
 
 /**
- * “ú–{Œê‚Ì•¶šƒGƒ“ƒR[ƒh‚ğŒŸo‚µA•ÏŠ·‚·‚éƒvƒƒOƒ‰ƒ€B
- * Às‚µ‚½ƒfƒBƒŒƒNƒgƒŠˆÈ‰º‚Ì‚·‚×‚Ä‚Ì .java ƒtƒ@ƒCƒ‹‚ÌƒGƒ“ƒR[ƒh‚ğ
- * UTF-8N ‚É•ÏŠ·‚·‚éB
- * ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚Æ‚µ‚Ä .orig ƒtƒ@ƒCƒ‹‚ğ¶¬‚·‚éB
+ * æ—¥æœ¬èªã®æ–‡å­—ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã‚’æ¤œå‡ºã—ã€å¤‰æ›ã™ã‚‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã€‚
+ * å®Ÿè¡Œã—ãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªä»¥ä¸‹ã®ã™ã¹ã¦ã® .java ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã‚’
+ * UTF-8N ã«å¤‰æ›ã™ã‚‹ã€‚
+ * ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦ .orig ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç”Ÿæˆã™ã‚‹ã€‚
  */
 public class ConvEncoding {
 
 	public static boolean useBackup = true;
 	
 	/**
-	 * ’²¸‚·‚é•¶šƒGƒ“ƒR[ƒfƒBƒ“ƒOƒŠƒXƒgB
-	 * æ‚ÉŒ»‚ê‚½‚à‚Ì‚ª—Dæ‚³‚ê‚éBƒeƒXƒg‚µ‚ÄA‚±‚ÌŒ‹‰Ê‚É‚È‚Á‚Ä‚¢‚é‚½‚ß
-	 * ‚¢‚¶‚ç‚È‚¢‚±‚ÆB
-	 * “Á‚ÉAJIS ƒtƒ@ƒCƒ‹‚Í UTF-8 ‚ÉŒë”F¯‚³‚ê‚éB(‹t‚Í‚È‚ç‚È‚¢)
+	 * èª¿æŸ»ã™ã‚‹æ–‡å­—ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ãƒªã‚¹ãƒˆã€‚
+	 * å…ˆã«ç¾ã‚ŒãŸã‚‚ã®ãŒå„ªå…ˆã•ã‚Œã‚‹ã€‚ãƒ†ã‚¹ãƒˆã—ã¦ã€ã“ã®çµæœã«ãªã£ã¦ã„ã‚‹ãŸã‚
+	 * ã„ã˜ã‚‰ãªã„ã“ã¨ã€‚
+	 * ç‰¹ã«ã€JIS ãƒ•ã‚¡ã‚¤ãƒ«ã¯ UTF-8 ã«èª¤èªè­˜ã•ã‚Œã‚‹ã€‚(é€†ã¯ãªã‚‰ãªã„)
 	 */
 	private static final String[] ENCODINGS;
 	static {
@@ -33,12 +33,12 @@ public class ConvEncoding {
 	}
 	
 	/**
-	 * JIS ‚ªƒ`ƒFƒbƒN‚Å‚«‚È‚¢BENCODINGS ‚Ì‡˜“ü‚ê‘Ö‚¦‚Æ
-	 * JIS ‚Ìê‡‚Ì“Á—áˆ— 0x4A(Terapad) -> 0x42(Java) ‚Ìˆá‚¢‚ğ
-	 * ‹zû‚·‚é‚±‚Æ‚Å‚Ü‚µ‚É‚È‚Á‚½B(u‚ ‚¢v‚Ì‚Q•¶š‚Ìƒtƒ@ƒCƒ‹‚ÅA
-	 * JIS/UTF-8/EUC/ShiftJIS ‚ğ³‚µ‚­”»’è‚µ‚½)
-	 * Terapad ‚Í 0x4A ‚É‚È‚é‚ªAsakura ‚Å‚Í 0x42 ‚¾‚Á‚½‚Ì‚ÅA
-	 * Terapad ‚Ì•ÏŠ·‚ªƒCƒŒƒMƒ…ƒ‰[‚È‚Ì‚©‚à‚µ‚ê‚È‚¢B
+	 * JIS ãŒãƒã‚§ãƒƒã‚¯ã§ããªã„ã€‚ENCODINGS ã®é †åºå…¥ã‚Œæ›¿ãˆã¨
+	 * JIS ã®å ´åˆã®ç‰¹ä¾‹å‡¦ç† 0x4A(Terapad) -> 0x42(Java) ã®é•ã„ã‚’
+	 * å¸åã™ã‚‹ã“ã¨ã§ã¾ã—ã«ãªã£ãŸã€‚(ã€Œã‚ã„ã€ã®ï¼’æ–‡å­—ã®ãƒ•ã‚¡ã‚¤ãƒ«ã§ã€
+	 * JIS/UTF-8/EUC/ShiftJIS ã‚’æ­£ã—ãåˆ¤å®šã—ãŸ)
+	 * Terapad ã¯ 0x4A ã«ãªã‚‹ãŒã€sakura ã§ã¯ 0x42 ã ã£ãŸã®ã§ã€
+	 * Terapad ã®å¤‰æ›ãŒã‚¤ãƒ¬ã‚®ãƒ¥ãƒ©ãƒ¼ãªã®ã‹ã‚‚ã—ã‚Œãªã„ã€‚
 	 */
 	public static String detectEncoding(byte[] text) {
 		for (String encoding : ENCODINGS) {
@@ -49,7 +49,7 @@ public class ConvEncoding {
 	}
 	
 	/**
-	 * JIS ‚Ìê‡AƒoƒCƒgƒR[ƒh‚ªˆÙ‚È‚é‚±‚Æ‚ª‚ ‚é‚ªA‚»‚ê‚ğ‹–—e‚·‚é
+	 * JIS ã®å ´åˆã€ãƒã‚¤ãƒˆã‚³ãƒ¼ãƒ‰ãŒç•°ãªã‚‹ã“ã¨ãŒã‚ã‚‹ãŒã€ãã‚Œã‚’è¨±å®¹ã™ã‚‹
 	 * equals
 	 */
 	public static boolean equalsJIS(byte[] a, byte[] b) {
@@ -63,8 +63,8 @@ public class ConvEncoding {
 	}
 	
 	/**
-	 * w’è‚³‚ê‚½ƒGƒ“ƒR[ƒfƒBƒ“ƒO‚Å•¶š—ñ‰»AgetBytes() ‚µ‚Ä•Ï‰»
-	 * ‚µ‚È‚¢‚à‚Ì‚ğŒŸõB•Ï‰»‚·‚é‚à‚Ì‚Í@•¶š‰»‚¯@‚ÆŒ©‚È‚·B
+	 * æŒ‡å®šã•ã‚ŒãŸã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã§æ–‡å­—åˆ—åŒ–ã€getBytes() ã—ã¦å¤‰åŒ–
+	 * ã—ãªã„ã‚‚ã®ã‚’æ¤œç´¢ã€‚å¤‰åŒ–ã™ã‚‹ã‚‚ã®ã¯ã€€æ–‡å­—åŒ–ã‘ã€€ã¨è¦‹ãªã™ã€‚
 	 */
 	public static boolean checkEncoding(byte[] text, String encoding) {
 		try {
@@ -82,12 +82,12 @@ public class ConvEncoding {
 	}
 	
 	/**
-	 * w’è‚µ‚½ƒfƒBƒŒƒNƒgƒŠˆÈ~‚Ìw’è‚µ‚½Šg’£q‚Ìƒtƒ@ƒCƒ‹‚ğ encoding ‚Å
-	 * w’è‚³‚ê‚é•¶šƒGƒ“ƒR[ƒh‚É•ÏŠ·‚·‚éB
+	 * æŒ‡å®šã—ãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªä»¥é™ã®æŒ‡å®šã—ãŸæ‹¡å¼µå­ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ encoding ã§
+	 * æŒ‡å®šã•ã‚Œã‚‹æ–‡å­—ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã«å¤‰æ›ã™ã‚‹ã€‚
 	 */
 	public static void convert(String dir, String ext, String encoding) throws IOException {
 		File d = new File(dir);
-		if (!ext.startsWith(".")) throw new IllegalArgumentException(ext + " ‚É‚Í . ‚Å‚Í‚¶‚Ü‚éŠg’£q‚ğw’è‚µ‚Ü‚·");
+		if (!ext.startsWith(".")) throw new IllegalArgumentException(ext + " ã«ã¯ . ã§ã¯ã˜ã¾ã‚‹æ‹¡å¼µå­ã‚’æŒ‡å®šã—ã¾ã™");
 		if (!d.isDirectory()) throw new IllegalArgumentException(dir + " is not directory.");
 		String[] list = d.list();
 		for (String fname : list) {
@@ -102,13 +102,13 @@ public class ConvEncoding {
 	}
 	
 	/**
-	 * w’è‚³‚ê‚½‚Pƒtƒ@ƒCƒ‹‚ğ•ÏŠ·‚·‚éB
-	 * •ÏŠ·‚Ì•K—v‚ª‚È‚¢(‚à‚Æ‚à‚Æw’è‚³‚ê‚½ƒGƒ“ƒR[ƒfƒBƒ“ƒO)ê‡A‰½‚à‚µ‚È‚¢B
+	 * æŒ‡å®šã•ã‚ŒãŸï¼‘ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å¤‰æ›ã™ã‚‹ã€‚
+	 * å¤‰æ›ã®å¿…è¦ãŒãªã„(ã‚‚ã¨ã‚‚ã¨æŒ‡å®šã•ã‚ŒãŸã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°)å ´åˆã€ä½•ã‚‚ã—ãªã„ã€‚
 	 */
 	private static void convertFile(File f, String encoding) throws IOException {
 		System.out.println("Convert : " + f.getAbsolutePath());
 		
-		// ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İ baos ‚ÉŠi”[
+		// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ baos ã«æ ¼ç´
 		FileInputStream fis = new FileInputStream(f);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		for (;;) {
@@ -123,17 +123,17 @@ public class ConvEncoding {
 		
 		String orgenc = detectEncoding(fileimage);
 		System.out.println("File " + f.getName() + " encoding : " + orgenc);
-		if (orgenc.equals(encoding)) return; // •ÏŠ·•s—v
+		if (orgenc.equals(encoding)) return; // å¤‰æ›ä¸è¦
 		
 		if (useBackup) {
-			// .orig ‚Æ‚µ‚ÄƒoƒbƒNƒAƒbƒv
+			// .orig ã¨ã—ã¦ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—
 			File out = new File(f.getAbsolutePath() + ".orig");
 			FileOutputStream fos = new FileOutputStream(out);
 			fos.write(fileimage);
 			fos.close();
 		}
 		
-		// ƒGƒ“ƒR[ƒfƒBƒ“ƒO•ÏŠ·‚µ‚Äã‘‚«
+		// ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°å¤‰æ›ã—ã¦ä¸Šæ›¸ã
 		FileOutputStream fos2 = new FileOutputStream(f);
 		fos2.write(new String(fileimage, orgenc).getBytes(encoding));
 		fos2.close();
@@ -145,23 +145,32 @@ public class ConvEncoding {
 	public static void main(String[] args) throws Exception {
 		if (args.length < 1) {
 			System.out.println("usage: java ConvEncoding [target directory] [use backup]");
-			System.out.println("[use backup] : true(default)..make backupfile(.orig) false..rewrite files");
+			System.out.println("[use backup] : true(default)..make backupfile(.orig)");
+			System.out.println("               false        ..rewrite files");
+			System.out.println("[encoding]   : name which encodes to.");
+			System.out.println("                e.g. UTF-8");
+			System.out.println("                     Shift_JIS");
+			System.out.println("                     EUC-JP");
+			
 			System.exit(1);
 		} else {
 			boolean usebackup = true;
 			if (args.length > 1) {
 				if (args[1].equals("false")) usebackup = false;
 			}
-			ConvEncoding.useBackup = usebackup;
-			if (!usebackup) {
-				File f = new File(args[0]);
-				if (!f.getAbsolutePath().startsWith("C:\\Users\\Yusuke\\Documents\\GitHub\\ys-java\\maven")) {
-					System.out.println("This tool is danger, so it must be applied to subdirectory of C:\\Users\\Yusuke\\Documents\\GitHub\\ys-java\\maven  :"+f.getAbsolutePath());
-					System.exit(-1);
-				}
+			String encoding = "UTF-8";
+			if (args.length > 2) {
+				encoding = args[2];
 			}
-			convert(args[0], ".java", "UTF-8");
-			convert(args[0], ".html", "UTF-8");
+			ConvEncoding.useBackup = usebackup;
+			String root = new File(".").getCanonicalPath();
+			File f = new File(args[0]);
+			if (!f.getCanonicalPath().startsWith(root)) {
+				System.out.println("This tool is danger, so it must be applied to subdirectory of " + root + " :"+f.getCanonicalPath());
+				System.exit(-1);
+			}
+			convert(args[0], ".java", encoding);
+			convert(args[0], ".html", encoding);
 		}
 	}
 }
