@@ -99,6 +99,7 @@ public class User extends C8yData {
 	public TC_Boolean sendPasswordResetEmail;
 	public JsonObject customProperties;
 	public JsonObject groups;
+	
 	/**
 	 * List of device permissions
 	 * <pre>
