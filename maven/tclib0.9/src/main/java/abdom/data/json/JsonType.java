@@ -217,28 +217,6 @@ public abstract class JsonType extends Number
 	 * @see		#TYPE_UNKNOWN
 	 */
 	public int getType() {
-		if (this instanceof JsonValue) {
-			JsonValue j = (JsonValue)this;
-			if ("\"".equals(j.quote)) return TYPE_STRING;
-			if ("null".equals(j.value)) return TYPE_VOID;
-			if ("true".equals(j.value)) return TYPE_BOOLEAN;
-			if ("false".equals(j.value)) return TYPE_BOOLEAN;
-			try {
-				Long.parseLong(j.value);
-				return TYPE_INT;
-			} catch (NumberFormatException nfe) {
-				try {
-					Double.parseDouble(j.value);
-					return TYPE_DOUBLE;
-				} catch (NumberFormatException nfe2) {
-				}
-			}
-			return TYPE_UNKNOWN;
-		} else if (this instanceof JsonArray) {
-			return TYPE_ARRAY;
-		} else if (this instanceof JsonObject) {
-			return TYPE_OBJECT;
-		}
 		return TYPE_UNKNOWN;
 	}
 

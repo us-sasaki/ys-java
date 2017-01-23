@@ -310,6 +310,11 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 	}
 	
 	@Override
+	public int getType() {
+		return TYPE_ARRAY;
+	}
+	
+	@Override
 	public java.util.Iterator<JsonType> iterator() {
 		return array.iterator();
 	}
