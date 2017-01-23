@@ -7,8 +7,8 @@ import com.ntt.tc.data.auditing.AuditRecordCollection;
 import abdom.data.json.JsonObject;
 
 /**
- * Alarm class
- * This source is machine-generated from c8y-markdown docs.
+ * Alarm class, 
+ * post の時に使用できるコンストラクタを追加。
  */
 public class Alarm extends C8yData {
 	/**
@@ -40,7 +40,7 @@ public class Alarm extends C8yData {
 	
 	/**
 	 * Identifies the type of this alarm, e.g.,
-	 * "com\_cumulocity\_events\_TamperEvent".
+	 * "com_cumulocity_events_TamperEvent".
 	 * <pre>
 	 * Occurs : 1
 	 * PUT/POST : POST: Mandatory PUT: No
@@ -132,4 +132,33 @@ public class Alarm extends C8yData {
 	 */
 	//This field has omitted because of type and field = "*"
 	
+/*-------------
+ * constructor
+ */
+	/**
+	 * 空のオブジェクトを生成します。
+	 */
+	public Alarm() {
+	}
+	
+	/**
+	 * 与えられた引数を保持するオブジェクトを生成します。
+	 */
+	@Deprecated
+	public Alarm(String sourceId, String text) {
+		this(sourceId, "c8y_PowerAlarm", text, "ACTIVE", "MINOR");
+	}
+	
+	/**
+	 * 与えられた引数を保持するオブジェクトを生成します。
+	 */
+	public Alarm(String sourceId, String type, String text, String status, String severity) {
+		source = new ManagedObject();
+		source.id = sourceId;
+		time = new TC_Date();
+		this.type = type;
+		this.text = text;
+		this.status = status;
+		this.severity = severity;
+	}
 }

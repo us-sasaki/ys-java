@@ -320,7 +320,7 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 		sb.append('[');
 		boolean first = true;
 		for (JsonType obj : array) {
-			if (!first) sb.append(",");
+			if (!first) sb.append(',');
 			else first = false;
 			sb.append(obj.toString());
 		}

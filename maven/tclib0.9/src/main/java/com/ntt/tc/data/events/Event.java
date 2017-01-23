@@ -6,8 +6,8 @@ import com.ntt.tc.data.inventory.ManagedObject;
 import abdom.data.json.JsonObject;
 
 /**
- * Event class
- * This source is machine-generated from c8y-markdown docs.
+ * Event class, 
+ * post Event の時に使用できるコンストラクタを追加。
  */
 public class Event extends C8yData {
 	/**
@@ -36,6 +36,8 @@ public class Event extends C8yData {
 	
 	/**
 	 * Identifies the type of this event.
+	 * "com_cumulocity_modek_DoorSensorEvent" のような型
+	 * CREATE 時必須
 	 * <pre>
 	 * Occurs : 1
 	 * </pre>
@@ -46,6 +48,7 @@ public class Event extends C8yData {
 	 * Time of the event.
 	 * <pre>
 	 * Occurs : 1
+	 * CREATE 時必須
 	 * </pre>
 	 */
 	public TC_Date time;
@@ -54,6 +57,7 @@ public class Event extends C8yData {
 	 * Text description of the event.
 	 * <pre>
 	 * Occurs : 1
+	 * CREATE 時必須
 	 * </pre>
 	 */
 	public String text;
@@ -63,6 +67,7 @@ public class Event extends C8yData {
 	 * properties "id", "self", "name", and "type".
 	 * <pre>
 	 * Occurs : 1
+	 * CREATE 時必須
 	 * </pre>
 	 */
 	public ManagedObject source;
@@ -75,4 +80,21 @@ public class Event extends C8yData {
 	 */
 	//This field has omitted because of type and field = "*"
 	
+/*-------------
+ * Constructor
+ */
+	public Event() {
+		super();
+	}
+	
+	public Event(ManagedObject mo, String type, String text) {
+		super();
+		this.time = new TC_Date();
+		this.type = type;
+		this.text = text;
+		this.source = new ManagedObject();
+		this.source.id = mo.id;
+		this.source.name = mo.name;
+		this.source.type = mo.type;
+	}
 }

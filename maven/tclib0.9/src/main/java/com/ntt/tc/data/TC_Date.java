@@ -78,34 +78,6 @@ public class TC_Date extends C8yValue {
 		}
 	}
 	
-/*-----------
- * overrides
- */
-	/**
-	 * Json 形式(JsonValue (string))でインスタンスの値を変更します。
-	 *
-	 * @param	jt	値を持っている JsonType。JsonValue (string) である
-	 *			必要があり、そうでない場合、ClassCastException がスロー
-	 *			されます。
-	 */
-	@Override
-	public void fill(JsonType jt) {
-		JsonValue jv = (JsonValue)jt;
-		String str = jv.getValue();
-		set(str);
-	}
-	
-	/**
-	 * Json 表現を取得します。JsonValue (string) の型、
-	 * "yyyy-MM-dd'T'HH:mm:ss.SSSXXX" のフォーマットで返却されます。
-	 *
-	 * @return	JsonValue 値
-	 */
-	@Override
-	public JsonType toJson() {
-		return new JsonValue(SDF.format(date));
-	}
-	
 	/**
 	 * 文字列値を取得します。
 	 * 文字列では、"yyyy-MM-dd'T'HH:mm:ss.SSSXXX" のフォーマットを使用します。
@@ -137,4 +109,33 @@ public class TC_Date extends C8yValue {
 	public long getTime() {
 		return date.getTime();
 	}
+	
+/*-----------
+ * overrides
+ */
+	/**
+	 * Json 形式(JsonValue (string))でインスタンスの値を変更します。
+	 *
+	 * @param	jt	値を持っている JsonType。JsonValue (string) である
+	 *			必要があり、そうでない場合、ClassCastException がスロー
+	 *			されます。
+	 */
+	@Override
+	public void fill(JsonType jt) {
+		JsonValue jv = (JsonValue)jt;
+		String str = jv.getValue();
+		set(str);
+	}
+	
+	/**
+	 * Json 表現を取得します。JsonValue (string) の型、
+	 * "yyyy-MM-dd'T'HH:mm:ss.SSSXXX" のフォーマットで返却されます。
+	 *
+	 * @return	JsonValue 値
+	 */
+	@Override
+	public JsonType toJson() {
+		return new JsonValue(SDF.format(date));
+	}
+	
 }

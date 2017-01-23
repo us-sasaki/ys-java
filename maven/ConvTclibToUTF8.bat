@@ -1,5 +1,4 @@
 javac ConvEncoding.java
-java ConvEncoding . false UTF-8
-java ConvEncoding . false UTF-8
+java ConvEncoding tclib0.9/src/main/java false UTF-8
 
 pause

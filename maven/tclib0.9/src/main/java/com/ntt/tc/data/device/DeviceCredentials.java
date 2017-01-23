@@ -4,7 +4,7 @@ import com.ntt.tc.data.C8yData;
 
 /**
  * DeviceCredentials class
- * This source is machine-generated from c8y-markdown docs.
+ * isValid() メソッド追加
  */
 public class DeviceCredentials extends C8yData {
 	/**
@@ -46,5 +46,9 @@ public class DeviceCredentials extends C8yData {
 	 * </pre>
 	 */
 	public String self;
+	
+	public boolean isValid() {
+		return (username != null && password != null);
+	}
 	
 }
