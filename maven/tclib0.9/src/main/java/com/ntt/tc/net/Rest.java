@@ -2,7 +2,7 @@ package com.ntt.tc.net;
 
 import java.io.*;
 import java.net.*;
-import java.util.Base64;
+//import java.util.Base64; // since JDK1.8
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -11,6 +11,8 @@ import javax.net.ssl.HttpsURLConnection;
 import abdom.data.json.JsonArray;
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonObject;
+
+import com.ntt.tc.util.Base64;
 
 import static java.net.HttpURLConnection.*;
 
@@ -302,7 +304,7 @@ public class Rest {
 		
 		// 基本認証
 		if (user != null && password != null) {
-			String authStr = Base64.getEncoder().encodeToString((tenant + user + ":" + password).getBytes());
+			String authStr = Base64.encodeToString((tenant + user + ":" + password).getBytes());
 			con.setRequestProperty("Authorization", "Basic " + authStr);
 		}
 		
