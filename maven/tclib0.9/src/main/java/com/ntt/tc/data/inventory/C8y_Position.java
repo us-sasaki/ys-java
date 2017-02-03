@@ -9,6 +9,9 @@ import com.ntt.tc.data.C8yData;
  * the managed object representing the asset or device. To trace the position
  * of an asset or a device, "c8y_Position" is sent as part of an event of
  * type "c8y_LocationUpdate".
+ * コンストラクタを追加
+ *
+ * @version		February 3, 2017
  */
 public class C8y_Position extends C8yData {
 	/** 高度(m) */
@@ -30,4 +33,23 @@ public class C8y_Position extends C8yData {
 	 * e.g. "Time Event"
 	 */
 	public String reportReason;
+	
+/*-------------
+ * constructor
+ */
+	public C8y_Position() {
+		super();
+	}
+	
+	public C8y_Position(double lat, double lng, double alt) {
+		this(lat, lng, alt, "-", "-");
+	}
+	
+	public C8y_Position(double  lat, double lng, double alt, String trackingProtocol, String reportReason) {
+		this.alt = alt;
+		this.lat = lat;
+		this.lng = lng;
+		this.trackingProtocol = trackingProtocol;
+		this.reportReason = reportReason;
+	}
 }
