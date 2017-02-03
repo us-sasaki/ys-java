@@ -87,6 +87,14 @@ public class Event extends C8yData {
 		super();
 	}
 	
+	/**
+	 * 指定された ManagedObject をソースとする Event を生成します。
+	 * Event POST に必須のデータのみをコピーし、通信量を節約します。
+	 *
+	 * @param		mo		sourceとなる Managed object
+	 * @param		type	Event 型
+	 * @param		text	イベントの説明
+	 */
 	public Event(ManagedObject mo, String type, String text) {
 		super();
 		this.time = new TC_Date();
