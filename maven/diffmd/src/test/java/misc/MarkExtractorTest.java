@@ -70,15 +70,25 @@ public class MarkExtractorTest extends TestCase{
 	}
 	public void test1() throws IOException {
 		// ファイル読み込み
-        List<String> oldLines = Files.readAllLines(FileSystems.getDefault().getPath(PATH + EN_ORG + FILENAME), StandardCharsets.UTF_8);
-        List<String> newLines = Files.readAllLines(FileSystems.getDefault().getPath(PATH + EN_NEW + FILENAME), StandardCharsets.UTF_8);
-        List<String> oldJaLines = Files.readAllLines(FileSystems.getDefault().getPath(PATH + JA_ORG + FILENAME), StandardCharsets.UTF_8);
+		testFile("introduction.html.md", "introduction.html.txt");
+		testFile("advanced.html.md", "advanced.html.txt");
+		testFile("best-practices.html.md", "best-practices.html.txt");
+		testFile("data-model.html.md", "data-model.html.txt");
+		testFile("examples.html.md", "examples.html.txt");
+		testFile("geofence.html.md", "geofence.html.txt");
+	}
+	
+	private void testFile(String filename, String resultFname)
+					throws IOException {
+        List<String> oldLines = Files.readAllLines(FileSystems.getDefault().getPath(PATH + EN_ORG + filename), StandardCharsets.UTF_8);
+        List<String> newLines = Files.readAllLines(FileSystems.getDefault().getPath(PATH + EN_NEW + filename), StandardCharsets.UTF_8);
+        List<String> oldJaLines = Files.readAllLines(FileSystems.getDefault().getPath(PATH + JA_ORG + filename), StandardCharsets.UTF_8);
 		
 		DiffMdInTranslate dmit = new DiffMdInTranslate(oldLines, newLines, oldJaLines);
 		List<String> text = dmit.toText();
 		
 		
-		Files.write(FileSystems.getDefault().getPath("./result.txt"), text, StandardCharsets.UTF_8 );
+		Files.write(FileSystems.getDefault().getPath("./" + resultFname), text, StandardCharsets.UTF_8 );
 	}
 	public void test2() {
 	}
