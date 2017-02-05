@@ -57,16 +57,16 @@ public class MarkExtractorTest extends TestCase{
 		//	System.out.println(line + "," + iterator.next());
 		//}
        	
-       	for (int i = 0; i < enMark.size(); i++) {
-       		System.out.println("Eng:" + i + " Ja(min):" + enJaMap.min(i) + " Ja(max):" + enJaMap.max(i));
-       		System.out.print(oldLines.get(i));
-       		System.out.print("■");
-       		for (int j = enJaMap.min(i); j <= enJaMap.max(i); j++) {
-				System.out.print(oldJaLines.get(j));
-				System.out.print("■");
-       		}
-       		System.out.println();
-       	}
+//       	for (int i = 0; i < enMark.size(); i++) {
+//       		System.out.println("Eng:" + i + " Ja(min):" + enJaMap.min(i) + " Ja(max):" + enJaMap.max(i));
+//       		System.out.print(oldLines.get(i));
+//       		System.out.print("■");
+//       		for (int j = enJaMap.min(i); j <= enJaMap.max(i); j++) {
+//				System.out.print(oldJaLines.get(j));
+//				System.out.print("■");
+//       		}
+//       		System.out.println();
+//       	}
 	}
 	public void test1() throws IOException {
 		// ファイル読み込み

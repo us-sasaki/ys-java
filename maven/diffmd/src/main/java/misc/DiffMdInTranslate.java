@@ -275,6 +275,7 @@ public class DiffMdInTranslate {
 		
 		int orgCnt = 0; // 次に挿入するカウント
 		int revCnt = 0;
+		// delta に対してマーク【】を添付する
 		for (Delta delta : p.getDeltas()) {
 			int orgStart = delta.getOriginal().getPosition();
 			int revStart = delta.getRevised().getPosition();
