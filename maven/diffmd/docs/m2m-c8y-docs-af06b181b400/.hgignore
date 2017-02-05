@@ -1,7 +1,0 @@
-.DS_Store
-node_modules
-out/
-.docpad.db
-syntax: glob
-codekit-config.json
-npm-debug.log

@@ -145,25 +145,25 @@ public class DiffMdInTranslate {
 		for (Block block : blocks) {
 			if (block.deltas.size() > 0) {
 				// 変更を含むブロック
-				result.add("┌─────────────────────────────────────┐");
+				result.add("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 				result.add("↓■■■■要修正：更新されました。下を確認し、翻訳文を修正して下さい■■■■↓");
 				int count = 1;
 				for (Delta delta : block.deltas) {
 					Chunk org = delta.getOriginal();
 					Chunk rev = delta.getRevised();
-					String s = "｜>>>>>>>> 原文更新前("+count+")：" + (org.getPosition()+1) + "行目";
+					String s = "┃>>>>>>>> 原文更新前("+count+")：" + (org.getPosition()+1) + "行目";
 					result.add(s);
 					printChunk(org, result);
-					result.add("｜<<<<<<<< 原文更新後("+count+")：" + (rev.getPosition()+1) + "行目");
+					result.add("┃<<<<<<<< 原文更新後("+count+")：" + (rev.getPosition()+1) + "行目");
 					printChunk(rev, result);
 					count++;
 				}
-				result.add("├───────────　元の翻訳文(修正して下さい)　───────────┤");
+				result.add("┣━━━━━━━━━━━　元の翻訳文(修正して下さい)　━━━━━━━━━━━┫");
 				for (String line : block.lines) {
 					result.add(line);
 				}
 				result.add("↑■■■■↑■■■■↑■■■■要修正：ここまで　■■■■↑■■■■↑■■■■↑");
-				result.add("└─────────────────────────────────────┘");
+				result.add("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 			} else {
 				// 変更を含まないブロック
 				for (String line : block.lines) {
@@ -176,7 +176,7 @@ public class DiffMdInTranslate {
 	
 	private void printChunk(Chunk c, List<String> buff) {
 		for (Object o : c.getLines()) {
-			buff.add("｜" + o);
+			buff.add("┃" + o);
 		}
 	}
 }
