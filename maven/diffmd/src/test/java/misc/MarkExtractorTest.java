@@ -70,12 +70,11 @@ public class MarkExtractorTest extends TestCase{
 	}
 	public void test1() throws IOException {
 		// ファイル読み込み
-        List<String> oldLines = Files.readAllLines(FileSystems.getDefault().getPath(PATH + EN_ORG + FILENAME), Charset.availableCharsets().get("UTF-8"));
+        List<String> oldLines = Files.readAllLines(FileSystems.getDefault().getPath(PATH + EN_ORG + FILENAME), StandardCharsets.UTF_8);
         List<String> newLines = Files.readAllLines(FileSystems.getDefault().getPath(PATH + EN_NEW + FILENAME), StandardCharsets.UTF_8);
-        List<String> oldJaLines = Files.readAllLines(FileSystems.getDefault().getPath(PATH + JA_ORG + FILENAME), Charset.availableCharsets().get("UTF-8"));
+        List<String> oldJaLines = Files.readAllLines(FileSystems.getDefault().getPath(PATH + JA_ORG + FILENAME), StandardCharsets.UTF_8);
 		
 		DiffMdInTranslate dmit = new DiffMdInTranslate(oldLines, newLines, oldJaLines);
-		dmit.diffForTranslate();
 		List<String> text = dmit.toText();
 		
 		

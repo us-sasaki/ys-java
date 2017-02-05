@@ -1,6 +1,7 @@
 package misc;
 
 import java.util.List;
+import java.util.Arrays;
 import java.util.ArrayList;
 
 import difflib.Delta;
@@ -76,26 +77,38 @@ public class DiffMdInTranslate {
 				blocks.add(block);
 			}
 		}
+		diffForTranslate();
 	}
 	
 /*------------------
  * instance methods
  */
-	public void diffForTranslate() {
+	private void diffForTranslate() {
 		// 英文同士の差分を含む Block を検索する
 		for (Delta delta : newOldDiff.getDeltas() ) {
+			// delta が改行のみの場合、スキップする
+			boolean skip = true;
+			for (Object line : delta.getOriginal().getLines() ) {
+				if (!"".equals(line)) {
+					skip = false;
+					break;
+				}
+			}
+			for (Object line : delta.getRevised().getLines() ) {
+				if (!"".equals(line)) {
+					skip = false;
+					break;
+				}
+			}
+			if (skip) continue;
+			
+			// 差分処理開始
 			int deltaStart	= delta.getOriginal().getPosition();
 			int deltaEnd	= delta.getOriginal().last();
-			
-			//
-			// 以下、LooseMap を使っていないのでずれている！
-			//
 			
 			// 差分を含む最初のインデックスを検索
 			int startBlockIndex = 0;
 			for (;startBlockIndex < blocks.size(); startBlockIndex++) {
-				// 問題の比較。左辺は翻訳文の行番号、
-				// 右辺は原文の行番号。
 				if (blocks.get(startBlockIndex).end >= enJaMap.min(deltaStart)) {
 					break;
 				}
@@ -146,23 +159,32 @@ public class DiffMdInTranslate {
 			if (block.deltas.size() > 0) {
 				// 変更を含むブロック
 				result.add("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-				result.add("↓■■■■要修正：更新されました。下を確認し、翻訳文を修正して下さい■■■■↓");
+				result.add("┃　　　　　　　更新箇所。原文を確認し、翻訳文を修正して下さい　　　　　　　┃");
 				int count = 1;
 				for (Delta delta : block.deltas) {
 					Chunk org = delta.getOriginal();
 					Chunk rev = delta.getRevised();
-					String s = "┃>>>>>>>> 原文更新前("+count+")：" + (org.getPosition()+1) + "行目";
-					result.add(s);
-					printChunk(org, result);
-					result.add("┃<<<<<<<< 原文更新後("+count+")：" + (rev.getPosition()+1) + "行目");
-					printChunk(rev, result);
+					String[] wordwiseDiffed = putDiffMark(org, rev);
+					
+					String s = "━━━━━━━━━━ 原文更新前("+count+")：" + (org.getPosition()+1) + "行目 ━━━━━━━━━━";
+					result.addAll(putFrame(s));
+					//printChunk(org, result);
+					String[] lines = wordwiseDiffed[0].split("\n");
+					for (String line : lines)
+						result.addAll(putFrame(line));
+					s = "━━━━━━━━━━ 原文更新後("+count+")：" + (rev.getPosition()+1) + "行目 ━━━━━━━━━━";
+					result.addAll(putFrame(s));
+					//printChunk(rev, result);
+					lines = wordwiseDiffed[1].split("\n");
+					for (String line : lines)
+						result.addAll(putFrame(line));
 					count++;
 				}
 				result.add("┣━━━━━━━━━━━　元の翻訳文(修正して下さい)　━━━━━━━━━━━┫");
 				for (String line : block.lines) {
 					result.add(line);
 				}
-				result.add("↑■■■■↑■■■■↑■■■■要修正：ここまで　■■■■↑■■■■↑■■■■↑");
+				result.add("┃　　　　↑　　　　↑　　　　要修正：ここまで　　　　　↑　　　　↑　　　　┃");
 				result.add("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 			} else {
 				// 変更を含まないブロック
@@ -176,7 +198,127 @@ public class DiffMdInTranslate {
 	
 	private void printChunk(Chunk c, List<String> buff) {
 		for (Object o : c.getLines()) {
-			buff.add("┃" + o);
+			buff.addAll(putFrame(o.toString()));
 		}
+	}
+	
+	/**
+	 * 与えられた行に枠(罫線)をつけ、必要なら複数行にして返却します
+	 */
+	private List<String> putFrame(String target) {
+		int maxWidth = 78;
+		List<String> result = new ArrayList<String>();
+		
+		String[] token = target.split(" ");
+		
+		int tokenIndex = 0;
+	loop:
+		while (true) {
+			int width = 0;
+			StringBuilder sb = new StringBuilder();
+			sb.append("┃"); width += 2;
+			while (true) {
+				sb.append(token[tokenIndex]);
+				width += widthInFixedPitch(token[tokenIndex]);
+				int nextW = (tokenIndex == token.length - 1)?maxWidth:width+3+widthInFixedPitch(token[tokenIndex+1]);
+				if (nextW >= maxWidth) {
+					// 次の単語を追加するとはみ出すとき
+					int len = maxWidth - width - 2;
+					len = (len < 0)?0:len;
+					sb.append("                                                                                ".substring(0, len));
+					sb.append("┃");
+					result.add(sb.toString());
+					tokenIndex++;
+					if (tokenIndex == token.length) break loop;
+					break;
+				}
+				sb.append(' ');
+				width++;
+				tokenIndex++;
+				if (tokenIndex == token.length) break loop;
+			}
+		}
+		return result;
+	}
+	
+	private static int widthInFixedPitch(String str) {
+		int len = 0;
+		for (int i = 0; i < str.length(); i++) {
+			int c = str.charAt(i);
+			if (c < 128) len += 1;
+			else len += 2;
+		}
+		return len;
+	}
+	
+	/**
+	 * 単語単位の diff をとります。
+	 */
+	private static String[] putDiffMark(Chunk original, Chunk revised) {
+		StringBuilder orgStr = new StringBuilder();
+		for (Object o : original.getLines()) {
+			orgStr.append(o.toString());
+			orgStr.append(" \n");
+		}
+		StringBuilder revStr = new StringBuilder();
+		for (Object o : revised.getLines()) {
+			revStr.append(o.toString());
+			revStr.append(" \n");
+		}
+		
+		List<String> org = Arrays.asList(orgStr.toString().split(" "));
+		List<String> rev = Arrays.asList(revStr.toString().split(" "));
+		
+		Patch p = DiffUtils.diff(org, rev);
+		StringBuilder orgPut = new StringBuilder();
+		StringBuilder revPut = new StringBuilder();
+		
+		int orgCnt = 0; // 次に挿入するカウント
+		int revCnt = 0;
+		for (Delta delta : p.getDeltas()) {
+			int orgStart = delta.getOriginal().getPosition();
+			int revStart = delta.getRevised().getPosition();
+			// delta の手前まで append しておく
+			for (;orgCnt < orgStart; orgCnt++) {
+				orgPut.append(org.get(orgCnt));
+				orgPut.append(' ');
+			}
+			for (;revCnt < revStart; revCnt++) {
+				revPut.append(rev.get(revCnt));
+				revPut.append(' ');
+			}
+			// delta 部分
+			orgPut.append('【');
+			revPut.append('【');
+			for (Object o : delta.getOriginal().getLines()) {
+				orgPut.append(o.toString());
+				orgPut.append(' ');
+				orgCnt++;
+			}
+			for (Object o : delta.getRevised().getLines()) {
+				revPut.append(o.toString());
+				revPut.append(' ');
+				revCnt++;
+			}
+			orgPut.deleteCharAt(orgPut.length()-1); // 最後のスペースを削除
+			revPut.deleteCharAt(revPut.length()-1);
+			orgPut.append("】 ");
+			revPut.append("】 ");
+		}
+		// 最後の append
+		for (;orgCnt < org.size(); orgCnt++) {
+			orgPut.append(org.get(orgCnt));
+			orgPut.append(' ');
+		}
+		for (;revCnt < rev.size(); revCnt++) {
+			revPut.append(rev.get(revCnt));
+			revPut.append(' ');
+		}
+		orgPut.deleteCharAt(orgPut.length()-1); // 最後のスペースを削除
+		revPut.deleteCharAt(revPut.length()-1);
+		
+		String[] result = { orgPut.toString(), revPut.toString() };
+		
+		return result;
 	}
 }
