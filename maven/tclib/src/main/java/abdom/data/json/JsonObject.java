@@ -166,6 +166,10 @@ public class JsonObject extends JsonType {
 		return map.keySet();
 	}
 	
+	@Override
+	public int getType() {
+		return TYPE_OBJECT;
+	}
 	
 	@Override
 	public String toString() {

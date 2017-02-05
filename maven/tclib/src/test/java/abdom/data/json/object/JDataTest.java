@@ -40,21 +40,21 @@ public class JDataTest extends TestCase{
 		protected String message;
 		
 		public String getMSG() {
-System.out.println("getMsg() called");
+//System.out.println("getMsg() called");
 			return message;
 		}
 		public void setMSG(String msg) {
-System.out.println("setMsg() called");
+//System.out.println("setMsg() called");
 			this.message = msg;
 		}
 		
 		public String[] getMessages() {
-System.out.println("getMsgs() called");
+//System.out.println("getMsgs() called");
 			return new String[] { message, "fixed msg" };
 		}
 		
 		public void setMessages(String[] args) {
-System.out.println("setMsgs() called");
+//System.out.println("setMsgs() called");
 			this.message = args[0];
 		}
 	}
@@ -80,5 +80,27 @@ System.out.println("setMsgs() called");
 		
 		assertEquals(Jsonizer.toJson(k).toString(), "{\"MSG\":\"hogetarou\",\"a\":[5,65],\"b\":true,\"doublevalue\":3.141592653589793,\"jo\":{\"key\":\"value\"},\"messages\":[\"hogetarou\",\"fixed msg\"],\"str\":\"hoe\"}");
 		assertEquals(frag.toString(), "{\"fragment\":\"c8y?\"}");
+	}
+	
+	static class J2 extends JData {
+		public int a;
+		public double doublevalue;
+	}
+	
+	/**
+	 * put extra のテスト
+	 * すでにプロパティとして存在する key を使って putExtra() すると
+	 * Exception が発生することを確認するテスト。
+	 */
+	public void testPutExtra() {
+		J2 j = new J2();
+		
+		j.putExtra("extra", new JsonValue(1));
+		try {
+			j.putExtra("doublevalue", new JsonValue(0.2));
+			fail();
+		} catch (IllegalFieldTypeException e) {
+		}
+		assertEquals(j.toString(), "{\"a\":0,\"doublevalue\":0.0,\"extra\":1}");
 	}
 }

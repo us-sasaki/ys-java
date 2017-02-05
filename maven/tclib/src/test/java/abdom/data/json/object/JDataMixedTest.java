@@ -64,6 +64,6 @@ public class JDataMixedTest extends TestCase{
 	
 	public void testObj() {
 		java.util.Date date = new java.util.Date();
-		System.out.println(Jsonizer.toJson(date));
+		Jsonizer.toJson(date);
 	}
 }

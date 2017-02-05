@@ -2,15 +2,18 @@ package com.ntt.tc.net;
 
 import java.io.*;
 import java.net.*;
-import java.util.Base64;
+//import java.util.Base64; // since JDK1.8
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import abdom.data.json.Jsonizable;
 import abdom.data.json.JsonArray;
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonObject;
+
+import com.ntt.tc.util.Base64;
 
 import static java.net.HttpURLConnection.*;
 
@@ -57,7 +60,7 @@ public class Rest {
 		protected byte[] body;
 		
 		/**
-		 * 結果の body を byte[] で取得します。
+		 * 結果の body を byte[] で取得します。エラーの場合、null になります。
 		 */
 		public byte[] toByteArray() {
 			return body;
@@ -66,6 +69,7 @@ public class Rest {
 		 * 結果の body を String で取得します
 		 */
 		public String toString() {
+			if (body == null) return null;
 			try {
 				return new String(body, "UTF-8");
 			} catch (UnsupportedEncodingException uee) {
@@ -79,6 +83,7 @@ public class Rest {
 		 * がスローされます。
 		 */
 		public JsonType toJson() {
+			if (body == null) return null;
 			return JsonType.parse(toString());
 		}
 	}
@@ -168,7 +173,7 @@ public class Rest {
 	/**
 	 * PUT リクエストをします。
 	 */
-	public Response put(String resource, JsonType json)
+	public Response put(String resource, Jsonizable json)
 							throws IOException {
 		return put(resource, "", json);
 	}
@@ -180,14 +185,14 @@ public class Rest {
 		return put(resource, "", body);
 	}
 	/**
-	 * PUT リクエストをします。
+	 * Content-Type を指定して PUT リクエストをします。
 	 */
-	public Response put(String resource, String type, JsonType json)
+	public Response put(String resource, String type, Jsonizable json)
 							throws IOException {
 		return put(resource, type, json.toString());
 	}
 	/**
-	 * PUT リクエストをします。
+	 * Content-Type を指定して PUT リクエストをします。
 	 */
 	public Response put(String resource, String type, String body)
 							throws IOException {
@@ -197,7 +202,7 @@ public class Rest {
 	/**
 	 * POST リクエストをします。
 	 */
-	public Response post(String location, JsonType json)
+	public Response post(String location, Jsonizable json)
 							throws IOException {
 		return post(location, "", json.toString());
 	}
@@ -211,15 +216,15 @@ public class Rest {
 	}
 	
 	/**
-	 * POST リクエストをします。
+	 * Content-Type を指定して POST リクエストをします。
 	 */
-	public Response post(String location, String type, JsonType json)
+	public Response post(String location, String type, Jsonizable json)
 							throws IOException {
 		return post(location, type, json.toString());
 	}
 	
 	/**
-	 * POST リクエストをします。
+	 * Content-Type を指定して POST リクエストをします。
 	 */
 	public Response post(String location, String type, String body)
 							throws IOException {
@@ -229,18 +234,18 @@ public class Rest {
 	/**
 	 * Httpリクエストの実処理を行います。
 	 */
-	private Response requestImpl(String location, String method)
-							throws IOException {
-		return requestImpl(location, method, "", null);
-	}
+//	private Response requestImpl(String location, String method)
+//							throws IOException {
+//		return requestImpl(location, method, "", null);
+//	}
 	
 	/**
 	 * Httpリクエストの実処理を行います。
 	 */
-	private Response requestImpl(String location, String method, String type)
-							throws IOException {
-		return requestImpl(location, method, type, null);
-	}
+//	private Response requestImpl(String location, String method, String type)
+//							throws IOException {
+//		return requestImpl(location, method, type, null);
+//	}
 	
 	/**
 	 * Httpリクエストの実処理を行います。
@@ -300,7 +305,7 @@ public class Rest {
 		
 		// 基本認証
 		if (user != null && password != null) {
-			String authStr = Base64.getEncoder().encodeToString((tenant + user + ":" + password).getBytes());
+			String authStr = Base64.encodeToString((tenant + user + ":" + password).getBytes());
 			con.setRequestProperty("Authorization", "Basic " + authStr);
 		}
 		
@@ -335,7 +340,12 @@ public class Rest {
 	}
 	
 	/**
-	 * バイナリデータをファイルをPOSTします
+	 * バイナリデータのファイルをPOSTします
+	 *
+	 * @param	filename	object パートの name に指定されるファイル名
+	 * @param	mimetype	object パートの type に指定されるMIME-Type
+	 * @param	data		upload する binary データ
+	 * @return	http レスポンス
 	 */
 	public Response postBinary(String filename, String mimetype, byte[] data)
 							throws IOException {

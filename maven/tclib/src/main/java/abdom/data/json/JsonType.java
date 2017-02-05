@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @author		Yusuke Sasaki
  */
 public abstract class JsonType extends Number
-								implements Iterable<JsonType> {
+								implements Iterable<JsonType>, Jsonizable {
 	/** getType() で返却される、JavaScript での型 void(null) を表す定数です */
 	public static final int TYPE_VOID = 0;
 	
@@ -46,7 +46,7 @@ public abstract class JsonType extends Number
 	
 	/**
 	 * getType() で返却される、どの型でもないことを表す定数です。
-	 * この値が返却することは通常ありません。JsonType を継承した新しい
+	 * この値が返却されることは通常ありません。JsonType を継承した新しい
 	 * クラスを作成したり、JsonValue を継承して value, quote に新しい値を
 	 * 定義した場合に返却される可能性があります。
 	 */
@@ -62,7 +62,8 @@ public abstract class JsonType extends Number
 	 * JsonValue としての値を文字列で取得します。このオブジェクトが
 	 * JsonValue でない場合、ClassCastException がスローされます。
 	 * 文字列の場合、JSON におけるダブルクオーテーション括りを除去した
-	 * 形式になります。
+	 * 形式になります。また、コントロールコードのエスケープシーケンスが
+	 * 解除されます。
 	 *
 	 * @return	JsonValue としての文字列値
 	 */
@@ -70,6 +71,9 @@ public abstract class JsonType extends Number
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、getValue できません");
 	}
 	
+/*--------------------
+ * overrides (Number)
+ */
 	/**
 	 * JsonValue としての値を整数値で取得します。このオブジェクトが
 	 * JsonValue でない場合、ClassCastException がスローされます。
@@ -78,6 +82,7 @@ public abstract class JsonType extends Number
 	 *
 	 * @return	JsonValue としての int 値
 	 */
+	@Override
 	public int intValue() {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、intValue を持ちません");
 	}
@@ -90,6 +95,7 @@ public abstract class JsonType extends Number
 	 *
 	 * @return	JsonValue としての long 値
 	 */
+	@Override
 	public long longValue() {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、longValue を持ちません");
 	}
@@ -102,6 +108,7 @@ public abstract class JsonType extends Number
 	 *
 	 * @return	JsonValue としての float 値
 	 */
+	@Override
 	public float floatValue() {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、floatValue を持ちません");
 	}
@@ -114,32 +121,27 @@ public abstract class JsonType extends Number
 	 *
 	 * @return	JsonValue としての double 値
 	 */
+	@Override
 	public double doubleValue() {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、doubleValue を持ちません");
 	}
 	
+/*------------------
+ * instance methods
+ */
 	/**
-	 * JsonType としての値を持っているかテストします。
-	 * false となるのは以下の場合です。<pre>
-	 * JsonObject で、空オブジェクトの場合
-	 * JsonArray で、空配列の場合
-	 * JsonValue で、値が false の場合
-	 * </pre>
-	 * ほかの場合、true が返却されます。
+	 * JsonObject として、指定されたキーの値を持っているかテストします。
+	 * JsonObject でない場合、false が返却されます。
 	 *
-	 * @return	値を持っている、または false 値でない場合 true
+	 * @return	指定されたキーの値を持っている場合 true、キーがあっても
+	 *			値が JsonValue(null) である場合、またはキーがない場合、
+	 *			またはこのインスタンスが JsonObject でない場合 false
 	 */
-	public boolean isTrue() {
-		if (this instanceof JsonObject) {
-			return (((JsonObject)this).keySet().size() > 0);
-		} else if (this instanceof JsonArray) {
-			return (((JsonArray)this).array.size() > 0);
-		} else if (this instanceof JsonValue) {
-			return !"false".equals(toString());
-		} else {
-			// never fall back here
-			return true;
-		}
+	public boolean hasKey(String key) {
+		if (!(this instanceof JsonObject)) return false;
+		JsonType val = get(key);
+		return ( (val != null) && (!(val instanceof JsonValue)) &&
+				(!val.toString().equals("null")) );
 	}
 	
 	/**
@@ -168,7 +170,7 @@ public abstract class JsonType extends Number
 	 * JsonArray として、指定された index の値を取得します。
 	 * JsonArray でない場合、ClassCastException がスローされます。
 	 *
-	 * @param	index	index値( 0 〜 size()-1 )
+	 * @param	index	index値( 0 ? size()-1 )
 	 * @return	取得される値(JsonType)
 	 */
 	public JsonType get(int index) {
@@ -179,7 +181,7 @@ public abstract class JsonType extends Number
 	 * JsonArray として、指定された index の値を取得し、削除します。
 	 * JsonArray でない場合、ClassCastException がスローされます。
 	 *
-	 * @param	index	index値( 0 〜 size()-1 )
+	 * @param	index	index値( 0 ? size()-1 )
 	 * @return	取得される値(JsonType)
 	 */
 	public JsonType cut(int index) {
@@ -213,28 +215,6 @@ public abstract class JsonType extends Number
 	 * @see		#TYPE_UNKNOWN
 	 */
 	public int getType() {
-		if (this instanceof JsonValue) {
-			JsonValue j = (JsonValue)this;
-			if ("\"".equals(j.quote)) return TYPE_STRING;
-			if ("null".equals(j.value)) return TYPE_VOID;
-			if ("true".equals(j.value)) return TYPE_BOOLEAN;
-			if ("false".equals(j.value)) return TYPE_BOOLEAN;
-			try {
-				Long.parseLong(j.value);
-				return TYPE_INT;
-			} catch (NumberFormatException nfe) {
-				try {
-					Double.parseDouble(j.value);
-					return TYPE_DOUBLE;
-				} catch (NumberFormatException nfe2) {
-				}
-			}
-			return TYPE_UNKNOWN;
-		} else if (this instanceof JsonArray) {
-			return TYPE_ARRAY;
-		} else if (this instanceof JsonObject) {
-			return TYPE_OBJECT;
-		}
 		return TYPE_UNKNOWN;
 	}
 
@@ -463,7 +443,7 @@ public abstract class JsonType extends Number
 	}
 	
 	/**
-	 * JavaScript における slice 操作です。
+	 * JavaScript における slice 操作(部分配列の切り出し)です。
 	 * 
 	 * @param	s	コピーする最初のインデックス(含みます)
 	 * @param	e	コピーする末尾のインデックス(含みません)
@@ -517,71 +497,6 @@ public abstract class JsonType extends Number
 	public Set<String> keySet() {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、keySet を持ちません");
 	}
-	
-	/**
-	 * 文字列表現を返却します。文字列表現は、改行やスペース
-	 * 文字を含まない JSON 形式です。
-	 * string 型 (JsonValue で保持する値が String の場合) では
-	 * 結果は ""(ダブルクオーテーション) で括られることに注意してください。
-	 *
-	 * @return	このオブジェクトの JSON 形式(文字列)
-	 */
-	public abstract String toString();
-	
-	/**
-	 * 人が見やすいインデントを含んだ JSON 形式で文字列化します。
-	 * 最大横幅はデフォルト値(80)が設定されます。
-	 *
-	 * @param	indent	インデント(複数のスペースやタブ)
-	 * @return	インデント、改行を含む JSON 文字列
-	 */
-	public String toString(String indent) {
-		return toString(indent, 80);
-	}
-	
-	/**
-	 * 人が見やすいインデントを含んだ JSON 形式で文字列化します。
-	 * JsonObject, JsonArray 値を一行で表せるなら改行させないための、一行の
-	 * 文字数を指定します。
-	 *
-	 * @param	indent		インデント(複数のスペースやタブ)
-	 * @param	textwidth	object, array に関し、この文字数に収まる場合
-	 *						複数行に分けない処理を行うための閾値。
-	 *						0 以下を指定すると、一行化を試みず、常に複数行化
-	 *						されます。(この方が高速)
-	 * @return	インデント、改行を含む JSON 文字列
-	 */
-	public final String toString(String indent, int textwidth) {
-		return toString("", indent, textwidth, false);
-	}
-	
-	
-	/**
-	 * 人が見やすいインデントを含んだJSON形式で文字列化します。
-	 * インデントをサポートするため、現在のインデントを示す indent,
-	 * 次のインデントを作るための indentStep, 行が長くならない場合に
-	 * 一行化するための textwidth, JsonObject にける "name" : 後に
-	 * { を同行に配置する特例処理をするためのフラグ(objElement)を
-	 * 持っています。
-	 * 複数行に分けるための改行コードは、JsonType.LS として保持されています。
-	 * <pre>
-	 *
-	 * [indent]*開始位置(objElement==true の時は indent をつけない)
-	 * [indent][indentStep]*インデント付の次の行の開始位置
-	 * -------------------------(textwidthまでは一行化されることあり)-----
-	 * </pre>
-	 * 
-	 * @param	indent		インデント(いくつかのスペース)
-	 * @param	indentStep	インデント一回分のスペースやタブ
-	 * @param	textwidth	object, array に関し、この文字数に収まる場合
-	 *						複数行に分けない処理を行うための閾値。
-	 *						0 以下を指定すると、一行化を試みず、常に複数行化
-	 *						されます。(この方が高速)
-	 * @param	objElement	true..オブジェクトの要素名の後ろ
-	 * @return	改行、スペースなどを含む String
-	 */
-	protected abstract String toString(String indent, String indentStep,
-						int textwidth, boolean objElement);
 	
 /*---------------
  * class methods
@@ -755,6 +670,7 @@ public abstract class JsonType extends Number
 	
 	/**
 	 * 指定した文字列となっていることをチェックします。
+	 * (比較は２文字目から行われます)
 	 * ストリームの終わりを検出したり、指定した文字列と異なっている場合、
 	 * JsonParseException をスローします。
 	 */
@@ -887,9 +803,8 @@ public abstract class JsonType extends Number
 			if (c != '\"') throw new JsonParseException("オブジェクト内の要素名が \" で始まっていません");
 			String name = readString(pr);
 			// ここで name として入っていてはならない文字をチェック
-			// しかし、規則が書いてないので手抜き
-			// RFC 7159 によると、string とあり、なんでもOKらしい
-			// "." も OK
+			// -> RFC 7159 によると、string とあり、なんでもOKらしい
+			// 　　特に、"." も OK
 			skipspaces(pr);
 			c = pr.read();
 			if (c == -1) throw new JsonParseException("オブジェクトの要素名の後に予期しない終了を検知しました");
@@ -913,4 +828,88 @@ public abstract class JsonType extends Number
 	public java.util.Iterator<JsonType> iterator() {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、iterator を持ちません");
 	}
+	
+/*------------------------
+ * implements(Jsonizable)
+ */
+	/**
+	 * JsonType では toJson() はこのオブジェクト自身を返却します。
+	 *
+	 * @return	このオブジェクト
+	 */
+	@Override
+	public JsonType toJson() {
+		return this;
+	}
+	
+	/**
+	 * JSON 文字列表現を返却します。
+	 * toString() の文字列表現は、改行やスペース文字を含まない JSON 形式です。
+	 * string 型 (JsonValue で保持する値が String の場合) では
+	 * 結果は ""(ダブルクオーテーション) で括られることに注意してください。
+	 *
+	 * @return	このオブジェクトの JSON 形式(文字列)
+	 */
+	@Override
+	public abstract String toString();
+	
+	/**
+	 * 人が見やすいインデントを含んだ JSON 形式で文字列化します。
+	 * 最大横幅はデフォルト値(80)が設定されます。
+	 * 最大横幅は JsonArray, JsonObject の各要素が収まる場合に一行化する幅
+	 * であり、すべての行が最大横幅以内に収まるわけではありません。
+	 * (JSON では文字列要素の途中改行記法がありません)
+	 *
+	 * @param	indent	インデント(複数のスペースやタブ)
+	 * @return	インデント、改行を含む JSON 文字列
+	 */
+	@Override
+	public String toString(String indent) {
+		return toString(indent, 80);
+	}
+	
+	/**
+	 * 人が見やすいインデントを含んだ JSON 形式で文字列化します。
+	 * JsonObject, JsonArray 値を一行で表せるなら改行させないための、一行の
+	 * 文字数を指定します。
+	 *
+	 * @param	indent		インデント(複数のスペースやタブ)
+	 * @param	textwidth	object, array に関し、この文字数に収まる場合
+	 *						複数行に分けない処理を行うための閾値。
+	 *						0 以下を指定すると、一行化を試みず、常に複数行化
+	 *						されます。(この方が高速)
+	 * @return	インデント、改行を含む JSON 文字列
+	 */
+	@Override
+	public final String toString(String indent, int textwidth) {
+		return toString("", indent, textwidth, false);
+	}
+	
+	
+	/**
+	 * 人が見やすいインデントを含んだJSON形式で文字列化します。
+	 * インデントをサポートするため、現在のインデントを示す indent,
+	 * 次のインデントを作るための indentStep, 行が長くならない場合に
+	 * 一行化するための textwidth, JsonObject にける "name" : 後に
+	 * { を同行に配置する特例処理をするためのフラグ(objElement)を
+	 * 持っています。
+	 * 複数行に分けるための改行コードは、JsonType.LS として保持されています。
+	 * <pre>
+	 *
+	 * [indent]*開始位置(objElement==true の時は indent をつけない)
+	 * [indent][indentStep]*インデント付の次の行の開始位置
+	 * -------------------------(textwidthまでは一行化されることあり)-----
+	 * </pre>
+	 * 
+	 * @param	indent		インデント(いくつかのスペース)
+	 * @param	indentStep	インデント一回分のスペースやタブ
+	 * @param	textwidth	object, array に関し、この文字数に収まる場合
+	 *						複数行に分けない処理を行うための閾値。
+	 *						0 以下を指定すると、一行化を試みず、常に複数行化
+	 *						されます。(この方が高速)
+	 * @param	objElement	true..オブジェクトの要素名の後ろ
+	 * @return	改行、スペースなどを含む String
+	 */
+	protected abstract String toString(String indent, String indentStep,
+						int textwidth, boolean objElement);
 }

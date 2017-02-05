@@ -1,15 +1,16 @@
 package abdom.data.json.object;
 
 import abdom.data.json.JsonType;
+import abdom.data.json.Jsonizable;
 
 /**
  * JSON と Java の間の相互変換に関するクラスのテンプレートです。
  * 通常、JData を継承してください。
  *
- * このクラスを直接継承するのは、以下のような場合です。<br/>
- * JsonValue を Java オブジェクトによって模倣する場合<br/>
+ * このクラスを直接継承するのは、以下のような場合です。<br>
+ * JsonValue を Java オブジェクトによって模倣する場合<br>
  * 特定の JsonObject/JsonArray 構造がまとまった意味を持ち、1つのJavaオブジェ
- * クトとして表したい場合<br/>
+ * クトとして表したい場合<br>
  * 直接継承する場合は JData のようなメンバ変数の直列化機能は持たないため、
  * JsonType との相互変換メソッドとして、fill(JsonValue), toJson() を実装する
  * 必要があります。
@@ -17,13 +18,14 @@ import abdom.data.json.JsonType;
  * @version	November 15, 2016
  * @author	Yusuke Sasaki
  */
-public abstract class JValue {
+public abstract class JValue implements Jsonizable {
 	
 	/**
 	 * JsonType に変換します
 	 *
 	 * @return	変換された JsonType
 	 */
+	@Override
 	public abstract JsonType toJson();
 	
 	/**
@@ -56,6 +58,7 @@ public abstract class JValue {
 	 * @param	indent	インデント文字列(複数のスペースやタブ)
 	 * @return	インデント、改行を含む JSON 形式
 	 */
+	@Override
 	public String toString(String indent) {
 		return toJson().toString(indent);
 	}
@@ -72,6 +75,7 @@ public abstract class JValue {
 	 *						されます。(この方が高速)
 	 * @return	インデント、改行を含む JSON 文字列
 	 */
+	@Override
 	public String toString(String indent, int textwidth) {
 		return toJson().toString(indent, textwidth);
 	}

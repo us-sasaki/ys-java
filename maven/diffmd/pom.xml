@@ -4,7 +4,7 @@
 
   <groupId>comiot</groupId>
   <artifactId>diffmd</artifactId>
-  <version>0.9</version>
+  <version>0.5</version>
   <packaging>jar</packaging>
 
   <name>DiffMd</name>
@@ -40,12 +40,12 @@
             <artifactId>exec-maven-plugin</artifactId>
             <version>1.2.1</version>
             <configuration>
-                <mainClass>sample.DiffTest</mainClass>
+                <mainClass>misc.DiffTest</mainClass>
                 <!-- optional -->
                 <workingDirectory>.</workingDirectory>
                 <arguments>
-                    <argument>FileLister.java</argument>
-                    <argument>FileLister2.java</argument>
+                    <argument>docs/event-language-en-old/introduction.html.md</argument>
+                    <argument>docs/event-language-en-new/introduction.html.md</argument>
                 </arguments>
             </configuration>
         </plugin>

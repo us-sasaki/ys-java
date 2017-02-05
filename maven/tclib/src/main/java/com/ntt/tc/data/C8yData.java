@@ -16,18 +16,26 @@ import abdom.data.json.JsonValue;
  * 提供します。
  * C8yData は JData を継承しているため、JSON 直列化をサポートします。
  * 例えば、<pre>
- * System.out.println(new ManagedObject().toJson().toString("  "));
+ * System.out.println(new ManagedObject().toString("  "));
  * </pre>
- * を実行すると、ManagedObject の JSON 形式が得られます。
+ * を実行すると、ManagedObject の (pretty)JSON 形式が得られます。
  */
 public abstract class C8yData extends JData {
 	private static final JsonValue CACHED_NULL = new JsonValue(null);
 	
 	/**
-	 * このオブジェクトを指定されたオブジェクトに値が一致させる
-	 * JsonObject を抽出します。返り値を ret とした場合、一般に
-	 * another.fill(ret).equals(this) が成立します。ただし、fill の制約である
-	 * 要素に JsonValue(null) を明示的に設定できないことは同様です。
+	 * このオブジェクトを指定されたオブジェクトに値を一致させる
+	 * JsonObject を抽出します(差分抽出)。
+	 * 例えとして、(返り値) = this - another のような振る舞いをします：
+	 * 返り値を ret とした場合、一般に
+	 * another.fill(ret).equals(this) が成立します。
+	 * 以下、参考情報<br><br>
+	 * fill の制約として
+	 * 要素への JsonValue(null) の設定ができない(JSON の null を指定すると、
+	 * Java Object としての null 設定と解釈される)ことは同様です。
+	 * (JsonValue を設定しうる extra の要素に対し、この制約が影響する可能性が
+	 * あります。通常フィールドは JsonValue を認めていないため、影響はありま
+	 * せん)
 	 *
 	 * @param	another		比較対象
 	 * @return	差分を表す JsonObject。
@@ -42,11 +50,9 @@ public abstract class C8yData extends JData {
 		
 		// キーをマージした map を生成
 		Set<String> merged = new HashSet<String>(a.keySet());
-//System.out.println("merged(a) = " + merged);
 		for (String toAdd : b.keySet() ) {
 			merged.add(toAdd);
 		}
-//System.out.println("merged(a,b) = " + merged);
 		for (String field : merged) {
 			JsonType ja = a.get(field);
 			JsonType jb = b.get(field);

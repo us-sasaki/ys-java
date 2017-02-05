@@ -18,7 +18,7 @@ import abdom.data.json.object.JValue;
  */
 public class TC_Date extends C8yValue {
 	protected static final SimpleDateFormat SDF =
-				new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+				new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZ"); //XXX");
 	
 	/** 内部的には java.util.Date として値を保持します */
 	protected Date date;
@@ -51,6 +51,15 @@ public class TC_Date extends C8yValue {
 		set(date);
 	}
 	
+	/**
+	 * ミリ秒を与えてインスタンスを生成します。
+	 * これによって、このオブジェクトは、「エポック」(すなわち、1970 年 1 月
+	 * 1 日 00:00:00 GMT) である標準時からの指定されたミリ秒数を表します。
+	 */
+	public TC_Date(long date) {
+		this.date = new Date(date);
+	}
+	
 /*------------------
  * instance methods
  */
@@ -67,6 +76,38 @@ public class TC_Date extends C8yValue {
 		} catch (ParseException pe) {
 			throw new C8yFormatException(pe.toString());
 		}
+	}
+	
+	/**
+	 * 文字列値を取得します。
+	 * 文字列では、"yyyy-MM-dd'T'HH:mm:ss.SSSXXX" のフォーマットを使用します。
+	 * set(String) と互換性があります。
+	 *
+	 * @return	"yyyy-MM-dd'T'HH:mm:ss.SSSXXX" 形式の文字列表現
+	 * @see		#set(String)
+	 */
+	public String getValue() {
+		return SDF.format(date);
+	}
+	
+	/**
+	 * java.util.Date 値を取得します。
+	 *
+	 * @return	このオブジェクトの java.util.Date 値
+	 */
+	public Date toDate() {
+		return date;
+	}
+	
+	/**
+	 * このオブジェクトで表される、1970 年 1 月 1 日 00:00:00 GMT からのミリ秒
+	 * 数を返します。
+	 *
+	 * @return	この日付で表される、1970 年 1 月 1 日 00:00:00 GMT からの
+	 *			ミリ秒数
+	 */
+	public long getTime() {
+		return date.getTime();
 	}
 	
 /*-----------
@@ -97,15 +138,4 @@ public class TC_Date extends C8yValue {
 		return new JsonValue(SDF.format(date));
 	}
 	
-	/**
-	 * 文字列値を取得します。
-	 * 文字列では、"yyyy-MM-dd'T'HH:mm:ss.SSSXXX" のフォーマットを使用します。
-	 * set(String) と互換性があります。
-	 *
-	 * @return	"yyyy-MM-dd'T'HH:mm:ss.SSSXXX" 形式の文字列表現
-	 * @see		#set(String)
-	 */
-	public String getValue() {
-		return SDF.format(date);
-	}
 }

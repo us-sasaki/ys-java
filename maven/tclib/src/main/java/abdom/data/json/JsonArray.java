@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * 内部では配列を ArrayList<JsonType> で保持します。
  * このクラスのオブジェクトはスレッドセーフではありません。
  */
-public class JsonArray extends JsonType implements Iterable<JsonType> {
+public class JsonArray extends JsonType {
 	/**
 	 * 配列の要素を保持します。要素に null を含めてはならず、
 	 * 明示的に含ませる場合、JsonValue(null) を含めます。
@@ -310,6 +310,11 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 	}
 	
 	@Override
+	public int getType() {
+		return TYPE_ARRAY;
+	}
+	
+	@Override
 	public java.util.Iterator<JsonType> iterator() {
 		return array.iterator();
 	}
@@ -320,7 +325,7 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 		sb.append('[');
 		boolean first = true;
 		for (JsonType obj : array) {
-			if (!first) sb.append(",");
+			if (!first) sb.append(',');
 			else first = false;
 			sb.append(obj.toString());
 		}
@@ -340,7 +345,7 @@ public class JsonArray extends JsonType implements Iterable<JsonType> {
 			String tryShort = toString();
 			if (len + tryShort.length() <= textwidth) return tryShort;
 		}
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		
 		if (!objElement) sb.append(indent);
 		sb.append('[');

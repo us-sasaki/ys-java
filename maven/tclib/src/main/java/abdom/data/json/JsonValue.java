@@ -130,6 +130,25 @@ public class JsonValue extends JsonType {
 	}
 	
 	@Override
+	public int getType() {
+		if ("\"".equals(quote)) return TYPE_STRING;
+		if ("null".equals(value)) return TYPE_VOID;
+		if ("true".equals(value)) return TYPE_BOOLEAN;
+		if ("false".equals(value)) return TYPE_BOOLEAN;
+		try {
+			Long.parseLong(value);
+			return TYPE_INT;
+		} catch (NumberFormatException nfe) {
+			try {
+				Double.parseDouble(value);
+				return TYPE_DOUBLE;
+			} catch (NumberFormatException nfe2) {
+			}
+		}
+		return TYPE_UNKNOWN;
+	}
+	
+	@Override
 	public String toString() {
 		return quote+value+quote;
 	}

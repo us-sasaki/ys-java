@@ -123,6 +123,32 @@ public class Jsonizer {
 		return result;
 	}
 	
+	public static String toString(Object instance) {
+		return toJson(instance).toString();
+	}
+	
+	public static String toString(Object instance, String indent) {
+		return toJson(instance).toString(indent);
+	}
+	
+	public static String toString(Object instance, String indent, int maxwidth) {
+		return toJson(instance).toString(indent, maxwidth);
+	}
+	
+	/**
+	 * 指定されたオブジェクトのプロパティとして、key が含まれるかテスト
+	 * します。
+	 * このメソッドは、指定するオブジェクトのクラスに対する getAccessors
+	 * が呼ばれていない状態で使用した場合、NullPointerException が発生します。
+	 *
+	 * @param	instance	テスト対象のオブジェクト
+	 * @param	key			プロパティ名
+	 * @return	key で示される名のプロパティを持つ場合 true
+	 */
+	static boolean hasProperty(Object instance, String key) {
+		return (_fieldAccessors.get(instance.getClass()).get(key) != null);
+	}
+	
 	/**
 	 * このインスタンスのクラスに関連する Accessor (値取得/設定オブジェクト)
 	 * を取得します。
@@ -263,8 +289,6 @@ public class Jsonizer {
 				pairs.put(name, mp);
 			}
 		}
-		//for (String name : pairs.keySet())
-		//	System.out.println("method entry : " + name + " " + pairs.get(name).getter + "/" + pairs.get(name).setter);
 		
 		// get の returnType と set の argType が同一のものを選択
 		// Number getNumber() と
@@ -376,5 +400,63 @@ public class Jsonizer {
 	 */
 	public static <T> T[] toArray(String source, T[] array) {
 		return toArray(JsonType.parse(source), array);
+	}
+	
+	/**
+	 * 与えられた JsonType から Java オブジェクトを生成します。
+	 * 指定された Class オブジェクトが JValue のサブクラスの場合、
+	 * JValue.fill() が呼ばれます。
+	 * 一方、JValue のサブクラスでない場合、Jsonizer.fill() が
+	 * 使用されるため、指定された Class オブジェクトに格納できない値を
+	 * JsonType 値が持っていた場合、捨てられます。
+	 * <pre>
+	 * 利用例
+	 *   JDataSubClass jd = Jsonizer.fromJson(jsonType, JDataSubClass.class);
+	 *
+	 * または
+	 *
+	 *   Pojo pj = Jsonizer.fromJson(jsonType, Pojo.class);
+	 * </pre>
+	 *
+	 * @param	source	パラメータを持つ JsonType 値
+	 * @param	clazz	生成するインスタンスの Class オブジェクト
+	 * @return	生成された Java オブジェクト
+	 */
+	public static <T> T fromJson(JsonType source, Class<T> clazz) {
+		try {
+			T instance = clazz.newInstance();
+			if (JValue.class.isAssignableFrom(clazz)) {
+				((JValue)instance).fill(source);
+			} else {
+				fill(instance, source);
+			}
+			return instance;
+		} catch (ReflectiveOperationException roe) {
+			throw new JDataDefinitionException("Failed to instantiate \"" + clazz.getName() + "\". Default constructor may not be accessible and defined.");
+		}
+	}
+	
+	/**
+	 * 与えられた JsonType から Java オブジェクトを生成します。
+	 * 指定された Class オブジェクトが JValue のサブクラスの場合、
+	 * JValue.fill() が呼ばれます。
+	 * 一方、JValue のサブクラスでない場合、Jsonizer.fill() が
+	 * 使用されるため、指定された Class オブジェクトに格納できない値を
+	 * JsonType 値が持っていた場合、捨てられます。
+	 * <pre>
+	 * 利用例
+	 *   JDataSubClass jd = Jsonizer.fromJson(jsonString, JDataSubClass.class);
+	 *
+	 * または
+	 *
+	 *   Pojo pj = Jsonizer.fromJson(jsonString, Pojo.class);
+	 * </pre>
+	 *
+	 * @param	source	パラメータを持つ JsonType 値
+	 * @param	clazz	生成するインスタンスの Class オブジェクト
+	 * @return	生成された Java オブジェクト
+	 */
+	public static <T> T fromJson(String source, Class<T> clazz) {
+		return fromJson(JsonType.parse(source), clazz);
 	}
 }

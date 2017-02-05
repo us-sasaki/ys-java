@@ -13,18 +13,18 @@ import junit.framework.TestSuite;
 public class JsonMixTest extends TestCase{
 	public JsonMixTest(String testName) {
 		super(testName);
-		System.out.println("JsonMixTest コンストラクタが呼ばれました");
+		//System.out.println("JsonMixTest コンストラクタが呼ばれました");
 	}
 	protected void setUp() throws Exception {
 		super.setUp();
-		System.out.println("setUp()が呼ばれました");
+		//System.out.println("setUp()が呼ばれました");
 	}
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		System.out.println("tearDown()が呼ばれました");
+		//System.out.println("tearDown()が呼ばれました");
 	}
     public static Test suite() {
-    	System.out.println("suite() が呼ばれました");
+    	//System.out.println("suite() が呼ばれました");
         return new TestSuite( JsonMixTest.class );
     }
 	public void test0() {

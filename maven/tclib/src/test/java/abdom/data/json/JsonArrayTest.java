@@ -11,7 +11,7 @@ import junit.framework.TestSuite;
  */
 public class JsonArrayTest extends TestCase{
 	public void testNewArray() {
-		System.out.println("test new Array ....");
+		//System.out.println("test new Array ....");
 		assertEquals(new JsonArray("true").toString(), "[\"true\"]");
 		assertEquals(new JsonArray(1,0.5,false,null).toString(), "[1,0.5,false,null]");
 	}

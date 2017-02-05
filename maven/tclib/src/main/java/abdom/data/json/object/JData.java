@@ -98,6 +98,8 @@ public abstract class JData extends JValue {
 	 * @param	jt	設定する値
 	 */
 	public void putExtra(String key, JsonType jt) {
+		if (Jsonizer.hasProperty(this, key))
+			throw new IllegalFieldTypeException("The key " + key + " is property of " + this.getClass() + ", so it can't be assigned as extra.");
 		if (_extra == null) _extra = new JsonObject();
 		_extra.put(key, jt);
 	}
@@ -132,7 +134,7 @@ public abstract class JData extends JValue {
 			for (String key : rest.keySet()) {
 				JsonType val = rest.get(key);
 				if (val.getType() == JsonType.TYPE_VOID) {
-					if (_extra.get(key) != null) _extra.cut(key);
+					_extra.cut(key);
 				} else {
 					_extra.put(key, val);
 				}
