@@ -55,10 +55,17 @@ public class DiffMd {
 /*------------------
  * instance methods
  */
+	/**
+	 * 各ルートディレクトリの中を走査し、
+	 * filesToBeCreated
+	 * filesToBeDeleted
+	 * を格納。
+	 */
 	public void diffDirectories() throws IOException {
 		List<String> oldOriginalFiles = listFiles(oldOriginalDir);
 		List<String> newOriginalFiles = listFiles(newOriginalDir);
 		List<String> oldTranslatedFiles = listFiles(oldTranslatedDir);
+		
 		
 		diffOriginalFiles = DiffUtils.diff(oldOriginalFiles, newOriginalFiles);
 		diffOldFiles	= DiffUtils.diff(oldOriginalFiles, oldTranslatedFiles);

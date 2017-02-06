@@ -210,6 +210,7 @@ public class DiffMdInTranslate {
 		List<String> result = new ArrayList<String>();
 		
 		String[] token = target.split(" ");
+		if (token.length == 0) token = new String[] {""};
 		
 		int tokenIndex = 0;
 	loop:
