@@ -2,20 +2,20 @@
 'UTF-8'
 -protected
 -sourcepath
-'C:/Users/Yusuke/Documents/GitHub/ys-java/maven/tclib0.9/src/main/java'
+'C:/Users/Yusuke/Documents/GitHub/ys-java/maven/tclib/src/main/java'
 -author
 -bottom
 'Copyright &#169; 2017. All rights reserved.'
 -charset
 'UTF-8'
 -d
-'C:/Users/Yusuke/Documents/GitHub/ys-java/maven/tclib0.9/target/site/apidocs'
+'C:/Users/Yusuke/Documents/GitHub/ys-java/maven/tclib/target/site/apidocs'
 -docencoding
 'UTF-8'
 -doctitle
 'TCLibrary 0.9 API'
 -linkoffline
-'http://docs.oracle.com/javase/8/docs/api' 'C:/Users/Yusuke/Documents/GitHub/ys-java/maven/tclib0.9/target/javadoc-bundle-options'
+'http://docs.oracle.com/javase/8/docs/api' 'C:/Users/Yusuke/Documents/GitHub/ys-java/maven/tclib/target/javadoc-bundle-options'
 -use
 -version
 -windowtitle
