@@ -54,7 +54,7 @@ public class Jsonizer {
 	/**
 	 * Field チェックはクラスごとに１度だけ行えばよいため、
 	 * 行ったかどうかをクラス単位で保持する。
-	 * この Set に含まれる Class はチェック済。
+	 * この Map に含まれる Class はチェック済。
 	 */
 	private static Map<Class<?>, Map<String, Accessor>> _fieldAccessors;
 	static {
@@ -123,14 +123,49 @@ public class Jsonizer {
 		return result;
 	}
 	
+	/**
+	 * 指定された Java オブジェクトの JSON 文字列表現を返却します。
+	 * toString() の文字列表現は、改行やスペース文字を含まない JSON 形式です。
+	 * string 型 (JsonValue で保持する値が String の場合) では
+	 * 結果は ""(ダブルクオーテーション) で括られることに注意してください。
+	 *
+	 * @param	instance	JSON 文字列化する対象のインスタンス
+	 * @return	このオブジェクトの JSON 形式(文字列)
+	 */
 	public static String toString(Object instance) {
 		return toJson(instance).toString();
 	}
 	
+	/**
+	 * 指定された Java オブジェクトを人が見やすいインデントを含んだ JSON 
+	 * 形式で文字列化します。
+	 * 最大横幅はデフォルト値(80)が設定されます。
+	 * 最大横幅は array, object の各要素が収まる場合に一行化する幅
+	 * であり、すべての行が最大横幅以内に収まるわけではありません。
+	 * (JSON では文字列要素の途中改行記法がありません)
+	 *
+	 * @param	instance	JSON 文字列化する対象のインスタンス
+	 * @param	indent	インデント(複数のスペースやタブ)
+	 * @return	インデント、改行を含む JSON 文字列
+	 */
 	public static String toString(Object instance, String indent) {
 		return toJson(instance).toString(indent);
 	}
 	
+	/**
+	 * 指定された Java オブジェクトを人が見やすいインデントを含んだ JSON
+	 * 形式で文字列化します。
+	 * array, object 値を一行で表せるなら改行させないための、一行の
+	 * 文字数を指定します。
+	 *
+	 * @param	instance	JSON 文字列化する対象のインスタンス
+	 * @param	indent		インデント(複数のスペースやタブ)
+	 * @param	textwidth	object, array に関し、この文字数に収まる場合
+	 *						複数行に分けない処理を行うための閾値。
+	 *						0 以下を指定すると、一行化を試みず、常に複数行化
+	 *						されます。(この方が高速)
+	 * @return	インデント、改行を含む JSON 文字列
+	 */
 	public static String toString(Object instance, String indent, int maxwidth) {
 		return toJson(instance).toString(indent, maxwidth);
 	}
