@@ -8,10 +8,11 @@ import java.text.SimpleDateFormat;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import abdom.data.json.Jsonizable;
 import abdom.data.json.JsonArray;
 import abdom.data.json.JsonType;
+import abdom.data.json.JsonValue;
 import abdom.data.json.JsonObject;
+import abdom.data.json.Jsonizable;
 
 import com.ntt.tc.util.Base64;
 
@@ -48,7 +49,7 @@ public class Rest {
 	/**
 	 * HTTP レスポンスを表す内部クラス
 	 */
-	public static class Response {
+	public static class Response implements Jsonizable {
 		/**
 		 * HTTP レスポンスコードを返却します。
 		 *
@@ -68,8 +69,9 @@ public class Rest {
 		/**
 		 * 結果の body を String で取得します
 		 */
+		@Override
 		public String toString() {
-			if (body == null) return null;
+			if (body == null) return "null";
 			try {
 				return new String(body, "UTF-8");
 			} catch (UnsupportedEncodingException uee) {
@@ -77,13 +79,24 @@ public class Rest {
 			}
 		}
 		
+		@Override
+		public String toString(String indent) {
+			return toJson().toString(indent);
+		}
+		
+		@Override
+		public String toString(String indent, int maxwidth) {
+			return toJson().toString(indent, maxwidth);
+		}
+		
 		/**
 		 * 結果の body を JsonType で取得します。
 		 * エラーレスポンスに関する結果は不定で、通常 JsonParseExcception
 		 * がスローされます。
 		 */
+		@Override
 		public JsonType toJson() {
-			if (body == null) return null;
+			if (body == null) return new JsonValue(null);
 			return JsonType.parse(toString());
 		}
 	}

@@ -6,6 +6,7 @@ import java.util.Date;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonValue;
+import abdom.data.json.Jsonizable;
 import abdom.data.json.object.JValue;
 
 /**
@@ -121,8 +122,8 @@ public class TC_Date extends C8yValue {
 	 *			されます。
 	 */
 	@Override
-	public void fill(JsonType jt) {
-		JsonValue jv = (JsonValue)jt;
+	public void fill(Jsonizable jt) {
+		JsonValue jv = (JsonValue)jt.toJson();
 		String str = jv.getValue();
 		set(str);
 	}

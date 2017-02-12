@@ -2,6 +2,7 @@ package com.ntt.tc.data;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonValue;
+import abdom.data.json.Jsonizable;
 
 /**
  * C8y で使用される、URIです。
@@ -24,17 +25,19 @@ public class URI extends C8yValue {
 	public URI(String uri) {
 		this.uri = new JsonValue(uri);
 	}
-	public URI(JsonType uri) {
-		if (uri.getType() != JsonType.TYPE_STRING)
-			throw new IllegalArgumentException("URI(JsonType) のコンストラクタでは JsonType は文字列型である必要があります。指定された値:" + uri);
-		this.uri = (JsonValue)uri;
+	public URI(Jsonizable uri) {
+		JsonType jt = uri.toJson();
+		if (jt.getType() != JsonType.TYPE_STRING)
+			throw new IllegalArgumentException("URI(JsonType) のコンストラクタでは JsonType は文字列型である必要があります。指定された値:" + jt);
+		this.uri = (JsonValue)jt;
 	}
 	
 /*-----------
  * overrides
  */
 	@Override
-	public void fill(JsonType jt) {
+	public void fill(Jsonizable j) {
+		JsonType jt = j.toJson();
 		if (jt.getType() != JsonType.TYPE_STRING)
 			throw new C8yFormatException("URI を文字列以外で fill() しようとしています:"+jt);
 		uri = (JsonValue)jt;

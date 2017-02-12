@@ -16,6 +16,7 @@ import abdom.data.json.JsonType;
 import abdom.data.json.JsonArray;
 import abdom.data.json.JsonObject;
 import abdom.data.json.JsonValue;
+import abdom.data.json.Jsonizable;
 
 /**
  * Java オブジェクトと JSON の相互変換に関する static メソッドを提供します。
@@ -77,7 +78,7 @@ public class Jsonizer {
 	 * @return	設定値の中で、Java オブジェクトに対応するプロパティがなく
 	 *			設定しなかった項目
 	 */
-	public static JsonObject fill(Object instance, JsonType arg) {
+	public static JsonObject fill(Object instance, Jsonizable arg) {
 		if (instance instanceof JValue && !(instance instanceof JData)) {
 			((JValue)instance).fill(arg);
 			return null; // JValue は extra を持たない
@@ -86,7 +87,7 @@ public class Jsonizer {
 		Map<String, Accessor> accessors = getAccessors(instance);
 		
 		JsonObject extra = null;
-		JsonObject jobj = (JsonObject)arg; // may throw ClassCastException
+		JsonObject jobj = (JsonObject)arg.toJson(); // may throw ClassCastException
 		
 		for (String name : jobj.keySet()) {
 			Accessor a = accessors.get(name);
@@ -399,7 +400,8 @@ public class Jsonizer {
 	 * @return	JsonType の値が設定された JData の子クラスのインスタンスの配列
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T[] toArray(JsonType source, T[] array) {
+	public static <T> T[] toArray(Jsonizable json, T[] array) {
+		JsonType source = json.toJson();
 		int size = source.size(); // may throw class cast exception
 		T[] result = null;
 		Class compType = array.getClass().getComponentType();
@@ -457,7 +459,8 @@ public class Jsonizer {
 	 * @param	clazz	生成するインスタンスの Class オブジェクト
 	 * @return	生成された Java オブジェクト
 	 */
-	public static <T> T fromJson(JsonType source, Class<T> clazz) {
+	public static <T> T fromJson(Jsonizable json, Class<T> clazz) {
+		JsonType source = json.toJson();
 		try {
 			T instance = clazz.newInstance();
 			if (JValue.class.isAssignableFrom(clazz)) {

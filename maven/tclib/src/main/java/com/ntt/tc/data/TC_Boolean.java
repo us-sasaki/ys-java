@@ -2,6 +2,7 @@ package com.ntt.tc.data;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonValue;
+import abdom.data.json.Jsonizable;
 import abdom.data.json.object.IllegalFieldTypeException;
 
 /**
@@ -17,11 +18,12 @@ public class TC_Boolean extends C8yValue {
 	
 	protected boolean value;
 	
-	public void fill(JsonType arg) {
-		if (arg.getType() != JsonType.TYPE_BOOLEAN)
+	public void fill(Jsonizable arg) {
+		JsonType jt = arg.toJson();
+		if (jt.getType() != JsonType.TYPE_BOOLEAN)
 			throw new IllegalFieldTypeException();
 			
-		value = arg.getValue().equals("true");
+		value = jt.getValue().equals("true");
 	}
 	
 	public JsonType toJson() {

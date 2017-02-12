@@ -36,7 +36,7 @@ public abstract class JValue implements Jsonizable {
 	 *			 (通常、NullPointerExceptionが発生しない
 	 *			ように null の場合は何もしない実装になります)
 	 */
-	public abstract void fill(JsonType value);
+	public abstract void fill(Jsonizable value);
 	
 	/**
 	 * JSON形式の文字列でフィールドを埋めます。内部的には、文字列から

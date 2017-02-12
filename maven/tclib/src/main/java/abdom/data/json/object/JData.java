@@ -16,6 +16,7 @@ import abdom.data.json.JsonType;
 import abdom.data.json.JsonArray;
 import abdom.data.json.JsonObject;
 import abdom.data.json.JsonValue;
+import abdom.data.json.Jsonizable;
 
 /**
  * JSON オブジェクトを Java オブジェクトによって模倣します。
@@ -97,11 +98,11 @@ public abstract class JData extends JValue {
 	 * @param	key	extra の key 情報
 	 * @param	jt	設定する値
 	 */
-	public void putExtra(String key, JsonType jt) {
+	public void putExtra(String key, Jsonizable jt) {
 		if (Jsonizer.hasProperty(this, key))
 			throw new IllegalFieldTypeException("The key " + key + " is property of " + this.getClass() + ", so it can't be assigned as extra.");
 		if (_extra == null) _extra = new JsonObject();
-		_extra.put(key, jt);
+		_extra.put(key, jt.toJson());
 	}
 	
 	/**
@@ -126,7 +127,7 @@ public abstract class JData extends JValue {
 	 * @param	json	このオブジェクトに値を与える JsonType
 	 */
 	@Override
-	public void fill(JsonType json) {
+	public void fill(Jsonizable json) {
 		JsonType rest = Jsonizer.fill(this, json);
 		if (rest == null) return;
 		if (_extra == null) _extra = (JsonObject)rest;

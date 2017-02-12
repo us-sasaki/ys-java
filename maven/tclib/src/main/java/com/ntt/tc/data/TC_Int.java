@@ -2,6 +2,7 @@ package com.ntt.tc.data;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonValue;
+import abdom.data.json.Jsonizable;
 import abdom.data.json.object.IllegalFieldTypeException;
 
 /**
@@ -15,11 +16,12 @@ import abdom.data.json.object.IllegalFieldTypeException;
 public class TC_Int extends C8yValue {
 	protected int value;
 	
-	public void fill(JsonType arg) {
-		if (arg.getType() != JsonType.TYPE_INT)
+	public void fill(Jsonizable arg) {
+		JsonType jt = arg.toJson();
+		if (jt.getType() != JsonType.TYPE_INT)
 			throw new IllegalFieldTypeException();
 			
-		value = arg.intValue();
+		value = jt.intValue();
 	}
 	
 	public JsonType toJson() {

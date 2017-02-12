@@ -2,6 +2,7 @@ package com.ntt.tc.data;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonValue;
+import abdom.data.json.Jsonizable;
 
 /**
  * C8y で使用される、URI template です。
@@ -24,17 +25,19 @@ public class URITemplate extends C8yValue {
 	public URITemplate(String uri) {
 		this.template = uri;
 	}
-	public URITemplate(JsonType uri) {
-		if (uri.getType() != JsonType.TYPE_STRING)
+	public URITemplate(Jsonizable uri) {
+		JsonType jt = uri.toJson();
+		if (jt.getType() != JsonType.TYPE_STRING)
 			throw new IllegalArgumentException("URITemplate(JsonType) のコンストラクタでは JsonType は文字列型である必要があります。指定された値:" + uri);
-		this.template = uri.getValue();
+		this.template = jt.getValue();
 	}
 	
 /*-----------
  * overrides
  */
 	@Override
-	public void fill(JsonType jt) {
+	public void fill(Jsonizable j) {
+		JsonType jt = j.toJson();
 		if (jt.getType() != JsonType.TYPE_STRING)
 			throw new C8yFormatException("URI を文字列以外で fill() しようとしています:"+jt);
 		template = jt.getValue();

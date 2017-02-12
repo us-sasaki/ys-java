@@ -2,6 +2,7 @@ package com.ntt.tc.data.inventory;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonValue;
+import abdom.data.json.Jsonizable;
 
 import com.ntt.tc.data.C8yValue;
 import com.ntt.tc.data.C8yFormatException;
@@ -73,10 +74,11 @@ public class C8y_SupportedOperation extends C8yValue {
  * overrides
  */
 	@Override
-	public void fill(JsonType value) {
-		if (value.getType() != JsonType.TYPE_STRING)
+	public void fill(Jsonizable value) {
+		JsonType jt = value.toJson();
+		if (jt.getType() != JsonType.TYPE_STRING)
 			throw new C8yFormatException();
-		operation = (JsonValue)value;
+		operation = (JsonValue)jt;
 	}
 	
 	@Override
