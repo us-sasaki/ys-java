@@ -10,10 +10,10 @@ layout: default
 ┃━━━━━━━━━━ 原文更新前(1)：9行目 ━━━━━━━━━━            ┃
 ┃【The】 module 【shown below】 will give an in depth example 【of】 how   ┃
 ┃you can create more complex rules. It will use multiple of the features   ┃
-┃explained 】 in the other guide sections.                                 ┃
+┃explained 【】 in the other guide sections.                               ┃
 ┃━━━━━━━━━━ 原文更新後(1)：9行目 ━━━━━━━━━━            ┃
-┃【This】 module 】 will give an in depth example 】 how you can create    ┃
-┃more complex rules. It will use multiple of the features explained        ┃
+┃【This】 module 【】 will give an in depth example 【】 how you can       ┃
+┃create more complex rules. It will use multiple of the features explained ┃
 ┃【before】 in the other guide sections.                                   ┃
 ┣━━━━━━━━━━━　元の翻訳文(修正して下さい)　━━━━━━━━━━━┫
 
@@ -32,7 +32,7 @@ layout: default
 ┃geofence.                                                                 ┃
 ┃━━━━━━━━━━ 原文更新後(1)：16行目 ━━━━━━━━━━           ┃
 ┃We want our tracking devices that are continuously sending location       ┃
-┃events to automatically generate alarms if they move outside 】 a         ┃
+┃events to automatically generate alarms if they move outside 【】 a       ┃
 ┃geofence.                                                                 ┃
 ┃━━━━━━━━━━ 原文更新前(2)：18行目 ━━━━━━━━━━           ┃
 ┃While it is moving outside it should not create new alarms because the    ┃
@@ -269,8 +269,8 @@ EventCreated の他の情報は不要なため、そのpayload(イベント)を�
 ┃Our rule is already working now but there is 【still】 one issue 【left.  ┃
 ┃So far we did not pay attention】 to 【what device】 send the location    ┃
 ┃event.                                                                    ┃
-┃If 】 device A sends a location event which is inside its geofence and    ┃
-┃the 【next】 event is from 】 device B which is outside the 【rule】      ┃
+┃If 【】 device A sends a location event which is inside its geofence and  ┃
+┃the 【next】 event is from 【】 device B which is outside the 【rule】    ┃
 ┃would create an alarm.                                                    ┃
 ┃The alarm would be generated for device A because when creating the alarm ┃
 ┃we 【take】 the source of the first arriving event as source for the      ┃
@@ -281,8 +281,8 @@ EventCreated の他の情報は不要なため、そのpayload(イベント)を�
 ┃so 【that in the end】 there is 【a separate】 window for 【every】       ┃
 ┃device.                                                                   ┃
 ┃━━━━━━━━━━ 原文更新後(1)：218行目 ━━━━━━━━━━          ┃
-┃Our rule is already working now but there is 】 one issue 【left: where】 ┃
-┃to 】 send the location event.                                            ┃
+┃Our rule is already working now but there is 【】 one issue 【left:       ┃
+┃where】 to 【】 send the location event.                                  ┃
 ┃If 【a】 device A sends a location event which is inside its geofence and ┃
 ┃the 【following】 event is from 【a】 device B which is outside the       ┃
 ┃【geofence it】 would create an alarm.                                    ┃
@@ -292,7 +292,7 @@ EventCreated の他の情報は不要なため、そのpayload(イベント)を�
 ┃We need to configure that the window 【which】 holds the latest two       ┃
 ┃events should only hold events of the same device.                        ┃
 ┃If there is an event from another device a new window should be created   ┃
-┃so 】 there is 【one】 window for 【each】 device.                        ┃
+┃so 【】 there is 【one】 window for 【each】 device.                      ┃
 ┣━━━━━━━━━━━　元の翻訳文(修正して下さい)　━━━━━━━━━━━┫
 
 今回のロジックはこれで動きますが、まだもう一つやり残しがあります。今までロケーションイベントを送信したデバイスが何なのか注意していませんでした。
@@ -307,7 +307,7 @@ EventCreated の他の情報は不要なため、そのpayload(イベント)を�
 ┃　　　　　　　更新箇所。原文を確認し、翻訳文を修正して下さい　　　　　　　┃
 ┃━━━━━━━━━━ 原文更新前(1)：230行目 ━━━━━━━━━━          ┃
 ┃Now we can add the context to the statement where we create the window. A ┃
-┃context can only 】 applied to statements where the input of the          ┃
+┃context can only 【】 applied to statements where the input of the        ┃
 ┃statement is configured in the context.                                   ┃
 ┃Otherwise the engine would not know which value to take 【to create】     ┃
 ┃context partitions.                                                       ┃

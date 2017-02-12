@@ -302,8 +302,10 @@ public class DiffMdInTranslate {
 				revPut.append(' ');
 				revCnt++;
 			}
-			orgPut.deleteCharAt(orgPut.length()-1); // 最後のスペースを削除
-			revPut.deleteCharAt(revPut.length()-1);
+			if (orgPut.charAt(orgPut.length()-1) == ' ')
+				orgPut.deleteCharAt(orgPut.length()-1); // 最後のスペースを削除
+			if (revPut.charAt(revPut.length()-1) == ' ')
+				revPut.deleteCharAt(revPut.length()-1);
 			orgPut.append("】 ");
 			revPut.append("】 ");
 		}
@@ -316,8 +318,10 @@ public class DiffMdInTranslate {
 			revPut.append(rev.get(revCnt));
 			revPut.append(' ');
 		}
-		orgPut.deleteCharAt(orgPut.length()-1); // 最後のスペースを削除
-		revPut.deleteCharAt(revPut.length()-1);
+		if (orgPut.charAt(orgPut.length()-1) == ' ')
+			orgPut.deleteCharAt(orgPut.length()-1); // 最後のスペースを削除
+		if (revPut.charAt(revPut.length()-1) == ' ')
+			revPut.deleteCharAt(revPut.length()-1);
 		
 		String[] result = { orgPut.toString(), revPut.toString() };
 		

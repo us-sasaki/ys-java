@@ -8,7 +8,7 @@ toc: true
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃　　　　　　　更新箇所。原文を確認し、翻訳文を修正して下さい　　　　　　　┃
 ┃━━━━━━━━━━ 原文更新前(1)：8行目 ━━━━━━━━━━            ┃
-┃## Calculating 】 hourly 【averages】 of 【a measurement】                ┃
+┃## Calculating 【】 hourly 【averages】 of 【a measurement】              ┃
 ┃━━━━━━━━━━ 原文更新後(1)：8行目 ━━━━━━━━━━            ┃
 ┃## Calculating 【an】 hourly 【median】 of 【 measurements】              ┃
 ┣━━━━━━━━━━━　元の翻訳文(修正して下さい)　━━━━━━━━━━━┫
@@ -72,9 +72,9 @@ toc: true
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃　　　　　　　更新箇所。原文を確認し、翻訳文を修正して下さい　　　　　　　┃
 ┃━━━━━━━━━━ 原文更新前(1)：53行目 ━━━━━━━━━━           ┃
-┃## Create alarm if 】 operation 【has】 not 【been】 executed             ┃
+┃## Create alarm if 【】 operation 【has】 not 【been】 executed           ┃
 ┃━━━━━━━━━━ 原文更新後(1)：53行目 ━━━━━━━━━━           ┃
-┃## Create alarm if 【the】 operation 【was】 not 】 executed              ┃
+┃## Create alarm if 【the】 operation 【was】 not 【】 executed            ┃
 ┣━━━━━━━━━━━　元の翻訳文(修正して下さい)　━━━━━━━━━━━┫
 ## オペレーションが実行されなかったらアラームを生成
 ┃　　　　↑　　　　↑　　　　要修正：ここまで　　　　　↑　　　　↑　　　　┃

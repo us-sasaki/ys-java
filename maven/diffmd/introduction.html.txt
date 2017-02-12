@@ -9,7 +9,7 @@ layout: default
 ┃　　　　　　　更新箇所。原文を確認し、翻訳文を修正して下さい　　　　　　　┃
 ┃━━━━━━━━━━ 原文更新前(1)：9行目 ━━━━━━━━━━            ┃
 ┃Using the Cumulocity real-time event processing, you can add your own     ┃
-┃logic to your IoT solution. This 【includes,】 but 】 is not limited      ┃
+┃logic to your IoT solution. This 【includes,】 but 【】 is not limited    ┃
 ┃【to, data analytics logic.】 To define new analytics, you will use the   ┃
 ┃Cumulocity Event Language. The language allows to analyze incoming        ┃
 ┃【data】 using a powerful pattern and time window based query language.   ┃
@@ -145,7 +145,7 @@ Cumulocityイベント言語では、データはストリームを流れます�
 ┃can use the "select" clause to specify the parameters of the event.       ┃
 ┃━━━━━━━━━━ 原文更新後(1)：47行目 ━━━━━━━━━━           ┃
 ┃Creating an event is done by the keywords `insert into` and `select`.     ┃
-┃First you need to specify 】 the "insert into" followed by the stream     ┃
+┃First you need to specify 【】 the "insert into" followed by the stream   ┃
 ┃name for which stream you want to create an event. After that you can use ┃
 ┃the "select" clause to specify the parameters of the event.               ┃
 ┣━━━━━━━━━━━　元の翻訳文(修正して下さい)　━━━━━━━━━━━┫
@@ -169,12 +169,12 @@ Cumulocityイベント言語では、データはストリームを流れます�
 ┃━━━━━━━━━━ 原文更新前(1)：58行目 ━━━━━━━━━━           ┃
 ┃As an example we 【now want to】 create a 【statement that combines the   ┃
 ┃learnings from the sections on this page.】 It should listen to a stream  ┃
-┃and create a new event in another stream whenever the 】 condition        ┃
+┃and create a new event in another stream whenever the 【】 condition      ┃
 ┃applies.                                                                  ┃
 ┃━━━━━━━━━━ 原文更新後(1)：60行目 ━━━━━━━━━━           ┃
-┃As an example we 】 create a 【statement.】 It should listen to a stream  ┃
-┃and create a new event in another stream whenever the 【specified】       ┃
-┃condition applies.                                                        ┃
+┃As an example we 【】 create a 【statement.】 It should listen to a       ┃
+┃stream and create a new event in another stream whenever the              ┃
+┃【specified】 condition applies.                                          ┃
 ┣━━━━━━━━━━━　元の翻訳文(修正して下さい)　━━━━━━━━━━━┫
 
 さあ、例としてこのページの章で学んだことを合わせた文を作ってみましょう。ストリームを監視し、条件が適用される場合、別のストリームに新しいイベントを生成します。例として、温度Measurementに対し、アラームを生成したいと思います。

@@ -29,7 +29,7 @@ toc: true
 ┃values apply】 for 【the】 different streams|                             ┃
 ┃━━━━━━━━━━ 原文更新後(1)：16行目 ━━━━━━━━━━           ┃
 ┃|_type|String|The type of the event. See the table below for which        ┃
-┃【value types can be used】 for 】 different streams|                     ┃
+┃【value types can be used】 for 【】 different streams|                   ┃
 ┣━━━━━━━━━━━　元の翻訳文(修正して下さい)　━━━━━━━━━━━┫
 | _type | String | イベントの型。下表にある、それぞれのストリームに適用される型値を見てください |
 ┃　　　　↑　　　　↑　　　　要修正：ここまで　　　　　↑　　　　↑　　　　┃

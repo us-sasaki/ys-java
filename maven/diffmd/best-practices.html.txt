@@ -22,11 +22,11 @@ toc: true
 ┃and add it at the end to those statements where it 【is necessary.】      ┃
 ┃━━━━━━━━━━ 原文更新後(1)：17行目 ━━━━━━━━━━           ┃
 ┃If you need a device 【context,】 it is usually not necessary to put      ┃
-┃every statement into 】 context.                                          ┃
-┃If you do 】 aggregation of measurements most of the time you only need   ┃
+┃every statement into 【】 context.                                        ┃
+┃If you do 【】 aggregation of measurements most of the time you only need ┃
 ┃the context 【in】 the statement that does the actual aggregation. 【     ┃
 ┃It is a useful concept】 to develop the module completely without the     ┃
-┃context 】 first and add it at the end to those statements where it       ┃
+┃context 【】 first and add it at the end to those statements where it     ┃
 ┃【applies.】                                                              ┃
 ┣━━━━━━━━━━━　元の翻訳文(修正して下さい)　━━━━━━━━━━━┫
 
