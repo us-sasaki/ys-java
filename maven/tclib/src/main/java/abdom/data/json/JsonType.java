@@ -368,9 +368,9 @@ public abstract class JsonType extends Number
 	public JsonArray push(double t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
-	public JsonArray push(Jsonizable[] t) {
-		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
-	}
+	//public JsonArray push(Jsonizable[] t) {
+	//	throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
+	//}
 	
 /*
  * pop methods (配列の最後の要素を取得し、削除)
