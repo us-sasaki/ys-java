@@ -54,6 +54,10 @@ public abstract class JData extends JValue {
  * constructor
  */
 	protected JData() {
+		// JData のプロパティ宣言が規約に基づいていない場合、
+		// JDataDefinitionException が発生するが、なるべく早期
+		// (生成時)にチェックしデバッグを容易にするため、デフォルト
+		// コンストラクタ内で getAccessors() を呼んでおく
 		Jsonizer.getAccessors(this);
 	}
 	
@@ -93,13 +97,13 @@ public abstract class JData extends JValue {
 	}
 	
 	/**
-	 * extra アクセスメソッドで、JsonType 値を設定します。
+	 * extra アクセスメソッドで、Jsonizable 値を設定します。
 	 *
 	 * @param	key	extra の key 情報
-	 * @param	jt	設定する値
+	 * @param	jt	設定する値を指定。toJson() による JsonType が設定されます。
 	 */
 	public void putExtra(String key, Jsonizable jt) {
-		if (Jsonizer.hasProperty(this, key))
+		if (Jsonizer.hasPropertyOpt(this, key))
 			throw new IllegalFieldTypeException("The key " + key + " is property of " + this.getClass() + ", so it can't be assigned as extra.");
 		if (_extra == null) _extra = new JsonObject();
 		_extra.put(key, jt.toJson());

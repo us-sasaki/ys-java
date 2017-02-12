@@ -2,6 +2,8 @@ package abdom.data.json;
 
 /**
  * JsonType化、JSON化可能であることを表すインターフェースです。
+ * メソッドへの引数として、JSON値として扱えるオブジェクト(JsonType, JData)を
+ * 包括的に指定するためのインターフェースです。
  *
  * @version		February 3, 2017
  * @author		Yusuke Sasaki

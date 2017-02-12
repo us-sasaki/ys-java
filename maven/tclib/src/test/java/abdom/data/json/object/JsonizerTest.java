@@ -90,4 +90,12 @@ public class JsonizerTest extends TestCase{
 		
 		assertEquals(j.toJson(), k.toJson());
 	}
+	
+	public void testJ2() {
+		java.util.Set<String> names = Jsonizer.getPropertyNames(new J1());
+		java.util.Set<String> ans = new java.util.HashSet<String>();
+		ans.addAll(java.util.Arrays.asList(new String[] {"string", "bool" ,"double", "float", "lonG", "INTEGER"}));
+		assertEquals(names, ans);
+	}
+	
 }

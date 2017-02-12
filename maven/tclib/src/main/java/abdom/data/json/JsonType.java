@@ -252,7 +252,7 @@ public abstract class JsonType extends Number
 	public JsonObject add(String name, boolean t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
-	public JsonObject add(String name, JsonType t) {
+	public JsonObject add(String name, Jsonizable t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 	public JsonObject add(String name, String t) {
@@ -279,7 +279,7 @@ public abstract class JsonType extends Number
 	public JsonObject add(String name, double t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
-	public JsonObject add(String name, JsonType[] t) {
+	public JsonObject add(String name, Jsonizable[] t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、add できません");
 	}
 /*
@@ -296,7 +296,7 @@ public abstract class JsonType extends Number
 	 * @return	要素が追加された JsonObject (this)
 	 * @see		#add(String, boolean)
 	 */
-	public JsonObject put(String name, JsonType t) {
+	public JsonObject put(String name, Jsonizable t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
 	public JsonObject put(String name, String t) {
@@ -326,7 +326,7 @@ public abstract class JsonType extends Number
 	public JsonObject put(String name, double t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
-	public JsonObject put(String name, JsonType[] t) {
+	public JsonObject put(String name, Jsonizable[] t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、put できません");
 	}
 /*
@@ -341,7 +341,7 @@ public abstract class JsonType extends Number
 	public JsonArray push(boolean t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
-	public JsonArray push(JsonType t) {
+	public JsonArray push(Jsonizable t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	public JsonArray push(String t) {
@@ -368,7 +368,7 @@ public abstract class JsonType extends Number
 	public JsonArray push(double t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
-	public JsonArray push(JsonType[] t) {
+	public JsonArray push(Jsonizable[] t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
 	
@@ -398,7 +398,7 @@ public abstract class JsonType extends Number
 	public JsonArray shift(boolean t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
-	public JsonArray shift(JsonType t) {
+	public JsonArray shift(Jsonizable t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	public JsonArray shift(String t) {
@@ -425,7 +425,7 @@ public abstract class JsonType extends Number
 	public JsonArray shift(double t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
-	public JsonArray shift(JsonType[] t) {
+	public JsonArray shift(Jsonizable[] t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、shift できません");
 	}
 	
@@ -460,7 +460,7 @@ public abstract class JsonType extends Number
 	 * @param	target	結合する JsonArray
 	 * @return	結合後の JsonArray。元の JsonArray (this) は変更されません。
 	 */
-	public JsonArray concat(JsonType target) {
+	public JsonArray concat(Jsonizable target) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、concat できません");
 	}
 	
@@ -472,7 +472,7 @@ public abstract class JsonType extends Number
 	 * @param	delete	削除する要素数
 	 * @param	toAdd	index の位置に挿入する要素(JsonArray)
 	 */
-	public JsonArray splice(int index, int delete, JsonType toAdd) {
+	public JsonArray splice(int index, int delete, Jsonizable toAdd) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
 	}
 	
@@ -511,7 +511,7 @@ public abstract class JsonType extends Number
 	 * @param	t		バリュー
 	 * @return	新しく生成されたJsonObject
 	 */
-	public static JsonObject o(String name, JsonType t) {
+	public static JsonObject o(String name, Jsonizable t) {
 		return new JsonObject().put(name, t);
 	}
 	public static JsonObject o(String name, String t) {
@@ -541,7 +541,7 @@ public abstract class JsonType extends Number
 	public static JsonObject o(String name, double t) {
 		return new JsonObject().put(name, t);
 	}
-	public static JsonObject o(String name, JsonType[] t) {
+	public static JsonObject o(String name, Jsonizable[] t) {
 		return new JsonObject().put(name, t);
 	}
 	
@@ -561,6 +561,7 @@ public abstract class JsonType extends Number
 		for (Object t : param) {
 			if (t == null) result.push(new JsonValue(null));
 			else if (t instanceof JsonType) result.push((JsonType)t);
+			else if (t instanceof Jsonizable) result.push(((Jsonizable)t).toJson());
 			else if (t instanceof String) result.push((String)t);
 			else if (t instanceof Byte) result.push((Byte)t);
 			else if (t instanceof Character) result.push((Character)t);
@@ -803,7 +804,7 @@ public abstract class JsonType extends Number
 			if (c != '\"') throw new JsonParseException("オブジェクト内の要素名が \" で始まっていません");
 			String name = readString(pr);
 			// ここで name として入っていてはならない文字をチェック
-			// -> RFC 7159 によると、string とあり、なんでもOKらしい
+			// -> RFC 7159 によると、string とあり、なんでもOK
 			// 　　特に、"." も OK
 			skipspaces(pr);
 			c = pr.read();

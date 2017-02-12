@@ -29,9 +29,9 @@ public class JsonObject extends JsonType {
  * add methods
  */
 	@Override
-	public JsonObject add(String name, JsonType obj) {
+	public JsonObject add(String name, Jsonizable obj) {
 		if (obj == null) return this;
-		return addImpl(name, obj);
+		return addImpl(name, obj.toJson());
 	}
 	@Override
 	public JsonObject add(String name, String value) {
@@ -67,11 +67,12 @@ public class JsonObject extends JsonType {
 		return addImpl(name, new JsonValue(value));
 	}
 	@Override
-	public JsonObject add(String name, JsonType[] array) {
+	public JsonObject add(String name, Jsonizable[] array) {
 		return addImpl(name, new JsonArray((Object[])array));
 	}
 	
-	private JsonObject addImpl(String name, JsonType t) {
+	private JsonObject addImpl(String name, Jsonizable j) {
+		JsonType t = j.toJson();
 		if (t == null) return this; // 何もしない
 		if (map.containsKey(name)) {
 			// 同一 name のエントリがすでにあった場合、value を JsonArray 化する
@@ -101,7 +102,7 @@ public class JsonObject extends JsonType {
  * put methods
  */
 	@Override
-	public JsonObject put(String name, JsonType obj) {
+	public JsonObject put(String name, Jsonizable obj) {
 		return putImpl(name, obj);
 	}
 	@Override
@@ -137,14 +138,14 @@ public class JsonObject extends JsonType {
 		return putImpl(name, new JsonValue(value));
 	}
 	@Override
-	public JsonObject put(String name, JsonType[] array) {
+	public JsonObject put(String name, Jsonizable[] array) {
 		return putImpl(name, new JsonArray((Object[])array));
 	}
 	
-	private JsonObject putImpl(String name, JsonType t) {
+	private JsonObject putImpl(String name, Jsonizable t) {
 		if (t == null) t = new JsonValue( null );
 		// 上書き
-		map.put(name, t);
+		map.put(name, t.toJson());
 		return this;
 	}
 	

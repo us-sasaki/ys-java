@@ -53,9 +53,9 @@ import abdom.data.json.Jsonizable;
 public class Jsonizer {
 
 	/**
-	 * Field チェックはクラスごとに１度だけ行えばよいため、
-	 * 行ったかどうかをクラス単位で保持する。
-	 * この Map に含まれる Class はチェック済。
+	 * Field, Method Accessor の生成はクラスごとに１度だけ行えばよいため、
+	 * 行った結果をクラス単位で保持する。
+	 * この Map に含まれる Class は生成済み。
 	 */
 	private static Map<Class<?>, Map<String, Accessor>> _fieldAccessors;
 	static {
@@ -71,10 +71,10 @@ public class Jsonizer {
  * class methods
  */
 	/**
-	 * Java オブジェクトのプロパティを、指定された JsonType で設定します。
+	 * Java オブジェクトのプロパティを、指定された Jsonizable で設定します。
 	 *
 	 * @param	instance	設定対象の Java オブジェクト
-	 * @param	arg			設定値を持つ JsonType
+	 * @param	arg			設定値を持つ Jsonizable オブジェクト
 	 * @return	設定値の中で、Java オブジェクトに対応するプロパティがなく
 	 *			設定しなかった項目
 	 */
@@ -174,15 +174,38 @@ public class Jsonizer {
 	/**
 	 * 指定されたオブジェクトのプロパティとして、key が含まれるかテスト
 	 * します。
-	 * このメソッドは、指定するオブジェクトのクラスに対する getAccessors
+	 * このメソッドは、JData#putExtra(String, Jsonizer) 内で利用することを
+	 * 想定しており、高速化のためオブジェクトのクラスに対する getAccessors
 	 * が呼ばれていない状態で使用した場合、NullPointerException が発生します。
 	 *
 	 * @param	instance	テスト対象のオブジェクト
 	 * @param	key			プロパティ名
 	 * @return	key で示される名のプロパティを持つ場合 true
 	 */
-	static boolean hasProperty(Object instance, String key) {
+	static boolean hasPropertyOpt(Object instance, String key) {
 		return (_fieldAccessors.get(instance.getClass()).get(key) != null);
+	}
+	
+	/**
+	 * 指定されたオブジェクトのプロパティとして、key が含まれるかテスト
+	 * します。
+	 *
+	 * @param	instance	テスト対象のオブジェクト
+	 * @param	key			プロパティ名
+	 * @return	key で示される名のプロパティを持つ場合 true
+	 */
+	public static boolean hasProperty(Object instance, String key) {
+		return (getAccessors(instance).get(key) != null);
+	}
+	
+	/**
+	 * 指定されたオブジェクトのプロパティ名のリストを Set で返却します。
+	 *
+	 * @param	instance	テスト対象のオブジェクト
+	 * @return	プロパティ名のリスト
+	 */
+	public static Set<String> getPropertyNames(Object instance) {
+		return getAccessors(instance).keySet();
 	}
 	
 	/**
@@ -242,7 +265,7 @@ public class Jsonizer {
 			
 			Class type = f.getType();
 			if (!isJDataCategory(type))
-				throw new IllegalFieldTypeException("Illegal type \"" +
+				throw new JDataDefinitionException("Illegal type \"" +
 						type.getName() + "\" has found in field \""+
 						f.getName()+ "\" of class \"" + cls.getName() +
 						"\". JData field must consist of boolean, int, long, float, double, String, JValue, JsonObject, their arrays. To prevent the field from Jsonizing, set transient.");

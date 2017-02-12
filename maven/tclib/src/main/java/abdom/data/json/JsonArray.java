@@ -44,6 +44,7 @@ public class JsonArray extends JsonType {
 		for (Object t : toSet) {
 			if (t == null) array.add(new JsonValue(null));
 			else if (t instanceof JsonType) array.add((JsonType)t);
+			else if (t instanceof Jsonizable) array.add( ((Jsonizable)t).toJson() );
 			else if (t instanceof String)
 				array.add(new JsonValue((String)t));
 			else if (t instanceof Byte)
@@ -69,9 +70,9 @@ public class JsonArray extends JsonType {
  * push
  */
 	@Override
-	public JsonArray push(JsonType val) {
+	public JsonArray push(Jsonizable val) {
 		if (val == null) val = new JsonValue(null);
-		this.array.add(val);
+		this.array.add(val.toJson());
 		return this;
 	}
 	@Override
@@ -131,9 +132,9 @@ public class JsonArray extends JsonType {
  * shift
  */
 	@Override
-	public JsonArray shift(JsonType val) {
+	public JsonArray shift(Jsonizable val) {
 		if (val == null) this.array.add(0, new JsonValue(null));
-		else this.array.add(0,val);
+		else this.array.add(0,val.toJson());
 		return this;
 	}
 	@Override
@@ -210,9 +211,9 @@ public class JsonArray extends JsonType {
 	 * @return	結合後の JsonArray。元の JsonArray (this) は変更されません。
 	 */
 	@Override
-	public JsonArray concat(JsonType target) {
+	public JsonArray concat(Jsonizable target) {
 		List<JsonType> result = new ArrayList<JsonType>(array);
-		result.addAll(((JsonArray)target).array);
+		result.addAll(((JsonArray)target.toJson()).array);
 		JsonArray ja = new JsonArray();
 		ja.array = result;
 		return ja;
@@ -231,12 +232,13 @@ public class JsonArray extends JsonType {
 	 * @return	変更後のインスタンス
 	 */
 	@Override
-	public JsonArray splice(int index, int delete, JsonType toAdd) {
-		if (toAdd instanceof JsonArray) {
-			JsonType[] ja = ((JsonArray)toAdd).array.toArray(new JsonType[0]);
+	public JsonArray splice(int index, int delete, Jsonizable toAdd) {
+		JsonType jt = toAdd.toJson();
+		if (jt instanceof JsonArray) {
+			JsonType[] ja = ((JsonArray)jt).array.toArray(new JsonType[0]);
 			return spliceImpl(index, delete, ja);
 		}
-		return spliceImpl(index, delete, new JsonType[] { toAdd });
+		return spliceImpl(index, delete, new JsonType[] { jt });
 	}
 	
 	/**
@@ -272,6 +274,7 @@ public class JsonArray extends JsonType {
 			Object t = toAdd[i];
 			if (t == null) a[i] = new JsonValue(null);
 			else if (t instanceof JsonType) a[i] = (JsonType)t;
+			else if (t instanceof Jsonizable) a[i] = ((Jsonizable)t).toJson();
 			else if (t instanceof String) a[i] = new JsonValue((String)t);
 			else if (t instanceof Byte)
 				a[i] = new JsonValue( (Byte)t );
