@@ -147,6 +147,8 @@ public abstract class JsonType extends Number
 	/**
 	 * JsonObject として、指定されたキーの値を取得します。
 	 * JsonObject でない場合、ClassCastException がスローされます。
+	 * キー値には、階層的なオブジェクト構造を辿るための . (dot)表記が
+	 * サポートされます。
 	 *
 	 * @param	key		値を取得したいキー名
 	 * @return	取得される値(JsonType)

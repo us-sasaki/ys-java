@@ -143,6 +143,7 @@ public class JsonObject extends JsonType {
 	}
 	
 	private JsonObject putImpl(String name, Jsonizable t) {
+		// add もであるが、recursive '.' 登録に対応する？
 		if (t == null) t = new JsonValue( null );
 		// 上書き
 		map.put(name, t.toJson());
@@ -154,7 +155,11 @@ public class JsonObject extends JsonType {
  */
 	@Override
 	public JsonType get(String key) {
-		return map.get(key);
+		int index = key.indexOf('.');
+		if (index == -1) return map.get(key);
+		JsonType jt = map.get(key.substring(0, index));
+		if (jt == null) return null;
+		return ((JsonObject)jt).get(key.substring(index+1));
 	}
 	
 	@Override

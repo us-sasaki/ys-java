@@ -86,4 +86,12 @@ public class JsonMixTest extends TestCase{
 		assertEquals(jt.get("array").get(1).getValue(), "hoe");
 		
 	}
+	public void test5() {
+		JsonType j = JsonType.o("prop1", JsonType.o("prop2", JsonType.o("prop3", 5)));
+		
+		assertEquals(j.get("prop1").toString(), "{\"prop2\":{\"prop3\":5}}");
+		assertEquals(j.get("prop1.prop2").toString(), "{\"prop3\":5}");
+		assertEquals(j.get("prop1.prop2.prop3").toString(), "5");
+		assertEquals(j.toString(), "{\"prop1\":{\"prop2\":{\"prop3\":5}}}");
+	}
 }

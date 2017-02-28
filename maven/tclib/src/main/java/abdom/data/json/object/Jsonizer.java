@@ -226,25 +226,23 @@ public class Jsonizer {
 			
 		synchronized (_fieldAccessors) {
 			Map<String, Accessor> accessors = _fieldAccessors.get(cls);
-		}
-		if (accessors != null) return accessors;
-		
-		//System.out.println("generate accessor of " + instance.getClass());
-		//
-		// Accessors を生成する
-		//
-		accessors = new HashMap<String, Accessor>();
-		
-		// Accessor を設定する。
-		// 以下のメソッドは同一名で上書きするため、同一名称では
-		// method が field に優先することとなる		
-		addFieldAccessors(accessors, cls);
-		addMethodAccessors(accessors, cls);
-		
-		synchronized (_fieldAccessors) {
+			if (accessors != null) return accessors;
+			
+			//System.out.println("generate accessor of " + instance.getClass());
+			//
+			// Accessors を生成する
+			//
+			accessors = new HashMap<String, Accessor>();
+			
+			// Accessor を設定する。
+			// 以下のメソッドは同一名で上書きするため、同一名称では
+			// method が field に優先することとなる		
+			addFieldAccessors(accessors, cls);
+			addMethodAccessors(accessors, cls);
+			
 			_fieldAccessors.put(cls, accessors);
+			return accessors;
 		}
-		return accessors;
 	}
 	
 	/**
