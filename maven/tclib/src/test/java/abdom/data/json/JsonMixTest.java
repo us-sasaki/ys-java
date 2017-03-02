@@ -35,6 +35,7 @@ public class JsonMixTest extends TestCase{
 		assertNotSame(h, new String(h.getBytes()));
 		assertNull( null );
 		assertSame( h, "hoe" ); // !! 同じ文字定数はコンパイル時同じobjになる
+								// Jsonのテストではない
 		assertTrue( true );
 		if (false) fail();
 	}
