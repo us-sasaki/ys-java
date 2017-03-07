@@ -19,7 +19,7 @@ import abdom.data.json.object.JValue;
  */
 public class TC_Date extends C8yValue {
 	protected static final SimpleDateFormat SDF =
-				new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZ"); //XXX");
+				new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"); // ZZZ
 	
 	/** 内部的には java.util.Date として値を保持します */
 	protected Date date;

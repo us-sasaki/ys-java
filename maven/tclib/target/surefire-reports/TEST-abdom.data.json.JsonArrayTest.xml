@@ -63,13 +63,13 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="abdom.data.json.JsonArrayTest" name="testNewArray" time="0"/>
-  <testcase classname="abdom.data.json.JsonArrayTest" name="testSplice" time="0"/>
-  <testcase classname="abdom.data.json.JsonArrayTest" name="testGetCut" time="0"/>
-  <testcase classname="abdom.data.json.JsonArrayTest" name="testPush" time="0"/>
-  <testcase classname="abdom.data.json.JsonArrayTest" name="testConcat" time="0"/>
-  <testcase classname="abdom.data.json.JsonArrayTest" name="testSlice" time="0"/>
-  <testcase classname="abdom.data.json.JsonArrayTest" name="testPop" time="0"/>
-  <testcase classname="abdom.data.json.JsonArrayTest" name="testIterator" time="0"/>
   <testcase classname="abdom.data.json.JsonArrayTest" name="testShiftUnshift" time="0"/>
+  <testcase classname="abdom.data.json.JsonArrayTest" name="testPush" time="0"/>
+  <testcase classname="abdom.data.json.JsonArrayTest" name="testPop" time="0"/>
+  <testcase classname="abdom.data.json.JsonArrayTest" name="testGetCut" time="0"/>
+  <testcase classname="abdom.data.json.JsonArrayTest" name="testSlice" time="0"/>
+  <testcase classname="abdom.data.json.JsonArrayTest" name="testIterator" time="0"/>
+  <testcase classname="abdom.data.json.JsonArrayTest" name="testSplice" time="0"/>
+  <testcase classname="abdom.data.json.JsonArrayTest" name="testNewArray" time="0"/>
+  <testcase classname="abdom.data.json.JsonArrayTest" name="testConcat" time="0"/>
 </testsuite>
