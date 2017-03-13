@@ -174,28 +174,15 @@ public class Jsonizer {
 	/**
 	 * 指定されたオブジェクトのプロパティとして、key が含まれるかテスト
 	 * します。
-	 * このメソッドは、JData#putExtra(String, Jsonizer) 内で利用することを
-	 * 想定しており、高速化のためオブジェクトのクラスに対する getAccessors
-	 * が呼ばれていない状態で使用した場合、NullPointerException が発生します。
-	 *
-	 * @param	instance	テスト対象のオブジェクト
-	 * @param	key			プロパティ名
-	 * @return	key で示される名のプロパティを持つ場合 true
-	 */
-	static boolean hasPropertyOpt(Object instance, String key) {
-		return (_fieldAccessors.get(instance.getClass()).get(key) != null);
-	}
-	
-	/**
-	 * 指定されたオブジェクトのプロパティとして、key が含まれるかテスト
-	 * します。
 	 *
 	 * @param	instance	テスト対象のオブジェクト
 	 * @param	key			プロパティ名
 	 * @return	key で示される名のプロパティを持つ場合 true
 	 */
 	public static boolean hasProperty(Object instance, String key) {
-		return (getAccessors(instance).get(key) != null);
+		synchronized (_fieldAccessors) {
+			return (getAccessors(instance).get(key) != null);
+		}
 	}
 	
 	/**
@@ -205,7 +192,10 @@ public class Jsonizer {
 	 * @return	プロパティ名のリスト
 	 */
 	public static Set<String> getPropertyNames(Object instance) {
-		return getAccessors(instance).keySet();
+		synchronized (_fieldAccessors) {
+			// keySet() は不変オブジェクトのため synchronized 不要
+			return getAccessors(instance).keySet();
+		}
 	}
 	
 	/**

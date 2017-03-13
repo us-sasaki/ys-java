@@ -103,7 +103,7 @@ public abstract class JData extends JValue {
 	 * @param	jt	設定する値を指定。toJson() による JsonType が設定されます。
 	 */
 	public void putExtra(String key, Jsonizable jt) {
-		if (Jsonizer.hasPropertyOpt(this, key))
+		if (Jsonizer.hasProperty(this, key))
 			throw new IllegalFieldTypeException("The key " + key + " is property of " + this.getClass() + ", so it can't be assigned as extra.");
 		if (_extra == null) _extra = new JsonObject();
 		_extra.put(key, jt.toJson());
