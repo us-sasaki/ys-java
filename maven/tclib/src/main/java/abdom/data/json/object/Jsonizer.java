@@ -465,7 +465,7 @@ public class Jsonizer {
 	 * 指定された Class オブジェクトが JValue のサブクラスの場合、
 	 * JValue.fill() が呼ばれます。
 	 * 一方、JValue のサブクラスでない場合、Jsonizer.fill() が
-	 * 使用されるため、指定された Class オブジェクトに格納できない値を
+	 * 使用され、指定された Class オブジェクトに格納できない値を
 	 * JsonType 値が持っていた場合、捨てられます。
 	 * <pre>
 	 * 利用例
@@ -496,11 +496,11 @@ public class Jsonizer {
 	}
 	
 	/**
-	 * 与えられた JsonType から Java オブジェクトを生成します。
+	 * 与えられた JSON 文字列から Java オブジェクトを生成します。
 	 * 指定された Class オブジェクトが JValue のサブクラスの場合、
 	 * JValue.fill() が呼ばれます。
 	 * 一方、JValue のサブクラスでない場合、Jsonizer.fill() が
-	 * 使用されるため、指定された Class オブジェクトに格納できない値を
+	 * 使用され、指定された Class オブジェクトに格納できない値を
 	 * JsonType 値が持っていた場合、捨てられます。
 	 * <pre>
 	 * 利用例

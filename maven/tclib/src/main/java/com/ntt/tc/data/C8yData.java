@@ -24,7 +24,7 @@ public abstract class C8yData extends JData {
 	private static final JsonValue CACHED_NULL = new JsonValue(null);
 	
 	/**
-	 * このオブジェクトを指定されたオブジェクトに値を一致させる
+	 * 指定されたオブジェクトをこのオブジェクトに値を一致させる
 	 * JsonObject を抽出します(差分抽出)。
 	 * 例えとして、(返り値) = this - another のような振る舞いをします：
 	 * 返り値を ret とした場合、一般に
