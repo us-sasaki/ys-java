@@ -14,6 +14,7 @@ C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\da
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\real\ConnectResponse.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\device\BulkNewDeviceRequest.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\inventory\C8y_Software.java
+C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\misc\po\PoDiff.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\device\BulkOperationProgressRepresentation.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\real\ModuleAPI.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\inventory\C8y_Relay.java
@@ -24,6 +25,8 @@ C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\abdom\data\js
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\inventory\C8y_RelayArray.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\real\ModuleCollection.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\users\GroupReference.java
+C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\misc\po\PoPatch.java
+C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\misc\po\PoMerge.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\abdom\data\json\Jsonizable.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\sensor\C8y_MotionMeasurement.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\inventory\C8y_SoftwareList.java
@@ -33,6 +36,7 @@ C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\da
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\device\DeviceCredentials.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\measurements\Measurement.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\inventory\C8y_Mobile.java
+C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\misc\po\PoDeNum.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\abdom\data\json\object\Jsonizer.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\users\UserReferenceCollection.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\inventory\C8y_SupportedOperation.java
@@ -69,6 +73,7 @@ C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\da
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\events\EventAPI.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\real\SubscribeRequest.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\rest\Platform.java
+C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\misc\po\Po2Json.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\sensor\C8y_Battery.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\abdom\data\json\JsonValue.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\real\ConnectRequest.java
@@ -100,6 +105,7 @@ C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\da
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\C8yValue.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\sensor\C8y_AccelerationMeasurement.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\tenants\UsageStatistics.java
+C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\misc\po\PoNum.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\sensor\C8y_VoltageMeasurement.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\util\Base64DecodeStream.java
 C:\Users\Yusuke\Documents\GitHub\ys-java\maven\tclib\src\main\java\com\ntt\tc\data\applications\ApplicationAPI.java

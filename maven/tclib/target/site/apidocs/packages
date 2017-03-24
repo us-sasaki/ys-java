@@ -16,5 +16,6 @@ com.ntt.tc.data.retention
 com.ntt.tc.data.sensor
 com.ntt.tc.data.tenants
 com.ntt.tc.data.users
+com.ntt.tc.misc.po
 com.ntt.tc.net
 com.ntt.tc.util

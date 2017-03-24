@@ -32,6 +32,7 @@ abdom\data\json\object\IllegalFieldTypeException.class
 com\ntt\tc\data\sensor\C8y_SinglePhaseElectricityMeasurement.class
 com\ntt\tc\data\applications\ApplicationCollection.class
 com\ntt\tc\data\sensor\C8y_LightMeasurement.class
+com\ntt\tc\misc\po\Po2Json.class
 com\ntt\tc\data\real\ModuleAPI.class
 com\ntt\tc\util\Base64.class
 com\ntt\tc\data\real\UnsubscribeRequest.class
@@ -50,6 +51,7 @@ com\ntt\tc\data\real\HandshakeResponse.class
 com\ntt\tc\data\binaries\BinariesCollection.class
 com\ntt\tc\data\real\SubscriveResponse.class
 com\ntt\tc\data\identity\ExternalIDCollection.class
+com\ntt\tc\misc\po\PoPatch.class
 com\ntt\tc\data\inventory\C8y_Firmware.class
 com\ntt\tc\data\auditing\AuditRecordCollection.class
 com\ntt\tc\data\C8yFormatException.class
@@ -107,6 +109,7 @@ com\ntt\tc\data\inventory\ManagedObjectReference.class
 com\ntt\tc\data\measurements\MeasurementCollection.class
 com\ntt\tc\data\device\BulkOperationCollection.class
 com\ntt\tc\data\C8yData.class
+com\ntt\tc\misc\po\PoDeNum.class
 com\ntt\tc\data\inventory\C8y_CellTower.class
 com\ntt\tc\data\sensor\C8y_Battery.class
 com\ntt\tc\data\sensor\C8y_AccelerationMeasurement.class
@@ -118,8 +121,11 @@ com\ntt\tc\data\real\Module.class
 com\ntt\tc\data\sensor\C8y_MoistureMeasurement.class
 abdom\data\json\JsonValue.class
 abdom\data\json\object\Property.class
+com\ntt\tc\misc\po\PoNum.class
 com\ntt\tc\net\Rest.class
 com\ntt\tc\data\retention\RetentionRuleCollection.class
+com\ntt\tc\misc\po\PoDiff.class
+com\ntt\tc\misc\po\PoMerge.class
 com\ntt\tc\data\applications\ApplicationAPI.class
 com\ntt\tc\data\inventory\ManagedObjectCollection.class
 com\ntt\tc\data\events\EventCollection.class

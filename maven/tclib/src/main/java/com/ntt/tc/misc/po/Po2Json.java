@@ -1,0 +1,122 @@
+package com.ntt.tc.misc.po;
+
+import java.io.*;
+import java.util.*;
+
+import abdom.data.json.*;
+
+/**
+ * PO ファイルのエントリを JsonObject の JsonArray に変換します。
+ * msgid, msgid_plural, msgstr, msgstr[i] のようなタグはオブジェクトの
+ * キー名となり、文字列は JsonValue(string) に変換されます。
+ *
+ * @version		2017/3/16
+ * @author		Yusuke Sasaki
+ */
+public class Po2Json {
+	
+	/**
+	 * 指定された po ファイルを読み込み、JsonArray として返却します。
+	 *
+	 * @param	fname	読み込み対象のファイル名
+	 * @return	JsonArray に変換した結果
+	 */
+	public static JsonArray read(String fname) throws Exception {
+		BufferedReader br = new BufferedReader(
+								new InputStreamReader(
+									new FileInputStream(fname),
+									"UTF-8"));
+		//if (!fname.endsWith(".po"))
+		//	throw new RuntimeException("po ファイルを指定してください: "+fname);
+		
+		JsonObject empty = new JsonObject();
+		
+		JsonArray result = new JsonArray();
+		JsonObject jo = new JsonObject();
+		String tagname = "";
+		String value = "";
+		
+		while (true) {
+			String line = br.readLine();
+			if (line == null || line.equals("") ) {
+				if (!jo.equals(empty)) result.push(jo);
+				if (line == null) break;
+				jo = new JsonObject();
+				tagname = "";
+				value = "";
+				continue;
+			}
+			if (line.startsWith("#")) {
+				jo.put(line, (String)null);
+				continue;
+			}
+			if (line.startsWith("\"")) {
+				if (tagname.equals(""))
+					throw new RuntimeException("フォーマット異常:"+fname+":"+line);
+				jo.put(tagname, jo.get(tagname).getValue() + line.substring(1, line.length()-1));
+				continue;
+			}
+			value = "";
+			int index = line.indexOf(' ');
+			if (index == -1)
+				throw new RuntimeException("フォーマット異常:"+fname+":"+line);
+			tagname = line.substring(0, index);
+			value = line.substring(index+2, line.length()-1);
+			jo.put(tagname, value);
+		}
+		
+		br.close();
+		return result;
+	}
+	
+	/**
+	 * 指定されたファイル名で、po 形式で JsonArray を出力します。
+	 *
+	 * @param	fname	出力するファイル名
+	 * @param	data	po 形式の JsonArray
+	 */
+	public static void write(String fname, JsonType data) throws IOException {
+		PrintWriter p = new PrintWriter(
+							new OutputStreamWriter(
+								new FileOutputStream(fname),
+								"UTF-8"
+							));
+		for (JsonType j : data) {
+			for (String key : j.keySet()) {
+				p.print(key);
+				JsonType value = j.get(key);
+				if (value.toString().equals("null")) {
+					p.print("\n");
+				} else {
+					p.print(" \"");
+					p.print(j.get(key).getValue());
+					p.print("\"\n");
+				}
+			}
+			p.print("\n");
+		}
+		p.close();
+	}
+	
+/*------
+ * main
+ */
+	public static void main(String[] args) throws Exception {
+		JsonType jt = read("admin ja.po");
+		
+		for (JsonType j : jt) {
+			for (String key : j.keySet()) {
+				System.out.print(key);
+				JsonType value = j.get(key);
+				if (value.toString().equals("null")) {
+					System.out.println();
+				} else {
+					System.out.print(" \"");
+					System.out.print(j.get(key).getValue());
+					System.out.println("\"");
+				}
+			}
+			System.out.println();
+		}
+	}
+}
