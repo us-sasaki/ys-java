@@ -25,8 +25,29 @@ public class PoPatch {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		JsonType source = Po2Json.read(args[0]);
-		JsonType target = Po2Json.read(args[1]);
+		if (args.length == 0) {
+			System.out.println("popatch ツール - 指定したソース po ファイルのエントリを用いてターゲット po ファイルのエントリを上書きする");
+			System.out.println();
+			System.out.println("java PoPatch <[option]> [source] [target]");
+			System.out.println();
+			System.out.println("  option  : -o    :(overwrite)指定すると、target ファイルを上書きする。");
+			System.out.println("                   デフォルトは PoPatch.txt ファイルとして新規作成");
+			System.out.println("  source  : ソース po ファイル名");
+			System.out.println("  target  : ターゲット po ファイル名"); 
+			System.exit(-1);
+		}
+		int index = 0;
+		boolean overwrite = false;
+		if (args[0].equals("-o")) {
+			overwrite = true;
+			index++;
+		}
+		
+		String sfname = args[index++];
+		String tfname = args[index++];
+		JsonType source = Po2Json.read(sfname);
+		JsonType target = Po2Json.read(tfname);
+		
 		int count = 0;
 		
 		for (JsonType src : source) {
@@ -62,8 +83,11 @@ public class PoPatch {
 			} catch (NullPointerException ignored) {
 			}
 		}
-		
-		Po2Json.write("PoPatch.result.txt", target);
 		System.out.println(count + "個上書きしました");
+		if (overwrite) {
+			Po2Json.write(tfname, target);
+		} else {
+			Po2Json.write("PoPatch.result.txt", target);
+		}
 	}
 }

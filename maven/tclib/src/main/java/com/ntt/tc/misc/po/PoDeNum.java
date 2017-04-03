@@ -15,7 +15,11 @@ public class PoDeNum {
 		
 		// 
 		int count = 1;
-		PrintWriter p = new PrintWriter(new OutputStreamWriter(new FileOutputStream(args[0]+".denumbered.txt"), "UTF-8"));
+		String outfname = args[0]+".denumbered.txt";
+		if (args[0].endsWith(".po.numbered.txt"))
+			outfname = args[0].substring(0, args[0].indexOf(".numbered.txt"));
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintWriter p = new PrintWriter(new OutputStreamWriter(baos, "UTF-8"));
 		
 		for (String line : lines) {
 			if (line.startsWith("msgstr")) {
@@ -36,5 +40,9 @@ System.out.println("skipped : " + line.substring(index+2, ind2));
 			p.print("\n");
 		}
 		p.close();
+		
+		OutputStream o = new FileOutputStream(outfname);
+		o.write(baos.toByteArray());
+		o.close();
 	}
 }

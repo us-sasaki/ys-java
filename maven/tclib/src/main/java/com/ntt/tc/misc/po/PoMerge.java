@@ -67,8 +67,13 @@ public class PoMerge {
 	public static void main(String[] args) throws Exception {
 		if (args.length == 0) {
 			System.out.println("pomerge ツール - 複数の po ファイルをマージする");
+			System.out.println();
 			System.out.println("それぞれの msgid を含む Po ファイルをファイル名 PoMerge.txt で作成する。");
 			System.out.println("コンフリクトは PoMerge.conflict.txt に出力される。");
+			System.out.println();
+			System.out.println("java PoMerge [file1] [file2] ...");
+			System.out.println();
+			System.out.println("  file(n) : マージ対象のファイル。後に指定したもので上書きしていく");
 			System.exit(-1);
 		}
 		

@@ -39,6 +39,7 @@ public class Po2Json {
 		while (true) {
 			String line = br.readLine();
 			if (line == null || line.equals("") ) {
+				// 空行は区切り行とみなす
 				if (!jo.equals(empty)) result.push(jo);
 				if (line == null) break;
 				jo = new JsonObject();
@@ -47,12 +48,15 @@ public class Po2Json {
 				continue;
 			}
 			if (line.startsWith("#")) {
+				// # ではじまる行は、key に対して null を設定
 				jo.put(line, (String)null);
 				continue;
 			}
 			if (line.startsWith("\"")) {
+				// " ではじまる行は、複数行に分割されたエントリ
 				if (tagname.equals(""))
 					throw new RuntimeException("フォーマット異常:"+fname+":"+line);
+				//
 				jo.put(tagname, jo.get(tagname).getValue() + line.substring(1, line.length()-1));
 				continue;
 			}

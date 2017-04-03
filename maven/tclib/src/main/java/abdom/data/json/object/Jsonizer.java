@@ -204,6 +204,7 @@ public class Jsonizer {
 	 * ない場合、生成します。
 	 *
 	 * @param	instance	Json変換を行うインスタンス
+	 * @return	instance に対応する Accessor
 	 */
 	static Map<String, Accessor> getAccessors(Object instance) {
 		Class<?> cls = instance.getClass();
@@ -213,7 +214,10 @@ public class Jsonizer {
 		// fill(), toJson() による変換を行うこととし、null が返却される。
 		if (JValue.class.isAssignableFrom(cls) &&
 			!JData.class.isAssignableFrom(cls) ) return null;
-			
+		
+		// _fieldAccessors は複数スレッドから操作される可能性がある
+		// 一度取得されたインスタンスは不変のため、外部で synchronized
+		// は不要
 		synchronized (_fieldAccessors) {
 			Map<String, Accessor> accessors = _fieldAccessors.get(cls);
 			if (accessors != null) return accessors;
