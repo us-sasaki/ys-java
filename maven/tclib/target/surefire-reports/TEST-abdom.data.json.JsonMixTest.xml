@@ -64,9 +64,9 @@
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
   <testcase classname="abdom.data.json.JsonMixTest" name="test1" time="0"/>
+  <testcase classname="abdom.data.json.JsonMixTest" name="test3" time="0"/>
   <testcase classname="abdom.data.json.JsonMixTest" name="test4" time="0"/>
   <testcase classname="abdom.data.json.JsonMixTest" name="test5" time="0"/>
-  <testcase classname="abdom.data.json.JsonMixTest" name="test3" time="0"/>
   <testcase classname="abdom.data.json.JsonMixTest" name="test2" time="0"/>
   <testcase classname="abdom.data.json.JsonMixTest" name="test0" time="0"/>
 </testsuite>

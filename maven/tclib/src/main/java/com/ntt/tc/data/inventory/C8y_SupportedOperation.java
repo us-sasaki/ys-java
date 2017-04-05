@@ -19,31 +19,31 @@ public class C8y_SupportedOperation extends C8yValue {
 	 * To enable a "restart" button in the user interface, add "c8y_Restart"
 	 * to the list of supported operations as described above.
 	 */
-	public static final JsonValue c8y_Restart = new JsonValue("c8y_Restart");
+	public static final C8y_SupportedOperation c8y_Restart = new C8y_SupportedOperation("c8y_Restart");
 	/**
 	 * To enable firmware installation through the user interface, add
 	 * "c8y_Firmware" to the list of supported operations as described above.
 	 */
-	public static final JsonValue c8y_Firmware = new JsonValue("c8y_Firmware");
+	public static final C8y_SupportedOperation c8y_Firmware = new C8y_SupportedOperation("c8y_Firmware");
 	/**
 	 * To enable software installation through the user interface, add
 	 * "c8y_SoftwareList" to the list of supported operations as described
 	 * above.
 	 */
-	public static final JsonValue c8y_SoftwareList = new JsonValue("c8y_SoftwareList");
+	public static final C8y_SupportedOperation c8y_SoftwareList = new C8y_SupportedOperation("c8y_SoftwareList");
 	/**
 	 * To enable configuration through the user interface, add
 	 * "c8y_Configuration" to the list of supported operations as described
 	 * above.
 	 */
-	public static final JsonValue c8y_Configuration = new JsonValue("c8y_Configuration");
+	public static final C8y_SupportedOperation c8y_Configuration = new C8y_SupportedOperation("c8y_Configuration");
 	/**
 	 * To enable reloading configuration through the user interface, add
 	 * "c8y_SendConfiguration" to the list of supported operations as
 	 * described above.
 	 */
-	public static final JsonValue c8y_SendConfiguration = new JsonValue("c8y_SendConfiguration");
-	public static final JsonValue c8y_Software = new JsonValue("c8y_Software");
+	public static final C8y_SupportedOperation c8y_SendConfiguration = new C8y_SupportedOperation("c8y_SendConfiguration");
+	public static final C8y_SupportedOperation c8y_Software = new C8y_SupportedOperation("c8y_Software");
 	
 	/**
 	 * Operation を表す文字列を格納する。

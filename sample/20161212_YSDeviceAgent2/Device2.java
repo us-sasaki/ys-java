@@ -58,14 +58,14 @@ public class Device2 {
 				managedObject.fill(conf.get("managedObject"));
 			} else {
 				// デフォルトの ManagedObject を生成します。
-				managedObject.name = "YS Java device " + credential.id;
-				managedObject.type = "windows"; // c8y_Linux in doc's sample.
+				managedObject.name = "冷蔵庫管理" + credential.id;
+				managedObject.type = "Raspberry Pi"; // c8y_Linux in doc's sample.
 				managedObject.c8y_IsDevice = new JsonObject();
 				managedObject.com_cumulocity_model_Agent = new JsonObject();
-				managedObject.c8y_SupportedOperations = new String[] {"c8y_Restart","testOperation"};
+				managedObject.c8y_SupportedOperations = new String[] {"c8y_Restart","c8y_Configuration","c8y_SendConfiguration","testOperation"};
 				managedObject.c8y_Hardware = new C8y_Hardware();
 				managedObject.c8y_Hardware.revision	= "000";
-				managedObject.c8y_Hardware.model		= "Java agent";
+				managedObject.c8y_Hardware.model		= "Refrigerator";
 				managedObject.c8y_Hardware.serialNumber = credential.id;
 				managedObject.c8y_Configuration = new C8y_Configuration();
 				managedObject.c8y_Configuration.config	= "not defined :)";
@@ -109,7 +109,7 @@ public class Device2 {
 	 */
 	private Rest getRest() {
 		if (rest == null) {
-			rest = new Rest("https://nttcom.cumulocity.com", credential.username, credential.password);
+			rest = new Rest("https://management.iot-trialpack.com", credential.username, credential.password);
 		}
 		return rest;
 	}
@@ -125,7 +125,7 @@ public class Device2 {
 		if (credential.id == null || credential.id.equals(""))
 			throw new IllegalStateException("id is null.");
 		
-		Rest r = new Rest("https://nttcom.cumulocity.com", "management", "devicebootstrap", "Fhdt1bb1f");
+		Rest r = new Rest("https://management.iot-trialpack.com", "management", "devicebootstrap", "Fhdt1bb1f");
 		
 		while (true) {
 			System.out.println("Requesting credential of id " + credential.id);
