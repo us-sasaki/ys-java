@@ -62,6 +62,6 @@ public class UsageStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public JsonObject subscribedApplications;
+	public String[] subscribedApplications;
 	
 }
