@@ -52,6 +52,9 @@ public class DiffMdInTranslate {
 		newOldDiff = DiffUtils.diff(originalDoc, revisedDoc);
 		
 		// 原文→訳文　の LooseMap を取得する
+		//
+		// ①MarkExtractor で英語、日本語の比較可能部分を抽出
+		// ②LooseMap で 英語→日本語 の行間マッピングを取得
 		MarkExtractor me = new MarkExtractor();
 		
 		List<String> enMark = me.extract(originalDoc);
@@ -59,6 +62,9 @@ public class DiffMdInTranslate {
 		
 		enJaMap = new LooseMap(enMark, jaMark);
 		
+		// 
+		// 英語ー日本語の対応箇所の塊(Block)のリストを作成
+		// 
 		blocks = new ArrayList<Block>();
 		int lastRow = -1;
 		for (int i = 0; i < enMark.size(); i++) {
@@ -153,6 +159,13 @@ public class DiffMdInTranslate {
 		}
 	}
 	
+/*------------------------
+ * テキスト出力メソッド群
+ */
+	/**
+	 * 結果をテキスト形式で出力します。テキスト形式は等幅フォントを利用して
+	 * 見ることを前提とします。
+	 */
 	public List<String> toText() {
 		List<String> result = new ArrayList<String>();
 		for (Block block : blocks) {

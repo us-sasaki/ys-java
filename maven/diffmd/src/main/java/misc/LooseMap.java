@@ -105,10 +105,14 @@ class LooseMap {
 	}
 	
 	int min(int dRow) {
-		return map.get(dRow).min;
+		// dRow == map.size() になることがあるため、応急処置
+		if (dRow < map.size()) return map.get(dRow).min;
+		return map.get(map.size()-1).max;
 	}
 	
 	int max(int dRow) {
-		return map.get(dRow).max;
+		// こっちは一応　応急処置
+		if (dRow < map.size()) return map.get(dRow).max;
+		return map.get(map.size()-1).max;
 	}
 }

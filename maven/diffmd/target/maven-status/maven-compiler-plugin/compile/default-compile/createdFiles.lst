@@ -2,7 +2,9 @@ misc\DiffMd.class
 misc\DiffMdInTranslate$Block.class
 misc\LooseMap.class
 misc\LooseMap$Row.class
+misc\DiffMd$1.class
 misc\DiffMdInTranslate$1.class
 misc\DiffMdInTranslate.class
 misc\DiffTest.class
 misc\MarkExtractor.class
+misc\DiffMd$Triplet.class
