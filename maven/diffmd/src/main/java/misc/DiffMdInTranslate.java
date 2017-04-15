@@ -17,15 +17,17 @@ public class DiffMdInTranslate {
 	protected Patch newOldDiff;
 	protected LooseMap enJaMap;
 	
-	private List<Block> blocks;
-	private int originalDocSize;
-	private int revisedDocSize;
-	private int originalTranslatedDocSize;
+	protected List<Block> blocks;
+	protected int originalDocSize;
+	protected int revisedDocSize;
+	protected int originalTranslatedDocSize;
+	
+	protected int orgRevDiffCount;
 	
 /*--------------------
  * inner static class
  */
-	private static class Block {
+	protected static class Block {
 		int start; // 含む
 		int end; // 含む
 		
@@ -51,7 +53,14 @@ public class DiffMdInTranslate {
 		// 英文同士の diff をとる
 		newOldDiff = DiffUtils.diff(originalDoc, revisedDoc);
 		
-		// 原文→訳文　の LooseMap を取得する
+		// 英文同士の diff で一致度を計算するための diff 行数をカウント
+		orgRevDiffCount = 0;
+		for (Delta delta : newOldDiff.getDeltas()) {
+			orgRevDiffCount += delta.getOriginal().size();
+			orgRevDiffCount += delta.getRevised().size();
+		}
+		
+		// 原文→訳文　の LooseMap を生成する
 		//
 		// ①MarkExtractor で英語、日本語の比較可能部分を抽出
 		// ②LooseMap で 英語→日本語 の行間マッピングを取得
@@ -64,13 +73,15 @@ public class DiffMdInTranslate {
 		
 		// 
 		// 英語ー日本語の対応箇所の塊(Block)のリストを作成
+		// LooseMap の 値域(日本語, 1行/複数行) に対して Block を設置
 		// 
 		blocks = new ArrayList<Block>();
 		int lastRow = -1;
 		for (int i = 0; i < enMark.size(); i++) {
 			int jaRow = enJaMap.min(i);
 			if (lastRow != jaRow) {
-				// 新しい行が出たら追加。同じうちは追加しない。
+				// 新しい日本語行が出たらBlock追加。
+				// 同じうちは追加しない(同一Blockに入れる)。
 				lastRow = jaRow;
 				Block block = new Block();
 				block.start	= jaRow;
@@ -89,6 +100,9 @@ public class DiffMdInTranslate {
 /*------------------
  * instance methods
  */
+	/**
+	 * 英文同士の diff を検出し、該当する Block に入れていく
+	 */
 	private void diffForTranslate() {
 		// 英文同士の差分を含む Block を検索する
 		for (Delta delta : newOldDiff.getDeltas() ) {
@@ -119,6 +133,7 @@ public class DiffMdInTranslate {
 					break;
 				}
 			}
+			// startBlockIndex は、delta(org)を含むブロック番号
 			if (startBlockIndex == blocks.size()) startBlockIndex--;
 			
 			// 差分を含む最後のインデックスを検索
@@ -157,6 +172,10 @@ public class DiffMdInTranslate {
 			for (String line : target.lines) merged.lines.add(line);
 			blocks.remove(start+1);
 		}
+	}
+	
+	public double getDiffRate() {
+		return (double)orgRevDiffCount / (double)(originalDocSize + revisedDocSize);
 	}
 	
 /*------------------------
@@ -255,7 +274,7 @@ public class DiffMdInTranslate {
 		return result;
 	}
 	
-	private static int widthInFixedPitch(String str) {
+	protected static int widthInFixedPitch(String str) {
 		int len = 0;
 		for (int i = 0; i < str.length(); i++) {
 			int c = str.charAt(i);
@@ -268,7 +287,7 @@ public class DiffMdInTranslate {
 	/**
 	 * 単語単位の diff をとります。
 	 */
-	private static String[] putDiffMark(Chunk original, Chunk revised) {
+	protected static String[] putDiffMark(Chunk original, Chunk revised) {
 		StringBuilder orgStr = new StringBuilder();
 		for (Object o : original.getLines()) {
 			orgStr.append(o.toString());

@@ -17,6 +17,28 @@ import difflib.Chunk;
  * (原文ファイル行) → (jmin, jmax) ただし、jmin: 対応する翻訳ファイルの先頭行,
  * jmax: 対応する翻訳ファイルの最終行
  *
+ * <pre>
+ *    マッピングのイメージは以下の通りです
+ *
+ *       原文　　　　 　　翻訳文
+ *   ------------- ＼ +-------------+
+ *   ------------- → |             |
+ *   ------------- ／ +-------------+
+ *          :                :
+ *   ------------- ＼ +-------------+
+ *   ------------- → |             |
+ *   ------------- ／ +-------------+
+ *   ------------- ／
+ *   ------------- → ---------------
+ *   ------------- ／
+ *
+ *   重要な特徴
+ *     翻訳文側は範囲になる
+ *     どちらも順序は保たれる
+ *     Diff で一致判定が出た行は 1:1 対応
+ *     Diff で一行が一行に置換された場合 1:1 対応
+ * </pre>
+ *
  * @version		February 4, 2017
  * @author		Yusuke Sasaki
  */
@@ -50,13 +72,13 @@ class LooseMap {
 	}
 	
 /*-----------------
- * instance method
+ * private method
  */
 	/**
 	 * 対応 map(原文ファイルの行　→　翻訳ファイルの複数行) を生成します。
 	 *
-	 * @param	enMark	原文の各行の List
-	 * @param	jaMark	翻訳分の各行の List
+	 * @param	domain	原文の各行の List
+	 * @param	range	翻訳分の各行の List
 	 */
 	private void map(List<String> domain, List<String> range) {
 		map = new ArrayList<Row>();
@@ -75,44 +97,52 @@ class LooseMap {
 			
 			// 完全一致部分を登録
 			for (; ei < eDeltaStart; ei++) {
+				// j側は1行分入る
 				map.add(new Row(ji, ji));
 				ji++;
 			}
-			// 準alert(DiffUtilsの仕様を理解できてない可能性ありのため
-			// alertにしない)
-			if (ji != jDeltaStart)
-				System.out.println("ji != jDeltaStart : " + ji + "!=" +
-									jDeltaStart);
-			if (ei != eDeltaStart)
-				System.out.println("ei != eDeltaStart : " + ei + "!=" +
-									eDeltaStart);
 			// 不確定部分(Delta部分)を登録
 			for (; ei <= eDeltaEnd; ei++) {
+				// j側は同じ値が毎回入る(同一範囲をポイントする)
 				map.add(new Row(jDeltaStart, jDeltaEnd));
 			}
-			ji = jDeltaEnd + 1;
+			ji = jDeltaEnd + 1; // j側、次の行に移動する
 		}
 		// 最後の完全一致部分
 		for (; ei < domain.size(); ei++) {
 			map.add(new Row(ji, ji));
 			ji++;
 		}
-		// 準alert(DiffUtilsの仕様を理解できてない可能性ありのため
-		// alertにしない)
-		if (ji != range.size())
-			System.out.println("ji != jaMark.size() : " + ji + "!=" +
-						range.size());
 	}
 	
+/*-----------------
+ * instance method
+ */
+	/**
+	 * 指定された原文ファイル行に対応する翻訳ファイル行の最小値を
+	 * 取得します。
+	 *
+	 * @param	dRow	原文の行番号
+	 * @return	翻訳の行番号(最小値、含む)
+	 */
 	int min(int dRow) {
 		// dRow == map.size() になることがあるため、応急処置
-		if (dRow < map.size()) return map.get(dRow).min;
+		if (dRow < map.size())
+			return map.get(dRow).min;
 		return map.get(map.size()-1).max;
 	}
 	
+	/**
+	 * 指定された原文ファイル行に対応する翻訳ファイル行の最大値を
+	 * 取得します。
+	 *
+	 * @param	dRow	原文の行番号
+	 * @return	翻訳の行番号(最大値、含む)
+	 */
 	int max(int dRow) {
 		// こっちは一応　応急処置
-		if (dRow < map.size()) return map.get(dRow).max;
+		if (dRow < map.size())
+			return map.get(dRow).max;
 		return map.get(map.size()-1).max;
 	}
 }

@@ -1,118 +1,118 @@
-DiffMd レポート (Tue Apr 11 14:57:46 JST 2017)
+DiffMd レポート (Wed Apr 12 15:08:41 JST 2017)
 
 ■対象ディレクトリ
 
-　更新前　原文ディレクトリ：C:\Users\Yusuke\Documents\GitHub\gitlab\java\samples\diffmd\docs\event-language-en-old
-　更新後　原文ディレクトリ：C:\Users\Yusuke\Documents\GitHub\gitlab\java\samples\diffmd\docs\event-language-en-new
-　更新前　訳文ディレクトリ：C:\Users\Yusuke\Documents\GitHub\gitlab\java\samples\diffmd\docs\event-language-ja-old
-　更新後　訳文ディレクトリ：C:\Users\Yusuke\Documents\GitHub\gitlab\java\samples\diffmd\docs\event-language-ja-new
+　更新前　原文ディレクトリ：C:\Users\Yusuke\Documents\GitHub\gitlab\java\samples\diffmd\docs\0_en-old
+　更新後　原文ディレクトリ：C:\Users\Yusuke\Documents\GitHub\gitlab\java\samples\diffmd\docs\1_en-new
+　更新前　訳文ディレクトリ：C:\Users\Yusuke\Documents\GitHub\gitlab\java\samples\diffmd\docs\2_ja-old
+　更新後　訳文ディレクトリ：C:\Users\Yusuke\Documents\GitHub\gitlab\java\samples\diffmd\docs\3_ja-new
 
 ■ファイル読み込み
 
 
 ■ファイル過不足チェック
 
-　新規訳文が必要：docs\event-language-en-new\cpp\build.html.md
-　新規訳文が必要：docs\event-language-en-new\cpp\custom.html.md
-　新規訳文が必要：docs\event-language-en-new\cpp\intro.html.md
-　新規訳文が必要：docs\event-language-en-new\cpp\use.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\RedLion-StratusConnect-MC-Gateway.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\adeunis.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\beaglebone-black.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\cinterion.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\cloudgate.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\dell_edge_gateway5000.html.md
-　削除済み　　　：docs\event-language-en-old\devices\hwg.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\insys.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\janztec.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\libelium-meshlium.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\mbed-ublox-C027.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\meitrack.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\netcomm\netcomm-developer.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\nethix_we500.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\owa3x.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\queclink.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\r3000.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\sigfox.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\smartbox-modbus.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\smartbox.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\stw.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\telic.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\tixi.html.md
-　新規訳文が必要：docs\event-language-en-new\devices\ublox-2.1-release-notes.html.md
-　新規訳文が必要：docs\event-language-en-new\java\agents.html.md
-　新規訳文が必要：docs\event-language-en-new\java\developing-services-client.html.md
-　新規訳文が必要：docs\event-language-en-new\java\developing.html.md
-　新規訳文が必要：docs\event-language-en-new\java\hello-world-basic.html.md
-　新規訳文が必要：docs\event-language-en-new\java\hello-world-me.html.md
-　新規訳文が必要：docs\event-language-en-new\java\introduction.html.md
-　新規訳文が必要：docs\event-language-en-new\java\javadoc.html.md
-　新規訳文が必要：docs\event-language-en-new\java\troubleshooting.html.md
-　新規訳文が必要：docs\event-language-en-new\mqtt\device-integration.html.md
-　新規訳文が必要：docs\event-language-en-new\mqtt\handling-ids.html.md
-　新規訳文が必要：docs\event-language-en-new\mqtt\hello-mqtt.html.md
-　新規訳文が必要：docs\event-language-en-new\mqtt\implementation.html.md
-　新規訳文が必要：docs\event-language-en-new\mqtt\introduction.html.md
-　新規訳文が必要：docs\event-language-en-new\mqtt\smartrest-1.html.md
-　新規訳文が必要：docs\event-language-en-new\mqtt\smartrest-2.html.md
-　新規訳文が必要：docs\event-language-en-new\mqtt\static-templates.html.md
-　新規訳文が必要：docs\event-language-en-new\reference\smartrest.html.md
-　新規訳文が必要：docs\event-language-en-new\rest\smartrest.html.md
-　新規訳文が必要：docs\event-language-en-new\users-guide\android-cloud-sensor-app.html.md
-　新規訳文が必要：docs\event-language-en-new\users-guide\jasper.html.md
-　新規訳文が必要：docs\event-language-en-new\users-guide\saas-integration.html.md
-　新規訳文が必要：docs\event-language-en-new\web\branding-plugin.html.md
-　削除が必要　　：docs\event-language-ja-old\web\reference.html.md
-　新規訳文が必要：docs\event-language-en-new\web\tab-plugin.html.md
-　新規訳文が必要：docs\event-language-en-new\web\widget-plugin.html.md
+　新規訳文が必要：docs\1_en-new\cpp\build.html.md
+　新規訳文が必要：docs\1_en-new\cpp\custom.html.md
+　新規訳文が必要：docs\1_en-new\cpp\intro.html.md
+　新規訳文が必要：docs\1_en-new\cpp\use.html.md
+　新規訳文が必要：docs\1_en-new\devices\RedLion-StratusConnect-MC-Gateway.html.md
+　新規訳文が必要：docs\1_en-new\devices\adeunis.html.md
+　新規訳文が必要：docs\1_en-new\devices\beaglebone-black.html.md
+　新規訳文が必要：docs\1_en-new\devices\cinterion.html.md
+　新規訳文が必要：docs\1_en-new\devices\cloudgate.html.md
+　新規訳文が必要：docs\1_en-new\devices\dell_edge_gateway5000.html.md
+　削除済み　　　：docs\0_en-old\devices\hwg.html.md
+　新規訳文が必要：docs\1_en-new\devices\insys.html.md
+　新規訳文が必要：docs\1_en-new\devices\janztec.html.md
+　新規訳文が必要：docs\1_en-new\devices\libelium-meshlium.html.md
+　新規訳文が必要：docs\1_en-new\devices\mbed-ublox-C027.html.md
+　新規訳文が必要：docs\1_en-new\devices\meitrack.html.md
+　新規訳文が必要：docs\1_en-new\devices\netcomm\netcomm-developer.html.md
+　新規訳文が必要：docs\1_en-new\devices\nethix_we500.html.md
+　新規訳文が必要：docs\1_en-new\devices\owa3x.html.md
+　新規訳文が必要：docs\1_en-new\devices\queclink.html.md
+　新規訳文が必要：docs\1_en-new\devices\r3000.html.md
+　新規訳文が必要：docs\1_en-new\devices\sigfox.html.md
+　新規訳文が必要：docs\1_en-new\devices\smartbox-modbus.html.md
+　新規訳文が必要：docs\1_en-new\devices\smartbox.html.md
+　新規訳文が必要：docs\1_en-new\devices\stw.html.md
+　新規訳文が必要：docs\1_en-new\devices\telic.html.md
+　新規訳文が必要：docs\1_en-new\devices\tixi.html.md
+　新規訳文が必要：docs\1_en-new\devices\ublox-2.1-release-notes.html.md
+　新規訳文が必要：docs\1_en-new\java\agents.html.md
+　新規訳文が必要：docs\1_en-new\java\developing-services-client.html.md
+　新規訳文が必要：docs\1_en-new\java\developing.html.md
+　新規訳文が必要：docs\1_en-new\java\hello-world-basic.html.md
+　新規訳文が必要：docs\1_en-new\java\hello-world-me.html.md
+　新規訳文が必要：docs\1_en-new\java\introduction.html.md
+　新規訳文が必要：docs\1_en-new\java\javadoc.html.md
+　新規訳文が必要：docs\1_en-new\java\troubleshooting.html.md
+　新規訳文が必要：docs\1_en-new\mqtt\device-integration.html.md
+　新規訳文が必要：docs\1_en-new\mqtt\handling-ids.html.md
+　新規訳文が必要：docs\1_en-new\mqtt\hello-mqtt.html.md
+　新規訳文が必要：docs\1_en-new\mqtt\implementation.html.md
+　新規訳文が必要：docs\1_en-new\mqtt\introduction.html.md
+　新規訳文が必要：docs\1_en-new\mqtt\smartrest-1.html.md
+　新規訳文が必要：docs\1_en-new\mqtt\smartrest-2.html.md
+　新規訳文が必要：docs\1_en-new\mqtt\static-templates.html.md
+　新規訳文が必要：docs\1_en-new\reference\smartrest.html.md
+　新規訳文が必要：docs\1_en-new\rest\smartrest.html.md
+　新規訳文が必要：docs\1_en-new\users-guide\android-cloud-sensor-app.html.md
+　新規訳文が必要：docs\1_en-new\users-guide\jasper.html.md
+　新規訳文が必要：docs\1_en-new\users-guide\saas-integration.html.md
+　新規訳文が必要：docs\1_en-new\web\branding-plugin.html.md
+　削除が必要　　：docs\2_ja-old\web\reference.html.md
+　新規訳文が必要：docs\1_en-new\web\tab-plugin.html.md
+　新規訳文が必要：docs\1_en-new\web\widget-plugin.html.md
 
 ■更新ファイル作成
 
-　作成：/concepts/applications.html.md
-　作成：/concepts/domain-model.html.md
-　作成：/concepts/interfacing-devices.html.md
-　作成：/concepts/introduction.html.md
-　作成：/concepts/realtime.html.md
-　作成：/concepts/security.html.md
-　作成：/devices/netcomm-release.html.md
-　作成：/devices/netcommwireless.html.md
-　作成：/devices/raspberry-pi.html.md
-　作成：/devices/tinkerforge.html.md
-　作成：/event-language/advanced.html.md
-　作成：/event-language/best-practices.html.md
-　作成：/event-language/data-model.html.md
-　作成：/event-language/examples.html.md
-　作成：/event-language/functions.html.md
-　作成：/event-language/geofence.html.md
-　作成：/event-language/introduction.html.md
-　作成：/reference/alarms.html.md
-　作成：/reference/applications.html.md
-　作成：/reference/auditing.html.md
-　作成：/reference/binaries.html.md
-　作成：/reference/device-control.html.md
-　作成：/reference/device-credentials.html.md
-　作成：/reference/device-management.html.md
-　作成：/reference/events.html.md
-　作成：/reference/identity.html.md
-　作成：/reference/inventory.html.md
-　作成：/reference/measurements.html.md
-　作成：/reference/real-time-notifications.html.md
-　作成：/reference/real-time-statements.html.md
-　作成：/reference/rest-implementation.html.md
-　作成：/reference/retention-rules.html.md
-　作成：/reference/sensor-library.html.md
-　作成：/reference/tenants.html.md
-　作成：/reference/users.html.md
-　作成：/rest/application-development.html.md
-　作成：/rest/device-integration.html.md
-　作成：/rest/hello-rest.html.md
-　作成：/rest/introduction.html.md
-　作成：/users-guide/administration.html.md
-　作成：/users-guide/cloud-fieldbus.html.md
-　作成：/users-guide/cockpit.html.md
-　作成：/users-guide/device-management.html.md
-　作成：/users-guide/overview.html.md
-　作成：/web/introduction.html.md
-　作成：/web/jsdoc.html.md
-　作成：/web/smart-toolkit.html.md
-　作成：/web/troubleshooting.html.md
+　差大(61)：/concepts/applications.html.md
+　修正(23)：/concepts/domain-model.html.md
+　差大(30)：/concepts/interfacing-devices.html.md
+　修正(16)：/concepts/introduction.html.md
+　修正(17)：/concepts/realtime.html.md
+　修正(25)：/concepts/security.html.md
+　修正(4)：/devices/netcomm-release.html.md
+　修正(1)：/devices/netcommwireless.html.md
+　修正(1)：/devices/raspberry-pi.html.md
+　変更なし：/devices/tinkerforge.html.md
+　修正(3)：/event-language/advanced.html.md
+　修正(28)：/event-language/best-practices.html.md
+　修正(1)：/event-language/data-model.html.md
+　修正(4)：/event-language/examples.html.md
+　修正(3)：/event-language/functions.html.md
+　修正(3)：/event-language/geofence.html.md
+　修正(19)：/event-language/introduction.html.md
+　変更なし：/reference/alarms.html.md
+　変更なし：/reference/applications.html.md
+　修正(2)：/reference/auditing.html.md
+　修正(1)：/reference/binaries.html.md
+　修正(6)：/reference/device-control.html.md
+　修正(1)：/reference/device-credentials.html.md
+　変更なし：/reference/device-management.html.md
+　修正(14)：/reference/events.html.md
+　変更なし：/reference/identity.html.md
+　修正(4)：/reference/inventory.html.md
+　修正(12)：/reference/measurements.html.md
+　変更なし：/reference/real-time-notifications.html.md
+　変更なし：/reference/real-time-statements.html.md
+　変更なし：/reference/rest-implementation.html.md
+　変更なし：/reference/retention-rules.html.md
+　変更なし：/reference/sensor-library.html.md
+　修正(1)：/reference/tenants.html.md
+　変更なし：/reference/users.html.md
+　変更なし：/rest/application-development.html.md
+　変更なし：/rest/device-integration.html.md
+　変更なし：/rest/hello-rest.html.md
+　変更なし：/rest/introduction.html.md
+　差大(30)：/users-guide/administration.html.md
+　修正(18)：/users-guide/cloud-fieldbus.html.md
+　修正(23)：/users-guide/cockpit.html.md
+　差大(35)：/users-guide/device-management.html.md
+　修正(5)：/users-guide/overview.html.md
+　差大(64)：/web/introduction.html.md
+　修正(16)：/web/jsdoc.html.md
+　修正(1)：/web/smart-toolkit.html.md
+　修正(5)：/web/troubleshooting.html.md

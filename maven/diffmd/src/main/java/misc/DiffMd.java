@@ -19,11 +19,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import difflib.Delta;
-import difflib.DiffUtils;
-import difflib.Patch;
-import difflib.Chunk;
-
 /**
  * オリジナル原文ディレクトリ、更新後原文ディレクトリ、翻訳文ディレクトリ、
  * 新翻訳文ディレクトリを指定し、
@@ -258,7 +253,6 @@ public class DiffMd {
 			Triplet t = triplets.get(key);
 			if (key.endsWith("/") || !t.isFilled()) continue;
 			
-			report.println("　作成：" + key);
 			Path p0 = t.f[0].toPath();
 System.out.println("パス：" + p0);
 			Path p1 = t.f[1].toPath();
@@ -269,10 +263,17 @@ System.out.println("パス：" + p0);
     	    List<String> n = readLines(p1);
         	List<String> oj = readLines(p2);
 			
-			DiffMdInTranslate dmit = new DiffMdInTranslate(o, n, oj);
+			DiffMdInTranslate dmit = new DiffMdInTranslate2(o, n, oj);
 			List<String> text = dmit.toText();
 			
 			Files.write(newPath, text, StandardCharsets.UTF_8 );
+
+			double rate = dmit.getDiffRate();
+			int r = (int)(rate * 100d);
+			if (rate > 0 && r == 0) r++;
+			if (r == 0) report.println("　変更なし：" + key);
+			else if (r >= 30) report.println("　差大("+r+")：" + key);
+			else report.println("　修正("+r+")：" + key);
 		}
 	}
 	
@@ -294,16 +295,15 @@ System.out.println("パス：" + p0);
 	}
 	
 	public static void main(String[] args) throws Exception {
-		String oldOrg = "docs/event-language-en-old";
-		String newOrg = "docs/event-language-en-new";
-		String oldJa  = "docs/event-language-ja-old";
-		String newJa  = "docs/event-language-ja-new";
+		String oldOrg = "docs/0_en-old";
+		String newOrg = "docs/1_en-new";
+		String oldJa  = "docs/2_ja-old";
+		String newJa  = "docs/3_ja-new";
 		DiffMd d = new DiffMd(oldOrg, newOrg, oldJa, newJa);
 		try {
 			d.exec();
 		} catch (Exception e) {
 			d.report.close();
-			e.printStackTrace();
 			throw e;
 		}
 	}
