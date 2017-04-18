@@ -93,9 +93,39 @@ public class Po2Json {
 					p.print("\n");
 				} else {
 					p.print(" \"");
-					p.print(j.get(key).getValue());
-					p.print("\"\n");
+					String valstr = j.get(key).getValue();
+					int index = valstr.indexOf("\\n");
+					if (index == -1 || !key.startsWith("msg")) {
+						p.print(valstr);
+						p.print("\"\n");
+					} else {
+						//
+						// ここで、msgstr の行が出るが、\n を含む場合複数行とする
+						// 処理を入れる。複数行は、
+						// msgstr ""
+						// ".....\n"
+						// "........\n"
+						// の形式。msgstr[0] 等も同様
+						// new JsonValue((String)null).getValue() == null である。
+						//
+						p.print("\""); // 空文字列
+						p.print("\n");
+						while (true) {
+							String s = valstr.substring(0, index);
+							p.print("\"");
+							p.print(s);
+							p.print("\\n\"\n");
+							if (index + 2 >= valstr.length()) break;
+							valstr = valstr.substring(index+2);
+							index = valstr.indexOf("\\n");
+							if (index == -1) {
+								p.print("\"" + valstr + "\"\n");
+								break;
+							}
+						}
+					}
 				}
+				
 			}
 			p.print("\n");
 		}
