@@ -34,7 +34,10 @@ public class PoDeNum {
 			}
 			result.push(elem);
 		}
-		Po2Json.write(args[0]+".denumbered.txt", result);
+		String outfname = args[0]+".denumbered.txt";
+		if (args[0].endsWith(".po.numbered.txt"))
+			outfname = args[0].substring(0, args[0].indexOf(".numbered.txt"));
+		Po2Json.write(outfname, result);
 	}
 	
 	private static void oldMain(String[] args) throws Exception {
