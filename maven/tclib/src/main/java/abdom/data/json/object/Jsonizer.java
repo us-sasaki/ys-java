@@ -76,7 +76,7 @@ public class Jsonizer {
 	 * @param	instance	設定対象の Java オブジェクト
 	 * @param	arg			設定値を持つ Jsonizable オブジェクト
 	 * @return	設定値の中で、Java オブジェクトに対応するプロパティがなく
-	 *			設定しなかった項目
+	 *			設定しなかった項目。すべて設定された場合、null。
 	 */
 	public static JsonObject fill(Object instance, Jsonizable arg) {
 		if (instance instanceof JValue && !(instance instanceof JData)) {
