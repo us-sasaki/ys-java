@@ -8,8 +8,23 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.ArrayList;
 
+import abdom.data.json.*;
+
 public class PoNum {
 	public static void main(String[] args) throws Exception {
+		// ファイル読み込み
+		JsonType f = Po2Json.read(args[0]);
+		int count = 1;
+		for (JsonType elem : f) {
+			for (String key : elem.keySet()) {
+				if (!key.startsWith("msgstr")) continue;
+				elem.put(key, String.valueOf(count++) + "_" + elem.get(key).getValue()); // 上書き
+			}
+		}
+		Po2Json.write(args[0]+".numbered.txt", f);
+	}
+	
+	public static void oldMain(String[] args) throws Exception {
 		// ファイル読み込み
 		List<String> lines = Files.readAllLines(FileSystems.getDefault().getPath(args[0]), StandardCharsets.UTF_8);
 		
