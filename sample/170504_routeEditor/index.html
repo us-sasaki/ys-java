@@ -16,7 +16,7 @@
     <table width="100%" height="100%" id="mainTable">
       <tr><td>経路(LatLng)エディター　地図上のマーカーを操作して経路を作成し、JSON形式の lat lng 列を作成します</td></tr>
   	  <tr>
-  	    <td><form>
+  	    <td><form name="paramForm">
 			<table width="100%"><tr><td>
 				出力形式
 				<select name="form">
@@ -24,14 +24,14 @@
 					<option value="usm">時系列(等速運動)</option>
 				</select>
 			</td><td>
-				速度<input type="text" name="form" size=5>km/h
-			</td><td>
 				開始時間<input type="text" name="start" size=14>
 			</td><td>
 				終了時間<input type="text" name="end" size=14>
 			</td><td>
-				時間は、HH:mm:ss 形式(例：13:53:05)
-			</td></tr></table>
+				報告周期(秒)<input type="text" name="interval" size=5>
+			</td><td>
+				時間は、yyMMdd HH:mm:ss 形式(例：170507 13:53:05)
+			</td></tr></table></form>
 		</td></tr><tr>
 		
 		<td width="1000px" height="100%">

@@ -153,15 +153,71 @@ function showInfoWindow(latLng) {
  * 情報ウィンドウに表示させる位置JSON形式を作成します。
  */
 function makeContent() {
-	var result = "[";
-	for (var i = 0; i < markers.length; i++) {
-		var latLng = markers[i].getPosition();
-		var lat = Math.floor(latLng.lat()*100000) / 100000;
-		var lng = Math.floor(latLng.lng()*100000) / 100000;
-		result = result + "{\"lat\":"+lat+",\"lng\":"+lng+"}";
-		if (i < markers.length - 1) {
-			result = result + ",";
+	// HTML の form に入力された値を読み取る
+	var params = getParams();
+	
+	if (params.format == "usm") {
+		// format uniform speed motion
+		// 総行程の距離(m)を算出
+		var distance = 0;
+		var distances = [];
+		for (var i = 0; i < markers.length - 1; i++) {
+			distances.push(google.maps.geometry.spherical.computeDistanceBetween(markers[i].getPosition(), markers[i+1].getPosition()));
+			distance += distances[i];
 		}
+		// 全体の時間(sec)を算出
+		var totalTime = (params.end.getTime() - params.start.getTime())/1000;
+		window.alert("時間:" + totalTime);
+		
+		// 平均速度(m/s)
+		// time <= 0 の場合？
+		var velo = distance / time;
+		
+		for (var t = 0; t <= totalTime; t += params.interval) {
+			// 時刻 t の時の位置を JSON 化
+		}
+		
+	} else {
+		// format points
+		var result = "[";
+		for (var i = 0; i < markers.length; i++) {
+			var latLng = markers[i].getPosition();
+			var lat = Math.floor(latLng.lat()*100000) / 100000;
+			var lng = Math.floor(latLng.lng()*100000) / 100000;
+			result = result + "{\"lat\":"+lat+",\"lng\":"+lng+"}";
+			if (i < markers.length - 1) {
+				result = result + ",";
+			}
+		}
+		return result + "]";
 	}
-	return result + "]";
+}
+
+function parseDateString(date) {
+	var t = new Date(Number('20'+date.substring(0,2)), // year
+						Number(date.substring(2,4))-1, // month
+						Number(date.substring(4,6)), // day
+						Number(date.substring(7,9)), // hour
+						Number(date.substring(10,12)), // minute
+						Number(date.substring(13,15)) ).getTime(); // second
+	return new Date(t);
+	// d.getHours(), d.getMinutes()
+}
+
+function getParams() {
+	// form はトップレベル window の name="paramForm" で定義されているとする
+	var form = window.top.document.forms.paramForm;
+	// HTML form にあるパラメータ取得
+	var format = form.form.value;
+	var start  = form.start.value;
+	var end    = form.end.value;
+	var interval  = form.interval.value;
+	
+	if (format == "points") return {format:"points"};
+	return {
+		format:"usm",
+		interval:Number(interval),
+		start:parseDateString(start),
+		end:parseDateString(end)
+	};
 }
