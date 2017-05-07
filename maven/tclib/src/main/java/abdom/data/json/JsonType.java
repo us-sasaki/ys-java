@@ -79,6 +79,7 @@ public abstract class JsonType extends Number
 	 * JsonValue でない場合、ClassCastException がスローされます。
 	 * また、JsonValue でも整数として認識できない場合(Integer.parseInt が
 	 * 失敗)、NumberFormatException がスローされます。
+	 * 文字列であった場合でも、数値として認識できれば値が返却されます。
 	 *
 	 * @return	JsonValue としての int 値
 	 */
@@ -92,6 +93,7 @@ public abstract class JsonType extends Number
 	 * JsonValue でない場合、ClassCastException がスローされます。
 	 * また、JsonValue でも整数として認識できない場合(Long.parseLong が
 	 * 失敗)、NumberFormatException がスローされます。
+	 * 文字列であった場合でも、数値として認識できれば値が返却されます。
 	 *
 	 * @return	JsonValue としての long 値
 	 */
@@ -105,6 +107,7 @@ public abstract class JsonType extends Number
 	 * JsonValue でない場合、ClassCastException がスローされます。
 	 * また、JsonValue でも float として認識できない場合
 	 * (Float.parseFloat が失敗)、NumberFormatException がスローされます。
+	 * 文字列であった場合でも、数値として認識できれば値が返却されます。
 	 *
 	 * @return	JsonValue としての float 値
 	 */
@@ -118,6 +121,7 @@ public abstract class JsonType extends Number
 	 * JsonValue でない場合、ClassCastException がスローされます。
 	 * また、JsonValue でも double として認識できない場合
 	 * (Double.parseDouble が失敗)、NumberFormatException がスローされます。
+	 * 文字列であった場合でも、数値として認識できれば値が返却されます。
 	 *
 	 * @return	JsonValue としての double 値
 	 */
@@ -133,6 +137,7 @@ public abstract class JsonType extends Number
 	 * JsonObject として、指定されたキーの値を持っているかテストします。
 	 * JsonObject でない場合、false が返却されます。
 	 *
+	 * @param	key		テスト対象のキー
 	 * @return	指定されたキーの値を持っている場合 true、キーがあっても
 	 *			値が JsonValue(null) である場合、またはキーがない場合、
 	 *			またはこのインスタンスが JsonObject でない場合 false
