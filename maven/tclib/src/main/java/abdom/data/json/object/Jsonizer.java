@@ -103,6 +103,26 @@ public class Jsonizer {
 	}
 	
 	/**
+	 * 指定された名称の単一フィールドを設定します。
+	 *
+	 * @param	instance	設定対象の Java オブジェクト
+	 * @param	name		設定フィールド名
+	 * @param	arg			設定値を持つ Jsonizable オブジェクト
+	 * @return	null(設定された場合) / arg(設定するフィールドがなかった場合)
+	 */
+	public static JsonType set(Object instance, String name, Jsonizable arg) {
+		Map<String, Accessor> accessors = getAccessors(instance);
+		
+		if (accessors.keySet().contains(name)) {
+			Accessor a = accessors.get(name);
+			a.set(instance, arg.toJson());
+			return null;
+		} else {
+			return arg.toJson();
+		}
+	}
+	
+	/**
 	 * 指定された Java オブジェクトのプロパティ値に基づいて JsonType に
 	 * 変換します。変換規則は、このパッケージの説明を参照してください。
 	 *
@@ -122,6 +142,25 @@ public class Jsonizer {
 			if (value != null) result.put(name, value);
 		}
 		return result;
+	}
+	
+	/**
+	 * 指定された Java オブジェクトの指定された名称のフィールドを
+	 * JsonType として返却します。
+	 *
+	 * @param	instance	取得対象の Java オブジェクト
+	 * @param	name		取得フィールド名
+	 * @return	取得された値
+	 */
+	public static JsonType get(Object instance, String name) {
+		Map<String, Accessor> accessors = getAccessors(instance);
+		
+		if (accessors.keySet().contains(name)) {
+			Accessor a = accessors.get(name);
+			return a.get(instance);
+		} else {
+			return null;
+		}
 	}
 	
 	/**

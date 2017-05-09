@@ -120,6 +120,18 @@ public abstract class JData extends JValue {
 		return _extra;
 	}
 	
+	public JsonType get(String name) {
+		JsonType result = Jsonizer.get(this, name);
+		if (result != null) return result;
+		return _extra.get(name);
+	}
+	
+	public void set(String name, Jsonizable arg) {
+		JsonType result = Jsonizer.set(this, name, arg);
+		if (result != null) {
+			_extra.put(name, result);
+		}
+	}
 	
 	/**
 	 * 指定された JsonObject の内容をこのオブジェクトに設定します。
