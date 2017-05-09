@@ -167,29 +167,55 @@ function makeContent() {
 		}
 		// 全体の時間(sec)を算出
 		var totalTime = (params.end.getTime() - params.start.getTime())/1000;
-		window.alert("時間:" + totalTime);
+		
+		if (params.interval == 0) return "[]";
 		
 		// 平均速度(m/s)
 		// time <= 0 の場合？
-		var velo = distance / time;
+		var velo = distance / totalTime;
+		var json = "[";
 		
 		for (var t = 0; t <= totalTime; t += params.interval) {
-			// 時刻 t の時の位置を JSON 化
+			// 時刻 t の時の位置を求める
+			var index = 0;
+			var d = 0;
+			for (;index < markers.length - 1; index++) {
+				d += distances[index];
+				if (velo * t <= d) break; // index と index + 1 の間にいる
+			}
+			if (index == markers.length - 1) index--;
+			var d1 = d - velo * t; // index + 1 からの距離
+			// P を求める点として、
+			// index, index+1 を rate:1-rate に内分する点が P
+			var rate = 1.0 - (d1 / distances[index]);
+			
+			var lat = (1.0 - rate) * markers[index].getPosition().lat()
+						+ rate * markers[index+1].getPosition().lat();
+			var lng = (1.0 - rate) * markers[index].getPosition().lng()
+						+ rate * markers[index+1].getPosition().lng();
+			lat = Math.floor(lat * 100000)/100000;
+			lng = Math.floor(lng * 100000)/100000;
+			
+			// JSON 化
+			json = json + "{\"lat\":"+lat+",\"lng\":"+lng+",\"date\":\""+c8yDateString(params.start.getTime()+t*1000)+"\"}";
+			if (t + params.interval <= totalTime) json = json + ",";
 		}
+		json = json + "]";
+		return json;
 		
 	} else {
 		// format points
-		var result = "[";
+		var json = "[";
 		for (var i = 0; i < markers.length; i++) {
 			var latLng = markers[i].getPosition();
 			var lat = Math.floor(latLng.lat()*100000) / 100000;
 			var lng = Math.floor(latLng.lng()*100000) / 100000;
-			result = result + "{\"lat\":"+lat+",\"lng\":"+lng+"}";
+			json = json + "{\"lat\":"+lat+",\"lng\":"+lng+"}";
 			if (i < markers.length - 1) {
-				result = result + ",";
+				json = json + ",";
 			}
 		}
-		return result + "]";
+		return json + "]";
 	}
 }
 
@@ -220,4 +246,16 @@ function getParams() {
 		start:parseDateString(start),
 		end:parseDateString(end)
 	};
+}
+
+function c8yDateString(time) {
+	var date = new Date(time);
+	var year = date.getFullYear();
+	var month = ('0'+(1+date.getMonth())).slice(-2); // 0(1月)～11
+	var day = ('0'+date.getDate()).slice(-2); // 1～31
+	var hour = ('0'+date.getHours()).slice(-2); // 0～23
+	var minute = ('0'+date.getMinutes()).slice(-2); // 0～59
+	var second = ('0'+date.getSeconds()).slice(-2); // 0～59
+	
+	return year+'-'+month+'-'+day+'T'+hour+':'+minute+':'+second+'.000+09:00';
 }
