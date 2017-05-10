@@ -120,12 +120,29 @@ public abstract class JData extends JValue {
 		return _extra;
 	}
 	
+	/**
+	 * このオブジェクトの指定されたフィールドまたは extra の値を JsonType
+	 * として返却します。
+	 * このオブジェクトを toJson().get(String) した場合と同様の挙動ですが、
+	 * 単一フィールドに対する実装のため、高速です。
+	 *
+	 * @param	name	フィールド名(extra の場合を含む)
+	 * @return	取得された JsonType
+	 */
 	public JsonType get(String name) {
 		JsonType result = Jsonizer.get(this, name);
 		if (result != null) return result;
 		return _extra.get(name);
 	}
 	
+	/**
+	 * このオブジェクトの指定されたフィールドまたは extra の値を、
+	 * 指定された Jsonizable の値に設定します。
+	 * 単一フィールドに対する fill() のような操作です。
+	 *
+	 * @param	name	フィールド名(extra の場合を含む)
+	 * @param	arg		設定値
+	 */
 	public void set(String name, Jsonizable arg) {
 		JsonType result = Jsonizer.set(this, name, arg);
 		if (result != null) {

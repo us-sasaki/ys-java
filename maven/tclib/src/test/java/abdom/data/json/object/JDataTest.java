@@ -8,8 +8,6 @@ import abdom.data.json.*;
 
 /**
  * 練習で作った JsonValue テスト。
- * Unit test for simple App.
- * http://www.mitchy-world.jp/java/test/junit3.htm
  */
 public class JDataTest extends TestCase{
 	public JDataTest(String testName) {
@@ -102,5 +100,32 @@ public class JDataTest extends TestCase{
 		} catch (IllegalFieldTypeException e) {
 		}
 		assertEquals(j.toString(), "{\"a\":0,\"doublevalue\":0.0,\"extra\":1}");
+	}
+	
+	/**
+	 * set/get のテスト
+	 */
+	public void testGetSet() {
+		J2 j = new J2();
+		
+		j.a = 5;
+		j.doublevalue = 6.3d;
+		
+		JsonType b = new JsonValue(10.4f);
+		j.putExtra("b", b);
+		
+		JsonType a = new JsonValue(25);
+		j.set("a", a);
+		assertEquals(j.a, 25);
+		
+		JsonType bb = new JsonValue(25.25f);
+		j.set("b", bb);
+		assertEquals(j.get("b"), bb);
+		
+		JsonType d = new JsonValue(2525.25d);
+		j.set("doublevalue", d);
+		assertEquals(j.get("doublevalue"), d);
+		
+		//System.out.println(j);
 	}
 }

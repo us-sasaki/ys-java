@@ -73,6 +73,38 @@ public class JsonizerTest extends TestCase{
 		assertEquals(Jsonizer.toString(p), Jsonizer.toString(q));
 	}
 	
+	public void testPojo2() {
+		Pojo p = new Pojo();
+		p.x = false;
+		p.a = 55;
+		p.b = -5000L;
+		p.c = 4.33f;
+		p.d = 5555555.555d;
+		p.e = "pojo";
+		
+		JsonType x = new JsonValue(true);
+		Jsonizer.set(p, "x", x);
+		assertEquals(Jsonizer.get(p, "x"), x);
+		JsonType a = new JsonValue(193);
+		Jsonizer.set(p, "a", a);
+		assertEquals(Jsonizer.get(p, "a"), a);
+		JsonType b = new JsonValue(4193L);
+		Jsonizer.set(p, "b", b);
+		assertEquals(Jsonizer.get(p, "b"), b);
+		JsonType c = new JsonValue(1.93f);
+		Jsonizer.set(p, "c", c);
+		assertEquals(Jsonizer.get(p, "c"), c);
+		JsonType d = new JsonValue(19.3d);
+		Jsonizer.set(p, "d", d);
+		assertEquals(Jsonizer.get(p, "d"), d);
+		JsonType e = new JsonValue("193");
+		Jsonizer.set(p, "e", e);
+		assertEquals(Jsonizer.get(p, "e"), e);
+		
+		//System.out.println(Jsonizer.toString(p));
+		
+	}
+	
 	public void testJ() {
 		J1 j = new J1();
 		j.setBool(true);
