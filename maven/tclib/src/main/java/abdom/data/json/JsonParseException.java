@@ -11,4 +11,10 @@ public class JsonParseException extends IllegalArgumentException {
 	public JsonParseException(String msg) {
 		super(msg);
 	}
+	public JsonParseException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+	public JsonParseException(Throwable cause) {
+		super(cause);
+	}
 }

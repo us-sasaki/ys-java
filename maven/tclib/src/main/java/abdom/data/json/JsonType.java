@@ -477,7 +477,8 @@ public abstract class JsonType extends Number
 	 *
 	 * @param	index	挿入するインデックス
 	 * @param	delete	削除する要素数
-	 * @param	toAdd	index の位置に挿入する要素(JsonArray)
+	 * @param	toAdd	index の位置に挿入する要素(JsonArray) JsonArray でない
+	 *					場合、単一要素が追加されます。
 	 */
 	public JsonArray splice(int index, int delete, Jsonizable toAdd) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
@@ -486,7 +487,7 @@ public abstract class JsonType extends Number
 	/**
 	 * JavaScript における splice (継ぎ合わせ) です。
 	 * 元のオブジェクトは push 同様変更されます(破壊的)。
-	 * toAdd として、JsonType を１つだけ指定した場合、splice(int,int,JsonType)
+	 * toAdd として、JsonType を１つだけ指定した場合、splice(int,int,Jsonizable)
 	 * が呼ばれ、JsonType が JsonArray だった場合に配列の解除が行われます。
 	 *
 	 * @param	index	挿入するインデックス

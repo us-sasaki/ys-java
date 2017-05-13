@@ -12,4 +12,10 @@ public class IllegalFieldTypeException extends IllegalArgumentException {
 	public IllegalFieldTypeException(String msg) {
 		super(msg);
 	}
+	public IllegalFieldTypeException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+	public IllegalFieldTypeException(Throwable cause) {
+		super(cause);
+	}
 }

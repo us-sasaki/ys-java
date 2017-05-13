@@ -20,4 +20,10 @@ public class JDataDefinitionException extends RuntimeException {
 	public JDataDefinitionException(String msg) {
 		super(msg);
 	}
+	public JDataDefinitionException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+	public JDataDefinitionException(Throwable cause) {
+		super(cause);
+	}
 }
