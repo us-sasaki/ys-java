@@ -78,7 +78,7 @@ public abstract class JData extends JValue {
 	 *
 	 * @return	extra のキー(extra が存在しない場合、null)
 	 */
-	public Set getExtraKeySet() {
+	public Set<String> getExtraKeySet() {
 		if (_extra == null) return null;
 		return _extra.keySet();
 	}
@@ -132,6 +132,7 @@ public abstract class JData extends JValue {
 	public JsonType get(String name) {
 		JsonType result = Jsonizer.get(this, name);
 		if (result != null) return result;
+		if (_extra == null) return null;
 		return _extra.get(name);
 	}
 	
