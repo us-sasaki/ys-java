@@ -27,7 +27,7 @@ public class JDataTest extends TestCase{
 		return new TestSuite( JDataTest.class );
 	}
 	
-	static class J1 {
+	static class J1 extends JData {
 		public boolean b;
 		public int[] a;
 		public double doublevalue;
@@ -56,6 +56,19 @@ public class JDataTest extends TestCase{
 			this.message = args[0];
 		}
 	}
+	
+	static class JJ extends JData {
+		public J1 j1;
+		protected J1 j2;
+		
+		public J1 getJ2() {
+			return j2;
+		}
+		
+		public void setJ2(J1 j) {
+			j2 = j;
+		}
+	}
     
 	public void testJ1() {
 		J1 j = new J1();
@@ -78,6 +91,19 @@ public class JDataTest extends TestCase{
 		
 		assertEquals(Jsonizer.toJson(k).toString(), "{\"MSG\":\"hogetarou\",\"a\":[5,65],\"b\":true,\"doublevalue\":3.141592653589793,\"jo\":{\"key\":\"value\"},\"messages\":[\"hogetarou\",\"fixed msg\"],\"str\":\"hoe\"}");
 		assertEquals(frag.toString(), "{\"fragment\":\"c8y?\"}");
+		
+		// dot オペレーションの確認
+		JJ jj = new JJ();
+		jj.j1 = j;
+		jj.setJ2(k);
+		jj.j1.putExtra("extra", new JsonObject());
+		jj.j1.putExtra("extra2", JsonType.o("leaf", "Leaves"));
+		
+		assertEquals(jj.get("j1.MSG"), null);
+		assertEquals(jj.get("j2").toString(), k.toString());
+		assertEquals(jj.get("j2.str"), new JsonValue("hoe"));
+		assertEquals(jj.get("j1.extra").toString(), "{}");
+		assertEquals(jj.get("j1.extra2.leaf").getValue(), "Leaves");
 	}
 	
 	static class J2 extends JData {

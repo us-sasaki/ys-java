@@ -125,15 +125,25 @@ public abstract class JData extends JValue {
 	 * として返却します。
 	 * このオブジェクトを toJson().get(String) した場合と同様の挙動ですが、
 	 * 単一フィールドに対する実装のため、高速です。
+	 * フィールド値には dot(.) オペレーションが利用可能です。
 	 *
 	 * @param	name	フィールド名(extra の場合を含む)
 	 * @return	取得された JsonType
 	 */
 	public JsonType get(String name) {
-		JsonType result = Jsonizer.get(this, name);
-		if (result != null) return result;
-		if (_extra == null) return null;
-		return _extra.get(name);
+		int index = name.indexOf('.');
+		if (index == -1) {
+			JsonType result = Jsonizer.get(this, name);
+			if (result != null) return result;
+			if (_extra == null) return null;
+			return _extra.get(name);
+		} else {
+			JsonType jt = Jsonizer.get(this, name.substring(0, index));
+			JsonType result = ((JsonObject)jt).get(name.substring(index+1));
+			if (result != null) return result;
+			if (_extra == null) return null;
+			return _extra.get(name);
+		}
 	}
 	
 	/**
