@@ -60,6 +60,14 @@ public class JDataMixedTest extends TestCase{
 		assertEquals(j.toString("  "), "{"+ls+"  \"ary\": [],"+ls+"  \"composite\": {\"ary\":[0,1,2,3]},"+ls+"  \"frag\": 35"+ls+"}");
 		assertEquals(j.ary.length, 0);
 		assertEquals(j.getExtras().get("frag").getValue(), "35");
+		
+		J2 k = new J2();
+		k.composite = j;
+		J2 l = new J2();
+		l.composite = k;
+		
+		assertEquals(l.get("composite.composite.composite.ary").get(1).intValue(), 1);
+		assertEquals(l.composite.get("composite").toString(), l.composite.composite.toString());
 	}
 	
 	public void testObj() {
