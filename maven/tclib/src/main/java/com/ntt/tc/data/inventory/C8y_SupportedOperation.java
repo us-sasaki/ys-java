@@ -45,6 +45,13 @@ public class C8y_SupportedOperation extends C8yValue {
 	public static final C8y_SupportedOperation c8y_SendConfiguration = new C8y_SupportedOperation("c8y_SendConfiguration");
 	public static final C8y_SupportedOperation c8y_Software = new C8y_SupportedOperation("c8y_Software");
 	
+	// 以下は、見守りテンプレート端末の managedObject で見つけたもの
+	// ただし、意味は不明
+	public static final C8y_SupportedOperation c8y_MotionTracking = new C8y_SupportedOperation("c8y_MotionTracking");
+	public static final C8y_SupportedOperation c8y_Geofence = new C8y_SupportedOperation("c8y_Geofence");
+	public static final C8y_SupportedOperation c8y_LogfileRequest = new C8y_SupportedOperation("c8y_LogfileRequest");
+	
+	
 	/**
 	 * Operation を表す文字列を格納する。
 	 * このオブジェクトは JsonValue(string) であることが保証され、JsonValue

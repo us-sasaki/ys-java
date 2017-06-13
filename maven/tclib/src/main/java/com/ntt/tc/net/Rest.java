@@ -31,7 +31,7 @@ public class Rest {
 	/** host を示す URL 文字列(http:// or https://) */
 	protected String urlStr;
 	
-	/** Cumulocity におけるテナント名 */
+	/** Cumulocity におけるテナント名(内部的に末尾に/を付加します) */
 	protected String tenant;
 	
 	/** Cumulocity ユーザアカウント */
@@ -126,11 +126,11 @@ public class Rest {
  * class methods
  */
 	/**
-	 * https://nttcom.cumuloity.com
+	 * https://management.iot-trialpack.com
 	 * に接続する、demouserアカウントでログインする新インスタンスを返却します。
 	 */
 	public static Rest getDefaultC8YInstance() {
-		return new Rest("https://nttcom.cumulocity.com", "demouser", "demouser");
+		return new Rest("https://management.iot-trialpack.com", "demouser", "demouser");
 	}
 	
 /*------------------
@@ -284,7 +284,13 @@ public class Rest {
 	private Response requestImpl(String location, String method,
 								String contentType, String accept,
 								byte[] body) throws IOException {
-		URL url = new URL(urlStr + location);
+		URL url = null;
+		if (location.startsWith("http://") ||
+				location.startsWith("https://")) {
+			url = new URL(location);
+		} else {
+			url = new URL(urlStr + location);
+		}
 		HttpURLConnection con = (HttpURLConnection)url.openConnection();
 		
 		// 出力設定
