@@ -125,12 +125,21 @@ public class ManagedObject extends C8yData {
 	public C8y_SupportedOperation[] c8y_SupportedOperations;
 	
 	/**
+	 * Postman のテンプレートで見つけたもの。
+	 * String 配列で、"c8y_TemperatureMeasurement" のようなメジャーメントを
+	 * 指定するらしい。おそらく、実際にメジャーメントを送ることなく
+	 * データとして選べるようにするためか。(2017/6/18)
+	 */
+	public String[] c8y_SupportedMeasurements;
+	
+	/**
 	 * c8y_Hardware contains basic hardware information for a device, such as
 	 * make and serial number. Often, the hardware serial number is printed on
 	 * the board of the device or on an asset tag on the device to uniquely
 	 * identify the device within all devices of the same make.
 	 * inventory / ManagedObject では Object * 扱いで、
 	 * Device Management Library に記載されるフィールド。
+	 * これを設定すると、デバイス管理で値が表示されるようになる。
 	 */
 	public C8y_Hardware c8y_Hardware;
 	
@@ -187,6 +196,7 @@ public class ManagedObject extends C8yData {
 	/**
 	 * inventory / ManagedObject では Object * 扱いで、
 	 * Rest Developer's Guide の例で現れるフィールド。
+	 * c8y_SupportedOperations の要素としてもこれが文字列として現れる。
 	 */
 	public C8y_Software c8y_Software;
 	
@@ -204,6 +214,10 @@ public class ManagedObject extends C8yData {
 	 * Device Management.
 	 * Rest developer's guide / Device Management Library に記載されており、
 	 * 予約語扱いのため、明示的フィールド化。
+	 * これを設定すると、デバイスとして認識され、
+	 * デバイス管理で表示される
+	 * デバイス数としてカウントされる
+	 * ようになる。
 	 */
 	public JsonObject c8y_IsDevice;
 	

@@ -238,6 +238,36 @@ public class Device2 {
 		}
 		throw new IOException("An error occurred while sending measurement."+resp.message);
 	}
+	// 複数のメジャーメントを送信する場合、以下のようなものを POST
+	/* POSTman サンプルより
+{
+    "measurements": [
+        {
+        	"c8y_SpeedMeasurement": {
+            	"speed": { 
+                	"value": 25,
+                    "unit": "km/h" }
+                },
+            "time":"2017-05-22T17:03:14.000+02:00", 
+            "source": {
+            	"id":"10222" }, 
+            "type": "c8y_SpeedMeasurement"
+        },
+        {
+        	"c8y_SpeedMeasurement": {
+            	"speed": { 
+                	"value": 22,
+                    "unit": "km/h" }
+                },
+            "time":"2017-05-22T17:05:14.000+02:00", 
+            "source": {
+            	"id":"10222" }, 
+            "type": "c8y_SpeedMeasurement"
+        }
+    ]
+}	
+	*/
+	
 	
 	/**
 	 * Step 10 Send Events
