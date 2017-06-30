@@ -227,6 +227,12 @@ public class ManagedObject extends C8yData {
 	 * their children for routing.
 	 * Rest developer's guide に記載されており、予約語扱いのため、明示的
 	 * フィールド化。
+	 *
+	 * デバイスのオペレーションの作成／読み出し／更新を行うため、デバイスは
+	 * 既存エージェントの「childDevices」階層に属していなければなりません。
+	 * エージェントをインベントリ内で作成する場合、フラグメント
+	 * 「com_cumulocity_model_Agent」を有するマネージドオブジェクトを作成する
+	 * 必要があります。
 	 */
 	public JsonObject com_cumulocity_model_Agent;
 	
