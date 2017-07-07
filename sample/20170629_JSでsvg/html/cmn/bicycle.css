@@ -1,0 +1,55 @@
+@charset "UTF-8";
+
+/*********************************************************
+ *                     svg 用の定義
+ *********************************************************
+ */
+svg {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Trying to get SVG to act like a greedy block in all browsers */
+  display: block;
+  width:100%;
+  height:100%;
+}
+
+.axis path, .axis line {
+	fill: none;
+	stroke: black;
+}
+.axis text {
+	font-size: 12px;
+}
+.timeaxis path, .timeaxis line {
+	fill: none;
+	stroke: white;
+}
+.timeaxis text {
+	font-size: 11px;
+	fill: #ffffff;
+}
+/* ライドルーラーのカーソル */
+path.cursor {
+	stroke: #ff0000;
+	stroke-width: 2;
+	fill: none;
+}
+/* ライドルーラーのウィンドウライン */
+path.window-line {
+	stroke: #0000ff;
+	stroke-width: 3;
+	fill: none;
+}
+path.altitude {
+	stroke: #24cb24;
+}
+path.velocity {
+	stroke: #FFCCEE;
+	stroke-width: 2;
+	fill: none;
+}
+
