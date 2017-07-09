@@ -10,23 +10,32 @@
       #temperature {
       }
 
-      #temperature.t0  { fill: "#800000"; }
-      #temperature.t1  { fill: "#CC0000"; }
-      #temperature.t2  { fill: "#CC4000"; }
-      #temperature.t3  { fill: "#FF8000"; }
+      #temperature.t0  { fill: hsl(240,90%,40%); }
+      g.t1  { fill: hsl(220,90%,40%); }
+      #temperature.t2  { fill: hsl(200,90%,40%); }
+      #temperature.t3  { fill: hsl(180,90%,40%); }
+      #temperature.t4  { fill: hsl(160,90%,40%); }
+      #temperature.t5  { fill: hsl(140,90%,40%); }
+      #temperature.t6  { fill: hsl(120,90%,40%); }
+      #temperature.t7  { fill: hsl(100,90%,40%); }
+      #temperature.t8  { fill: hsl( 80,90%,40%); }
+      #temperature.t9  { fill: hsl( 60,90%,40%); }
+      #temperature.t10 { fill: hsl( 40,90%,40%); }
+      #temperature.t11 { fill: hsl( 20,90%,40%); }
+      #temperature.t12 { fill: hsl(  0,90%,40%); }
       
       #fcol {
       }
-      #fcol.t0 { fill: "#800000"; }
-      #fcol.t1 { fill: "#CC0000"; }
-      #fcol.t2 { fill: "#CC4000"; }
-      #fcol.t3 { fill: "#FF8000"; }
+      #fcol.t0 { fill: #800000; }
+      #fcol.t1 { fill: #CC0000; }
+      #fcol.t2 { fill: #CC4000; }
+      #fcol.t3 { fill: #FF8000; }
       
     </style>
 	<g id="fcol" font-family="sans-serif" font-size="12" class="t0">
 		<text x="0" y="50">t0</text>
 	</g>
-	<g id="temperature" class="t1">
-   <rect x="0" y="0" width="100" height="10"></rect>
-   </g>
+	<g class="t1">
+		<rect x="0" y="0" width="100" height="10"></rect>
+	</g>
 </svg>

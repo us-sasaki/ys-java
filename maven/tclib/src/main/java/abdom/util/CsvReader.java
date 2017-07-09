@@ -211,7 +211,7 @@ public class CsvReader {
 	 * IOException は IllegalArgumentException に変換されます。
 	 * <pre>
 	 * 使用例
-	 * for (String[] row : CsvReader.read("file.csv") {
+	 * for (String[] row : CsvReader.rows("file.csv") {
 	 *     // row に関する処理
 	 *     for (String column : row) {
 	 *         // column に関する処理

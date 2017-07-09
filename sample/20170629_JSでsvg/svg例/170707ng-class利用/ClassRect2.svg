@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   width="100%" heigh="100%"
+   viewBox="0 0 100 100"
+   preserveAspectRatio="none meet">
+    <!-- {{t}} -->
+    <style type="text/css">
+      g.t0 { fill: hsl(240,90%,40%); }
+      g.t1 { fill: hsl(230.0,90%,40%); }
+      g.t2 { fill: hsl(220.0,90%,40%); }
+      g.t3 { fill: hsl(210.0,90%,40%); }
+      g.t4 { fill: hsl(200.0,90%,40%); }
+      g.t5 { fill: hsl(190.0,90%,40%); }
+      g.t6 { fill: hsl(180.0,90%,40%); }
+      g.t7 { fill: hsl(170.0,90%,40%); }
+      g.t8 { fill: hsl(160.0,90%,40%); }
+      g.t9 { fill: hsl(150.0,90%,40%); }
+      g.t10 { fill: hsl(140.0,90%,40%); }
+      g.t11 { fill: hsl(130.0,90%,40%); }
+      g.t12 { fill: hsl(120.0,90%,40%); }
+      g.t13 { fill: hsl(110.0,90%,40%); }
+      g.t14 { fill: hsl(100.0,90%,40%); }
+      g.t15 { fill: hsl(90.0,90%,40%); }
+      g.t16 { fill: hsl(80.0,90%,40%); }
+      g.t17 { fill: hsl(70.0,90%,40%); }
+      g.t18 { fill: hsl(60.0,90%,40%); }
+      g.t19 { fill: hsl(50.0,90%,40%); }
+      g.t20 { fill: hsl(40.0,90%,40%); }
+      g.t21 { fill: hsl(30.0,90%,40%); }
+      g.t22 { fill: hsl(20.0,90%,40%); }
+      g.t23 { fill: hsl(10.0,90%,40%); }
+      g.t24 { fill: hsl(0.0,90%,40%); }
+      
+    </style>
+	<g ng-class="{t0:t < -6.0,t1:t >= -6.0&&t < -4.0,t2:t >= -4.0&&t < -2.0,t3:t >= -2.0&&t < 0.0,t4:t >= 0.0&&t < 2.0,t5:t >= 2.0&&t < 4.0,t6:t >= 4.0&&t < 6.0,t7:t >= 6.0&&t < 8.0,t8:t >= 8.0&&t < 10.0,t9:t >= 10.0&&t < 12.0,t10:t >= 12.0&&t < 14.0,t11:t >= 14.0&&t < 16.0,t12:t >= 16.0&&t < 18.0,t13:t >= 18.0&&t < 20.0,t14:t >= 20.0&&t < 22.0,t15:t >= 22.0&&t < 24.0,t16:t >= 24.0&&t < 26.0,t17:t >= 26.0&&t < 28.0,t18:t >= 28.0&&t < 30.0,t19:t >= 30.0&&t < 32.0,t20:t >= 32.0&&t < 34.0,t21:t >= 34.0&&t < 36.0,t22:t >= 36.0&&t < 38.0,t23:t >= 38.0&&t < 40.0,t24:t >= 40.0}">
+		<rect x="0" y="0" width="50" height="50"></rect>
+	</g>
+	
+	<g id="fcol" font-family="sans-serif" font-size="12" class="t0">
+		<text x="0" y="50">{{t}}</text>
+	</g>
+</svg>
