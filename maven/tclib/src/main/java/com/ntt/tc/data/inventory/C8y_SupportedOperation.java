@@ -49,8 +49,13 @@ public class C8y_SupportedOperation extends C8yValue {
 	// ただし、意味は不明
 	public static final C8y_SupportedOperation c8y_MotionTracking = new C8y_SupportedOperation("c8y_MotionTracking");
 	public static final C8y_SupportedOperation c8y_Geofence = new C8y_SupportedOperation("c8y_Geofence");
-	public static final C8y_SupportedOperation c8y_LogfileRequest = new C8y_SupportedOperation("c8y_LogfileRequest");
 	
+	public static final C8y_SupportedOperation c8y_LogfileRequest = new C8y_SupportedOperation("c8y_LogfileRequest");
+	/**
+	 * 吉野さん情報(2017/7/10)
+	 * String 値は、ntcagent, dmesg, logread, ipsec が取れるらしい
+	 */
+	public static final String[] c8y_SupportedLogs;
 	
 	/**
 	 * Operation を表す文字列を格納する。
