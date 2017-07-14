@@ -207,7 +207,7 @@ public class CsvReader {
  * class methods
  */
 	/**
-	 * Iterator として CSV ファイルを扱うためのメソッドです。
+	 * Iterator として CSV ファイルを扱うための便利メソッドです。
 	 * IOException は IllegalArgumentException に変換されます。
 	 * <pre>
 	 * 使用例
