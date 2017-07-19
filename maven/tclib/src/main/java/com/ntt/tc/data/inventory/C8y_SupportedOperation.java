@@ -55,7 +55,7 @@ public class C8y_SupportedOperation extends C8yValue {
 	 * 吉野さん情報(2017/7/10)
 	 * String 値は、ntcagent, dmesg, logread, ipsec が取れるらしい
 	 */
-	public static final String[] c8y_SupportedLogs;
+	public String[] c8y_SupportedLogs;
 	
 	/**
 	 * Operation を表す文字列を格納する。

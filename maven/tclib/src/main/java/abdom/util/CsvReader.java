@@ -152,19 +152,6 @@ public class CsvReader {
 /*-----------------------
  * inner class(Iterator)
  */
-	private static class CsvRowIterable implements Iterable<String[]> {
-		private CsvRowIterator iterator;
-		
-		private CsvRowIterable(String fname) {
-			iterator = new CsvRowIterator(fname);
-		}
-		
-		@Override
-		public Iterator<String[]> iterator() {
-			return iterator;
-		}
-	}
-	
 	private static class CsvRowIterator implements Iterator<String[]> {
 		private CsvReader reader;
 		private String[] next;
@@ -219,8 +206,13 @@ public class CsvReader {
 	 * }
 	 * </pre>
 	 */
-	public static Iterable<String[]> rows(String filename) {
-		return new CsvRowIterable(filename);
+	public static Iterable<String[]> rows(final String fname) {
+		return new Iterable<String[]>() {
+			@Override
+			public Iterator<String[]> iterator() {
+				return new CsvRowIterator(fname);
+			}
+		};
 	}
 	
 	/**
