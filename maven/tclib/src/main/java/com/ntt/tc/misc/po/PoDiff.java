@@ -34,6 +34,17 @@ public class PoDiff {
 	}
 	
 	public static void main(String[] args) throws Exception {
+		if (args.length != 2) {
+			System.out.println("podiff ツール - 指定した２つのpoファイルの差分を抽出する。先に指定した po ファイルにあるエントリで、後に指定した po ファイルにあるエントリを含まないものを抽出し、PoDiff.result.txt の名前で出力する");
+			System.out.println();
+			System.out.println("java PoDiff [po A] [po B]");
+			System.out.println();
+			System.out.println("  po A  : poファイル");
+			System.out.println("  po B  : poファイル");
+			System.out.println();
+			System.out.println("結果は、[po A] - [po B] のようなもので、集合としての差を抽出する。すなわち、{結果}={x | x は po A に含まれ、po B に含まれない}");
+			System.exit(-1);
+		}
 		JsonType newone = Po2Json.read(args[0]);
 		JsonType oldone = Po2Json.read(args[1]);
 		
