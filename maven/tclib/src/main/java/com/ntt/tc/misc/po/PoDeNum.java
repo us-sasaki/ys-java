@@ -12,6 +12,15 @@ import abdom.data.json.*;
 
 public class PoDeNum {
 	public static void main(String[] args) throws Exception {
+		if (args.length != 1) {
+			System.out.println("podenum ツール - poファイルの各エントリに付与された [数字]_ 形式の接頭辞を削除する。結果は、入力ファイル名+\".denumbered.txt\"となる。ただし、入力ファイル名が\".numbered.txt\"で終わっている場合、これを除いたものとする");
+			System.out.println();
+			System.out.println("java PoDeNum [poファイル名]");
+			System.out.println();
+			System.out.println("  po : 番号接頭辞を消したい poファイルの名前");
+			System.out.println();
+			System.exit(-1);
+		}
 		JsonType f = Po2Json.read(args[0]); // f is Array
 		JsonType result = new JsonArray();
 		

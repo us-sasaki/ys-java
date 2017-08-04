@@ -12,6 +12,15 @@ import abdom.data.json.*;
 
 public class PoNum {
 	public static void main(String[] args) throws Exception {
+		if (args.length != 1) {
+			System.out.println("ponum ツール - poファイルの各エントリに付与された [数字]_ 形式の接頭辞を付与する。結果は、入力ファイル名+\".numbered.txt\"となる。");
+			System.out.println();
+			System.out.println("java PoNum [poファイル名]");
+			System.out.println();
+			System.out.println("  po : 番号接頭辞を付与したい poファイルの名前");
+			System.out.println();
+			System.exit(-1);
+		}
 		// ファイル読み込み
 		JsonType f = Po2Json.read(args[0]);
 		int count = 1;
