@@ -263,6 +263,7 @@ System.out.println("パス：" + p0);
     	    List<String> n = readLines(p1);
         	List<String> oj = readLines(p2);
 			
+			// テキストフォーマットを決める instance
 			DiffMdInTranslate dmit = new DiffMdInTranslate2(o, n, oj);
 			List<String> text = dmit.toText();
 			
