@@ -200,6 +200,12 @@ public class DiffMd {
 		report.println("■ファイル過不足チェック");
 		report.println();
 		
+		int comOriginal = 0;
+		int shouldBeTranslated = 0;
+		int conflict = 0;
+		int removed = 0;
+		int needToRemove = 0;
+		
 		for (String key : triplets.keySet()) {
 			Path newPath = new File(newTranslatedDir, key).toPath();
 			if (key.endsWith("/")) {
@@ -216,38 +222,56 @@ public class DiffMd {
 				// 独自文書と判定。単にコピー
 				report.println("　独自文書　　　：" + t.f[2]);
 				Files.copy(t.f[2].toPath(), newPath);
+				comOriginal++;
 			}
 			else if (t.f[0] == null && t.f[1] != null && t.f[2] == null) {
 				// 新規原文が追加された。新規原文をコピー
 				report.println("　新規訳文が必要：" + t.f[1]);
 				Files.copy(t.f[1].toPath(), newPath);
+				shouldBeTranslated++;
 			}
 			else if (t.f[0] == null && t.f[1] != null && t.f[2] != null) {
 				// 新規原文とコンフリクトするファイル。訳文をコピー。
 				report.println("　ファイルコンフリクト！！(新原文："+t.f[1]+"　訳文：" + t.f[2]+")");
 				Files.copy(t.f[2].toPath(), newPath);
+				conflict++;
 			}
 			else if (t.f[0] != null && t.f[1] == null && t.f[2] == null) {
 				// 旧原文のみにあるファイル。結果オーライ
 				report.println("　削除済み　　　：" + t.f[0]);
+				removed++;
 			}
 			else if (t.f[0] != null && t.f[1] == null && t.f[2] != null) {
 				// 新規原文では消えている。確認後削除を促す
 				report.println("　削除が必要　　：" + t.f[2]);
 				Files.copy(t.f[2].toPath(), newPath);
+				needToRemove++;
 			}
 			else if (t.f[0] != null && t.f[1] != null && t.f[2] == null) {
 				// 新規原文が追加された。新規原文をコピー
 				report.println("　新規訳文が必要：" + t.f[1]);
 				Files.copy(t.f[1].toPath(), newPath);
+				shouldBeTranslated++;
 			}
 		}
+		report.println();
+		report.println("　サマリ");
+		report.println("　　独自文書　　　：" + comOriginal);
+		report.println("　　新規訳文が必要：" + shouldBeTranslated);
+		report.println("　　コンフリクト　：" + conflict);
+		report.println("　　削除済み　　　：" + removed);
+		report.println("　　削除が必要　　：" + needToRemove);
+		report.println("　　　　　　　合計：" + (comOriginal+shouldBeTranslated+conflict+removed+needToRemove));
 		report.println();
 	}
 	
 	private void makeDiffFiles() throws IOException {
-		report.println("■更新ファイル作成");
+		report.println("■更新ファイル作成(カッコ内の数値は変更された行の割合(%))");
 		report.println();
+		
+		int notChanged = 0;
+		int muchChanged = 0;
+		int changed = 0;
 		
 		for (String key : triplets.keySet()) {
 			Triplet t = triplets.get(key);
@@ -272,10 +296,23 @@ System.out.println("パス：" + p0);
 			double rate = dmit.getDiffRate();
 			int r = (int)(rate * 100d);
 			if (rate > 0 && r == 0) r++;
-			if (r == 0) report.println("　変更なし：" + key);
-			else if (r >= 30) report.println("　差大("+r+")：" + key);
-			else report.println("　修正("+r+")：" + key);
+			if (r == 0) {
+				report.println("　変更なし：" + key);
+				notChanged++;
+			} else if (r >= 30) {
+				report.println("　差大("+r+")：" + key);
+				muchChanged++;
+			} else {
+				report.println("　修正("+r+")：" + key);
+				changed++;
+			}
 		}
+		report.println();
+		report.println("　サマリ");
+		report.println("　　変更なし　　　：" + notChanged);
+		report.println("　　差大　　　　　：" + muchChanged);
+		report.println("　　修正　　　　　：" + changed);
+		report.println("　　　　　　　合計：" + (notChanged+muchChanged+changed));
 	}
 	
 	private List<String> readLines(Path p) throws IOException {

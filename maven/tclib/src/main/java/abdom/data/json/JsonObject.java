@@ -146,8 +146,26 @@ public class JsonObject extends JsonType {
 		// add もであるが、recursive '.' 登録に対応する？
 		if (t == null) t = new JsonValue( null );
 		// 上書き
-		map.put(name, t.toJson());
-		return this;
+		
+		//
+		// 未完成
+		//
+		JsonObject toPut = this;
+		String key = name;
+		while (true) {
+			int index = key.indexOf('.');
+			if (index == -1) {
+				toPut.map.put(key, t.toJson());
+				return this;
+			}
+			try {
+				key = key.substring(index + 1);
+				toPut = (JsonObject)toPut.map.get(key);
+				if (toPut == null) toPut = new JsonObject();
+			} catch (ClassCastException cce) {
+				throw new IllegalArgumentException(name + "のキーは値追加できないオブジェクトがすでに設定されています");
+			}
+		}
 	}
 	
 /*-----------
@@ -164,7 +182,12 @@ public class JsonObject extends JsonType {
 	
 	@Override
 	public JsonType cut(String key) {
-		return map.remove(key);
+		int index = key.indexOf('.');
+		if (index == -1) return map.remove(key);
+		JsonType jt = map.get(key.substring(0, index));
+		if (jt == null) return null;
+		return ((JsonObject)jt).cut(key.substring(index+1));
+		
 	}
 	
 	@Override

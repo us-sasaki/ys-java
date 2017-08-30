@@ -165,6 +165,8 @@ public abstract class JsonType extends Number
 	/**
 	 * JsonObject として、指定されたキーの値を取得し、削除します。(cut)
 	 * JsonObject でない場合、ClassCastException がスローされます。
+	 * キー値には、階層的なオブジェクト構造を辿るための . (dot)表記が
+	 * サポートされます。
 	 *
 	 * @param	key		値を取得し、削除したいキー名
 	 * @return	取得される値(JsonType)。キーが存在しない場合、null
@@ -297,6 +299,8 @@ public abstract class JsonType extends Number
 	 * add との違いは、すでに name で指定される要素が存在した場合、
 	 * name の値を上書きする点と、null 値を指定した場合、JsonValue(null)
 	 * で上書きする点です。
+	 * キー値には、階層的なオブジェクト構造を辿るための . (dot)表記が
+	 * サポートされます。
 	 *
 	 * @param	name	要素名
 	 * @param	t		値
