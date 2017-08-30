@@ -182,6 +182,11 @@ class SimpleAccessor extends Accessor {
 		// 一般オブジェクトの場合
 		Object newInstance;
 		try {
+			// すでにインスタンスがあった場合も newInstance を生成する
+			// メンバ変数の参照をとったのち、元のオブジェクトを fill() 
+			// すると参照と元のオブジェクトのメンバ変数が
+			// 別オブジェクトになるのは、意図通りでないことが多いと
+			// 思われる。また、メモリ効率も悪い。
 			newInstance = type.newInstance();
 		} catch (ReflectiveOperationException roe) {
 			throw new JDataDefinitionException(

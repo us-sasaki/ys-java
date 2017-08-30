@@ -87,6 +87,8 @@ public abstract class JData extends JValue {
 	 * extra アクセスメソッドで、JsonType 値を取得します。
 	 * extra がない場合、あっても指定されたキーを持たない場合、
 	 * null が返却されます。
+	 * key 値には、オブジェクトの階層をたどるための. (dot) 記法が
+	 * 利用できます。
 	 *
 	 * @param	key	extra の key 情報
 	 * @return	key に対応する値(null の場合があります)
@@ -98,6 +100,8 @@ public abstract class JData extends JValue {
 	
 	/**
 	 * extra アクセスメソッドで、Jsonizable 値を設定します。
+	 * key 値には、オブジェクトの階層をたどるための. (dot) 記法が
+	 * 利用できます。
 	 *
 	 * @param	key	extra の key 情報
 	 * @param	jt	設定する値を指定。toJson() による JsonType が設定されます。
@@ -155,11 +159,16 @@ public abstract class JData extends JValue {
 	 * @param	arg		設定値
 	 */
 	public void set(String name, Jsonizable arg) {
-		JsonType result = Jsonizer.set(this, name, arg);
-		if (result != null) {
-			if (_extra == null) _extra = new JsonObject();
-			_extra.put(name, result);
-		}
+//		int index = name.indexOf('.');
+//		if (index == -1) {
+			JsonType result = Jsonizer.set(this, name, arg);
+			if (result != null) {
+				if (_extra == null) _extra = new JsonObject();
+				_extra.put(name, result);
+			}
+//		} else {
+//			
+//		}
 	}
 	
 	/**
