@@ -87,6 +87,8 @@ public class JsonMixTest extends TestCase{
 		assertEquals(jt.get("array").get(1).getValue(), "hoe");
 		
 	}
+	
+	// 階層的なキー値による get
 	public void test5() {
 		JsonType j = JsonType.o("prop1", JsonType.o("prop2", JsonType.o("prop3", 5)));
 		
@@ -94,5 +96,42 @@ public class JsonMixTest extends TestCase{
 		assertEquals(j.get("prop1.prop2").toString(), "{\"prop3\":5}");
 		assertEquals(j.get("prop1.prop2.prop3").toString(), "5");
 		assertEquals(j.toString(), "{\"prop1\":{\"prop2\":{\"prop3\":5}}}");
+	}
+	
+	// 階層的なキー値を持つ場合の put / cut
+	public void test6() {
+		JsonObject jo = new JsonObject();
+		jo.put("a", new JsonValue(1));
+		try {
+			jo.put("a.b", new JsonValue(2));
+			fail("JsonObject のエントリ a にすでに JsonValue が格納されているにも関わらず、a.b への追加ができてしまいました");
+		} catch (IllegalArgumentException ok) {
+		}
+		jo.put("b.c.d", new JsonObject().put("some","what"));
+		jo.put("b.c.d.e", new JsonValue(true));
+		jo.put("b.c.d2", new JsonValue(3));
+		assertEquals(jo.toString(), "{\"a\":1,\"b\":{\"c\":{\"d\":{\"e\":true,\"some\":\"what\"},\"d2\":3}}}");
+		JsonType j2 = jo.cut("b.c.d");
+		assertEquals(j2.toString(), "{\"e\":true,\"some\":\"what\"}");
+		assertEquals(jo.toString(), "{\"a\":1,\"b\":{\"c\":{\"d2\":3}}}");
+	}
+	
+	// 階層的なキー値を持つ場合の add / cut
+	public void test7() {
+		JsonObject jo = new JsonObject();
+		jo.add("a", new JsonValue(1));
+		try {
+			jo.add("a.b", new JsonValue(2));
+			fail("JsonObject のエントリ a にすでに JsonValue が格納されているにも関わらず、a.b への追加ができてしまいました");
+		} catch (IllegalArgumentException ok) {
+		}
+		jo.add("b.c.d", new JsonObject().add("some","what"));
+		jo.add("b.c.d.e", new JsonValue(true));
+		jo.add("b.c.d2", new JsonValue(3));
+		jo.add("b.c.d", new JsonObject().add("value",5)); // add
+		assertEquals(jo.toString(), "{\"a\":1,\"b\":{\"c\":{\"d\":[{\"e\":true,\"some\":\"what\"},{\"value\":5}],\"d2\":3}}}");
+		JsonType j2 = jo.cut("b.c.d");
+		assertEquals(j2.toString(), "[{\"e\":true,\"some\":\"what\"},{\"value\":5}]");
+		assertEquals(jo.toString(), "{\"a\":1,\"b\":{\"c\":{\"d2\":3}}}");
 	}
 }

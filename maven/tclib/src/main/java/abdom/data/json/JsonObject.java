@@ -74,6 +74,24 @@ public class JsonObject extends JsonType {
 	private JsonObject addImpl(String name, Jsonizable j) {
 		JsonType t = j.toJson();
 		if (t == null) return this; // 何もしない
+		int index = name.indexOf('.');
+		if (index > -1) {
+			// dot がある場合、recursive
+			// 一段深いオブジェクト
+			String next = name.substring(0, index);
+			try {
+				JsonObject jo = (JsonObject)map.get(next);
+				if (jo == null) {
+					jo = new JsonObject();
+					map.put(next, jo);
+				}
+				return jo.addImpl(name.substring(index + 1), j);
+			} catch (ClassCastException cce) {
+				throw new IllegalArgumentException(toString() + "のキー"+ name + "中" + next +"には値追加できないオブジェクトがすでに設定されています");
+			}
+		}
+		
+		// dot がない場合
 		if (map.containsKey(name)) {
 			// 同一 name のエントリがすでにあった場合、value を JsonArray 化する
 			JsonType v = map.get(name);
@@ -146,25 +164,22 @@ public class JsonObject extends JsonType {
 		// add もであるが、recursive '.' 登録に対応する？
 		if (t == null) t = new JsonValue( null );
 		// 上書き
-		
-		//
-		// 未完成
-		//
-		JsonObject toPut = this;
-		String key = name;
-		while (true) {
-			int index = key.indexOf('.');
-			if (index == -1) {
-				toPut.map.put(key, t.toJson());
-				return this;
+		int index = name.indexOf('.');
+		if (index == -1) {
+			map.put(name, t.toJson());
+			return this;
+		}
+		// 一段深いオブジェクト
+		String next = name.substring(0, index);
+		try {
+			JsonObject j = (JsonObject)map.get(next);
+			if (j == null) {
+				j = new JsonObject();
+				map.put(next, j);
 			}
-			try {
-				key = key.substring(index + 1);
-				toPut = (JsonObject)toPut.map.get(key);
-				if (toPut == null) toPut = new JsonObject();
-			} catch (ClassCastException cce) {
-				throw new IllegalArgumentException(name + "のキーは値追加できないオブジェクトがすでに設定されています");
-			}
+			return j.putImpl(name.substring(index + 1), t);
+		} catch (ClassCastException cce) {
+			throw new IllegalArgumentException(toString() + "のキー"+ name + "中" + next +"には値追加できないオブジェクトがすでに設定されています");
 		}
 	}
 	

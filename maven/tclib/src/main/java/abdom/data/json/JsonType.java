@@ -252,6 +252,11 @@ public abstract class JsonType extends Number
 	 * 指定していた場合、何もしない点です。
 	 * すでに name で指定される要素が JsonArray であった場合、
 	 * その JsonArray に指定された要素が追加(push)されます。
+	 * キー値には、階層的なオブジェクト構造を辿るための . (dot)表記が
+	 * サポートされます。
+	 * なお、オブジェクトが、"a" のエントリを持っていた場合、
+	 * add("a.b", value) を行っても、"a" のエントリが配列化されることは
+	 * なく、末端のオブジェクトのみが配列化の対象となります。
 	 *
 	 * @param	name	要素名
 	 * @param	t		値
