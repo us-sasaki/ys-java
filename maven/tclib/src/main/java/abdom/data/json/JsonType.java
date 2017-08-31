@@ -103,7 +103,7 @@ public abstract class JsonType extends Number
 	}
 	
 	/**
-	 * JsonValue としての値をdouble値で取得します。このオブジェクトが
+	 * JsonValue としての値をfloat値で取得します。このオブジェクトが
 	 * JsonValue でない場合、ClassCastException がスローされます。
 	 * また、JsonValue でも float として認識できない場合
 	 * (Float.parseFloat が失敗)、NumberFormatException がスローされます。
@@ -212,6 +212,7 @@ public abstract class JsonType extends Number
 	 * Number 型については TYPE_INT, TYPE_DOUBLE のいずれかに分類されますが、
 	 * Long.parseLong が成功する場合、TYPE_INT が返却されます。
 	 * (TYPE_INT が TYPE_DOUBLE に優先します)
+	 * 数値と認識できる文字列の場合 TYPE_STRING が返却されます。
 	 *
 	 * @return	型を示す定数
 	 * @see		#TYPE_VOID

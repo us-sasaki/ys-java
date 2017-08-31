@@ -292,7 +292,7 @@ System.out.println("パス：" + p0);
 			List<String> text = dmit.toText();
 			
 			Files.write(newPath, text, StandardCharsets.UTF_8 );
-
+			
 			double rate = dmit.getDiffRate();
 			int r = (int)(rate * 100d);
 			if (rate > 0 && r == 0) r++;
@@ -300,10 +300,10 @@ System.out.println("パス：" + p0);
 				report.println("　変更なし：" + key);
 				notChanged++;
 			} else if (r >= 30) {
-				report.println("　差大("+r+")：" + key);
+				report.println("　差大("+r+"%,revisedLines=")：" + key);
 				muchChanged++;
 			} else {
-				report.println("　修正("+r+")：" + key);
+				report.println("　修正("+r+"%)：" + key);
 				changed++;
 			}
 		}

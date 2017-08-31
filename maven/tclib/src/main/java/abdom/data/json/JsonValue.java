@@ -100,6 +100,7 @@ public class JsonValue extends JsonType {
 					sb.append(u);
 					break;
 				default:
+					// value に不正なエスケープ文字が入ることはない
 					throw new InternalError();
 				}
 			} else {
