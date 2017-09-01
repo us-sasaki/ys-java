@@ -85,7 +85,8 @@ public class JsonObject extends JsonType {
 					jo = new JsonObject();
 					map.put(next, jo);
 				}
-				return jo.addImpl(name.substring(index + 1), j);
+				jo.addImpl(name.substring(index + 1), j);
+				return this;
 			} catch (ClassCastException cce) {
 				throw new IllegalArgumentException(toString() + "のキー"+ name + "中" + next +"には値追加できないオブジェクトがすでに設定されています");
 			}
@@ -177,7 +178,8 @@ public class JsonObject extends JsonType {
 				j = new JsonObject();
 				map.put(next, j);
 			}
-			return j.putImpl(name.substring(index + 1), t);
+			j.putImpl(name.substring(index + 1), t);
+			return this;
 		} catch (ClassCastException cce) {
 			throw new IllegalArgumentException(toString() + "のキー"+ name + "中" + next +"には値追加できないオブジェクトがすでに設定されています");
 		}

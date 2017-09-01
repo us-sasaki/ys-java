@@ -134,4 +134,16 @@ public class JsonMixTest extends TestCase{
 		assertEquals(j2.toString(), "[{\"e\":true,\"some\":\"what\"},{\"value\":5}]");
 		assertEquals(jo.toString(), "{\"a\":1,\"b\":{\"c\":{\"d2\":3}}}");
 	}
+	
+	// 階層的なキーを指定した場合の連続 put
+	public void test8() {
+		JsonType j = new JsonObject().put("a", "a").put("b.c", "b.c").put("d.e.f","d.e.f");
+		assertEquals(j.toString(), "{\"a\":\"a\",\"b\":{\"c\":\"b.c\"},\"d\":{\"e\":{\"f\":\"d.e.f\"}}}");
+	}
+	
+	// 階層的なキーを指定した場合の連続 add
+	public void test9() {
+		JsonType j = new JsonObject().add("a", "a").add("b.c", "b.c").add("d.e.f","d.e.f");
+		assertEquals(j.toString(), "{\"a\":\"a\",\"b\":{\"c\":\"b.c\"},\"d\":{\"e\":{\"f\":\"d.e.f\"}}}");
+	}
 }
