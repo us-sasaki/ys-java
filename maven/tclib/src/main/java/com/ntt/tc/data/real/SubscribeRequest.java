@@ -17,11 +17,12 @@ public class SubscribeRequest extends C8yData {
 	
 	/**
 	 * Name of channel, required value "/meta/subscribe"
+	 * 固定値 "/meta/subscribe" を設定
 	 * <pre>
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String channel;
+	public String channel = "/meta/subscribe";
 	
 	/**
 	 * Unique ID of client received during handshake.

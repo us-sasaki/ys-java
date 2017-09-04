@@ -17,11 +17,12 @@ public class DisconnectRequest extends C8yData {
 	
 	/**
 	 * Name of channel, required value "/meta/disconnect".
+	 * 固定値 "/meta/disconnect" を設定
 	 * <pre>
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String channel;
+	public String channel = "/meta/disconnect";
 	
 	/**
 	 * Unique ID of client received during handshake.

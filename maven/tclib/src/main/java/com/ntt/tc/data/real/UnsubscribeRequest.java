@@ -17,11 +17,12 @@ public class UnsubscribeRequest extends C8yData {
 	
 	/**
 	 * Name of channel, required value "/meta/unsubscribe".
+	 * 固定値 "/meta/unsubscribe" を設定
 	 * <pre>
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String channel;
+	public String channel = "/meta/unsubscribe";
 	
 	/**
 	 * Unique client ID received during handshake.

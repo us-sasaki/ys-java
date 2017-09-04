@@ -6,7 +6,7 @@ import com.ntt.tc.data.C8yData;
  * SubscriveResponse class
  * This source is machine-generated from c8y-markdown docs.
  */
-public class SubscriveResponse extends C8yData {
+public class SubscribeResponse extends C8yData {
 	/**
 	 * Id of message passed in request message
 	 * <pre>

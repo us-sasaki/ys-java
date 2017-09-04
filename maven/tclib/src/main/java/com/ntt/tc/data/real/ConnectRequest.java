@@ -18,11 +18,12 @@ public class ConnectRequest extends C8yData {
 	
 	/**
 	 * Name of channel, required value "/meta/connect".
+	 * 固定値 "/meta/connect" を設定
 	 * <pre>
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String channel;
+	public String channel = "/meta/connect";
 	
 	/**
 	 * Unique ID of client received during handshake.
@@ -34,11 +35,12 @@ public class ConnectRequest extends C8yData {
 	
 	/**
 	 * Selected connection type.
+	 * "long-polling" を設定
 	 * <pre>
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String connectionType;
+	public String connectionType = "long-polling";
 	
 	/**
 	 * Configuration paramaters for current connect message.
