@@ -17,7 +17,6 @@ import abdom.data.json.JsonObject;
  * フィールド、メソッドを統一的に扱うためのインターフェースです。
  * 単一オブジェクトでは、SimpleAccessor, 配列では ArrayAccessor を
  * インスタンス実体として利用します。
- * 2017/9/8 byte, char 等にも対応。
  *
  * @version		23 December, 2016
  * @author		Yusuke Sasaki
@@ -54,12 +53,6 @@ abstract class Accessor {
 		if (value == null) return new JsonValue(null);
 		if (type == boolean.class)
 			return new JsonValue( ((Boolean)value).booleanValue() );
-		if (type == byte.class)
-			return new JsonValue( ((Byte)value).byteValue() );
-		if (type == short.class)
-			return new JsonValue( ((Short)value).shortValue() );
-		if (type == char.class)
-			return new JsonValue( value.toString() );
 		if (type == int.class)
 			return new JsonValue( ((Integer)value).intValue() );
 		if (type == float.class)
@@ -157,21 +150,9 @@ class SimpleAccessor extends Accessor {
 				prop.setObj(instance, arg.doubleValue());
 				return;
 			}
-			if (type == short.class) {
-				prop.setObj(instance, (short)arg.intValue() );
-				return;
-			}
-			if (type == byte.class) {
-				prop.setObj(instance, (byte)arg.intValue() );
-				return;
-			}
-			if (type == char.class) {
-				prop.setObj(instance, arg.getValue().charAt(0) );
-				return;
-			}
 			// 上位クラスでチェックしているため、ここには来ないはず
 			throw new JDataDefinitionException("\"" + prop.getName() +
-					"\" field is not an element of primitive types :" +
+					"\" field is not an element of JData category :" +
 					instance.getClass().getName());
 		}
 		// primitive でない場合
@@ -199,9 +180,14 @@ class SimpleAccessor extends Accessor {
 			return;
 		}
 		// 一般オブジェクトの場合
-		Object obj = prop.getObj(instance);
+		Object newInstance;
 		try {
-			if (obj == null) obj = type.newInstance();
+			// すでにインスタンスがあった場合も newInstance を生成する
+			// メンバ変数の参照をとったのち、元のオブジェクトを fill() 
+			// すると参照と元のオブジェクトのメンバ変数が
+			// 別オブジェクトになるのは、意図通りでないことが多いと
+			// 思われる。また、メモリ効率も悪い。
+			newInstance = type.newInstance();
 		} catch (ReflectiveOperationException roe) {
 			throw new JDataDefinitionException(
 					"Failed to instantiate \"" +
@@ -212,11 +198,11 @@ class SimpleAccessor extends Accessor {
 		}
 		// JValue の場合
 		if (JValue.class.isAssignableFrom(type)) {
-			((JValue)obj).fill(arg);
+			((JValue)newInstance).fill(arg);
 		} else {
-			Jsonizer.fill(obj, arg);
+			Jsonizer.fill(newInstance, arg);
 		}
-		prop.setObj(instance, obj);
+		prop.setObj(instance, newInstance);
 	}
 }
 
@@ -322,18 +308,6 @@ class ArrayAccessor extends Accessor {
 			int i = 0;
 			for (JsonType elm : arg)
 				Array.setDouble(result, i++, elm.doubleValue());
-		} else if (compType == byte.class) {
-			int i = 0;
-			for (JsonType elm : arg)
-				Array.setByte(result, i++, elm.byteValue());
-		} else if (compType == short.class) {
-			int i = 0;
-			for (JsonType elm : arg)
-				Array.setShort(result, i++, elm.shortValue());
-		} else if (compType == char.class) {
-			int i = 0;
-			for (JsonType elm : arg)
-				Array.setChar(result, i++, elm.getValue().charAt(0));
 		} else if (compType == String.class) {
 			int i = 0;
 			for (JsonType elm : arg)

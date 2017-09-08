@@ -31,8 +31,6 @@ import abdom.data.json.Jsonizable;
  * boolean, int, long, float, double, String, JValue(,JData), JsonObject
  * および、これらの型の配列
  *
- * 2017/9/8 JData カテゴリの制約をなくしました
- *
  * </pre>
  * JSON形式との相互変換対象外とする変数を定義したい場合、
  * transient 修飾子をつけて下さい。また、メソッドでは strictfp 修飾子が
@@ -79,8 +77,6 @@ public class Jsonizer {
 	 * @param	arg			設定値を持つ Jsonizable オブジェクト
 	 * @return	設定値の中で、Java オブジェクトに対応するプロパティがなく
 	 *			設定しなかった項目。すべて設定された場合、null。
-	 *			ただし、instance が JValue 直接の子クラスの場合(JDataの
-	 *			子クラスでない場合)は、常に null。
 	 */
 	public static JsonObject fill(Object instance, Jsonizable arg) {
 		if (instance instanceof JValue && !(instance instanceof JData)) {
@@ -254,7 +250,7 @@ public class Jsonizer {
 		
 		// JValue のインスタンスかつ、JData のインスタンスでない
 		// 場合(JValue を直接継承)、Accessor による設定でなく、
-		// fill(), toJson() による変換を行うため、null が返却される。
+		// fill(), toJson() による変換を行うこととし、null が返却される。
 		if (JValue.class.isAssignableFrom(cls) &&
 			!JData.class.isAssignableFrom(cls) ) return null;
 		
@@ -421,9 +417,8 @@ public class Jsonizer {
 	 * チェックします。
 	 */
 	private static boolean isJDataCategory(Class type) {
-		return true;
 		// プリミティブ、String, JsonObject, JValue
-/*		if ( boolean.class == type ||
+		if ( boolean.class == type ||
 			int.class == type ||
 			long.class == type ||
 			float.class == type ||
@@ -443,7 +438,6 @@ public class Jsonizer {
 			JsonObject[].class.isAssignableFrom(type) ) return true;
 		
 		return false;
-*/
 	}
 	
 	/**

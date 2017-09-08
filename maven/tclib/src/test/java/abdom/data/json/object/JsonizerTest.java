@@ -130,4 +130,77 @@ public class JsonizerTest extends TestCase{
 		assertEquals(names, ans);
 	}
 	
+	static class J3 {
+		public int a;
+	}
+	
+	static class J4 {
+		public J3 b;
+	}
+	
+	// 参照のオブジェクトが null でない場合、fill() で値が
+	// 上書きされることを確認する。
+	// 一方、null であった場合、新規インスタンスが生成されることを確認する。
+	public void testJ3() {
+		J4 c = new J4();
+		Jsonizer.fill(c, JsonType.parse("{\"b\":{\"a\":5}}"));
+		// 新しいオブジェクトが設定されるか
+		assertEquals(c.b.a, 5);
+		J3 x = c.b;
+		Jsonizer.fill(c, JsonType.parse("{\"b\":{\"a\":15}}"));
+		// c を fill して x が変更されるか
+		assertEquals(x.a, 15);
+	}
+	
+	static class J5 {
+		public byte a;
+		public short b;
+		public char c;
+		public byte[] d;
+		public short[] e;
+		public char[] f;
+	}
+	
+	// 追加した primitive 型の対応テスト
+	public void testJ5() {
+		J5 j = new J5();
+		j.a = (byte)255;
+		j.b = (short)10;
+		j.c = 'あ';
+		j.d = new byte[] { 0,1,2 };
+		j.e = new short[] { 0,-1,-2 };
+		j.f = new char[] {'a', 'b', '漢', '甕' };
+		assertEquals(Jsonizer.toString(j), "{\"a\":-1,\"b\":10,\"c\":\"あ\",\"d\":[0,1,2],\"e\":[0,-1,-2],\"f\":[\"a\",\"b\",\"漢\",\"甕\"]}");
+		
+		Jsonizer.fill(j, JsonType.parse("{\"a\":257,\"b\":-10,\"c\":\"あ\",\"d\":[257,258,259],\"e\":[-3,-4,-5],\"f\":[\"bcd\",\"g\",\"他\",\"薔薇\"]}"));
+		
+		assertEquals(Jsonizer.toString(j), "{\"a\":1,\"b\":-10,\"c\":\"あ\",\"d\":[1,2,3],\"e\":[-3,-4,-5],\"f\":[\"b\",\"g\",\"他\",\"薔\"]}");
+	}
+
+	static class J6 extends JData {
+		public byte a;
+		public short b;
+		public char c;
+		public byte[] d;
+		public short[] e;
+		public char[] f;
+	}
+	
+	// 追加した primitive 型の対応テスト(JData版)
+	public void testJ6() {
+		J6 j = new J6();
+		j.a = (byte)255;
+		j.b = (short)10;
+		j.c = 'あ';
+		j.d = new byte[] { 0,1,2 };
+		j.e = new short[] { 0,-1,-2 };
+		j.f = new char[] {'a', 'b', '漢', '甕' };
+		assertEquals(j.toString(), "{\"a\":-1,\"b\":10,\"c\":\"あ\",\"d\":[0,1,2],\"e\":[0,-1,-2],\"f\":[\"a\",\"b\",\"漢\",\"甕\"]}");
+		
+		j.fill(JsonType.parse("{\"a\":257,\"b\":-10,\"c\":\"あ\",\"d\":[257,258,259],\"e\":[-3,-4,-5],\"f\":[\"bcd\",\"g\",\"他\",\"薔薇\"]}"));
+		
+		assertEquals(j.toString(), "{\"a\":1,\"b\":-10,\"c\":\"あ\",\"d\":[1,2,3],\"e\":[-3,-4,-5],\"f\":[\"b\",\"g\",\"他\",\"薔\"]}");
+	}
+
+
 }
