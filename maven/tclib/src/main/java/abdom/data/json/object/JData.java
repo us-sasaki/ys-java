@@ -28,12 +28,8 @@ import abdom.data.json.Jsonizable;
  * 1.public メンバ変数。プロパティ名は変数名になります。<br>
  * 2.public getter, setter メソッドの対。プロパティ名は Java Beans 命名規則<br>
  *   によります。さらに対は getter は引数なし、setter は引数ありで getter <br>
- * 　の返値型と setter の引数型が一致し、JData カテゴリに含まれるもの<br>
+ * 　の返値型と setter の引数型が一致するもの<br>
  * <br>
- * JData カテゴリは、以下の型です。<pre>
- *
- * boolean, int, long, float, double, String, JValue(,JData), JsonObject
- * および、これらの型の配列
  *
  * </pre>暗黙のフィールドとして、_extra (JsonObject型) を持っており
  * fill() の際に未定義のフィールド値はすべてここに格納されます。

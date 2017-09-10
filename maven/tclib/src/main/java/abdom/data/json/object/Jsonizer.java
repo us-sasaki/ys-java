@@ -24,12 +24,8 @@ import abdom.data.json.Jsonizable;
  * 1.public メンバ変数。プロパティ名は変数名になります。<br>
  * 2.public getter, setter メソッドの対。プロパティ名は Java Beans 命名規則<br>
  *   によります。さらに対は getter は引数なし、setter は引数ありで getter <br>
- * 　の返値型と setter の引数型が一致し、JData カテゴリに含まれるもの<br>
+ * 　の返値型と setter の引数型が一致するもの<br>
  * <br>
- * JData カテゴリは、以下の型です。<pre>
- *
- * boolean, int, long, float, double, String, JValue(,JData), JsonObject
- * および、これらの型の配列
  *
  * 2017/9/8 JData カテゴリの制約をなくしました
  *
@@ -299,11 +295,7 @@ public class Jsonizer {
 			if (Modifier.isTransient(f.getModifiers())) continue;
 			
 			Class type = f.getType();
-			if (!isJDataCategory(type))
-				throw new JDataDefinitionException("Illegal type \"" +
-						type.getName() + "\" has found in field \""+
-						f.getName()+ "\" of class \"" + cls.getName() +
-						"\". JData field must consist of boolean, int, long, float, double, String, JValue, JsonObject, their arrays. To prevent the field from Jsonizing, set transient.");
+			
 			String name = f.getName();
 			if (type.isArray()) {
 				//System.out.println("field put array " + name);
@@ -363,7 +355,7 @@ public class Jsonizer {
 			if (methodName.startsWith("get")) { // get
 			
 				if (params.length != 0) continue; // 引数付きは除外
-				if (!isJDataCategory(retType)) continue; // JData catでないものは除外
+				
 				// set とペアになるまでは除外
 				// 引数のない get メソッドは1つしかない(overloadがない)
 				MethodPair mp = pairs.get(name);
@@ -374,7 +366,6 @@ public class Jsonizer {
 			} else if (methodName.startsWith("set")) { // set
 			
 				if (params.length != 1) continue; // 引数は１つ限定
-				if (!isJDataCategory(params[0])) continue; // JData catでないものは除外
 				// get とペアになるまでは除外
 				//
 				MethodPair mp = pairs.get(name);
@@ -414,36 +405,6 @@ public class Jsonizer {
 				}
 			}
 		}
-	}
-	
-	/**
-	 * 指定された Class オブジェクトが JData カテゴリに含まれるか
-	 * チェックします。
-	 */
-	private static boolean isJDataCategory(Class type) {
-		return true;
-		// プリミティブ、String, JsonObject, JValue
-/*		if ( boolean.class == type ||
-			int.class == type ||
-			long.class == type ||
-			float.class == type ||
-			double.class == type ||
-			String.class == type ||
-			JValue.class.isAssignableFrom(type) ||
-			JsonObject.class.isAssignableFrom(type) ) return true;
-		
-		// 配列
-		if (boolean[].class == type ||
-			int[].class == type ||
-			long[].class == type ||
-			float[].class == type ||
-			double[].class == type ||
-			String[].class == type ||
-			JValue[].class.isAssignableFrom(type) ||
-			JsonObject[].class.isAssignableFrom(type) ) return true;
-		
-		return false;
-*/
 	}
 	
 	/**

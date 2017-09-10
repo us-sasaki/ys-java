@@ -8,6 +8,9 @@
 <table align=center width=80% border=1 cellspacing=0 bordercolor="#aaaaaa" cellpadding=5>
 <tr><td>Javaオブジェクト</td><td>JSON</td><td>説明</td></tr>
 <tr><td>boolean</td><td>boolean</td><td>Java の boolean 値は JSON 形式の boolean 値に自然にマッピングされます</td></tr>
+<tr><td>byte</td><td>number</td><td>Java の byte 値は JSON 形式の number 値に自然にマッピングされます。JSON 形式で小数や指数表現を含んでいた場合、NumberFormatException がスローされます。</td></tr>
+<tr><td>short</td><td>number</td><td>Java の short 値は JSON 形式の number 値に自然にマッピングされます。JSON 形式で小数や指数表現を含んでいた場合、NumberFormatException がスローされます。</td></tr>
+<tr><td>char</td><td>String</td><td>Java の char 値は JSON 形式の string 値(1文字)に自然にマッピングされます。逆にJSON 形式で複数文字の string 値は最初の1文字が char 値としてマッピングされます。</td></tr>
 <tr><td>int</td><td>number</td><td>Java の int 値は JSON 形式の number 値に自然にマッピングされます。JSON 形式で小数や指数表現を含んでいた場合、NumberFormatException がスローされます。</td></tr>
 <tr><td>float</td><td>number</td><td>Java の float 値は JSON 形式の number 値に自然にマッピングされます。</td></tr>
 <tr><td>double</td><td>number</td><td>Java の double 値は JSON 形式の number 値に自然にマッピングされます。</td></tr>
@@ -17,7 +20,7 @@
 <tr><td>JValue</td><td>boolean/number/<br>string/array/<br>object</td><td>Java の JValue 値は JSON 形式の boolean/number/string/array/object 値にマッピングすることができます。マッピングの仕方は、JValue.toJson(), JValue.fill() の実装として規定して下さい。</td></tr>
 <tr><td>JData</td><td>object</td><td>Java の JData 値は JSON 形式の object 値に自然にマッピングされます。</td></tr>
 <tr><td>Object</td><td>object</td><td>Java の一般 Object 値は JSON 形式の object 値にマッピングされます。マッピングの仕方は、再帰的にこの変換ルールに従います。</td></tr>
-<tr><td>上記の要素の配列</td><td>array</td><td>Java の配列値は JSON 形式の array 値にマッピングされます。配列の要素の変換規則は上記に従います</td></tr>
+<tr><td>上記の要素の配列</td><td>array</td><td>Java の配列値は JSON 形式の array 値にマッピングされます。配列の各要素の変換規則は上記に従います</td></tr>
 </table>
 
 </BODY>
