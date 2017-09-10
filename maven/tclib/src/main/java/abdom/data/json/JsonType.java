@@ -873,6 +873,28 @@ public abstract class JsonType extends Number
 	public abstract String toString();
 	
 	/**
+	 * 指定された文字列が、JSON における空白文字(space, tab, CR, LF)
+	 * のみからなるかをチェックします。
+	 * 異なる文字が含まれる場合、IllegalArgumentException をスローします。
+	 *
+	 * @throws	IllegalArgumentException	指定された文字が JSON 空白文字以外を
+	 *										含んでいるとき
+	 */
+	void checkIndentIsWhiteSpace(String indent) {
+		int len = indent.length();
+		// 遅い実装。人が見る文字列のため、コール回数は少ないと想定。
+		// check 済みの String オブジェクトかどうかを判定したほうが
+		// 早い可能性がある。toCharArray より charAt の方が速そう。
+		for (int i = 0; i < len; i++) {
+			if (indent.charAt(i) == ' ') continue;
+			if (indent.charAt(i) == '\t') continue;
+			if (indent.charAt(i) == '\r') continue;
+			if (indent.charAt(i) == '\n') continue;
+			throw new IllegalArgumentException("indent に指定できるのは、JSON での空白文字のみです。指定された indent = " + indent);
+		}
+	}
+	
+	/**
 	 * 人が見やすいインデントを含んだ JSON 形式で文字列化します。
 	 * 最大横幅はデフォルト値(80)が設定されます。
 	 * 最大横幅は JsonArray, JsonObject の各要素が収まる場合に一行化する幅

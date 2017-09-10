@@ -155,6 +155,7 @@ public class JsonValue extends JsonType {
 	}
 	@Override
 	protected String toString(String indent, String indentStep, int textwidth, boolean objElement) {
+		checkIndentIsWhiteSpace(indent);
 		return indent+quote+value+quote;
 	}
 	

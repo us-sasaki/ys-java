@@ -339,6 +339,7 @@ public class JsonArray extends JsonType {
 	@Override
 	protected String toString(String indent, String indentStep,
 								int textwidth, boolean objElement) {
+		checkIndentIsWhiteSpace(indent);
 		// textwidth 指定がある場合、一行化を試みる
 		// 一行化は処理コストがかかるため、size() が大きく明らかに収まらない
 		// ときはスキップする

@@ -239,6 +239,7 @@ public class JsonObject extends JsonType {
 	@Override
 	protected String toString(String indent, String indentStep,
 						int textwidth, boolean objElement) {
+		checkIndentIsWhiteSpace(indent);
 		StringBuilder sb = new StringBuilder();
 		
 		// object で、"name": の後だけインデントをつけないためのフラグ
