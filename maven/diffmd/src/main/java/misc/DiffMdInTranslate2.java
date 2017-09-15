@@ -104,8 +104,6 @@ public class DiffMdInTranslate2 extends DiffMdInTranslate {
 					// 次の単語を追加するとはみ出すとき
 					int len = maxWidth - width - 2;
 					len = (len < 0)?0:len;
-					sb.append("                                                                                ".substring(0, len));
-					//sb.append("┃");
 					result.add(sb.toString());
 					tokenIndex++;
 					if (tokenIndex == token.length) break loop;

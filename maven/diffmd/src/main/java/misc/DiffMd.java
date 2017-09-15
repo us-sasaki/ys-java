@@ -300,7 +300,7 @@ System.out.println("パス：" + p0);
 				report.println("　変更なし：" + key);
 				notChanged++;
 			} else if (r >= 30) {
-				report.println("　差大("+r+"%,revisedLines=")：" + key);
+				report.println("　差大("+r+"%)：" + key);
 				muchChanged++;
 			} else {
 				report.println("　修正("+r+"%)：" + key);
