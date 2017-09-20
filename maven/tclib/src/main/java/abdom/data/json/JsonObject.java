@@ -162,7 +162,6 @@ public class JsonObject extends JsonType {
 	}
 	
 	private JsonObject putImpl(String name, Jsonizable t) {
-		// add もであるが、recursive '.' 登録に対応する？
 		if (t == null) t = new JsonValue( null );
 		// 上書き
 		int index = name.indexOf('.');
