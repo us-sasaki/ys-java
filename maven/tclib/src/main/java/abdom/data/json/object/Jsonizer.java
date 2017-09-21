@@ -119,7 +119,7 @@ public class Jsonizer {
 			return null;
 		} else if (JData.class.isAssignableFrom(instance.getClass())) {
 			JData jd = (JData)instance;
-			jd.putExtra(arg.toJson());
+			jd.putExtra(name, arg.toJson());
 			return null;
 		} else {
 			return arg.toJson();
