@@ -117,6 +117,10 @@ public class Jsonizer {
 			Accessor a = accessors.get(name);
 			a.set(instance, arg.toJson());
 			return null;
+		} else if (JData.class.isAssignableFrom(instance.getClass())) {
+			JData jd = (JData)instance;
+			jd.putExtra(arg.toJson());
+			return null;
 		} else {
 			return arg.toJson();
 		}
@@ -147,6 +151,8 @@ public class Jsonizer {
 	/**
 	 * 指定された Java オブジェクトの指定された名称のフィールドを
 	 * JsonType として返却します。
+	 * Java オブジェクトが JData のインスタンスの場合、Extra の
+	 * フィールドも探索します。
 	 *
 	 * @param	instance	取得対象の Java オブジェクト
 	 * @param	name		取得フィールド名
@@ -158,6 +164,9 @@ public class Jsonizer {
 		if (accessors.keySet().contains(name)) {
 			Accessor a = accessors.get(name);
 			return a.get(instance);
+		} else if (JData.class.isAssignableFrom(instance.getClass())) {
+			JData jd = (JData)instance;
+			return jd.getExtra(name);
 		} else {
 			return null;
 		}
