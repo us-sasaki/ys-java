@@ -115,7 +115,7 @@ public class Jsonizer {
 			Accessor a = accessors.get(name);
 			a.set(instance, arg.toJson());
 			return null;
-		} else if (JData.class.isAssignableFrom(instance.getClass())) {
+		} else if (instance instanceof JData) {
 			JData jd = (JData)instance;
 			jd.putExtra(name, arg.toJson());
 			return null;
@@ -162,7 +162,7 @@ public class Jsonizer {
 		if (accessors.keySet().contains(name)) {
 			Accessor a = accessors.get(name);
 			return a.get(instance);
-		} else if (JData.class.isAssignableFrom(instance.getClass())) {
+		} else if (instance instanceof JData) {
 			JData jd = (JData)instance;
 			return jd.getExtra(name);
 		} else {

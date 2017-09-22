@@ -44,7 +44,7 @@ public class Operation extends C8yData {
 	 * Occurs : 1
 	 * PUT/POST : POST: Mandatory PUT: No
 	 * </pre>
-	 * deviceId ‚ğdeviceID‚©‚çC³
+	 * deviceId ã‚’deviceIDã‹ã‚‰ä¿®æ­£
 	 */
 	public String deviceId;
 	
