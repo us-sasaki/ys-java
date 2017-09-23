@@ -109,6 +109,17 @@ public class Jsonizer {
 	 * @return	null(設定された場合) / arg(設定するフィールドがなかった場合)
 	 */
 	public static JsonType set(Object instance, String name, Jsonizable arg) {
+//		int index = name.indexOf('.');
+//		if (index > -1) {
+			// dot がある場合
+//			String next = name.substring(0, index);
+//			Map<String, Accessor> accessors = getAccessors(instance);
+//			if (accessors.keySet().contains(next)) {
+//				Accessor a = accessors.get(name);
+//				
+//			Object nextInstance = get(instance, next);
+//			if (nextInstance == null)
+//			
 		Map<String, Accessor> accessors = getAccessors(instance);
 		
 		if (accessors.keySet().contains(name)) {
@@ -154,7 +165,7 @@ public class Jsonizer {
 	 *
 	 * @param	instance	取得対象の Java オブジェクト
 	 * @param	name		取得フィールド名
-	 * @return	取得された値
+	 * @return	取得された値(フィールドが存在しない場合、null)
 	 */
 	public static JsonType get(Object instance, String name) {
 		Map<String, Accessor> accessors = getAccessors(instance);

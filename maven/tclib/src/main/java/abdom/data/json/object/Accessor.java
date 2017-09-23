@@ -42,6 +42,9 @@ abstract class Accessor {
 	 */
 	abstract void set(Object instance, JsonType arg);
 	
+	// Jsonizer.set / get で dot オペレーションをサポートするため定義
+	abstract Property getProp();
+	
 	/**
 	 * type 型をもつ Java オブジェクトの value の JSON 表現を返却します。
 	 * value が null の場合、JsonValue(null) が返却されます。
@@ -218,6 +221,11 @@ class SimpleAccessor extends Accessor {
 		}
 		prop.setObj(instance, obj);
 	}
+	
+	@Override
+	Property getProp() {
+		return prop;
+	}
 }
 
 /**
@@ -371,6 +379,10 @@ class ArrayAccessor extends Accessor {
 			}
 		}
 		prop.setObj(instance, result);
+	}
+	@Override
+	Property getProp() {
+		return prop;
 	}
 }
 
