@@ -202,5 +202,45 @@ public class JsonizerTest extends TestCase{
 		assertEquals(j.toString(), "{\"a\":1,\"b\":-10,\"c\":\"あ\",\"d\":[1,2,3],\"e\":[-3,-4,-5],\"f\":[\"b\",\"g\",\"他\",\"薔\"]}");
 	}
 
+	// set の dot オペレーション
+	static class J7 {
+		public J5 j5;
+		public J6 j6;
+	}
+	
+	public void testJ7() {
+		J7 j7 = new J7();
+		// J5 にあるフィールドに設定できること
+		JsonType jt = Jsonizer.set(j7, "j5.b", new JsonValue(5));
+		assertEquals(j7.j5.b, 5);
+		assertEquals(jt, null);
+		
+		// J5 にないフィールドに設定できないこと
+		jt = Jsonizer.set(j7, "j5.g", new JsonValue("い"));
+		assertEquals(jt.toString(), "\"い\"");
+		
+		// J6 にあるフィールドに設定できること
+		jt = Jsonizer.set(j7, "j6.b", new JsonValue(6));
+		assertEquals(j7.j6.b, 6);
+		assertEquals(jt, null);
+		
+		// J6 にないフィールドも設定できる
+		jt = Jsonizer.set(j7, "j6.g", new JsonValue("い"));
+		assertEquals(jt, null);
+		assertEquals(j7.j6.getExtra("g"), new JsonValue("い"));
 
+		// J6 にない深いフィールドも設定できる
+		jt = Jsonizer.set(j7, "j6.h.i", new JsonValue("い"));
+		assertEquals(jt, null);
+//		System.out.println(Jsonizer.toString(j7));
+		assertEquals(j7.j6.getExtra("h.i"), new JsonValue("い"));
+		
+		assertEquals(Jsonizer.get(j7, "j5.b").shortValue(), (short)5);
+		assertEquals(Jsonizer.get(j7, "j6.b").shortValue(), (short)6);
+		assertEquals(Jsonizer.get(j7, "j6.g"), new JsonValue("い"));
+		assertEquals(Jsonizer.get(j7, "j6.h").toString(), "{\"i\":\"い\"}");
+		assertEquals(Jsonizer.get(j7, "j6.h.i").getValue(), "い");
+		
+
+	}
 }

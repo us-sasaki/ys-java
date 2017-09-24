@@ -104,31 +104,58 @@ public class Jsonizer {
 	 * 指定された名称の単一フィールドを設定します。
 	 *
 	 * @param	instance	設定対象の Java オブジェクト
-	 * @param	name		設定フィールド名
+	 * @param	name		設定フィールド名(dot 記法が使えます)
 	 * @param	arg			設定値を持つ Jsonizable オブジェクト
 	 * @return	null(設定された場合) / arg(設定するフィールドがなかった場合)
 	 */
 	public static JsonType set(Object instance, String name, Jsonizable arg) {
-//		int index = name.indexOf('.');
-//		if (index > -1) {
-			// dot がある場合
-//			String next = name.substring(0, index);
-//			Map<String, Accessor> accessors = getAccessors(instance);
-//			if (accessors.keySet().contains(next)) {
-//				Accessor a = accessors.get(name);
-//				
-//			Object nextInstance = get(instance, next);
-//			if (nextInstance == null)
-//			
 		Map<String, Accessor> accessors = getAccessors(instance);
-		
-		if (accessors.keySet().contains(name)) {
-			Accessor a = accessors.get(name);
-			a.set(instance, arg.toJson());
-			return null;
-		} else if (instance instanceof JData) {
+		int index = name.indexOf('.');
+		if (index > -1) {
+			// dot がある場合
+			String nextName = name.substring(0, index);
+			if (accessors.keySet().contains(nextName)) {
+				// フィールドを持つ場合
+				Accessor a = accessors.get(nextName);
+				Object nextObj = a.getProp().getObj(instance);
+				if (nextObj == null) {
+					// 宣言型Classのオブジェクトを生成
+					// 情報取得できないため、子クラスは生成できない
+					try {
+						nextObj = a.getProp().getType().newInstance();
+					} catch (ReflectiveOperationException roe) {
+						throw new JDataDefinitionException(
+							"Failed to instantiate \"" +
+							a.getProp().getName() +
+							"\". Default constructor of class \"" +
+							a.getProp().getType().getName() +
+							"\" may not be accessible and defined.", roe);
+					}
+				}
+				JsonType j = set(nextObj, name.substring(index + 1), arg);
+				if (j == null) {
+					// nextObj に設定成功なら、instance に obj を設定
+					// 失敗のとき、instance 値は変更されてはならない
+					a.getProp().setObj(instance, nextObj);
+					return null;
+				} else {
+					return arg.toJson();
+				}
+			}
+		} else {
+			// dot がない場合
+			if (accessors.keySet().contains(name)) {
+				Accessor a = accessors.get(name);
+				a.set(instance, arg.toJson());
+				return null;
+			}
+		}
+		// dot があって dot 以前で示されるプロパティがない場合
+		// dot がなく、プロパティがない場合
+		if (instance instanceof JData) {
+			// JData なら putExtra で設定する
 			JData jd = (JData)instance;
-			jd.putExtra(name, arg.toJson());
+			jd.putExtra(name, arg);
 			return null;
 		} else {
 			return arg.toJson();
@@ -164,21 +191,36 @@ public class Jsonizer {
 	 * フィールドも探索します。
 	 *
 	 * @param	instance	取得対象の Java オブジェクト
-	 * @param	name		取得フィールド名
+	 * @param	name		取得フィールド名(dot 記法が使えます)
 	 * @return	取得された値(フィールドが存在しない場合、null)
 	 */
 	public static JsonType get(Object instance, String name) {
 		Map<String, Accessor> accessors = getAccessors(instance);
 		
-		if (accessors.keySet().contains(name)) {
-			Accessor a = accessors.get(name);
-			return a.get(instance);
-		} else if (instance instanceof JData) {
+		int index = name.indexOf('.');
+		if (index > 0) {
+			// dot がある場合
+			String nextName = name.substring(0, index);
+			if (accessors.keySet().contains(nextName)) {
+				// フィールドを持つ場合
+				Accessor a = accessors.get(nextName);
+				Object nextObj = a.getProp().getObj(instance);
+				if (nextObj == null) return null;
+				return get(nextObj, name.substring(index + 1));
+			}
+		} else {
+			if (accessors.keySet().contains(name)) {
+				Accessor a = accessors.get(name);
+				return a.get(instance);
+			}
+		}
+		// dot があって dot 以前で示されるプロパティがない場合
+		// dot がなく、プロパティがない場合
+		if (instance instanceof JData) {
 			JData jd = (JData)instance;
 			return jd.getExtra(name);
-		} else {
-			return null;
 		}
+		return null;
 	}
 	
 	/**
@@ -229,8 +271,8 @@ public class Jsonizer {
 	}
 	
 	/**
-	 * 指定されたオブジェクトのプロパティとして、key が含まれるかテスト
-	 * します。
+	 * 指定されたオブジェクトのプロパティとして、key が含まれるかテストします。
+	 * JData のインスタンスの場合、extra は探索しません。
 	 *
 	 * @param	instance	テスト対象のオブジェクト
 	 * @param	key			プロパティ名
@@ -244,6 +286,7 @@ public class Jsonizer {
 	
 	/**
 	 * 指定されたオブジェクトのプロパティ名のリストを Set で返却します。
+	 * JData のインスタンスの場合、extra は対象外です。
 	 *
 	 * @param	instance	テスト対象のオブジェクト
 	 * @return	プロパティ名のリスト

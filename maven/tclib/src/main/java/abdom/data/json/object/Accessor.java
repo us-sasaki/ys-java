@@ -187,6 +187,7 @@ class SimpleAccessor extends Accessor {
 		
 		// null でない場合
 		if (type == String.class) {
+			// String は不変なので、新しいオブジェクトを割り付ける
 			prop.setObj(instance, arg.getValue());
 			return;
 		}
@@ -198,12 +199,14 @@ class SimpleAccessor extends Accessor {
 						instance.getClass().getName() +
 						"\" expects type of JsonObject. Specified value: " +
 						arg);
+			// arg をそのまま割り付ける
 			prop.setObj(instance, arg);
 			return;
 		}
 		// 一般オブジェクトの場合
 		Object obj = prop.getObj(instance);
 		try {
+			// null(未設定)なら、新しいインスタンスを生成
 			if (obj == null) obj = type.newInstance();
 		} catch (ReflectiveOperationException roe) {
 			throw new JDataDefinitionException(
