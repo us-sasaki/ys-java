@@ -355,6 +355,8 @@ public class Rest {
 		}
 		con.disconnect();
 		
+		if (resp.code >= 400) throw new C8yRestException(resp, location, method, contentType, accept, body);
+		
 		return resp;
 	}
 	
