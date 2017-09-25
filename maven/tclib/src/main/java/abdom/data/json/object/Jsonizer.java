@@ -497,9 +497,9 @@ public class Jsonizer {
 				result[i] = (T)compType.newInstance();
 				Jsonizer.fill(result[i], source.get(i));
 			} catch (InstantiationException ie) {
-				throw new JDataDefinitionException("Failed to instantiate \"" + compType.getName() + "\". Default constructor may not be accessible and defined.");
+				throw new JDataDefinitionException("Failed to instantiate \"" + compType.getName() + "\". Default constructor may not be accessible and defined.", ie);
 			} catch (IllegalAccessException iae) {
-				throw new JDataDefinitionException(iae.toString());
+				throw new JDataDefinitionException(iae.toString(), iae);
 			}
 		}
 		return result;
@@ -552,7 +552,7 @@ public class Jsonizer {
 			}
 			return instance;
 		} catch (ReflectiveOperationException roe) {
-			throw new JDataDefinitionException("Failed to instantiate \"" + clazz.getName() + "\". Default constructor may not be accessible and defined.");
+			throw new JDataDefinitionException("Failed to instantiate \"" + clazz.getName() + "\". Default constructor may not be accessible and defined.", roe);
 		}
 	}
 	

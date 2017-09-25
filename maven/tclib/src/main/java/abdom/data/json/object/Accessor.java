@@ -85,8 +85,6 @@ abstract class Accessor {
 
 /**
  * 配列でない単一プロパティへの Accessor です。
- * このクラスを扱う場合、プロパティの型は boolean, int, long, double, String,
- * JsonObject, JValue であることを保証しなければなりません。
  *
  * @version		23 December, 2016
  * @author		Yusuke Sasaki
@@ -214,7 +212,7 @@ class SimpleAccessor extends Accessor {
 					prop.getName() +
 					"\". Default constructor of class \"" +
 					type.getName() +
-					"\" may not be accessible and defined.");
+					"\" may not be accessible and defined.", roe);
 		}
 		// JValue の場合
 		if (JValue.class.isAssignableFrom(type)) {
@@ -370,7 +368,7 @@ class ArrayAccessor extends Accessor {
 							prop.getName() +
 							"\". Default constructor of class \"" +
 							compType.getName() +
-							"\" may not be accessible and defined.");
+							"\" may not be accessible and defined.", roe);
 				}
 				// JValue の特例
 				if (JValue.class.isAssignableFrom(compType)) {
@@ -453,7 +451,7 @@ class FieldProperty extends Property {
 		} catch (IllegalAccessException iae) {
 			throw new JDataDefinitionException(field.getName() +
 					" field of the class " + instance.getClass().getName() +
-					" is not accessible. :" + iae);
+					" is not accessible. :" + iae, iae);
 		}
 	}
 	
@@ -468,7 +466,7 @@ class FieldProperty extends Property {
 		} catch (IllegalAccessException iae) {
 			throw new JDataDefinitionException(field.getType().getName() + 
 					" field \"" + field.getName() + "\" of class \"" +
-					instance.getClass().getName() + "\" is not accessible");
+					instance.getClass().getName() + "\" is not accessible", iae);
 		}
 	}
 	
@@ -517,7 +515,7 @@ class MethodProperty extends Property {
 		} catch (ReflectiveOperationException roe) {
 			throw new JDataDefinitionException(getter.getName() +
 					" method of the class " + instance.getClass().getName() +
-					" is not accessible. :" + roe);
+					" is not accessible. :" + roe, roe);
 		}
 	}
 	
@@ -534,7 +532,7 @@ class MethodProperty extends Property {
 		} catch (ReflectiveOperationException roe) {
 			throw new JDataDefinitionException(setter.getName() + 
 					" method \"" + setter.getName() + "\" of class \"" +
-					instance.getClass().getName() + "\" is not accessible");
+					instance.getClass().getName() + "\" is not accessible", roe);
 		}
 	}
 	

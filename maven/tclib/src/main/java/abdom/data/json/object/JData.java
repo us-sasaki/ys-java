@@ -156,16 +156,6 @@ public abstract class JData extends JValue {
 	 */
 	public void set(String name, Jsonizable arg) {
 		Jsonizer.set(this, name, arg);
-//		int index = name.indexOf('.');
-//		if (index == -1) {
-	//		JsonType result = Jsonizer.set(this, name, arg);
-	//		if (result != null) {
-	//			if (_extra == null) _extra = new JsonObject();
-	//			_extra.put(name, result);
-	//		}
-//		} else {
-//			
-//		}
 	}
 	
 	/**
