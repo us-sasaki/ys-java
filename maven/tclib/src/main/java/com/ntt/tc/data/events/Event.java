@@ -92,7 +92,7 @@ public class Event extends C8yData {
 	 * Event POST に必須のデータのみをコピーし、通信量を節約します。
 	 *
 	 * @param		mo		sourceとなる Managed object
-	 * @param		type	Event 型
+	 * @param		type	Event 型(必須とされているが null も可)
 	 * @param		text	イベントの説明
 	 */
 	public Event(ManagedObject mo, String type, String text) {

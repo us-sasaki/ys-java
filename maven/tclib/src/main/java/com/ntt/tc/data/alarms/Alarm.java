@@ -11,6 +11,28 @@ import abdom.data.json.JsonObject;
  * post の時に使用できるコンストラクタを追加。
  */
 public class Alarm extends C8yData {
+	/** severity に設定される、致命的であることを示す定数 */
+	public static final String CRITICAL = "CRITICAL";
+	
+	/** severity に設定される、重大なエラーを示す定数 */
+	public static final String MAJOR = "MAJOR";
+	
+	/** severity に設定される、エラーを示す定数 */
+	public static final String MINOR = "MINOR";
+	
+	/** severity に設定される、警告を示す定数 */
+	public static final String WARNING = "WARNING";
+	
+	/** status に設定される、アラーム通知中であることを示す定数 */
+	public static final String ACTIVE = "ACTIVE";
+	
+	/** status に設定される、アラームが認識されたことを示す定数 */
+	public static final String ACKNOWLEDGED = "ACKNOWLEDGED";
+	
+	/** status に設定される、アラームがクリアされたことを示す定数 */
+	public static final String CLEARED = "CLEARED";
+	
+	
 	/**
 	 * Uniquely identifies an alarm.
 	 * <pre>
@@ -151,8 +173,21 @@ public class Alarm extends C8yData {
 	
 	/**
 	 * 与えられた引数を保持するオブジェクトを生成します。
+	 *
+	 * @param	sourceId	alarm を発生させた managed object の id
+	 * @param	type		alarm の type
+	 * @param	text		alarm の説明文
+	 * @param	status		Alarm の status。ACTIVE/ACKNOWLEDGED/CLEARED
+	 * 						のいずれかである必要があります
+	 * @param	severity	Alarm の severity。CRITICAL/MAJOR/MINOR/WARNING
+	 * 						のいずれかである必要があります
 	 */
 	public Alarm(String sourceId, String type, String text, String status, String severity) {
+		if (status != ACTIVE && status != ACKNOWLEDGED && status != CLEARED)
+			throw new IllegalArgumentException("Alarm の status は ACTIVE/ACKNOWLEDGED/CLEARED のいずれかである必要があります");
+		if (severity != CRITICAL && severity != MAJOR &&
+			severity != MINOR && severity != WARNING)
+				throw new IllegalArgumentException("Alarm の severity は CRITICAL/MAJOR/MINOR/WARNING のいずれかである必要があります");
 		source = new ManagedObject();
 		source.id = sourceId;
 		time = new TC_Date();
