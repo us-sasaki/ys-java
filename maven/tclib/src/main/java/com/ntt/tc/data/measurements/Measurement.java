@@ -1,6 +1,7 @@
 package com.ntt.tc.data.measurements;
 
 import abdom.data.json.JsonObject;
+import abdom.data.json.JsonValue;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.TC_Date;
@@ -120,4 +121,40 @@ public class Measurement extends C8yData {
 		this.type = type;
 		
 	}
+	
+/*-----------------
+ * instance method
+ */
+	/**
+	 * この Measurement に指定された fragment を追加します。
+	 * fragment は プロパティ、extra のいずれでも設定できます。
+	 * 単に、JData#set("fragment.measurementName.value", new JsonValue(2d))
+	 * などとするのと同等です。
+	 *
+	 * @param	fragment	フラグメント名(c8y_TemperatureMeasurement など)
+	 * @param	measurementName	メジャーメント名(T など)
+	 * @param	value		メジャーメントの値
+	 * @param	unit		メジャーメントの単位
+	 */
+	public void add(String fragment, String measurementName,
+					double value, String unit) {
+		add(fragment+"."+measurementName, value, unit);
+	}
+	
+	/**
+	 * この Measurement に指定された fragment を追加します。
+	 * fragment は プロパティ、extra のいずれでも設定できます。
+	 * 単に、JData#set("fragment.measurementName.value", new JsonValue(2d))
+	 * などとするのと同等です。
+	 *
+	 * @param	measurementPath	メジャーメントのJSONパス
+	 * 							(c8y_TemperatureMeasurement.T など)
+	 * @param	value		メジャーメントの値
+	 * @param	unit		メジャーメントの単位
+	 */
+	public void add(String measurementPath, double value, String unit) {
+		set(measurementPath+".value", new JsonValue(value));
+		set(measurementPath+".unit", new JsonValue(unit));
+	}
+	
 }
