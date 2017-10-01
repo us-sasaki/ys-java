@@ -31,6 +31,13 @@ public class MeasurementCollection extends C8yData {
 	protected List<Measurement> measurements;
 	
 	/**
+	 * toJson() などで get が連続的に呼ばれた際、高速化のため toArray
+	 * を呼ばないようキャッシュしておく。
+	 * measurements が変更されたときには、null とする必要がある。
+	 */
+	protected Measurement[] measurementsCache;
+	
+	/**
 	 * Information about paging statistics.
 	 * <pre>
 	 * Occurs : 1
@@ -59,21 +66,38 @@ public class MeasurementCollection extends C8yData {
  */
 	public MeasurementCollection() {
 		measurements = new ArrayList<Measurement>();
+		measurementsCache = null;
 	}
 	
 /*------------------
  * instance methods
  */
+	/**
+	 * JSON化のプロパティ定義(get)メソッドです。
+	 */
 	public Measurement[] getMeasurements() {
-		return measurements.toArray(new Measurement[0]);
+		if (measurementsCache == null)
+			measurementsCache = measurements.toArray(new Measurement[0]);
+		return measurementsCache;
 	}
 	
+	/**
+	 * JSON化のプロパティ定義(set)メソッドです。
+	 */
 	public void setMeasurements(Measurement[] measurements) {
+		this.measurements.clear();
 		this.measurements.addAll(Arrays.asList(measurements));
+		measurementsCache = null;
 	}
 	
+	/**
+	 * 指定された Measurement を追加します。
+	 *
+	 * @param		measurement		追加する measurement
+	 */
 	public void add(Measurement measurement) {
 		measurements.add(measurement);
+		measurementsCache = null;
 	}
 	
 }
