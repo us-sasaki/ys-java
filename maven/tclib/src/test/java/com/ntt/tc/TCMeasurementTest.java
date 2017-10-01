@@ -37,9 +37,17 @@ public class TCMeasurementTest extends TestCase{
 	 */
 	public void testMeas() {
 		Measurement m = new Measurement();
-		m.add("c8y_TemperatureMeasurement","T",20,"C");
-		m.add("testFrag", "testMeas", 100, "testUnit");
+		m.put("c8y_TemperatureMeasurement","T",20,"C");
+		m.put("testFrag", "testMeas", 100, "testUnit");
 		assertEquals(m.toString(), "{\"c8y_TemperatureMeasurement\":{\"T\":{\"unit\":\"C\",\"value\":20.0}},\"testFrag\":{\"testMeas\":{\"unit\":\"testUnit\",\"value\":100.0}}}");
 		assertEquals(m.c8y_TemperatureMeasurement.T.value, 20d);
+	}
+	
+	public void testMeasCol() {
+		MeasurementCollection mc = new MeasurementCollection();
+		Measurement m = new Measurement();
+		m.put("c8y_TemperatureMeasurement.T", 23d, "C");
+		mc.add(m);
+		assertEquals(mc.toString(), "{\"measurements\":[{\"c8y_TemperatureMeasurement\":{\"T\":{\"unit\":\"C\",\"value\":23.0}}}]}");
 	}
 }

@@ -136,9 +136,9 @@ public class Measurement extends C8yData {
 	 * @param	value		メジャーメントの値
 	 * @param	unit		メジャーメントの単位
 	 */
-	public void add(String fragment, String measurementName,
+	public void put(String fragment, String measurementName,
 					double value, String unit) {
-		add(fragment+"."+measurementName, value, unit);
+		put(fragment+"."+measurementName, value, unit);
 	}
 	
 	/**
@@ -152,7 +152,7 @@ public class Measurement extends C8yData {
 	 * @param	value		メジャーメントの値
 	 * @param	unit		メジャーメントの単位
 	 */
-	public void add(String measurementPath, double value, String unit) {
+	public void put(String measurementPath, double value, String unit) {
 		set(measurementPath+".value", new JsonValue(value));
 		set(measurementPath+".unit", new JsonValue(unit));
 	}

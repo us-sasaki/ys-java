@@ -1,5 +1,9 @@
 package com.ntt.tc.data.measurements;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.measurements.Measurement;
 import com.ntt.tc.data.rest.PagingStatistics;
@@ -7,6 +11,7 @@ import com.ntt.tc.data.rest.PagingStatistics;
 /**
  * MeasurementCollection class
  * This source is machine-generated from c8y-markdown docs.
+ * 内部的に List で保持し、add メソッドを追加
  */
 public class MeasurementCollection extends C8yData {
 	/**
@@ -23,7 +28,7 @@ public class MeasurementCollection extends C8yData {
 	 * Occurs : 0..n
 	 * </pre>
 	 */
-	public Measurement[] measurements;
+	protected List<Measurement> measurements;
 	
 	/**
 	 * Information about paging statistics.
@@ -48,5 +53,27 @@ public class MeasurementCollection extends C8yData {
 	 * </pre>
 	 */
 	public String next;
+	
+/*-------------
+ * constructor
+ */
+	public MeasurementCollection() {
+		measurements = new ArrayList<Measurement>();
+	}
+	
+/*------------------
+ * instance methods
+ */
+	public Measurement[] getMeasurements() {
+		return measurements.toArray(new Measurement[0]);
+	}
+	
+	public void setMeasurements(Measurement[] measurements) {
+		this.measurements.addAll(Arrays.asList(measurements));
+	}
+	
+	public void add(Measurement measurement) {
+		measurements.add(measurement);
+	}
 	
 }
