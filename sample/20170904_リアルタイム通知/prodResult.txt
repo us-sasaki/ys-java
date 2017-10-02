@@ -1,0 +1,170 @@
+■timeoutを120分として商用環境で検証。
+1時間ほど粘った後、エラー
+wifiか？
+
+java.net.UnknownHostException: iottf.je1.thingscloud.ntt.com
+        at java.net.AbstractPlainSocketImpl.connect(Unknown Source)
+        at java.net.PlainSocketImpl.connect(Unknown Source)
+        at java.net.SocksSocketImpl.connect(Unknown Source)
+        at java.net.Socket.connect(Unknown Source)
+        at sun.security.ssl.SSLSocketImpl.connect(Unknown Source)
+        at sun.security.ssl.BaseSSLSocketImpl.connect(Unknown Source)
+        at sun.net.NetworkClient.doConnect(Unknown Source)
+        at sun.net.www.http.HttpClient.openServer(Unknown Source)
+        at sun.net.www.http.HttpClient.openServer(Unknown Source)
+        at sun.net.www.http.HttpClient.parseHTTP(Unknown Source)
+        at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+        at sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+        at java.net.HttpURLConnection.getResponseCode(Unknown Source)
+        at sun.net.www.protocol.https.HttpsURLConnectionImpl.getResponseCode(Unknown Source)
+        at com.ntt.tc.net.Rest.requestImpl(Rest.java:340)
+        at com.ntt.tc.net.Rest.requestImpl(Rest.java:272)
+        at com.ntt.tc.net.Rest.post(Rest.java:244)
+        at com.ntt.tc.net.Rest.post(Rest.java:220)
+        at Rtest.main(Rtest.java:52)
+elapsed : 3195758
+
+
+■再試行：数分でエラー
+java.net.UnknownHostException: iottf.je1.thingscloud.ntt.com
+        at java.net.AbstractPlainSocketImpl.connect(Unknown Source)
+        at java.net.PlainSocketImpl.connect(Unknown Source)
+        at java.net.SocksSocketImpl.connect(Unknown Source)
+        at java.net.Socket.connect(Unknown Source)
+        at sun.security.ssl.SSLSocketImpl.connect(Unknown Source)
+        at sun.security.ssl.BaseSSLSocketImpl.connect(Unknown Source)
+        at sun.net.NetworkClient.doConnect(Unknown Source)
+        at sun.net.www.http.HttpClient.openServer(Unknown Source)
+        at sun.net.www.http.HttpClient.openServer(Unknown Source)
+        at sun.net.www.http.HttpClient.parseHTTP(Unknown Source)
+        at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+        at sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+        at java.net.HttpURLConnection.getResponseCode(Unknown Source)
+        at sun.net.www.protocol.https.HttpsURLConnectionImpl.getResponseCode(Unknown Source)
+        at com.ntt.tc.net.Rest.requestImpl(Rest.java:340)
+        at com.ntt.tc.net.Rest.requestImpl(Rest.java:272)
+        at com.ntt.tc.net.Rest.post(Rest.java:244)
+        at com.ntt.tc.net.Rest.post(Rest.java:220)
+        at Rtest.main(Rtest.java:52)
+elapsed : 337904
+
+
+■再試行：うまくいった(30分)
+
+00000000: 20 20 20 20 5b 7b 22 64 61 74 61 22 3a 7b 22 72 //    [{"data":{"r
+00000010: 65 61 6c 74 69 6d 65 41 63 74 69 6f 6e 22 3a 22 //ealtimeAction":"
+00000020: 43 52 45 41 54 45 22 2c 22 64 61 74 61 22 3a 7b //CREATE","data":{
+00000030: 22 63 72 65 61 74 69 6f 6e 54 69 6d 65 22 3a 22 //"creationTime":"
+00000040: 32 30 31 37 2d 30 39 2d 32 35 54 31 37 3a 30 35 //2017-09-25T17:05
+00000050: 3a 34 34 2e 38 35 35 2b 30 39 3a 30 30 22 2c 22 //:44.855+09:00","
+00000060: 64 65 76 69 63 65 49 64 22 3a 22 32 30 31 37 36 //deviceId":"20176
+00000070: 31 33 22 2c 22 69 64 22 3a 22 32 30 31 37 36 31 //13","id":"201761
+00000080: 37 22 2c 22 73 65 6c 66 22 3a 22 68 74 74 70 3a //7","self":"http:
+00000090: 2f 2f 69 6f 74 74 66 2e 6a 65 31 2e 74 68 69 6e ////iottf.je1.thin
+000000a0: 67 73 63 6c 6f 75 64 2e 6e 74 74 2e 63 6f 6d 2f //gscloud.ntt.com/
+000000b0: 64 65 76 69 63 65 63 6f 6e 74 72 6f 6c 2f 6f 70 //devicecontrol/op
+000000c0: 65 72 61 74 69 6f 6e 73 2f 32 30 31 37 36 31 37 //erations/2017617
+000000d0: 22 2c 22 73 74 61 74 75 73 22 3a 22 50 45 4e 44 //","status":"PEND
+000000e0: 49 4e 47 22 2c 22 64 65 73 63 72 69 70 74 69 6f //ING","descriptio
+000000f0: 6e 22 3a 22 52 65 73 74 61 72 74 20 64 65 76 69 //n":"Restart devi
+00000100: 63 65 22 2c 22 63 38 79 5f 52 65 73 74 61 72 74 //ce","c8y_Restart
+00000110: 22 3a 7b 7d 7d 7d 2c 22 63 68 61 6e 6e 65 6c 22 //":{}}},"channel"
+00000120: 3a 22 2f 6f 70 65 72 61 74 69 6f 6e 73 2f 32 30 //:"/operations/20
+00000130: 31 37 36 31 33 22 2c 22 69 64 22 3a 22 31 34 32 //17613","id":"142
+00000140: 35 35 31 31 22 7d 2c 7b 22 61 64 76 69 63 65 22 //5511"},{"advice"
+00000150: 3a 7b 22 69 6e 74 65 72 76 61 6c 22 3a 36 30 30 //:{"interval":600
+00000160: 30 30 2c 22 74 69 6d 65 6f 75 74 22 3a 35 34 30 //00,"timeout":540
+00000170: 30 30 30 30 2c 22 72 65 63 6f 6e 6e 65 63 74 22 //0000,"reconnect"
+00000180: 3a 22 72 65 74 72 79 22 7d 2c 22 63 68 61 6e 6e //:"retry"},"chann
+00000190: 65 6c 22 3a 22 2f 6d 65 74 61 2f 63 6f 6e 6e 65 //el":"/meta/conne
+000001a0: 63 74 22 2c 22 69 64 22 3a 22 30 22 2c 22 73 75 //ct","id":"0","su
+000001b0: 63 63 65 73 73 66 75 6c 22 3a 74 72 75 65 7d 5d //ccessful":true}]
+
+null
+200
+[
+  {
+    "channel": "/operations/2017613",
+    "data": {
+      "data": {
+        "c8y_Restart": {},
+        "creationTime": "2017-09-25T17:05:44.855+09:00",
+        "description": "Restart device",
+        "deviceId": "2017613",
+        "id": "2017617",
+        "self": "http://iottf.je1.thingscloud.ntt.com/devicecontrol/operations/2017617",
+        "status": "PENDING"
+      },
+      "realtimeAction": "CREATE"
+    },
+    "id": "1425511"
+  },
+  {
+    "advice": {"interval":60000,"reconnect":"retry","timeout":5400000},
+    "channel": "/meta/connect",
+    "id": "0",
+    "successful": true
+  }
+]
+elapsed : 1829470
+
+
+■再試行　うまくいった(１時間超え76分)
+
+00000000: 20 20 20 20 20 20 20 20 5b 7b 22 64 61 74 61 22 //        [{"data"
+00000010: 3a 7b 22 72 65 61 6c 74 69 6d 65 41 63 74 69 6f //:{"realtimeActio
+00000020: 6e 22 3a 22 43 52 45 41 54 45 22 2c 22 64 61 74 //n":"CREATE","dat
+00000030: 61 22 3a 7b 22 63 72 65 61 74 69 6f 6e 54 69 6d //a":{"creationTim
+00000040: 65 22 3a 22 32 30 31 37 2d 30 39 2d 32 35 54 31 //e":"2017-09-25T1
+00000050: 38 3a 33 33 3a 32 32 2e 34 39 31 2b 30 39 3a 30 //8:33:22.491+09:0
+00000060: 30 22 2c 22 64 65 76 69 63 65 49 64 22 3a 22 32 //0","deviceId":"2
+00000070: 30 31 37 36 31 33 22 2c 22 69 64 22 3a 22 32 30 //017613","id":"20
+00000080: 31 37 36 31 39 22 2c 22 73 65 6c 66 22 3a 22 68 //17619","self":"h
+00000090: 74 74 70 3a 2f 2f 69 6f 74 74 66 2e 6a 65 31 2e //ttp://iottf.je1.
+000000a0: 74 68 69 6e 67 73 63 6c 6f 75 64 2e 6e 74 74 2e //thingscloud.ntt.
+000000b0: 63 6f 6d 2f 64 65 76 69 63 65 63 6f 6e 74 72 6f //com/devicecontro
+000000c0: 6c 2f 6f 70 65 72 61 74 69 6f 6e 73 2f 32 30 31 //l/operations/201
+000000d0: 37 36 31 39 22 2c 22 73 74 61 74 75 73 22 3a 22 //7619","status":"
+000000e0: 50 45 4e 44 49 4e 47 22 2c 22 64 65 73 63 72 69 //PENDING","descri
+000000f0: 70 74 69 6f 6e 22 3a 22 52 65 73 74 61 72 74 20 //ption":"Restart
+00000100: 64 65 76 69 63 65 22 2c 22 63 38 79 5f 52 65 73 //device","c8y_Res
+00000110: 74 61 72 74 22 3a 7b 7d 7d 7d 2c 22 63 68 61 6e //tart":{}}},"chan
+00000120: 6e 65 6c 22 3a 22 2f 6f 70 65 72 61 74 69 6f 6e //nel":"/operation
+00000130: 73 2f 32 30 31 37 36 31 33 22 2c 22 69 64 22 3a //s/2017613","id":
+00000140: 22 31 34 34 32 33 37 30 22 7d 2c 7b 22 61 64 76 //"1442370"},{"adv
+00000150: 69 63 65 22 3a 7b 22 69 6e 74 65 72 76 61 6c 22 //ice":{"interval"
+00000160: 3a 36 30 30 30 30 2c 22 74 69 6d 65 6f 75 74 22 //:60000,"timeout"
+00000170: 3a 35 34 30 30 30 30 30 2c 22 72 65 63 6f 6e 6e //:5400000,"reconn
+00000180: 65 63 74 22 3a 22 72 65 74 72 79 22 7d 2c 22 63 //ect":"retry"},"c
+00000190: 68 61 6e 6e 65 6c 22 3a 22 2f 6d 65 74 61 2f 63 //hannel":"/meta/c
+000001a0: 6f 6e 6e 65 63 74 22 2c 22 69 64 22 3a 22 30 22 //onnect","id":"0"
+000001b0: 2c 22 73 75 63 63 65 73 73 66 75 6c 22 3a 74 72 //,"successful":tr
+000001c0: 75 65 7d 5d                                     //ue}]
+
+null
+200
+[
+  {
+    "channel": "/operations/2017613",
+    "data": {
+      "data": {
+        "c8y_Restart": {},
+        "creationTime": "2017-09-25T18:33:22.491+09:00",
+        "description": "Restart device",
+        "deviceId": "2017613",
+        "id": "2017619",
+        "self": "http://iottf.je1.thingscloud.ntt.com/devicecontrol/operations/2017619",
+        "status": "PENDING"
+      },
+      "realtimeAction": "CREATE"
+    },
+    "id": "1442370"
+  },
+  {
+    "advice": {"interval":60000,"reconnect":"retry","timeout":5400000},
+    "channel": "/meta/connect",
+    "id": "0",
+    "successful": true
+  }
+]
+elapsed : 4579115
