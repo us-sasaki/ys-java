@@ -120,7 +120,7 @@ public class API {
 	 */
 	public ManagedObject createManagedObject(ManagedObject mo)
 				throws IOException {
-		Response resp = rest.post("/inventory/managedObjects", "managedObjects", mo);
+		Response resp = rest.post("/inventory/managedObjects", "managedObject", mo);
 		mo.fill(resp);
 		return mo;
 	}
@@ -156,6 +156,191 @@ public class API {
 		System.out.println(jo.toString("  "));
 		
 		Response resp = rest.put("/inventory/managedObjects/" + id, "managedObject", jo);
+	}
+	
+	/**
+	 * ID から ManagedObject を取得します。
+	 *
+	 * @param	id		取得対象の Managed Object ID
+	 * @return	ManagedObject
+	 */
+	public ManagedObject readManagedObject(String id) throws IOException {
+		Response resp = rest.get("/inventory/managedObjects/"+id, "managedObject");
+		return Jsonizer.fromJson(resp, ManagedObject.class);
+	}
+	
+/*-----------------
+ * Measurement API
+ */
+	/**
+	 * メジャーメントを送信します。
+	 *
+	 * @param	measurement		送信対象のメジャーメント
+	 */
+	public void createMeasurement(Measurement measurement) throws IOException {
+		Response resp = rest.post("/measurement/measurements/", "measurement", measurement);
+	}
+	
+	/**
+	 * 複数メジャーメントの一括送信を行います。
+	 *
+	 * @param	collection	送信対象のメジャーメントコレクション。
+	 */
+	public void createMeasurementCollection(MeasurementCollection collection)
+						throws IOException {
+		Response resp = rest.post("/measurement/measurements/", "measurementCollection", collection);
+	}
+	
+/*-----------
+ * Event API
+ */
+	/**
+	 * イベントを送信します。
+	 *
+	 * @param	event		送信対象のイベント
+	 * @return	送信後、id などが付与された Event
+	 */
+	public Event createEvent(Event event) throws IOException {
+		Response resp = rest.post("/event/events/", "event", event);
+		event.fill(resp);
+		return event;
+	}
+	
+	/**
+	 * 位置更新イベントを送信する便利メソッドです。
+	 *
+	 * @param		source	イベント送信元の Managed Object id
+	 * @param		lat		緯度(degree)
+	 * @param		lng		経度(degree)
+	 * @param		alt		高度(m)
+	 * @param		trackingProtocol	追跡プロトコル(TELIC など)
+	 * @param		reportReason		位置情報送信理由(Time Eventなど)
+	 * @return	送信後、id などが付与された Event
+	 */
+	public Event createLocationUpdateEvent(
+						String source,
+						double lat, double lng, double alt,
+						String trackingProtocol,
+						String reportReason) throws IOException {
+		C8y_Position p = new C8y_Position();
+		p.alt = alt;
+		p.lat = lat;
+		p.lng = lng;
+		p.trackingProtocol = trackingProtocol;
+		p.reportReason = reportReason;
+		
+		Event e = new Event(source, "c8y_LocationUpdate", "location changed event.");
+		e.putExtra("c8y_Position", p);
+		
+		return createEvent(e);
+	}
+	
+	/**
+	 * 位置更新イベントを送信する便利メソッドです。
+	 * trackingProtocol として GPS, reportReason として Normal が設定されます。
+	 *
+	 * @param		source	イベント送信元の Managed Object id
+	 * @param		lat		緯度(degree)
+	 * @param		lng		経度(degree)
+	 * @param		alt		高度(m)
+	 * @return	送信後、id などが付与された Event
+	 */
+	public Event createLocationUpdateEvent(
+						String source,
+						double lat, double lng, double alt) throws IOException {
+		return createLocationUpdateEvent(source, lat, lng, alt, "GPS", "Normal");
+	}
+	
+/*-----------
+ * Alarm API
+ */
+	/**
+	 * アラームを送信します。
+	 *
+	 * @param		alarm	送信対象のアラーム
+	 * @return	送信後、id などが付与された Alarm
+	 */
+	public Alarm createAlarm(Alarm alarm) throws IOException {
+		Response resp = rest.post("/alarm/alarms/", "alarm", alarm);
+		alarm.fill(resp);
+		return alarm;
+	}
+	
+	/**
+	 * アラームを送信する便利メソッドです。
+	 *
+	 * @param	sourceId	alarm を発生させた managed object の id
+	 * @param	type		alarm の type
+	 * @param	text		alarm の説明文
+	 * @param	status		Alarm の status。
+	 *						ACTIVE/ACKNOWLEDGED/CLEARED のいずれかである
+	 *						必要があります
+	 * @param	severity	Alarm の severity。
+	 *						CRITICAL/MAJOR/MINOR/WARNING のいずれかである
+	 *						必要があります
+	 * @return	送信後、id などが付与された Alarm
+	 */
+	public Alarm createAlarm(String source, String type, String text,
+					String status, String severity) throws IOException {
+		return createAlarm(new Alarm(source, type, text, status, severity));
+	}
+	
+/*------------
+ * Binary API
+ */
+	/**
+	 * バイナリデータを送信します。
+	 */
+	public ManagedObject createBinary(String filename,
+							String mimetype,
+							byte[] binary) throws IOException {
+		Response resp = rest.postBinary(filename,mimetype, binary);
+		return Jsonizer.fromJson(resp, ManagedObject.class);
+	}
+
+/*----------------------------
+ * Real-time Notification API
+ */
+	/**
+	 * ハンドシェークを行います。
+	 * 結果は、配列で返却されます。
+	 *
+	 * @param	hr		要求メッセージの配列
+	 * @return		応答メッセージの配列
+	 */
+	public HandshakeResponse[] createHandshake(HandshakeRequest[] hr)
+									throws IOException {
+		JsonArray ja = new JsonArray();
+		for (HandshakeRequest r : hr)
+			ja.push(r.toJson());
+		Response resp = rest.post("/cep/realtime", ja);
+		return Jsonizer.toArray(resp, new HandshakeResponse[0]);
+	}
+	
+	/**
+	 * サブスクライブを行います。
+	 * 結果は、配列で返却されます。
+	 */
+	public SubscribeResponse[] createSubscribe(SubscribeRequest[] sr)
+									throws IOException {
+		JsonArray ja = new JsonArray();
+		for (SubscribeRequest r : sr)
+			ja.push(r.toJson());
+		Response resp = rest.post("/cep/realtime", ja);
+		return Jsonizer.toArray(resp, new SubscribeResponse[0]);
+	}
+	
+	/**
+	 * 接続をを行います。
+	 * 結果は、配列で返却されます。
+	 */
+	public ConnectResponse[] createConnect(ConnectRequest[] cr)
+									throws IOException {
+		JsonArray ja = new JsonArray();
+		for (ConnectRequest r : cr)
+			ja.push(r.toJson());
+		Response resp = rest.post("/cep/realtime", ja);
+		return Jsonizer.toArray(resp, new ConnectResponse[0]);
 	}
 	
 /*
