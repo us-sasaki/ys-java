@@ -154,4 +154,25 @@ public class JDataTest extends TestCase{
 		
 		//System.out.println(j);
 	}
+	
+	/**
+	 * null の扱いテスト
+	 */
+	static class NullObj extends JData {
+		public JsonValue jv;
+		public JsonObject jo;
+	}
+	
+	public void testNull() {
+		NullObj no = new NullObj();
+		assertEquals("{}", no.toString());
+		no.jv = new JsonValue(null);
+		assertEquals("{\"jv\":null}", no.toString());
+		no.jo = new JsonObject().put("value", (String)null);
+		assertEquals("{\"jo\":{\"value\":null},\"jv\":null}", no.toString());
+		NullObj no2 = new NullObj();
+		assertEquals("{}", no2.toString());
+		no2.fill("{\"jo\":{\"value\":null}}");
+		assertEquals("{\"jo\":{\"value\":null}}", no2.toString());
+	}
 }

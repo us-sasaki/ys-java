@@ -36,12 +36,20 @@ import abdom.data.json.Jsonizable;
  *       Java Object                    toJson()
  *  Object null;              ->   現れない
  *  JsonObject null;          ->   現れない
+ *  JsonValue(null)           ->   null
  *
  *       　　JSON                    fill()
  *  現れない                  ->   設定しない
  *  null                      ->   Object null; を設定
  *                                 JsonObject null; を設定
+ *                                 JsonValue null; を設定
  * </pre>
+ * Javaオブジェクトに JsonValue フィールドを持っており、JsonValue(null), null
+ * を設定する場合を考えます。
+ * この状態を示す JSON文字列としては "null" 以外の表記がなく、いずれかを暗黙
+ * 的に決めておく必要があります。
+ * この実装では、JSON文字列 "null" は、一律 Javaオブジェクトの null を設定
+ * します。
  *
  * @version	December 24, 2016
  * @author	Yusuke Sasaki
