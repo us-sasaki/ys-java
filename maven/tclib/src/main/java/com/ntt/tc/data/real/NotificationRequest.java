@@ -11,7 +11,8 @@ import abdom.data.json.JsonObject;
  */
 public class NotificationRequest extends C8yData {
 	/**
-	 * Id of message, required to match response messageﾂ?
+	 * メッセージの ID で、レスポンスメッセージのものと一致を確認する
+	 * 必要があります。
 	 * <pre>
 	 * Occurs : 1
 	 * </pre>
@@ -19,36 +20,39 @@ public class NotificationRequest extends C8yData {
 	public int id;
 	
 	/**
-	 * Name of channel, required value "/meta/handshake".
+	 * チャンネル名で、"/meta/handshake" など、フェーズにより規定値を利用します。
+	 * <pre>
 	 * handshake 時 "/meta/handshake" を設定
 	 * subscribe 時 "/meta/subscribe" を設定
+	 * unsubscribe 時 "/meta/unsubscribe" を設定
 	 * connect   時 "/meta/connect" を設定
-	 * <pre>
+	 * disconnect時 "/meta/disconnect" を設定
 	 * Occurs : 1
 	 * </pre>
 	 */
 	public String channel;
 	
 	/**
-	 * Bayeux protocol version used by client.
-	 * handshake 時 "1.0" を設定
+	 * ユーザー側の Bayeux プロトコルバージョン
 	 * <pre>
+	 * handshake 時 "1.0" を設定
 	 * Occurs : 1
 	 * </pre>
 	 */
 	public String version;
 	
 	/**
+	 * クライアントが指定する、サーバーの最低 Bayeux プロトコルバージョンです。
 	 * Minimum server-side Bayeux protocol version required by client.
-	 * handshake 時 "1.0beta" を設定
 	 * <pre>
+	 * handshake 時 "1.0beta" を設定
 	 * Occurs : 0..1
 	 * </pre>
 	 */
 	public String minimumVersion;
 	
 	/**
-	 * List of connection types supported by client.
+	 * クライアントでサポートされる、コネクションタイプのリストです。
 	 * handshake 時 [ "long-polling" ] を設定
 	 * <pre>
 	 * Occurs : 1
@@ -57,18 +61,23 @@ public class NotificationRequest extends C8yData {
 	public String[] supportedConnectionTypes = new String[] {"long-polling"};
 	
 	/**
-	 * Unique ID of client received during handshake.
-	 * subscribe 時、設定要
+	 * ハンドシェーク時に受け取るクライアントの一意な ID です。
 	 * <pre>
+	 * subscribe 時、設定要
+	 * unsubscribe 時、設定要
+	 * connect 時、設定要
+	 * disconnect 時、設定要
 	 * Occurs : 1
 	 * </pre>
 	 */
 	public String clientId;
 	
 	/**
-	 * Name of channel to subscribe to.
-	 * subscribe 時、設定要
+	 * サブスクライブするチャンネルの名前です。
+	 * "/operations/<managed object id>" のような文字列を設定します。
 	 * <pre>
+	 * subscribe 時、設定要
+	 * unsubscribe 時、設定要
 	 * Occurs : 1
 	 * </pre>
 	 */
@@ -76,8 +85,8 @@ public class NotificationRequest extends C8yData {
 	
 	/**
 	 * Selected connection type.
-	 * connect 時 "long-polling" を設定
 	 * <pre>
+	 * connect 時 "long-polling" を設定
 	 * Occurs : 1
 	 * </pre>
 	 */
