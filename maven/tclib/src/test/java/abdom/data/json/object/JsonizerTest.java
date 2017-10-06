@@ -240,7 +240,22 @@ public class JsonizerTest extends TestCase{
 		assertEquals(Jsonizer.get(j7, "j6.g"), new JsonValue("い"));
 		assertEquals(Jsonizer.get(j7, "j6.h").toString(), "{\"i\":\"い\"}");
 		assertEquals(Jsonizer.get(j7, "j6.h.i").getValue(), "い");
+	}
+	
+	// get の dot オペレーション
+	public void testJ8() {
+		J7 j7 = new J7();
+		j7.j5 = new J5();
+		j7.j6 = new J6();
+		j7.j5.b = 5;
+		j7.j6.b = 6;
+		Jsonizer.set(j7, "j6.g", new JsonValue("い"));
+		Jsonizer.set(j7, "j6.h.i", new JsonValue("い"));
 		
-
+		assertEquals(new JsonValue(5), Jsonizer.get(j7, "j5.b"));
+		assertEquals(new JsonValue(6), Jsonizer.get(j7, "j6.b"));
+		assertEquals(new JsonValue("い"), Jsonizer.get(j7, "j6.g"));
+		assertEquals(new JsonValue("い"), Jsonizer.get(j7, "j6.h.i"));
+		
 	}
 }
