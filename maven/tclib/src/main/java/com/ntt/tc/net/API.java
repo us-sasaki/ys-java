@@ -153,7 +153,7 @@ public class API {
 		jo.put("c8y_Position.lat", lat);
 		jo.put("c8y_Position.lng", lng);
 		jo.put("c8y_Position.alt", alt);
-		System.out.println(jo.toString("  "));
+		//System.out.println(jo.toString("  "));
 		
 		Response resp = rest.put("/inventory/managedObjects/" + id, "managedObject", jo);
 	}
