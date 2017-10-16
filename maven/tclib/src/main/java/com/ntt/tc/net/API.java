@@ -169,6 +169,54 @@ public class API {
 		return Jsonizer.fromJson(resp, ManagedObject.class);
 	}
 	
+	/**
+	 * マネージドオブジェクトコレクションを取得します。
+	 * Collection API では、結果のアトミック性が保証されていないことに注意して
+	 * 下さい。
+	 *
+	 * @param	queryString	pageSize=5&currentPage=1 など
+	 * @return	取得された ManagedObjectCollection
+	 */
+	public ManagedObjectCollection readManagedObjectCollection(String queryString)
+						throws IOException {
+		Response resp = rest.get("/inventory/managedObjects/?"+queryString);
+		return Jsonizer.fromJson(resp, ManagedObjectCollection.class);
+	}
+	
+	/**
+	 * マネージドオブジェクトコレクションAPIを用いて、Javaのforループで使える
+	 * ManagedObject の iterator を取得します。
+	 * <pre>
+	 * 使用例：
+	 * for (ManagedObject m : api.managedObjects("source=41117&pageSize=15")) {
+	 * 		( m に対する処理 )
+	 * }
+	 * </pre>
+	 *
+	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
+	 * に変換され、元の例外は cause として設定されます。
+	 *
+	 * @param	queryString	取得条件を指定します。例："source={id}",
+	 *						 "dateFrom={from}&dateTo={to}&revert=true"
+	 */
+	public Iterable<ManagedObject> managedObjects(final String queryString) {
+		return new Iterable<ManagedObject>() {
+			@Override
+			public java.util.Iterator<ManagedObject> iterator() {
+				return new CollectionIterator<ManagedObject>(rest, "/inventory/managedObjects/?"+queryString, ManagedObject.class);
+			}
+		};
+	}
+	
+	/**
+	 * 全 ManagedObject を取得する便利メソッドです。
+	 *
+	 * @return		全 ManagedObject を取得する iterable
+	 */
+	public Iterable<ManagedObject> managedObjects() throws IOException {
+		return managedObjects("");
+	}
+
 /*-----------------
  * Measurement API
  */
@@ -379,6 +427,54 @@ public class API {
 	public Alarm createAlarm(String source, String type, String text,
 					String status, String severity) throws IOException {
 		return createAlarm(new Alarm(source, type, text, status, severity));
+	}
+	
+	/**
+	 * アラームコレクションを取得します。
+	 * Collection API では、結果のアトミック性が保証されていないことに注意して
+	 * 下さい。
+	 *
+	 * @param	queryString	pageSize=5&currentPage=1 など
+	 * @return	取得された AlarmCollection
+	 */
+	public AlarmCollection readAlarmCollection(String queryString)
+						throws IOException {
+		Response resp = rest.get("/alarm/alarms/?"+queryString);
+		return Jsonizer.fromJson(resp, AlarmCollection.class);
+	}
+	
+	/**
+	 * アラームコレクションAPIを用いて、Javaのforループで使える
+	 * Alarm の iterator を取得します。
+	 * <pre>
+	 * 使用例：
+	 * for (Alarm e : api.alarms("source=41117&pageSize=15")) {
+	 * 		( e に対する処理 )
+	 * }
+	 * </pre>
+	 *
+	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
+	 * に変換され、元の例外は cause として設定されます。
+	 *
+	 * @param	queryString	取得条件を指定します。例："source={id}",
+	 *						 "dateFrom={from}&dateTo={to}&revert=true"
+	 */
+	public Iterable<Alarm> alarms(final String queryString) {
+		return new Iterable<Alarm>() {
+			@Override
+			public java.util.Iterator<Alarm> iterator() {
+				return new CollectionIterator<Alarm>(rest, "/alarm/alarms/?"+queryString, Alarm.class);
+			}
+		};
+	}
+	
+	/**
+	 * 全 Alarm を取得する便利メソッドです。
+	 *
+	 * @return		全 Alarm を取得する iterable
+	 */
+	public Iterable<Alarm> alarms() throws IOException {
+		return alarms("");
 	}
 	
 /*------------

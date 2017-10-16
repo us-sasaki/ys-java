@@ -46,22 +46,28 @@ class CollectionIterator<T> implements Iterator<T> {
 		this.rest = rest;
 		this.compType = compType;
 		
+		// デフォルトページサイズの設定
 		pageSize = FETCH_SIZE;
+		
+		// url を、endopoint や query に分割
 		String[] parts = url.split("[\\?&]");
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
 		for (String s : parts) {
-//System.out.println("string : " + s);
 			if (s.startsWith("pageSize=")) {
+				// pageSize 指定があれば、上書きする
 				pageSize = Integer.parseInt(s.substring(9));
 			} else if (s.startsWith("currentPage=")) {
-				currentPage = Integer.parseInt(s.substring(12));
+				// currentPage 指定があれば、上書きする
+				currentPage = Integer.parseInt(s.substring(12)) - 1;
 			} else {
 				boolean http = (s.startsWith("/") && s.indexOf('=')==-1);
 				if (http) {
+					// end point の後ろの文字列を field 名として利用
 					String[] s2 = s.split("\\/");
 					fieldName = s2[s2.length-1];
 				} else {
+					// URL エンコーディング
 					if (first) sb.append('?');
 					else sb.append('&');
 					first = false;
@@ -83,7 +89,9 @@ class CollectionIterator<T> implements Iterator<T> {
 		try {
 			String sep = "?";
 			if (url.indexOf('?') > -1) sep = "&";
-			Rest.Response resp = rest.get(url+sep+"pageSize="+pageSize+"&currentPage="+currentPage);
+			String ep = url+sep+"pageSize="+pageSize+
+							"&currentPage="+currentPage;
+			Rest.Response resp = rest.get(ep);
 			buffer = (T[])Jsonizer.toArray(resp.toJson().get(fieldName), (T[])Array.newInstance(compType, 0));
 			
 			cursor = 0;
