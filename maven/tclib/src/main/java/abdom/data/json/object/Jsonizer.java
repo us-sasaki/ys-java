@@ -76,6 +76,9 @@ public class Jsonizer {
  */
 	/**
 	 * Java オブジェクトのプロパティを、指定された Jsonizable で設定します。
+	 * 指定されたオブジェクトが JValue の直接の子クラス(JData を継承しない)
+	 * の場合、JValue#fill を呼ぶ特例処理を行います。
+	 * JData の子クラスでは、値の設定を行いますが、extra への格納は行いません。
 	 *
 	 * @param	instance	設定対象の Java オブジェクト
 	 * @param	arg			設定値を持つ Jsonizable オブジェクト
@@ -173,6 +176,8 @@ public class Jsonizer {
 	/**
 	 * 指定された Java オブジェクトのプロパティ値に基づいて JsonType に
 	 * 変換します。変換規則は、このパッケージの説明を参照してください。
+	 * JValue の子クラスでは、JValue#toJson が呼ばれます。
+	 * JData の子クラスでは、extra を無視することに注意して下さい。
 	 *
 	 * @param	instance	JsonType に変換する Java オブジェクト
 	 * @return	変換された JsonType
@@ -466,10 +471,8 @@ public class Jsonizer {
 			}
 			if (theOther != null) {
 				if (retType.isArray()) {
-					//System.out.println("method put array " + name);
 					accessors.put(name, new ArrayAccessor(mp.getter, theOther));
 				} else {
-					//System.out.println("method put " + name);
 					accessors.put(name, new SimpleAccessor(mp.getter, theOther));
 				}
 			}
@@ -507,8 +510,8 @@ public class Jsonizer {
 					// compType が JValue の場合、fill を呼ぶ
 					((JValue)result[i]).fill(source.get(i));
 				} else {
-					// result[i] が JValue のサブクラスでも、
-					// この処理では extra が設定されない
+					// result[i] が JData のサブクラスでも、
+					// Jsonizer#fill では extra が設定されない
 					fill(result[i], source.get(i));
 				}
 			} catch (InstantiationException ie) {
