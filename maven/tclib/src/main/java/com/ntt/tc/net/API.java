@@ -191,6 +191,54 @@ public class API {
 		Response resp = rest.post("/measurement/measurements/", "measurementCollection", collection);
 	}
 	
+	/**
+	 * メジャーメントコレクションを取得します。
+	 * Collection API では、結果のアトミック性が保証されていないことに注意して
+	 * 下さい。
+	 *
+	 * @param	queryString	pageSize=5&currentPage=1 など
+	 * @return	取得された MeasurementCollection
+	 */
+	public MeasurementCollection readMeasurementCollection(String queryString)
+						throws IOException {
+		Response resp = rest.get("/measurement/measurements/?"+queryString);
+		return Jsonizer.fromJson(resp, MeasurementCollection.class);
+	}
+	
+	/**
+	 * メジャーメントコレクションAPIを用いて、Javaのforループで使える
+	 * Measurement の iterator を取得します。
+	 * <pre>
+	 * 使用例：
+	 * for (Measurement m : api.measurements("source=41117&pageSize=15")) {
+	 * 		( m に対する処理 )
+	 * }
+	 * </pre>
+	 *
+	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
+	 * に変換され、元の例外は cause として設定されます。
+	 *
+	 * @param	queryString	取得条件を指定します。例："source={id}",
+	 *						 "dateFrom={from}&dateTo={to}&revert=true"
+	 */
+	public Iterable<Measurement> measurements(final String queryString) {
+		return new Iterable<Measurement>() {
+			@Override
+			public java.util.Iterator<Measurement> iterator() {
+				return new CollectionIterator<Measurement>(rest, "/measurement/measurements/?"+queryString, Measurement.class);
+			}
+		};
+	}
+	
+	/**
+	 * 全 Measurement を取得する便利メソッドです。
+	 *
+	 * @return		全 Measurement を取得する iterable
+	 */
+	public Iterable<Measurement> measurements() throws IOException {
+		return measurements("");
+	}
+	
 /*-----------
  * Event API
  */
@@ -249,6 +297,54 @@ public class API {
 						String source,
 						double lat, double lng, double alt) throws IOException {
 		return createLocationUpdateEvent(source, lat, lng, alt, "GPS", "Normal");
+	}
+	
+	/**
+	 * イベントコレクションを取得します。
+	 * Collection API では、結果のアトミック性が保証されていないことに注意して
+	 * 下さい。
+	 *
+	 * @param	queryString	pageSize=5&currentPage=1 など
+	 * @return	取得された EventCollection
+	 */
+	public EventCollection readEventCollection(String queryString)
+						throws IOException {
+		Response resp = rest.get("/event/events/?"+queryString);
+		return Jsonizer.fromJson(resp, EventCollection.class);
+	}
+	
+	/**
+	 * イベントコレクションAPIを用いて、Javaのforループで使える
+	 * Event の iterator を取得します。
+	 * <pre>
+	 * 使用例：
+	 * for (Event e : api.events("source=41117&pageSize=15")) {
+	 * 		( e に対する処理 )
+	 * }
+	 * </pre>
+	 *
+	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
+	 * に変換され、元の例外は cause として設定されます。
+	 *
+	 * @param	queryString	取得条件を指定します。例："source={id}",
+	 *						 "dateFrom={from}&dateTo={to}&revert=true"
+	 */
+	public Iterable<Event> events(final String queryString) {
+		return new Iterable<Event>() {
+			@Override
+			public java.util.Iterator<Event> iterator() {
+				return new CollectionIterator<Event>(rest, "/event/events/?"+queryString, Event.class);
+			}
+		};
+	}
+	
+	/**
+	 * 全 Event を取得する便利メソッドです。
+	 *
+	 * @return		全 Event を取得する iterable
+	 */
+	public Iterable<Event> events() throws IOException {
+		return events("");
 	}
 	
 /*-----------

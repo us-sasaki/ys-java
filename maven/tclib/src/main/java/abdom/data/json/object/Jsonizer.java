@@ -503,7 +503,14 @@ public class Jsonizer {
 		for (int i = 0; i < size; i++) {
 			try {
 				result[i] = (T)compType.newInstance();
-				Jsonizer.fill(result[i], source.get(i));
+				if (JValue.class.isAssignableFrom(compType)) {
+					// compType が JValue の場合、fill を呼ぶ
+					((JValue)result[i]).fill(source.get(i));
+				} else {
+					// result[i] が JValue のサブクラスでも、
+					// この処理では extra が設定されない
+					fill(result[i], source.get(i));
+				}
 			} catch (InstantiationException ie) {
 				throw new JDataDefinitionException("Failed to instantiate \"" + compType.getName() + "\". Default constructor may not be accessible and defined.", ie);
 			} catch (IllegalAccessException iae) {
