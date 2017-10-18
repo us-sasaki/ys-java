@@ -20,18 +20,11 @@ import abdom.data.json.Jsonizable;
 
 /**
  * JSON オブジェクトを Java オブジェクトによって模倣します。
- * このクラスを継承することで、Java オブジェクトと JSON 形式の相互変換が
- * 容易になります。つまり、Java オブジェクトのインスタンス変数が、
- * JSON 形式として直列化でき、また逆に JSON 形式から Java オブジェクトの
- * フィールドを設定できるようになります。
- * Java オブジェクトにおいて次に定義する「プロパティ」が変換対象となります。<br>
- * 1.public メンバ変数。プロパティ名は変数名になります。<br>
- * 2.public getter, setter メソッドの対。プロパティ名は Java Beans 命名規則<br>
- *   によります。さらに対は getter は引数なし、setter は引数ありで getter <br>
- * 　の返値型と setter の引数型が一致するもの<br>
- * <br>
- *
- * </pre>暗黙のフィールドとして、_extra (JsonObject型) を持っており
+ * このクラスを継承することで、より JSON オブジェクトと互換性のある Java
+ * オブジェクトを作成できます。
+ * すなわち、Java オブジェクトとして定義されていない未知のフィールドも
+ * 格納し、JSON 化させることができます。
+ * この目的で、暗黙のフィールドとして _extra (JsonObject型) を持っており
  * fill() の際に未定義のフィールド値はすべてここに格納されます。
  * また、toJson() では _extra フィールドは存在する(not null)場合のみJSON
  * メンバとして現れます。
@@ -43,7 +36,7 @@ import abdom.data.json.Jsonizable;
  */
 public abstract class JData extends JValue {
 
-	/** fill できなかった値を格納する予約領域 */
+	/** Jsonizer.fill できなかった値を格納する予約領域 */
 	protected transient JsonObject _extra;
 	
 /*-------------
