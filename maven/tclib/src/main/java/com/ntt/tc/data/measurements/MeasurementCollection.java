@@ -64,6 +64,9 @@ public class MeasurementCollection extends C8yData {
 /*-------------
  * constructor
  */
+	/**
+	 * 空の MeasurementCollection を作成します。
+	 */
 	public MeasurementCollection() {
 		measurements = new ArrayList<Measurement>();
 		measurementsCache = null;
@@ -99,5 +102,4 @@ public class MeasurementCollection extends C8yData {
 		measurements.add(measurement);
 		measurementsCache = null;
 	}
-	
 }

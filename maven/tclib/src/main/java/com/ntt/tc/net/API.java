@@ -535,16 +535,4 @@ public class API {
 		return Jsonizer.toArray(resp, new ConnectResponse[0]);
 	}
 	
-/*
- * main
- */
-	public static void main(String[] args) throws Exception {
-		API api = new API("https://sasa.iot-trialpack.com", "sasa", "sasaki", "appuri89");
-		
-		String id = api.readIDByExternalID("c8y_Serial", "operationTest");
-		System.out.println(id);
-		api.createExternalID(id, "extTest", "extTestValue");
-		api.updateManagedObjectLocation(id, 10,20,30);
-		
-	}
 }
