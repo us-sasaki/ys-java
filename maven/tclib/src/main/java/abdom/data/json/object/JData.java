@@ -132,19 +132,6 @@ public abstract class JData extends JValue {
 	 */
 	public JsonType get(String name) {
 		return Jsonizer.get(this, name);
-//		int index = name.indexOf('.');
-//		if (index == -1) {
-//			JsonType result = Jsonizer.get(this, name);
-//			if (result != null) return result;
-//			if (_extra == null) return null;
-//			return _extra.get(name);
-//		} else {
-//			JsonType jt = Jsonizer.get(this, name.substring(0, index));
-//			JsonType result = ((JsonObject)jt).get(name.substring(index+1));
-//			if (result != null) return result;
-//			if (_extra == null) return null;
-//			return _extra.get(name);
-//		}
 	}
 	
 	/**

@@ -306,7 +306,7 @@ public class Jsonizer {
 	 */
 	public static Set<String> getPropertyNames(Object instance) {
 		synchronized (_fieldAccessors) {
-			// keySet() は不変オブジェクトのため synchronized 不要
+			// keySet() は不変オブジェクトのため外部で synchronized 不要
 			return getAccessors(instance).keySet();
 		}
 	}
@@ -372,10 +372,8 @@ public class Jsonizer {
 			
 			String name = f.getName();
 			if (type.isArray()) {
-				//System.out.println("field put array " + name);
 				accessors.put(name, new ArrayAccessor(f));
 			} else {
-				//System.out.println("field put " + name);
 				accessors.put(name, new SimpleAccessor(f));
 			}
 		}
