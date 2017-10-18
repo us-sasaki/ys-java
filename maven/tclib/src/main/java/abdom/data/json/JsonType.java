@@ -886,10 +886,8 @@ public abstract class JsonType extends Number
 		// check 済みの String オブジェクトかどうかを判定したほうが
 		// 早い可能性がある。toCharArray より charAt の方が速そう。
 		for (int i = 0; i < len; i++) {
-			if (indent.charAt(i) == ' ') continue;
-			if (indent.charAt(i) == '\t') continue;
-			if (indent.charAt(i) == '\r') continue;
-			if (indent.charAt(i) == '\n') continue;
+			char c = indent.charAt(i);
+			if (c == ' ' || c == '\t' || c == '\r' || c == '\n') continue;
 			throw new IllegalArgumentException("indent に指定できるのは、JSON での空白文字のみです。指定された indent = " + indent);
 		}
 	}
