@@ -28,13 +28,16 @@ import static com.ntt.tc.net.Rest.Response;
 /**
  * Things Cloud の Rest API の Java ラッパーです。
  *
- * 命名ルールは、以下のようにします。(Measurementの例)
- * POST : createMeasurement()
- * PUT  : updateMeasurement()
- * GET  : readMeasurement()
- * DELETE:deleteMeasurement()
+ * 命名ルールは、以下のようにします。(Measurementの例) <br>
+ * POST : createMeasurement() <br>
+ * PUT  : updateMeasurement() <br>
+ * GET  : readMeasurement() <br>
+ * DELETE:deleteMeasurement() <br>
+ * <br>
+ * Rest API にない独自 API は命名も独自とします。
  *
  * @author		Yusuke Sasaki
+ * @version		October 19, 2017
  */
 public class API {
 
@@ -221,6 +224,17 @@ public class API {
  * Measurement API
  */
 	/**
+	 * ID から Measurement を取得します。
+	 *
+	 * @param	id		取得対象の Measurement ID
+	 * @return	Measurement
+	 */
+	public Measurement readMeasurement(String id) throws IOException {
+		Response resp = rest.get("/measurement/measurements/"+id, "measurement");
+		return Jsonizer.fromJson(resp, Measurement.class);
+	}
+	
+	/**
 	 * メジャーメントを送信します。
 	 *
 	 * @param	measurement		送信対象のメジャーメント
@@ -290,6 +304,17 @@ public class API {
 /*-----------
  * Event API
  */
+	/**
+	 * ID から Event を取得します。
+	 *
+	 * @param	id		取得対象の Event ID
+	 * @return	Event
+	 */
+	public Event readEvent(String id) throws IOException {
+		Response resp = rest.get("/event/events/"+id, "event");
+		return Jsonizer.fromJson(resp, Event.class);
+	}
+	
 	/**
 	 * イベントを送信します。
 	 *
@@ -399,6 +424,17 @@ public class API {
  * Alarm API
  */
 	/**
+	 * ID から Alarm を取得します。
+	 *
+	 * @param	id		取得対象の Alarm ID
+	 * @return	Alarm
+	 */
+	public Alarm readAlarm(String id) throws IOException {
+		Response resp = rest.get("/alarm/alarms/"+id, "alarm");
+		return Jsonizer.fromJson(resp, Alarm.class);
+	}
+	
+	/**
 	 * アラームを送信します。
 	 *
 	 * @param		alarm	送信対象のアラーム
@@ -475,6 +511,108 @@ public class API {
 	 */
 	public Iterable<Alarm> alarms() throws IOException {
 		return alarms("");
+	}
+	
+/*---------------
+ * Operation API
+ */
+	/**
+	 * ID から Operation を取得します。
+	 *
+	 * @param	id		取得対象の Operation ID
+	 * @return	Operation
+	 */
+	public Operation readOperation(String id) throws IOException {
+		Response resp = rest.get("/devicecontrol/operations/"+id, "operation");
+		return Jsonizer.fromJson(resp, Operation.class);
+	}
+	
+	/**
+	 * オペレーションを送信します。
+	 *
+	 * @param	operation		送信対象のオペレーション
+	 * @return	送信後、id などが付与された Operation
+	 */
+	public Operation createOperation(Operation operation) throws IOException {
+		Response resp = rest.post("/devicecontrol/operations/", "operation", operation);
+		operation.fill(resp);
+		return operation;
+	}
+	
+	/**
+	 * オペレーションを更新します。
+	 *
+	 * @param	updater		送信対象のオペレーション
+	 * @return	送信後、id などが付与された Operation
+	 */
+	public Operation updateOperation(Operation updater) throws IOException {
+		Response resp = rest.put("/devicecontrol/operations/", "operation", updater);
+		operation.fill(resp);
+		return operation;
+	}
+	
+	/**
+	 * オペレーションステータスを更新する便利メソッドです。
+	 *
+	 * @param	status		オペレーションステータス
+	 *						(SUCCESSFUL/FAILED/PENDING/EXECUTING)
+	 */
+	public void updateOperationStatus(String status) throws IOException {
+		if (!"SUCCESSFUL".equals(status) &&
+			!"FAILED".equals(status) &&
+			!"PENDING".equals(status) &&
+			!"EXECUTING".equals(status) )
+				throw new IllegalArgumentException("オペレーションステータスは SUCCESSFUL/FAILED/PENDING/EXECUTING のいずれかを指定してください");
+		Response resp = rest.put("/devicecontrol/operations/", "operation", "{\"status\":\""+status+"\"}");
+	}
+	
+	
+	/**
+	 * オペレーションコレクションを取得します。
+	 * Collection API では、結果のアトミック性が保証されていないことに注意して
+	 * 下さい。
+	 *
+	 * @param	queryString	pageSize=5&currentPage=1 など
+	 * @return	取得された OperationCollection
+	 */
+	public OperationCollection readOperationCollection(String queryString)
+						throws IOException {
+		Response resp = rest.get("/devicecontrol/operations/?"+queryString);
+		return Jsonizer.fromJson(resp, OperationCollection.class);
+	}
+	
+	/**
+	 * オペレーションコレクションAPIを用いて、Javaのforループで使える
+	 * Operation の iterator を取得します。
+	 * <pre>
+	 * 使用例：
+	 * for (Operation o : api.alarms("source=41117&pageSize=15")) {
+	 * 		( o に対する処理 )
+	 * }
+	 * </pre>
+	 *
+	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
+	 * に変換され、元の例外は cause として設定されます。
+	 *
+	 * @param	queryString	取得条件を指定します。例："source={id}",
+	 *						 "dateFrom={from}&dateTo={to}&revert=true"
+	 */
+	public Iterable<Operation> operations(final String queryString) {
+		return new Iterable<Operation>() {
+			@Override
+			public java.util.Iterator<Operation> iterator() {
+				return new CollectionIterator<Operation>(rest, "/devicecontrol/operations/?"+queryString, Operation.class);
+			}
+		};
+	}
+	
+	/**
+	 * 全 Operation を取得する便利メソッドです。
+	 *
+	 * @return		全 Operation を取得する iterable
+	 */
+	public Iterable<Operation> operations() throws IOException {
+		return operations("");
 	}
 	
 /*------------

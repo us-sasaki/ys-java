@@ -21,6 +21,7 @@ public class C8yEvent extends C8yData {
 	
 	/**
 	 * ManagedObject 型ですが、軽量化のため JsonObject としています。
+	 * id フィールドを持ちます。
 	 */
 	public JsonObject source;
 }

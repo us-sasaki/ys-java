@@ -247,22 +247,6 @@ public class Rest {
 	/**
 	 * Httpリクエストの実処理を行います。
 	 */
-//	private Response requestImpl(String location, String method)
-//							throws IOException {
-//		return requestImpl(location, method, "", null);
-//	}
-	
-	/**
-	 * Httpリクエストの実処理を行います。
-	 */
-//	private Response requestImpl(String location, String method, String type)
-//							throws IOException {
-//		return requestImpl(location, method, type, null);
-//	}
-	
-	/**
-	 * Httpリクエストの実処理を行います。
-	 */
 	private Response requestImpl(String location, String method,
 								String type, String body)
 							throws IOException {
