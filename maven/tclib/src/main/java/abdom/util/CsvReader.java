@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import abdom.data.json.JsonArray;
+import abdom.data.json.JsonObject;
+
 /**
  * CSV形式で表現されたストリーム(Reader)を行ごとに読み込むクラスです。
  * コンマの前後にスペースが入ってはいけません。
@@ -194,7 +197,7 @@ public class CsvReader {
 		}
 		
 		@Override
-		protected void finalize() {
+		protected void finalize() throws IOException {
 			reader.finalize();
 		}
 		

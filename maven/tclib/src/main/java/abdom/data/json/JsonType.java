@@ -358,6 +358,16 @@ public abstract class JsonType extends Number
 	public JsonArray push(boolean t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
+	
+	/**
+	 * この JsonArray の最後尾(index が size() - 1 の後ろ)に Jsonizable
+	 * を追加します。Jsonizable が JsonArray であった場合も、単独の要素として
+	 * 追加されます。要素に分解して結合する場合、concat, splice を使用して
+	 * 下さい。
+	 *
+	 * @param	t		値
+	 * @return	要素が追加された JsonArray (this)
+	 */
 	public JsonArray push(Jsonizable t) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、push できません");
 	}
@@ -486,9 +496,10 @@ public abstract class JsonType extends Number
 	 * 元のオブジェクトは push 同様変更されます(破壊的)。
 	 *
 	 * @param	index	挿入するインデックス
-	 * @param	delete	削除する要素数
+	 * @param	delete	挿入するインデックスから削除する要素数
 	 * @param	toAdd	index の位置に挿入する要素(JsonArray) JsonArray でない
-	 *					場合、単一要素が追加されます。
+	 *					場合、単一要素として挿入されます。
+	 * @return	変更後のインスタンス
 	 */
 	public JsonArray splice(int index, int delete, Jsonizable toAdd) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");

@@ -222,15 +222,6 @@ public class JsonArray extends JsonType {
 /*
  * splice
  */
-	/**
-	 * splice
-	 * このメソッドは破壊的(元のインスタンスが変更される)です。
-	 *
-	 * @param	index	挿入する位置
-	 * @param	delete	挿入する位置で削除する要素数
-	 * @param	toAdd	挿入するオブジェクトの配列
-	 * @return	変更後のインスタンス
-	 */
 	@Override
 	public JsonArray splice(int index, int delete, Jsonizable toAdd) {
 		JsonType jt = toAdd.toJson();
