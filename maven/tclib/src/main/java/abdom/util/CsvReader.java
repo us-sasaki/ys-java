@@ -149,6 +149,11 @@ public class CsvReader {
 		}
 	}
 	
+	@Override
+	public void finalize() throws IOException {
+		in.close();
+	}
+	
 /*-----------------------
  * inner class(Iterator)
  */
@@ -186,6 +191,11 @@ public class CsvReader {
 				throw new IllegalArgumentException("指定されたファイル" + fname + "の読み込み中にエラーが発生しました", ioe);
 			}
 			return ret;
+		}
+		
+		@Override
+		protected void finalize() {
+			reader.finalize();
 		}
 		
 	}
@@ -228,5 +238,37 @@ public class CsvReader {
 		}
 		return result;
 	}
+	
+	/**
+	 * CSV ファイルをすべて読み込み、JsonArray 形式で返却します。
+	 * 一行目をカラム名と認識します。
+	 *
+	 * @param	filename	CSVファイル名
+	 * @return	CSV ファイル内容の JSON 変換
+	 */
+	public static JsonArray readAllasJson(String filename) throws IOException {
+		JsonArray ja = new JsonArray();
+		String[] columnName = null;
+		boolean first = true;
+		
+		for (String[] row : rows(filename)) {
+			if (first) {
+				columnName = row;
+				first = false;
+				continue;
+			}
+			JsonObject jo = new JsonObject();
+			int c = 0;
+			for (String column : row) {
+				String cn = null;
+				try {	cn = columnName[c++];}
+				catch (ArrayIndexOutOfBoundsException e) {cn = "noname"+(c++);}
+				jo.put(cn, column);
+			}
+			ja.push(jo);
+		}
+		return ja;
+	}
+	
 }
 

@@ -547,8 +547,8 @@ public class API {
 	 */
 	public Operation updateOperation(Operation updater) throws IOException {
 		Response resp = rest.put("/devicecontrol/operations/", "operation", updater);
-		operation.fill(resp);
-		return operation;
+		updater.fill(resp);
+		return updater;
 	}
 	
 	/**
