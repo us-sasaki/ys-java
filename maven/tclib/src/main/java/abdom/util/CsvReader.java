@@ -173,11 +173,19 @@ public class CsvReader implements Closeable {
 				reader = new CsvReader(fr);
 				this.fname = fname;
 			} catch (IOException ioe) {
+				try {
+					close();
+				} catch (IOException ignored) {
+				}
 				throw new IllegalArgumentException("指定されたファイル" + fname + "が読み込めませんでした", ioe);
 			}
 			try {
 				next = reader.readRow();
 			} catch (IOException ioe) {
+				try {
+					close();
+				} catch (IOException ignored) {
+				}
 				throw new IllegalArgumentException("指定されたファイル" + fname + "の読み込み中にエラーが発生しました", ioe);
 			}
 		}
@@ -193,6 +201,10 @@ public class CsvReader implements Closeable {
 			try {
 				next = reader.readRow();
 			} catch (IOException ioe) {
+				try {
+					close();
+				} catch (IOException ignored) {
+				}
 				throw new IllegalArgumentException("指定されたファイル" + fname + "の読み込み中にエラーが発生しました", ioe);
 			}
 			return ret;
@@ -200,7 +212,7 @@ public class CsvReader implements Closeable {
 		
 		@Override
 		public void close() throws IOException {
-			reader.close();
+			if (reader != null) reader.close();
 		}
 		
 	}
