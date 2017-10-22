@@ -17,9 +17,10 @@ public class DeletedFilePicker {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
 		String date = sdf.format(new Date());
 		
-		FileList a = FileList.readFiles("csv\\");
+		FileList a = FileList.readFiles("csv/");
 		List<FileEntry> list = new ArrayList<FileEntry>();
 		
+		// list に結果を追加する
 		for (FileEntry e : a.list) {
 			if (e.isDirectory) continue;
 			
@@ -51,12 +52,13 @@ public class DeletedFilePicker {
 			if (!moved) list.add(e);
 		}
 		
+		// 近いファイルを探す
+		List<SimilarFilePicker.FileDistance> fdl = new SimilarFilePicker(a.list).getDistanceList();
+		
 		// 表示、ファイル出力
 		PrintWriter p = new PrintWriter(new FileWriter("deletedFiles"+date+".txt"));
 		
 		for (FileEntry e : list) {
-//			System.out.println("--------------------");
-//			System.out.println(e);
 			p.print(e.path);
 			p.print(",");
 			String fname = FileList.filename(e.path);
@@ -84,9 +86,39 @@ public class DeletedFilePicker {
 			p.print(size);
 			p.print(",");
 			p.println(e.lastModified);
+			
+			// 最も近いものを表示
+			p.print(",");
+			p.print(nearestFile(fdl, e));
 		}
 		
 		p.close();
 		
+	}
+	
+	private static String nearestFile(List<SimilarFilePicker.FileDistance> fdl, FileEntry fe) {
+		int dist = Integer.MAX_VALUE;
+		FileEntry result = null;
+		
+		for (SimilarFilePicker.FileDistance fd : fdl) {
+			FileEntry candidate = null;
+			int d = 0;
+			// ファイル名が fd.a fd.b のいずれかに一致していないとスキップ
+			if (FileList.filename(fe.path).equals(FileList.filename(fd.a.path)) ) {
+				if (fe.size != fd.a.size) continue;
+				candidate = fd.b;
+			} else if (FileList.filename(fe.path).equals(FileList.filename(fd.b.path)) ) {
+				if (fe.size != fd.b.size) continue;
+				candidate = fd.a;
+			} else {
+				continue;
+			}
+			if (dist > fd.dist) {
+				dist = fd.dist;
+				result = candidate;
+			}
+		}
+		if (result == null) return "nothing";
+		return result.path;
 	}
 }
