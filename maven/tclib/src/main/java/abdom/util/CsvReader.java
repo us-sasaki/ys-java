@@ -1,5 +1,6 @@
 package abdom.util;
 
+import java.io.Closeable;
 import java.io.BufferedReader;
 import java.io.Reader;
 import java.io.IOException;
@@ -20,7 +21,7 @@ import abdom.data.json.JsonObject;
  * @version		7, July 2017
  * @author		Yusuke Sasaki
  */
-public class CsvReader {
+public class CsvReader implements Closeable {
 	protected static final int BUFFER_SIZE = 1024;
 	
 	protected BufferedReader in;
@@ -153,14 +154,15 @@ public class CsvReader {
 	}
 	
 	@Override
-	public void finalize() throws IOException {
+	public void close() throws IOException {
 		in.close();
 	}
 	
 /*-----------------------
  * inner class(Iterator)
  */
-	private static class CsvRowIterator implements Iterator<String[]> {
+	private static class CsvRowIterator
+					implements Iterator<String[]>, Closeable {
 		private CsvReader reader;
 		private String[] next;
 		private String fname;
@@ -197,8 +199,8 @@ public class CsvReader {
 		}
 		
 		@Override
-		protected void finalize() throws IOException {
-			reader.finalize();
+		public void close() throws IOException {
+			reader.close();
 		}
 		
 	}
@@ -272,6 +274,5 @@ public class CsvReader {
 		}
 		return ja;
 	}
-	
 }
 
