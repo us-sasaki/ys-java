@@ -114,12 +114,22 @@ public class Measurement extends C8yData {
 	 * @param	type	measurement type
 	 */
 	public Measurement(ManagedObject mo, String type) {
+		this(mo.id, type);
+	}
+	
+	/**
+	 * Measurement のテンプレートを指定したパラメータで生成します。
+	 * 実際の測定データは別途追加する必要があります。
+	 *
+	 * @param	source	source となる managed object id
+	 * @param	type	measurement type
+	 */
+	public Measurement(String source, String type) {
 		super();
-		source = new ManagedObject();
-		source.id = mo.id;
+		this.source = new ManagedObject();
+		this.source.id = source;
 		time = new TC_Date();
 		this.type = type;
-		
 	}
 	
 /*-----------------

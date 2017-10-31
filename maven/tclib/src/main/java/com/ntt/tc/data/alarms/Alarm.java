@@ -62,7 +62,8 @@ public class Alarm extends C8yData {
 	
 	/**
 	 * Identifies the type of this alarm, e.g.,
-	 * "com_cumulocity_events_TamperEvent".
+	 * "com_cumulocity_events_TamperEvent".<br>
+	 * 指定された時間通信がなかった場合　"c8y_UnavailabilityAlarm"<br>
 	 * <pre>
 	 * Occurs : 1
 	 * PUT/POST : POST: Mandatory PUT: No

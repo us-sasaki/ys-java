@@ -7,9 +7,9 @@ import java.util.Iterator;
 import abdom.data.json.object.Jsonizer;
 
 /**
- * Collection Iterator c8y の get collection API を用いて、
- * 繰り返し処理を行うための便利クラス。
- * currentPage 指定を隠蔽し、単純な繰り返し処理を行えます。
+ * CollectionIterator は c8y の get collection API を用いて、
+ * 繰り返し処理を行うための便利クラスです。
+ * currentPage/pageSize 指定を隠蔽し、単純な繰り返し処理を行えます。
  *
  * @author		Yusuke Sasaki
  * @version		October 16, 2017
