@@ -1,6 +1,7 @@
 package com.ntt.tc.net;
 
 import java.io.IOException;
+import java.util.Map;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonArray;
@@ -54,9 +55,19 @@ public class API {
 		this.rest = new Rest(location, tenant, user, pass);
 	}
 	
+	public API(Map<String, String> account) {
+		this(account.get("url"),
+				account.get("tenant"),
+				account.get("user"),
+				account.get("password"));
+	}
+	
 /*------------------
  * instance methods
  */
+	public Rest getRest() {
+		return rest;
+	}
 
 /*------------
  * Device API

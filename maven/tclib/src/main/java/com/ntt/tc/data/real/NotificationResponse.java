@@ -1,5 +1,6 @@
 package com.ntt.tc.data.real;
 
+import abdom.data.json.JsonObject;
 import com.ntt.tc.data.C8yData;
 
 /**
@@ -104,7 +105,7 @@ public class NotificationResponse extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public String[] data;
+	public JsonObject data;
 	
 	/**
 	 * Handshake failure reason.
