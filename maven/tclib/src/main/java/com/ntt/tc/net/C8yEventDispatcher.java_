@@ -9,22 +9,48 @@ import abdom.data.json.object.Jsonizer;
 import com.ntt.tc.data.real.*;
 import com.ntt.tc.data.device.Operation;
 
-public class C8yEventHandler extends Thread {
+/**
+ * 処理内容
+ * <pre>
+ * 1. listener の分だけセッションが必要
+ * 2. listener に対応して session を作る。
+ * 3. 無効な session に対し、clientId 取得(handshake)して、subscription を取得
+ * 4. session がすべて有効になったら、コネクト開始
+ *
+ * 5. レスポンス内容をみて listener に通知
+ * 6. 4.に戻る。コネクト失敗したセッションがあれば、2.に戻る。
+ * 4-6 で、listener を削除する場合、disconnect, unsubscribe 処理を行う
+ * </pre>
+ *
+ * @author	Yusuke Sasaki
+ */
+public class C8yEventDispatcher {
 	static final int TIMEOUT = 10; // 10 sec
 	
-	OperationListener operationListener;
-	String sourceId;
-	String clientId;
-	//List<C8yEventListener> listeners;
-	//List<String> sourceId;
-	//List<String> clientId;
 	API api;
 	boolean started = false;
+	Map<Integer, Session> sessions;
+	
+	OperationListener operationListener;
+	InventoryListener inventoryListener;
+	
+	String sourceId;
+	String clientId;
+	
+	/**
+	 * 個別のセッション情報の構造体
+	 */
+	private static class Session {
+		private String	clientId;
+		private int		id;
+		private String	subscription;
+		private OperationListener listener;
+	}
 	
 /*-------------
  * constructor
  */
-	public C8yEventHandler(API api) {
+	public C8yEventDispatcher(API api) {
 		this.api = api;
 	}
 	
@@ -118,7 +144,7 @@ public class C8yEventHandler extends Thread {
 				if (jt.size() > 1)
 					System.out.println("connect のレスポンスとして複数項目が含まれます:" + jt.size());
 				
-				nrp = Jsonizer.fromJson(jt.get(0), NotificationResponse.class);
+				NotificationResponse nrp = Jsonizer.fromJson(jt.get(0), NotificationResponse.class);
 				if (false) {
 					// "Unknown Client" がエラーらしい
 					connected = false;
@@ -141,5 +167,64 @@ public class C8yEventHandler extends Thread {
 			}
 		}
 	}
+	
+	/**
+	 * handShake 処理。複数セッションを同時に処理する。
+	 */
+	private void handshake() {
+		try {
+			// Request の JSON 構築。Array とすべき
+			JsonType jo = JsonType.o("channel", "/meta/handshake")
+					.put("version", "1.0")
+					.put("minimumVersion", "1.0beta")
+					.put("supportedConnectionTypes",
+								JsonType.a("long-polling"))
+					.put("advice.interval", 1 * 1000) // 1sec
+					.put("advice.timeout", TIMEOUT * 1000); // 5 sec
+			
+			resp = api.getRest().post("/cep/realtime", jo);
+			
+			// 配列要素が１の場合のみ実装
+			jt = resp.toJson();
+			if (jt.size() > 1)
+				throw new RuntimeException("handshake のレスポンスとして複数項目が含まれます:"+jt.size());
+			
+			nrp = Jsonizer.fromJson(jt.get(0),
+											NotificationResponse.class);
+			if (!nrp.successful)
+				throw new RuntimeException("handshake が失敗"+nrp.toString("  "));
+			this.clientId = nrp.clientId;
+		} catch (IOException ioe) {
+		}
+	}
+	
+	/**
+	 * subscribe 処理。複数セッションを同時に処理する。
+	 */
+	private void subscribe() {
+		try {
+			JsonType jo = JsonType.o("channel", "/meta/subscribe")
+					.put("id", 12345)
+					.put("subscription", "/operations/"+sourceId)
+					.put("clientId", clientId);
+			
+			resp = api.getRest().post("/cep/realtime", jo);
+			
+			// 配列要素が1の場合のみ実装
+			jt = resp.toJson();
+			if (jt.size() > 1)
+				throw new RuntimeException("subscribe のレスポンスとして複数項目が含まれます:" + jt.size());
+			
+			NotificationResponse nrp = Jsonizer.fromJson(jt.get(0), NotificationResponse.class);
+			if (!nrp.successful)
+				throw new RuntimeException("subscribe が失敗"+nrp.toString("  "));
+			connected = true;
+			System.out.println("listening to operation of " + sourceId + " at " + clientId);
+		} catch (IOException ioe) {
+		}
+	}
+	
+		
+		
 	
 }

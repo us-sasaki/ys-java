@@ -86,12 +86,14 @@ class CollectionIterator<T> implements Iterator<T> {
 		// 読み込み
 		currentPage++;
 		
+		
 		try {
 			String sep = "?";
 			if (url.indexOf('?') > -1) sep = "&";
 			String ep = url+sep+"pageSize="+pageSize+
 							"&currentPage="+currentPage;
 			Rest.Response resp = rest.get(ep);
+			
 			buffer = (T[])Jsonizer.toArray(resp.toJson().get(fieldName), (T[])Array.newInstance(compType, 0));
 			
 			cursor = 0;
