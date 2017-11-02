@@ -627,6 +627,58 @@ public class API {
 	}
 	
 /*------------
+ * Tenant API
+ */
+	/**
+	 * テナント使用状況統計コレクションを取得します。
+	 * Collection API では、結果のアトミック性が保証されていないことに注意して
+	 * 下さい。
+	 *
+	 * @param	queryString	pageSize=5&currentPage=1 など
+	 * @return	取得された TenantUsageStatisticsCollection
+	 */
+	public TenantUsageStatisticsCollection
+			readTenantUsageStatisticsCollection(String queryString)
+					throws IOException {
+		Response resp = rest.get("/tenant/statistics?"+queryString);
+		return Jsonizer.fromJson(resp, TenantUsageStatisticsCollection.class);
+	}
+	
+	/**
+	 * テナント使用状況統計コレクションAPIを用いて、Javaのforループで使える
+	 * UsageStatistics の iterator を取得します。
+	 * <pre>
+	 * 使用例：
+	 * for (UsageStatistics u : api.usageStatistics("dateFrom=2017-08-01&dateTill=2017-09-05&pageSize=15")) {
+	 * 		( u に対する処理 )
+	 * }
+	 * </pre>
+	 *
+	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
+	 * に変換され、元の例外は cause として設定されます。
+	 *
+	 * @param	queryString	取得条件を指定します。
+	 */
+	public Iterable<UsageStatistics> usageStatistics(final String queryString) {
+		return new Iterable<UsageStatistics>() {
+			@Override
+			public java.util.Iterator<UsageStatistics> iterator() {
+				return new CollectionIterator<UsageStatistics>(rest, "/tenant/statistics/?"+queryString, "usageStatistics", UsageStatistics.class);
+			}
+		};
+	}
+	
+	/**
+	 * 全 Operation を取得する便利メソッドです。
+	 *
+	 * @return		全 Operation を取得する iterable
+	 */
+	public Iterable<UsageStatistics> usageStatistics() throws IOException {
+		return usageStatistics("");
+	}
+	
+	
+/*------------
  * Binary API
  */
 	/**

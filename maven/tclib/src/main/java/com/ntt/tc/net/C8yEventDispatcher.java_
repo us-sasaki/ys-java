@@ -12,26 +12,39 @@ import com.ntt.tc.data.device.Operation;
 /**
  * 処理内容
  * <pre>
- * 1. listener の分だけセッションが必要
- * 2. listener に対応して session を作る。
- * 3. 無効な session に対し、clientId 取得(handshake)して、subscription を取得
- * 4. session がすべて有効になったら、コネクト開始
- *
- * 5. レスポンス内容をみて listener に通知
- * 6. 4.に戻る。コネクト失敗したセッションがあれば、2.に戻る。
+ * 1. 登録されている各 listener に session を対応させる。
+ * 2. 無効な( = clientId がない) session に対し、clientId 取得(handshake)する
+ * 3. clientId が取得できたら、listener の種類に応じて決まる subscription を登録
+ * 4. clientId 取得、subscription 登録がすべて完了するまで続ける
+ * 5. コネクトし、レスポンス内容を listener に通知
+ * 6. 5.に戻る。コネクト失敗したセッションがあれば、clientId = null とし2.に戻る。
  * 4-6 で、listener を削除する場合、disconnect, unsubscribe 処理を行う
+ *
+ * add/remove の場合、すでにコネクトされている通信があれば強制的に切る。
+ * add 対象のみ handshake/subscribe するようにしたい
+ * サーバからのハートビートを検知して通信を張りなおしたい。
+ * disconnect を実装する。(すべて remove)
  * </pre>
  *
  * @author	Yusuke Sasaki
  */
-public class C8yEventDispatcher {
+public class C8yEventDispatcher extends Thread {
+	static final int HANDSHAKE_RETRY = 2;
+	static final long HANDSHAKE_RETRY_WAIT = 10 * 1000L; // 10 sec
+	
+	static final int SUBSCRIBE_RETRY = 2;
+	static final int SUBSCRIBE_RETRY_WAIT = 10 * 1000L; // 10 sec
+	
+	// Advice の値
 	static final int TIMEOUT = 10; // 10 sec
 	
 	API api;
-	boolean started = false;
-	Map<Integer, Session> sessions;
+	boolean started = false; // 通信スレッドが開始したか
 	
-	OperationListener operationListener;
+	int[] id;
+	List<Session> sessions;
+	
+	OperationListener> operationListener;
 	InventoryListener inventoryListener;
 	
 	String sourceId;
@@ -42,7 +55,9 @@ public class C8yEventDispatcher {
 	 */
 	private static class Session {
 		private String	clientId;
-		private int		id;
+		
+		/** deviceId, managedObjectId, agentId, * などの通知対象 id */
+		private String	target;
 		private String	subscription;
 		private OperationListener listener;
 	}
@@ -68,104 +83,6 @@ public class C8yEventDispatcher {
 	
 	@Override
 	public void run() {
-		boolean connected = false;
-		while (true) {
-			try {
-				NotificationRequest nr;
-				Rest.Response resp;
-				JsonType jt;
-				NotificationResponse nrp;
-				if (!connected) {
-					//
-					// 接続処理(clientId 取得)
-					//   handshake, subscribe を実行
-					//   "/operation/{id}" を subscribe
-					//
-					
-					// handshake
-					nr = new NotificationRequest();
-					nr.channel = "/meta/handshake";
-					nr.version = "1.0";
-					nr.minimumVersion = "1.0beta";
-					nr.supportedConnectionTypes = new String[] { "long-polling" };
-					
-					nr.advice = new Advice();
-					nr.advice.interval	= 1 * 1000; // 1 sec
-					nr.advice.timeout	= TIMEOUT * 1000; // 5 sec
-					
-					resp = api.getRest().post("/cep/realtime", nr);
-					
-					// 配列要素が１の場合のみ実装
-					jt = resp.toJson();
-					if (jt.size() > 1)
-						throw new RuntimeException("handshake のレスポンスとして複数項目が含まれます:"+jt.size());
-					
-					nrp = Jsonizer.fromJson(jt.get(0),
-													NotificationResponse.class);
-					if (!nrp.successful)
-						throw new RuntimeException("handshake が失敗"+nrp.toString("  "));
-					this.clientId = nrp.clientId;
-					
-					// subscribe( /operation/{op-id} )
-					nr = new NotificationRequest();
-					nr.channel = "/meta/subscribe";
-					nr.id = 12345; // 固定値！！　要修正
-					nr.subscription = "/operations/"+sourceId;
-					nr.clientId = clientId;
-					
-					resp = api.getRest().post("/cep/realtime", nr);
-					
-					// 配列要素が1の場合のみ実装
-					jt = resp.toJson();
-					if (jt.size() > 1)
-						throw new RuntimeException("subscribe のレスポンスとして複数項目が含まれます:" + jt.size());
-					
-					nrp = Jsonizer.fromJson(jt.get(0), NotificationResponse.class);
-					if (!nrp.successful)
-						throw new RuntimeException("subscribe が失敗"+nrp.toString("  "));
-					connected = true;
-					System.out.println("listening to operation of " + sourceId + " at " + clientId);
-				}
-				// connect
-				nr = new NotificationRequest();
-				nr.channel = "/meta/connect";
-				nr.clientId = clientId;
-				nr.connectionType = "long-polling";
-				nr.id = 12345; // 固定値！！
-				
-				nr.advice = new Advice();
-				nr.advice.interval	= 1 * 1000; // 1 sec
-				nr.advice.timeout	= TIMEOUT * 1000; // 5 sec
-				
-				resp = api.getRest().post("/cep/realtime", nr);
-				
-				// 配列要素が1の場合のみ実装
-				jt = resp.toJson();
-				if (jt.size() > 1)
-					System.out.println("connect のレスポンスとして複数項目が含まれます:" + jt.size());
-				
-				NotificationResponse nrp = Jsonizer.fromJson(jt.get(0), NotificationResponse.class);
-				if (false) {
-					// "Unknown Client" がエラーらしい
-					connected = false;
-					System.out.println("connect が失敗"+nrp.toString("  "));
-				} else {
-					System.out.println("operation 検知");
-					System.out.println(nrp.toString("  "));
-					if (nrp.data != null) {
-						Operation ope = new Operation();
-						ope.fill(nrp.data.get("data").toString());
-						
-						// イベントハンドラのメインスレッドからたたいているが、、
-						operationListener.operationPerformed(ope);
-					} else {
-						System.out.println("reconnect");
-					}
-				}
-			} catch (IOException ioe) {
-				throw new RuntimeException(ioe);
-			}
-		}
 	}
 	
 	/**
@@ -182,10 +99,10 @@ public class C8yEventDispatcher {
 					.put("advice.interval", 1 * 1000) // 1sec
 					.put("advice.timeout", TIMEOUT * 1000); // 5 sec
 			
-			resp = api.getRest().post("/cep/realtime", jo);
+			Rest.Response resp = api.getRest().post("/cep/realtime", jo);
 			
 			// 配列要素が１の場合のみ実装
-			jt = resp.toJson();
+			JsonType jt = resp.toJson();
 			if (jt.size() > 1)
 				throw new RuntimeException("handshake のレスポンスとして複数項目が含まれます:"+jt.size());
 			
@@ -208,7 +125,7 @@ public class C8yEventDispatcher {
 					.put("subscription", "/operations/"+sourceId)
 					.put("clientId", clientId);
 			
-			resp = api.getRest().post("/cep/realtime", jo);
+			Rest.Response resp = api.getRest().post("/cep/realtime", jo);
 			
 			// 配列要素が1の場合のみ実装
 			jt = resp.toJson();
@@ -224,7 +141,46 @@ public class C8yEventDispatcher {
 		}
 	}
 	
-		
-		
-	
+	/**
+	 * connect 処理。複数セッションを同時に処理する。
+	 */
+	private void connect() {
+		try {
+			// connect
+			JsonType jo = JsonType.o("channel", "/meta/connect")
+							.put("clientId", clientId)
+							.put("connectionType", "long-polling")
+							.put("id", 12345);
+			
+			jo.put("advice.interval", 1 * 1000); // 1 sec
+			jo.put("advice.timeout", TIMEOUT * 1000); // 5 sec
+			
+			Rest.Response resp = api.getRest().post("/cep/realtime", nr);
+			
+			// 配列要素が1の場合のみ実装
+			jt = resp.toJson();
+			if (jt.size() > 1)
+				System.out.println("connect のレスポンスとして複数項目が含まれます:" + jt.size());
+			
+			NotificationResponse nrp = Jsonizer.fromJson(jt.get(0), NotificationResponse.class);
+			if (false) {
+				// "Unknown Client" がエラーらしい
+				connected = false;
+				System.out.println("connect が失敗"+nrp.toString("  "));
+			} else {
+				System.out.println("operation 検知");
+				System.out.println(nrp.toString("  "));
+				if (nrp.data != null) {
+					Operation ope = new Operation();
+					ope.fill(nrp.data.get("data").toString());
+					
+					// イベントハンドラのメインスレッドからたたいているが、、
+					operationListener.operationPerformed(ope);
+				} else {
+					System.out.println("reconnect");
+				}
+			}
+		} catch (IOException ioe) {
+		}
+	}
 }

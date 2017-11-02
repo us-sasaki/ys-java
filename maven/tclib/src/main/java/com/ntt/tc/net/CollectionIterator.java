@@ -40,6 +40,52 @@ class CollectionIterator<T> implements Iterator<T> {
 	 * @param	url		API の endpoint。例 /measurement/measurements/ 
 	 *					後ろの /measurements/ を collection の要素を格納する
 	 *					属性とみなします
+	 * @param	fieldName	配列を格納しているフィールド名を指定します
+	 * @param	compType	Iterator で返す要素の型です(Measurement など)
+	 */
+	public CollectionIterator(Rest rest, String url, String fieldName, Class<T> compType) {
+		this.rest = rest;
+		this.compType = compType;
+		
+		// デフォルトページサイズの設定
+		pageSize = FETCH_SIZE;
+		
+		// url を、endopoint や query に分割
+		String[] parts = url.split("[\\?&]");
+		StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for (String s : parts) {
+			if (s.startsWith("pageSize=")) {
+				// pageSize 指定があれば、上書きする
+				pageSize = Integer.parseInt(s.substring(9));
+			} else if (s.startsWith("currentPage=")) {
+				// currentPage 指定があれば、上書きする
+				currentPage = Integer.parseInt(s.substring(12)) - 1;
+			} else {
+				boolean http = (s.startsWith("/") && s.indexOf('=')==-1);
+				if (http) {
+				} else {
+					// URL エンコーディング
+					if (first) sb.append('?');
+					else sb.append('&');
+					first = false;
+				}
+				sb.append(s);
+			}
+		}
+		this.url = sb.toString();
+		this.fieldName = fieldName;
+	}
+	
+	/**
+	 * Collection Iterator を作成します。
+	 * フェッチサイズのデフォルト値は 100 ですが、url に pageSize= 指定を
+	 * するとそれが利用されます。
+	 *
+	 * @param	rest	Rest オブジェクト
+	 * @param	url		API の endpoint。例 /measurement/measurements/ 
+	 *					後ろの /measurements/ を collection の要素を格納する
+	 *					属性とみなします
 	 * @param	compType	Iterator で返す要素の型です(Measurement など)
 	 */
 	public CollectionIterator(Rest rest, String url, Class<T> compType) {

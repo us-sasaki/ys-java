@@ -6,6 +6,7 @@ import abdom.data.json.JsonObject;
 /**
  * UsageStatistics class
  * This source is machine-generated from c8y-markdown docs.
+ * Number 型が一律 double に変換されているため、修正。(2017/11/2)
  */
 public class UsageStatistics extends C8yData {
 	/**
@@ -22,7 +23,7 @@ public class UsageStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public double deviceCount;
+	public int deviceCount;
 	
 	/**
 	 * Number of requests that were issued only by devices against the tenant.
@@ -30,7 +31,7 @@ public class UsageStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public double deviceRequestCount;
+	public long deviceRequestCount;
 	
 	/**
 	 * Number of devices with all children.
@@ -38,7 +39,7 @@ public class UsageStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public double deviceWithChildrenCount;
+	public int deviceWithChildrenCount;
 	
 	/**
 	 * Number of requests that were issued against the tenant.
@@ -46,7 +47,7 @@ public class UsageStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public double requestCount;
+	public long requestCount;
 	
 	/**
 	 * Database storage in use by the tenant, in bytes.
@@ -54,7 +55,7 @@ public class UsageStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public double storageSize;
+	public long storageSize;
 	
 	/**
 	 * Names of tenant subscribed applications.
