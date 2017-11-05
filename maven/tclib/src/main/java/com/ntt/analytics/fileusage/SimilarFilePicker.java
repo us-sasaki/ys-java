@@ -12,7 +12,7 @@ public class SimilarFilePicker {
 		public FileEntry a;
 		public FileEntry b;
 		public int dist;
-		public FileDistance(FileEntry a, FileEntry b, Integer dist) {
+		public FileDistance(FileEntry a, FileEntry b, int dist) {
 			this.a = a;
 			this.b = b;
 			this.dist = dist;
@@ -43,7 +43,10 @@ public class SimilarFilePicker {
 			for (int j = i+1; j < size; j++) {
 				FileEntry b = list.get(j);
 				
-				dist.add(new FileDistance(a, b, d(a,b) )); // 遅！
+				int d = d(a,b); // 遅！
+				if (d < 13000) {
+					dist.add(new FileDistance(a, b, d));
+				}
 				
 				count++;
 				if (count >= loopCount/100*percentage) {
@@ -54,17 +57,11 @@ public class SimilarFilePicker {
 			}
 		}
 		System.out.println();
+		System.out.println("List size : " + dist.size());
 		System.out.println("SimilarFilePicker: sorting by distance");
 		
 		// dist でソート(昇順)
-		dist.sort(new Comparator<FileDistance>() {
-				public int compare(FileDistance a, FileDistance b) {
-					return (a.dist - b.dist);
-				}
-				public boolean equals(FileDistance a, FileDistance b) {
-					return (a.dist == b.dist);
-				}
-			} );
+		dist.sort( (a,b) -> (a.dist > b.dist)?1:((a.dist==b.dist)?0:-1) );
 		
 	}
 	
