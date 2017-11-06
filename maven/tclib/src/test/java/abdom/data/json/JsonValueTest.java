@@ -18,6 +18,14 @@ public class JsonValueTest extends TestCase{
 		assertTrue(new JsonValue(false).getValue().equals("false"));
 		assertTrue(new JsonValue(true).getType() == JsonType.TYPE_BOOLEAN);
 	}
+	public void testBoolean2() {
+		assertEquals(new JsonValue(true).booleanValue(), true);
+		assertEquals(new JsonValue(false).booleanValue(), false);
+		assertEquals(new JsonValue(null).booleanValue(), false);
+		assertEquals(new JsonValue(1).booleanValue(), true);
+		assertEquals(new JsonValue("abc").booleanValue(), true);
+	}
+	
 	public void testNumber() {
 		//System.out.println("testNumber....");
 		assertTrue(new JsonValue(0).toString().equals("0"));

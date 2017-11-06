@@ -46,6 +46,11 @@ public class Rest {
 	/** Processing Mode */
 	protected boolean modeIsTransient = false;
 	
+	/** HttpURLConnection */
+	protected HttpURLConnection con;
+	protected InputStream in;
+	protected OutputStream out;
+	
 	/**
 	 * HTTP レスポンスを表す内部クラス
 	 */
@@ -275,7 +280,7 @@ public class Rest {
 		} else {
 			url = new URL(urlStr + location);
 		}
-		HttpURLConnection con = (HttpURLConnection)url.openConnection();
+		con = (HttpURLConnection)url.openConnection();
 		
 		// 出力設定
 		boolean doOutput = (body != null && body.length > 0);
@@ -314,7 +319,8 @@ public class Rest {
 		
 		// 出力
 		if (doOutput) {
-			BufferedOutputStream bo = new BufferedOutputStream(con.getOutputStream());
+			out = con.getOutputStream();
+			BufferedOutputStream bo = new BufferedOutputStream(out);
 			bo.write(body);
 			bo.flush();
 		}
@@ -325,7 +331,8 @@ public class Rest {
 		if (resp.code < 400) {
 			
 			ByteArrayOutputStream baos =  new ByteArrayOutputStream();
-			BufferedInputStream bis = new BufferedInputStream(con.getInputStream());
+			in = con.getInputStream();
+			BufferedInputStream bis = new BufferedInputStream(in);
 			for (;;) {
 				int c = bis.read();
 					if (c == -1) break;
@@ -397,5 +404,21 @@ public class Rest {
 		pw.flush();
 		
 		return requestImpl("/inventory/binaries", "POST", "multipart/form-data; boundary="+bry, "managedObject", out2.toByteArray());
+	}
+	
+	public void disconnect() {
+		if (con != null) con.disconnect();
+		try {
+			if (in != null) in.close();
+			System.out.println("Rest#in closed");
+		} catch (IOException ioe) {
+			System.err.println("Rest#InputStream#close() failed " + ioe);
+		}
+		try {
+			if (out != null) out.close();
+			System.out.println("Rest#out closed");
+		} catch (IOException ioe) {
+			System.err.println("Rest#InputStream#close() failed " + ioe);
+		}
 	}
 }

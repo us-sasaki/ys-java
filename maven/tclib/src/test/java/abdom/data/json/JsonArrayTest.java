@@ -117,4 +117,9 @@ public class JsonArrayTest extends TestCase{
 			assertEquals(j.intValue(), ind++);
 		}
 	}
+	
+	public void testBoolean() {
+		assertEquals(new JsonArray().booleanValue(), false);
+		assertEquals(JsonType.a(1, "2").booleanValue(), true);
+	}
 }

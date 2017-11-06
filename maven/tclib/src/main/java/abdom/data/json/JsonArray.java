@@ -66,6 +66,17 @@ public class JsonArray extends JsonType {
 			else throw new ClassCastException(t.getClass() + " は JsonArray の要素に指定できません");
 		}
 	}
+	/**
+	 * boolean 値を取得します。
+	 * false となるのは、要素数が 0 の場合のみです。
+	 *
+	 * @return		このオブジェクトの boolean としての値
+	 */
+	@Override
+	public boolean booleanValue() {
+		return (array.size() > 0);
+	}
+	
 /*
  * push
  */

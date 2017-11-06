@@ -130,6 +130,18 @@ public class JsonValue extends JsonType {
 		return Double.parseDouble(value);
 	}
 	
+	/**
+	 * boolean 値を取得します。
+	 * false となるのは、boolean の false となる場合か、null の場合に限られます。
+	 * その他(true、数値、文字列)の場合、true が返却されます。
+	 *
+	 * @return		このオブジェクトの boolean としての値
+	 */
+	@Override
+	public boolean booleanValue() {
+		return !("".equals(quote) && ("false".equals(value) || "null".equals(value)));
+	}
+	
 	@Override
 	public int getType() {
 		if ("\"".equals(quote)) return TYPE_STRING;

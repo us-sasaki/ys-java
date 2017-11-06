@@ -24,6 +24,16 @@ public class JsonObject extends JsonType {
 /*------------------
  * instance methods
  */
+	/**
+	 * boolean 値を取得します。
+	 * false となるのは、要素が空の場合のみです。
+	 *
+	 * @return		このオブジェクトの boolean としての値
+	 */
+	@Override
+	public boolean booleanValue() {
+		return (map.size() > 0);
+	}
 
 /*
  * add methods
