@@ -340,6 +340,20 @@ public class API {
 	
 	/**
 	 * 位置更新イベントを送信する便利メソッドです。
+	 * 次の内容の Event を POST します。
+	 * <pre>
+	 * {
+	 *   type:"c8y_LocationUpdate",
+	 *   id:<<指定された source>>,
+	 *   text:"location changed event",
+	 *   c8y_Position:{lat:<<指定された lat>>,
+	 *                 lng:<<指定された lng>>,
+	 *                 alt:<<指定された alt>>,
+	 *                 trackingProtocol:<<指定されたもの>>,
+	 *                 reportReason:<<指定されたもの>>
+	 *   }
+	 * }
+	 * </pre>
 	 *
 	 * @param		source	イベント送信元の Managed Object id
 	 * @param		lat		緯度(degree)
