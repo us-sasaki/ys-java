@@ -141,7 +141,7 @@ public class API {
 	
 	/**
 	 * Managed Object を更新します。
-	 * 更新後、渡した updater は変更されません。
+	 * 更新後、渡した updater は変更されず、新しいインスタンスが返却されます。
 	 *
 	 * @param	id		更新対象の Managed Object ID
 	 * @param	updater	Managed Object の変更(追加)内容
@@ -542,7 +542,8 @@ public class API {
 	 * オペレーションを送信します。
 	 *
 	 * @param	operation		送信対象のオペレーション
-	 * @return	送信後、id などが付与された Operation
+	 * @return	送信後、id などが付与された Operation(渡された Operation が
+	 *			変更されたもの)
 	 */
 	public Operation createOperation(Operation operation) throws IOException {
 		Response resp = rest.post("/devicecontrol/operations/", "operation", operation);
@@ -552,12 +553,15 @@ public class API {
 	
 	/**
 	 * オペレーションを更新します。
+	 * オペレーションでは、updater を再利用することが少ないと想定されるため、
+	 * 結果は更新された updater インスタンスとして返却されます。
 	 *
-	 * @param	updater		送信対象のオペレーション
-	 * @return	送信後、id などが付与された Operation
+	 * @param	updater		送信対象のオペレーション(更新されます)
+	 * @return	送信後、結果更新された Operation
 	 */
-	public Operation updateOperation(Operation updater) throws IOException {
-		Response resp = rest.put("/devicecontrol/operations/", "operation", updater);
+	public Operation updateOperation(String operationId, Operation updater)
+						throws IOException {
+		Response resp = rest.put("/devicecontrol/operations/"+operationId, "operation", updater);
 		updater.fill(resp);
 		return updater;
 	}
@@ -568,15 +572,16 @@ public class API {
 	 * @param	status		オペレーションステータス
 	 *						(SUCCESSFUL/FAILED/PENDING/EXECUTING)
 	 */
-	public void updateOperationStatus(String status) throws IOException {
+	public void updateOperationStatus(String operationId, String status)
+						throws IOException {
 		if (!"SUCCESSFUL".equals(status) &&
 			!"FAILED".equals(status) &&
 			!"PENDING".equals(status) &&
 			!"EXECUTING".equals(status) )
 				throw new IllegalArgumentException("オペレーションステータスは SUCCESSFUL/FAILED/PENDING/EXECUTING のいずれかを指定してください");
-		Response resp = rest.put("/devicecontrol/operations/", "operation", "{\"status\":\""+status+"\"}");
+		Response resp = rest.put("/devicecontrol/operations/"+operationId,
+									"operation", "{\"status\":\""+status+"\"}");
 	}
-	
 	
 	/**
 	 * オペレーションコレクションを取得します。
@@ -694,46 +699,6 @@ public class API {
 /*----------------------------
  * Real-time Notification API
  */
-	/**
-	 * ハンドシェークを行います。
-	 * 結果は、配列で返却されます。
-	 *
-	 * @param	hr		要求メッセージの配列
-	 * @return		応答メッセージの配列
-	 */
-	public HandshakeResponse[] createHandshake(HandshakeRequest[] hr)
-									throws IOException {
-		JsonArray ja = new JsonArray();
-		for (HandshakeRequest r : hr)
-			ja.push(r.toJson());
-		Response resp = rest.post("/cep/realtime", ja);
-		return Jsonizer.toArray(resp, new HandshakeResponse[0]);
-	}
-	
-	/**
-	 * サブスクライブを行います。
-	 * 結果は、配列で返却されます。
-	 */
-	public SubscribeResponse[] createSubscribe(SubscribeRequest[] sr)
-									throws IOException {
-		JsonArray ja = new JsonArray();
-		for (SubscribeRequest r : sr)
-			ja.push(r.toJson());
-		Response resp = rest.post("/cep/realtime", ja);
-		return Jsonizer.toArray(resp, new SubscribeResponse[0]);
-	}
-	
-	/**
-	 * 接続をを行います。
-	 * 結果は、配列で返却されます。
-	 */
-	public ConnectResponse[] createConnect(ConnectRequest[] cr)
-									throws IOException {
-		JsonArray ja = new JsonArray();
-		for (ConnectRequest r : cr)
-			ja.push(r.toJson());
-		Response resp = rest.post("/cep/realtime", ja);
-		return Jsonizer.toArray(resp, new ConnectResponse[0]);
-	}
-	
+	// 動きが単純でないため、RAW-API は準備せず、イベントモデルで実装した
+	// C8yEventDispatcher を利用のこと
 }

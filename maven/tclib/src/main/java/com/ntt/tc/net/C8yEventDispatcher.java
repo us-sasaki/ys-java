@@ -263,6 +263,11 @@ System.out.println("subscribe : id " + id);
 			}
 			
 			Rest.Response r = api.getRest().post("/cep/realtime", reqs);
+			//
+			System.out.println(r.code);
+			System.out.println(r.message);
+			System.out.println(r.toString());
+			
 			JsonType resps = r.toJson();
 			
 			// dispatch resps to corresponding session.
@@ -270,12 +275,12 @@ System.out.println("subscribe : id " + id);
 				String channel = resp.get("channel").getValue();
 System.out.println("connect : channel " + channel);
 				
-				// channel を持つセッションを全件検索し、session に格納
+				// channel を subscribe するセッションを全件検索し、処理
 				// 複数の id がある場合どうなるのか？
 				for (Session s : sessions) {
 					if (s.clientId == null || !s.subscribed) continue;
 					if (!s.subscription.equals(channel)) {
-						// この辺の処理はおかしい
+						// この辺の処理(条件)はおかしい
 						JsonType successful = resp.get("successful");
 						if (successful == null || !successful.booleanValue())
 							System.out.println("connect が失敗"+r.toString("  "));
@@ -293,12 +298,19 @@ System.out.println("connect : channel " + channel);
 						System.out.println("operation 検知");
 						System.out.println(resp.toString("  "));
 						
-						JsonType body = resp.get("data.data");
-						if (body == null) {
-							System.out.println("body is null.");
+						JsonType data = resp.get("data");
+						if (data == null) {
+							System.out.println("data is null.");
+						} else if ("CREATE".equals(data.get("realtimeAction").getValue())) {
+							JsonType body = data.get("data");
+							if (body == null) {
+								System.out.println("body is null");
+							} else {
+								// 別スレッドで実行(しっぱなし)
+								new Thread( () -> s.listener.accept(body)).start();
+							}
 						} else {
-							// イベントハンドラのメインスレッドからたたいている、、
-							s.listener.accept(body);
+							System.out.println("realtimeAction:"+data.get("realtimeAction"));
 						}
 					}
 				}

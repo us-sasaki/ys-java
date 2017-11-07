@@ -8,8 +8,13 @@ import abdom.data.json.JsonObject;
 /**
  * Operation class
  * This source is machine-generated from c8y-markdown docs.
+ * ステータスの固定文字列を定数化(2017/11/7)
  */
 public class Operation extends C8yData {
+	public static final String SUCCESSFUL	= "SUCCESSFUL";
+	public static final String FAILED		= "FAILED";
+	public static final String EXECUTING	= "EXECUTING";
+	public static final String PENDING		= "PENDING";
 	/**
 	 * Uniquely identifies an operation.
 	 * <pre>

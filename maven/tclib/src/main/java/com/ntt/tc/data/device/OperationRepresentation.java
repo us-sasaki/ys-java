@@ -19,7 +19,7 @@ public class OperationRepresentation extends C8yData {
 	// {
 	//    "description": "Restart device",
 	//    "c8y_Restart": {}
-	//  }
+	// }
 	//
 	//
 }

@@ -373,6 +373,8 @@ public class Rest {
 		OutputStream out = new BufferedOutputStream(out2);
 		PrintWriter pw = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
 		
+		final String CRLF = "\r\n"; // まだ使ってない
+		
 		// object part
 		pw.println("--"+bry); // multipartの改行コード CR+LF
 		pw.println("Content-Disposition: form-data; name=\"object\"");
@@ -406,6 +408,46 @@ public class Rest {
 		return requestImpl("/inventory/binaries", "POST", "multipart/form-data; boundary="+bry, "managedObject", out2.toByteArray());
 	}
 	
+	/**
+	 * multipart/form-data を利用してファイルを送信します。
+	 * /cep/modules では 415 Unsupported Media Type が返却されます。
+	 */
+	public Response postMultipart(String endPoint, String filename, byte[] data)
+									throws IOException {
+		// body を生成する
+		String bry = "----boundary----13243546"+(long)(Math.random() * 1000000000)+"5789554----";
+		
+		ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+		
+		OutputStream out = new BufferedOutputStream(out2);
+		PrintWriter pw = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
+		
+		final String CRLF = "\r\n";
+		
+		// file part
+		pw.print("--"+bry+CRLF);
+		pw.print("Content-Disposition: form-data; name=\"file\"; filename=\""+filename+"\""+CRLF);
+//		pw.print("Content-Type: text/plain"+CRLF);
+//		pw.print("Content-Transfer-Encoding: binary"+CRLF);
+		pw.print(CRLF);
+		pw.flush();
+		
+		// ファイル実体
+		out.write(data);
+		out.write(CRLF.getBytes());
+		out.flush();
+		pw.print("--"+bry+"--"+CRLF);
+		pw.print(CRLF);
+		pw.flush();
+		
+		return requestImpl(endPoint, "POST", "multipart/form-data; boundary="+bry, "cepModule", out2.toByteArray());
+	}
+	
+	/**
+	 * 保持している HttpURLConnection の disconnect を呼び、
+	 * InputStream, OutputStream を close() します。
+	 * ですが、読み込み中のブロックはキャンセルされません。
+	 */
 	public void disconnect() {
 		if (con != null) con.disconnect();
 		try {

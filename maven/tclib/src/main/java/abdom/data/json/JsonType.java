@@ -707,7 +707,11 @@ public abstract class JsonType extends Number
 				jt = parseNumber(pr);
 			}
 		}
-		if (jt == null)	throw new JsonParseException("value の先頭文字が不正です : " + (char)c);
+		if (jt == null) {
+			if (c == -1) throw new JsonParseException("ストリームが終わりのため、value が読み込めません");
+			throw new JsonParseException("value の先頭文字が不正です : " +
+								(char)c + " / code=" + c);
+		}
 		return jt;
 	}
 	
