@@ -30,6 +30,11 @@ public class JsonValue extends JsonType {
 	}
 	
 	public JsonValue(byte value) {	this.value = String.valueOf(value);	}
+	/**
+	 * value で指定された1文字の文字列を保持する Json 形式を作成します。
+	 *
+	 * @param	value	文字(char)値
+	 */
 	public JsonValue(char value) {	this(String.valueOf(value));	}
 	public JsonValue(short value) { this.value = String.valueOf(value); }
 	public JsonValue(int  value) {	this.value = String.valueOf(value); }

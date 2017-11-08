@@ -132,8 +132,10 @@ public abstract class JsonType extends Number
 	
 	/**
 	 * boolean 値を取得します。
+	 * JsonValue の場合、
 	 * false となるのは、boolean の false となる場合か、null の場合に限られます。
-	 * その他(true、数値、文字列)の場合、true が返却されます。
+	 * その他(true、数値、文字列)の場合、true が返却されます。<br>
+	 * JsonArray/JsonObject の場合、要素を含む場合、true が返却されます。<br>
 	 *
 	 * @return		このオブジェクトの boolean としての値
 	 */
