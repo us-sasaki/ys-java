@@ -303,6 +303,7 @@ public class Rest {
 		}
 		// X-Cumulocity-Application-Key
 		if (appKey != null && !appKey.equals("")) {
+			//System.out.println("App Key call : " + appKey);
 			con.setRequestProperty("X-Cumulocity-Application-Key", appKey);
 		}
 		// X-Cumulocity-Processing-Mode
