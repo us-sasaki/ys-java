@@ -353,7 +353,6 @@ public class Jsonizer {
 			Map<String, Accessor> accessors = _fieldAccessors.get(cls);
 			if (accessors != null) return accessors;
 			
-			//System.out.println("generate accessor of " + instance.getClass());
 			//
 			// Accessors を生成する
 			//
@@ -513,7 +512,7 @@ public class Jsonizer {
 		JsonType source = json.toJson();
 		int size = source.size(); // may throw class cast exception
 		T[] result = null;
-		Class compType = array.getClass().getComponentType();
+		Class<?> compType = array.getClass().getComponentType();
 		if (array.length >= size) {
 			result = array;
 		} else {
@@ -522,14 +521,7 @@ public class Jsonizer {
 		for (int i = 0; i < size; i++) {
 			try {
 				result[i] = (T)compType.newInstance();
-//				if (JValue.class.isAssignableFrom(compType)) {
-					// compType が JValue の場合、fill を呼ぶ
-//					((JValue)result[i]).fill(source.get(i));
-//				} else {
-					// result[i] が JData のサブクラスでも、
-					// Jsonizer#fill では extra が設定されない
-					fill(result[i], source.get(i));
-//				}
+				fill(result[i], source.get(i));
 			} catch (InstantiationException ie) {
 				throw new JDataDefinitionException("Failed to instantiate \"" + compType.getName() + "\". Default constructor may not be accessible and defined.", ie);
 			} catch (IllegalAccessException iae) {
@@ -579,11 +571,7 @@ public class Jsonizer {
 		JsonType source = json.toJson();
 		try {
 			T instance = clazz.newInstance();
-//			if (JValue.class.isAssignableFrom(clazz)) {
-//				((JValue)instance).fill(source);
-//			} else {
-				fill(instance, source);
-//			}
+			fill(instance, source);
 			return instance;
 		} catch (ReflectiveOperationException roe) {
 			throw new JDataDefinitionException("Failed to instantiate \"" + clazz.getName() + "\". Default constructor may not be accessible and defined.", roe);

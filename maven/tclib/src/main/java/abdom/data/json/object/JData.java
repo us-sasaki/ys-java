@@ -1,16 +1,6 @@
 package abdom.data.json.object;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Set;
-import java.util.TreeMap;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonArray;
@@ -37,7 +27,7 @@ import abdom.data.json.Jsonizable;
 public abstract class JData extends JValue {
 
 	/** Jsonizer.fill できなかった値を格納する予約領域 */
-	protected transient JsonObject _extra;
+	protected JsonObject _extra;
 	
 /*-------------
  * constructor
