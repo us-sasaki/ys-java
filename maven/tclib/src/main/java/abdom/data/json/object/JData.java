@@ -150,19 +150,7 @@ public abstract class JData extends JValue {
 	 */
 	@Override
 	public void fill(Jsonizable json) {
-		JsonType rest = Jsonizer.fill(this, json);
-		if (rest == null) return;
-		if (_extra == null) _extra = (JsonObject)rest;
-		else {
-			for (String key : rest.keySet()) {
-				JsonType val = rest.get(key);
-				if (val.getType() == JsonType.TYPE_VOID) {
-					_extra.cut(key);
-				} else {
-					_extra.put(key, val);
-				}
-			}
-		}
+		Jsonizer.fill(this, json);
 	}
 	
 	/**

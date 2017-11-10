@@ -78,7 +78,8 @@ public class Jsonizer {
 	 * Java オブジェクトのプロパティを、指定された Jsonizable で設定します。
 	 * 指定されたオブジェクトが JValue の直接の子クラス(JData を継承しない)
 	 * の場合、JValue#fill を呼ぶ特例処理を行います。
-	 * JData の子クラスでは、値の設定を行いますが、extra への格納は行いません。
+	 * JData の子クラスでは、値の設定を行い、フィールドがない場合、extra へ
+	 * の格納を行います。
 	 *
 	 * @param	instance	設定対象の Java オブジェクト
 	 * @param	arg			設定値を持つ Jsonizable オブジェクト
@@ -96,6 +97,7 @@ public class Jsonizer {
 		Map<String, Accessor> accessors = getAccessors(instance);
 		
 		JsonObject extra = null;
+		if (instance instanceof JData) extra = ((JData)instance)._extra;
 		JsonObject jobj = (JsonObject)arg.toJson(); // may throw ClassCastException
 		
 		for (String name : jobj.keySet()) {
@@ -108,16 +110,24 @@ public class Jsonizer {
 				a.set(instance, jobj.get(name));
 			}
 		}
+		if (instance instanceof JData) {
+			((JData)instance)._extra = extra;
+			return null;
+		}
 		return extra;
 	}
 	
 	/**
-	 * 指定された名称の単一フィールドを設定します。
+	 * 指定された名称の単一フィールドを設定します。指定されたインスタンスが
+	 * JData であった場合、必要に応じて(存在しないフィールドは) extra に格納
+	 * します。
 	 *
 	 * @param	instance	設定対象の Java オブジェクト
 	 * @param	name		設定フィールド名(dot 記法が使えます)
 	 * @param	arg			設定値を持つ Jsonizable オブジェクト
 	 * @return	null(設定された場合) / arg(設定するフィールドがなかった場合)
+	 *			instance が JData インスタンスであった場合、常に null
+	 *			となります。
 	 */
 	public static JsonType set(Object instance, String name, Jsonizable arg) {
 		Map<String, Accessor> accessors = getAccessors(instance);
@@ -163,6 +173,14 @@ public class Jsonizer {
 		}
 		// dot があって dot 以前で示されるプロパティがない場合
 		// dot がなく、プロパティがない場合
+		//
+		// 通常、JData の特例処理は JData 内で行うべきだが、JData#set 内で
+		// JsonType remainder = Jsonizer.set(this, name, arg);
+		// if (remainder != null) putExtra(name, arg);
+		// のようなことをすると、オブジェクト階層の途中から extra となる場合
+		// 全体を extra に格納する処理となってしまう。回避するには Jsonizer
+		// のような dot オペレータ処理を書くこととなり、JData 側に Jsonizer
+		// 機能を実装する必要が生じる。
 		if (instance instanceof JData) {
 			// JData なら putExtra で設定する
 			JData jd = (JData)instance;
@@ -504,14 +522,14 @@ public class Jsonizer {
 		for (int i = 0; i < size; i++) {
 			try {
 				result[i] = (T)compType.newInstance();
-				if (JValue.class.isAssignableFrom(compType)) {
+//				if (JValue.class.isAssignableFrom(compType)) {
 					// compType が JValue の場合、fill を呼ぶ
-					((JValue)result[i]).fill(source.get(i));
-				} else {
+//					((JValue)result[i]).fill(source.get(i));
+//				} else {
 					// result[i] が JData のサブクラスでも、
 					// Jsonizer#fill では extra が設定されない
 					fill(result[i], source.get(i));
-				}
+//				}
 			} catch (InstantiationException ie) {
 				throw new JDataDefinitionException("Failed to instantiate \"" + compType.getName() + "\". Default constructor may not be accessible and defined.", ie);
 			} catch (IllegalAccessException iae) {
@@ -561,11 +579,11 @@ public class Jsonizer {
 		JsonType source = json.toJson();
 		try {
 			T instance = clazz.newInstance();
-			if (JValue.class.isAssignableFrom(clazz)) {
-				((JValue)instance).fill(source);
-			} else {
+//			if (JValue.class.isAssignableFrom(clazz)) {
+//				((JValue)instance).fill(source);
+//			} else {
 				fill(instance, source);
-			}
+//			}
 			return instance;
 		} catch (ReflectiveOperationException roe) {
 			throw new JDataDefinitionException("Failed to instantiate \"" + clazz.getName() + "\". Default constructor may not be accessible and defined.", roe);

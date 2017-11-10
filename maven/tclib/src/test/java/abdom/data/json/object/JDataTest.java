@@ -87,10 +87,13 @@ public class JDataTest extends TestCase{
 		jt.put("fragment", "c8y?");
 		assertEquals(jt.toString(), "{\"MSG\":\"This is a message\",\"a\":[5,65],\"b\":true,\"doublevalue\":3.141592653589793,\"fragment\":\"c8y?\",\"jo\":{\"key\":\"value\"},\"messages\":[\"hogetarou\",\"hoe\"],\"str\":\"hoe\"}");
 		J1 k = new J1();
+		
+		// Jsonizer は JData 対応に仕様変更(2017/11/10)
 		JsonType frag = Jsonizer.fill(k, jt);
 		
 		assertEquals(Jsonizer.toJson(k).toString(), "{\"MSG\":\"hogetarou\",\"a\":[5,65],\"b\":true,\"doublevalue\":3.141592653589793,\"jo\":{\"key\":\"value\"},\"messages\":[\"hogetarou\",\"fixed msg\"],\"str\":\"hoe\"}");
-		assertEquals(frag.toString(), "{\"fragment\":\"c8y?\"}");
+//		assertEquals(frag.toString(), "{\"fragment\":\"c8y?\"}");
+		assertNull(frag);
 		
 		// dot オペレーションの確認
 		JJ jj = new JJ();
