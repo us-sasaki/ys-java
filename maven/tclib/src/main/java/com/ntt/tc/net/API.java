@@ -516,8 +516,8 @@ public class API {
 	 * Alarm の iterator を取得します。
 	 * <pre>
 	 * 使用例：
-	 * for (Alarm e : api.alarms("source=41117&pageSize=15")) {
-	 * 		( e に対する処理 )
+	 * for (Alarm a : api.alarms("source=41117&pageSize=15")) {
+	 * 		( a に対する処理 )
 	 * }
 	 * </pre>
 	 *
@@ -624,7 +624,7 @@ public class API {
 	 * Operation の iterator を取得します。
 	 * <pre>
 	 * 使用例：
-	 * for (Operation o : api.alarms("source=41117&pageSize=15")) {
+	 * for (Operation o : api.operations("deviceId=41117&pageSize=15")) {
 	 * 		( o に対する処理 )
 	 * }
 	 * </pre>
