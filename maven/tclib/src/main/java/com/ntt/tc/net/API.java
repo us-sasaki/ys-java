@@ -206,20 +206,23 @@ public class API {
 	 * 		( m に対する処理 )
 	 * }
 	 * </pre>
-	 *
+	 * 
 	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
-	 * に変換され、元の例外は cause として設定されます。
+	 * に変換され、元の例外は cause として設定されます。<br>
+	 * 利用可能な検索条件は以下の通りです。<br>
+	 * type={type} 指定された type の managedObject を取得<br>
+	 * fragmentType={fragmantType} 指定された fragmentType を含むもの<br>
+	 * ids={ids} managedObjectId をカンマ区切りで指定(ids=41,43,68)<br>
+	 * text={text} 指定値から始まるテキスト値を含むものを取得<br>
+	 * query={query} クエリ条件を指定<br>
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
 	 *						 "dateFrom={from}&dateTo={to}&revert=true"
 	 */
 	public Iterable<ManagedObject> managedObjects(final String queryString) {
-		return new Iterable<ManagedObject>() {
-			@Override
-			public java.util.Iterator<ManagedObject> iterator() {
-				return new CollectionIterator<ManagedObject>(rest, "/inventory/managedObjects/?"+queryString, ManagedObject.class);
-			}
-		};
+		return ( () -> new CollectionIterator<ManagedObject>(rest,
+								"/inventory/managedObjects/?"+queryString,
+								"managedObjects", ManagedObject.class) );
 	}
 	
 	/**
@@ -268,6 +271,11 @@ public class API {
 	 * メジャーメントコレクションを取得します。
 	 * Collection API では、結果のアトミック性が保証されていないことに注意して
 	 * 下さい。
+	 * 利用可能な検索条件は以下の通りです。<br>
+	 * source : 指定された source の measurement を取得<br>
+	 * dateFrom, dateTo : 指定された期間の measurement を取得<br>
+	 * type : 指定された type の measurement を取得<br>
+	 * fragmentType : 指定された fragmentType を含む measurement を取得<br>
 	 *
 	 * @param	queryString	pageSize=5&currentPage=1 など
 	 * @return	取得された MeasurementCollection
@@ -295,12 +303,9 @@ public class API {
 	 *						 "dateFrom={from}&dateTo={to}&revert=true"
 	 */
 	public Iterable<Measurement> measurements(final String queryString) {
-		return new Iterable<Measurement>() {
-			@Override
-			public java.util.Iterator<Measurement> iterator() {
-				return new CollectionIterator<Measurement>(rest, "/measurement/measurements/?"+queryString, Measurement.class);
-			}
-		};
+		return ( () -> new CollectionIterator<Measurement>(rest,
+							"/measurement/measurements/?"+queryString,
+							"measurements", Measurement.class) );
 	}
 	
 	/**
@@ -423,17 +428,19 @@ public class API {
 	 *
 	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
 	 * に変換され、元の例外は cause として設定されます。
+	 * <br>利用可能な検索条件は以下の通りです。<br>
+	 * source : 指定された source の event を取得<br>
+	 * dateFrom, dateTo : 指定された期間の event を取得<br>
+	 * type : 指定された type の event を取得<br>
+	 * fragmentType : 指定された fragmentType を含む event を取得<br>
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
 	 *						 "dateFrom={from}&dateTo={to}&revert=true"
 	 */
 	public Iterable<Event> events(final String queryString) {
-		return new Iterable<Event>() {
-			@Override
-			public java.util.Iterator<Event> iterator() {
-				return new CollectionIterator<Event>(rest, "/event/events/?"+queryString, Event.class);
-			}
-		};
+		return ( () -> new CollectionIterator<Event>(rest,
+							"/event/events/?"+queryString,
+							"events", Event.class));
 	}
 	
 	/**
@@ -516,17 +523,18 @@ public class API {
 	 *
 	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
 	 * に変換され、元の例外は cause として設定されます。
+	 * <br>利用可能な検索条件は以下の通りです。<br>
+	 * source : 指定された source の alarm を取得<br>
+	 * dateFrom, dateTo : 指定された期間の alarm を取得<br>
+	 * status : 指定された status の alarm を取得<br>
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
 	 *						 "dateFrom={from}&dateTo={to}&revert=true"
 	 */
 	public Iterable<Alarm> alarms(final String queryString) {
-		return new Iterable<Alarm>() {
-			@Override
-			public java.util.Iterator<Alarm> iterator() {
-				return new CollectionIterator<Alarm>(rest, "/alarm/alarms/?"+queryString, Alarm.class);
-			}
-		};
+		return ( () -> new CollectionIterator<Alarm>(rest,
+								"/alarm/alarms/?"+queryString,
+								"alarms", Alarm.class) );
 	}
 	
 	/**
@@ -623,17 +631,18 @@ public class API {
 	 *
 	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
 	 * に変換され、元の例外は cause として設定されます。
+	 * <br>利用可能な検索条件は以下の通りです。<br>
+	 * deviceId : 指定された deviceId に対する operation を取得<br>
+	 * agentId : 指定された agentId に対する operation を取得<br>
+	 * status : 指定された status の operation を取得<br>
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
 	 *						 "dateFrom={from}&dateTo={to}&revert=true"
 	 */
 	public Iterable<Operation> operations(final String queryString) {
-		return new Iterable<Operation>() {
-			@Override
-			public java.util.Iterator<Operation> iterator() {
-				return new CollectionIterator<Operation>(rest, "/devicecontrol/operations/?"+queryString, Operation.class);
-			}
-		};
+		return ( () -> new CollectionIterator<Operation>(rest,
+								"/devicecontrol/operations/?"+queryString,
+								"operations", Operation.class) );
 	}
 	
 	/**
@@ -679,12 +688,9 @@ public class API {
 	 * @param	queryString	取得条件を指定します。
 	 */
 	public Iterable<UsageStatistics> usageStatistics(final String queryString) {
-		return new Iterable<UsageStatistics>() {
-			@Override
-			public java.util.Iterator<UsageStatistics> iterator() {
-				return new CollectionIterator<UsageStatistics>(rest, "/tenant/statistics/?"+queryString, "usageStatistics", UsageStatistics.class);
-			}
-		};
+		return ( () -> new CollectionIterator<UsageStatistics>(
+							rest, "/tenant/statistics/?"+queryString,
+							"usageStatistics", UsageStatistics.class) );
 	}
 	
 	/**

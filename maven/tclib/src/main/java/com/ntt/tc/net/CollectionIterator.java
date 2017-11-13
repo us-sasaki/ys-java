@@ -5,6 +5,9 @@ import java.lang.reflect.Array;
 import java.util.Iterator;
 
 import abdom.data.json.object.Jsonizer;
+import abdom.data.json.JsonType;
+
+import com.ntt.tc.data.C8yData;
 
 /**
  * CollectionIterator は c8y の get collection API を用いて、
@@ -14,7 +17,7 @@ import abdom.data.json.object.Jsonizer;
  * @author		Yusuke Sasaki
  * @version		October 16, 2017
  */
-class CollectionIterator<T> implements Iterator<T> {
+class CollectionIterator<T extends C8yData> implements Iterator<T> {
 	
 	protected static final int FETCH_SIZE = 100;
 	
@@ -34,16 +37,17 @@ class CollectionIterator<T> implements Iterator<T> {
 	/**
 	 * Collection Iterator を作成します。
 	 * フェッチサイズのデフォルト値は 100 ですが、url に pageSize= 指定を
-	 * するとそれが利用されます。
+	 * するとそれが利用されます。url に + (0x2B) が入っていた場合、自動的に
+	 * %2B に変換されます。
 	 *
 	 * @param	rest	Rest オブジェクト
 	 * @param	url		API の endpoint。例 /measurement/measurements/ 
-	 *					後ろの /measurements/ を collection の要素を格納する
-	 *					属性とみなします
 	 * @param	fieldName	配列を格納しているフィールド名を指定します
 	 * @param	compType	Iterator で返す要素の型です(Measurement など)
 	 */
 	public CollectionIterator(Rest rest, String url, String fieldName, Class<T> compType) {
+		// + -> %2B に変換
+		url = url.replace("+", "%2B");
 		this.rest = rest;
 		this.compType = compType;
 		
@@ -77,53 +81,6 @@ class CollectionIterator<T> implements Iterator<T> {
 		this.fieldName = fieldName;
 	}
 	
-	/**
-	 * Collection Iterator を作成します。
-	 * フェッチサイズのデフォルト値は 100 ですが、url に pageSize= 指定を
-	 * するとそれが利用されます。
-	 *
-	 * @param	rest	Rest オブジェクト
-	 * @param	url		API の endpoint。例 /measurement/measurements/ 
-	 *					後ろの /measurements/ を collection の要素を格納する
-	 *					属性とみなします
-	 * @param	compType	Iterator で返す要素の型です(Measurement など)
-	 */
-	public CollectionIterator(Rest rest, String url, Class<T> compType) {
-		this.rest = rest;
-		this.compType = compType;
-		
-		// デフォルトページサイズの設定
-		pageSize = FETCH_SIZE;
-		
-		// url を、endopoint や query に分割
-		String[] parts = url.split("[\\?&]");
-		StringBuilder sb = new StringBuilder();
-		boolean first = true;
-		for (String s : parts) {
-			if (s.startsWith("pageSize=")) {
-				// pageSize 指定があれば、上書きする
-				pageSize = Integer.parseInt(s.substring(9));
-			} else if (s.startsWith("currentPage=")) {
-				// currentPage 指定があれば、上書きする
-				currentPage = Integer.parseInt(s.substring(12)) - 1;
-			} else {
-				boolean http = (s.startsWith("/") && s.indexOf('=')==-1);
-				if (http) {
-					// end point の後ろの文字列を field 名として利用
-					String[] s2 = s.split("\\/");
-					fieldName = s2[s2.length-1];
-				} else {
-					// URL エンコーディング
-					if (first) sb.append('?');
-					else sb.append('&');
-					first = false;
-				}
-				sb.append(s);
-			}
-		}
-		this.url = sb.toString();
-	}
-	
 /*------------------
  * instance methods
  */
@@ -140,7 +97,16 @@ class CollectionIterator<T> implements Iterator<T> {
 							"&currentPage="+currentPage;
 			Rest.Response resp = rest.get(ep);
 			
-			buffer = (T[])Jsonizer.toArray(resp.toJson().get(fieldName), (T[])Array.newInstance(compType, 0));
+			JsonType jt = resp.toJson().get(fieldName);
+			if (jt == null)
+				throw new C8yRestRuntimeException(
+					"CollectionIterator に指定された配列フィールド " +
+					fieldName + " の要素が返却されませんでした。" +
+					"フィールド名があっているか確認して下さい。 結果" +
+					resp.toJson().toString().substring(0, 20) );
+			
+			buffer = (T[])Jsonizer.toArray(resp.toJson().get(fieldName),
+								(T[])Array.newInstance(compType, 0));
 			
 			cursor = 0;
 		} catch (IOException ioe) {
