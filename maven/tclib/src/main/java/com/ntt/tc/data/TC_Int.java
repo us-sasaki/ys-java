@@ -15,6 +15,7 @@ import abdom.data.json.object.IllegalFieldTypeException;
 
 public class TC_Int extends C8yValue {
 	protected int value;
+	protected JsonValue cachedValue = null;
 	
 	public void fill(Jsonizable arg) {
 		JsonType jt = arg.toJson();
@@ -22,10 +23,12 @@ public class TC_Int extends C8yValue {
 			throw new IllegalFieldTypeException();
 			
 		value = jt.intValue();
+		cachedValue = null;
 	}
 	
 	public JsonType toJson() {
-		return new JsonValue(value);
+		if (cachedValue == null) cachedValue = new JsonValue(value);
+		return cachedValue;
 	}
 	
 	public TC_Int() {

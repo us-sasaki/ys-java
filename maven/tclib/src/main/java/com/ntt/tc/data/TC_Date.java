@@ -18,8 +18,17 @@ import abdom.data.json.object.JValue;
  * @author		Yusuke Sasaki
  */
 public class TC_Date extends C8yValue {
-	protected static final SimpleDateFormat SDF =
-				new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"); // ZZZ
+	/**
+	 * スレッドごとに SimpleDateFormat インスタンスを分ける必要があるため、
+	 * ThreadLocal 利用。
+	 */
+	protected static ThreadLocal<SimpleDateFormat> sdf =
+			new ThreadLocal<SimpleDateFormat>() {
+				@Override
+				protected SimpleDateFormat initialValue() {
+					return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+				}
+			};
 	
 	/** 内部的には java.util.Date として値を保持します */
 	protected Date date;
@@ -73,7 +82,7 @@ public class TC_Date extends C8yValue {
 	 */
 	public void set(String date) {
 		try {
-			this.date = SDF.parse(date);
+			this.date = sdf.get().parse(date);
 		} catch (ParseException pe) {
 			throw new C8yFormatException(pe.toString());
 		}
@@ -88,7 +97,7 @@ public class TC_Date extends C8yValue {
 	 * @see		#set(String)
 	 */
 	public String getValue() {
-		return SDF.format(date);
+		return sdf.get().format(date);
 	}
 	
 	/**
@@ -136,7 +145,7 @@ public class TC_Date extends C8yValue {
 	 */
 	@Override
 	public JsonType toJson() {
-		return new JsonValue(SDF.format(date));
+		return new JsonValue(sdf.get().format(date));
 	}
 	
 }

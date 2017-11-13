@@ -70,9 +70,10 @@ class CollectionIterator<T extends C8yData> implements Iterator<T> {
 				if (http) {
 				} else {
 					// URL エンコーディング
-					if (first) sb.append('?');
-					else sb.append('&');
-					first = false;
+					if (first) {
+						sb.append('?');
+						first = false;
+					} else sb.append('&');
 				}
 				sb.append(s);
 			}
