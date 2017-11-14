@@ -154,6 +154,17 @@ public class API {
 	}
 	
 	/**
+	 * Managed Object を削除します。
+	 * 削除に失敗すると、IOException がスローされます。
+	 *
+	 * @param	id		削除対象の Managed Object ID
+	 */
+	public void deleteManagedObject(String id) throws IOException {
+		Response resp = rest.delete("/inventory/managedObjects/" + id, "managedObject");
+		if (resp.code != 204) throw new IOException("managed object 削除失敗" + id + ":" + resp);
+	}
+	
+	/**
 	 * Managed Object の位置情報を更新する便利メソッドです。
 	 *
 	 * @param	id		更新対象の Managed Object ID

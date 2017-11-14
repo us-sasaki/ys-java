@@ -114,13 +114,26 @@ public class Rest {
 	 * tenant は host に含まれているものとします。
 	 */
 	public Rest(String urlStr, String user, String password) {
-		this.urlStr = urlStr;
+		if (urlStr == null)
+			throw new IllegalArgumentException("url が指定されていません");
+		if (user == null)
+			throw new IllegalArgumentException("user が指定されていません");
+		if (password == null)
+			throw new IllegalArgumentException("passuword が指定されていません");		this.urlStr = urlStr;
 		this.tenant = "";
 		this.user = user;
 		this.password = password;
 	}
 	
 	public Rest(String urlStr, String tenant, String user, String password) {
+		if (urlStr == null)
+			throw new IllegalArgumentException("url が指定されていません");
+		if (tenant == null)
+			throw new IllegalArgumentException("tenant が指定されていません");
+		if (user == null)
+			throw new IllegalArgumentException("user が指定されていません");
+		if (password == null)
+			throw new IllegalArgumentException("passuword が指定されていません");
 		this.urlStr = urlStr;
 		this.tenant = tenant + "/";
 		this.user = user;
@@ -329,10 +342,11 @@ public class Rest {
 		// 結果オブジェクトの生成
 		Response resp = new Response();
 		resp.code = con.getResponseCode();
-		if (resp.code < 400) {
-			
-			ByteArrayOutputStream baos =  new ByteArrayOutputStream();
-			in = con.getInputStream();
+		
+		ByteArrayOutputStream baos =  new ByteArrayOutputStream();
+		try {
+			// 400以降のエラーが返されると InputStream が取得できない
+			in = con.getInputStream(); // may throw IOException
 			BufferedInputStream bis = new BufferedInputStream(in);
 			for (;;) {
 				int c = bis.read();
@@ -342,15 +356,23 @@ public class Rest {
 			baos.close();
 			bis.close();
 			resp.body = baos.toByteArray();
-		} else {
-			resp.message = con.getResponseMessage();
+		} catch (IOException ioe) {
 		}
+//		if (resp.code < 400) {
+//			
+//		} else {
+			resp.message = con.getResponseMessage();
+//		}
 		con.disconnect();
 		
 		//
 		// レスポンスコードの処理(404 Not Found は正常応答)
 		//
-		if (resp.code >= 400 && resp.code != 404) throw new C8yRestException(resp, location, method, contentType, accept, body);
+		if (resp.code >= 400 && resp.code != 404) {
+			String msg = "ep="+location+" method="+method+" type="+contentType+" code="+resp.code+" msg="+resp.message;
+			if (resp.body != null) msg = msg + " body=" + resp;
+			throw new C8yRestException(msg); //resp, location, method, contentType, accept, body);
+		}
 		
 		return resp;
 	}

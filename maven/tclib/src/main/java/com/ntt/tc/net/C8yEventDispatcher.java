@@ -12,6 +12,9 @@ import abdom.data.json.object.Jsonizer;
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.real.*;
 import com.ntt.tc.data.device.Operation;
+import com.ntt.tc.data.alarms.Alarm;
+import com.ntt.tc.data.inventory.ManagedObject;
+import com.ntt.tc.data.events.Event;
 
 /**
  * 処理内容
@@ -79,9 +82,42 @@ public class C8yEventDispatcher extends Thread {
 /*------------------
  * instance methods
  */
-	public void addOperationListener(OperationListener listener, String target) {
-		addListener( jt -> listener.operationPerformed(Jsonizer.fromJson(jt, Operation.class)), "/operations/"+target );
+	/**
+	 * 指定されたデバイス向けの Operation の通知を受ける listener を登録
+	 * します。 
+	 *
+	 * @param	listener	通知を受ける listener
+	 * @param	deviceId	Operation を発行するデバイスの managedObject ID
+	 */
+	public void addOperationListener(OperationListener listener,
+										String deviceId) {
+		addListener( jt -> listener.operationPerformed(
+			Jsonizer.fromJson(jt, Operation.class)), "/operations/"+deviceId );
 	}
+	
+	public void addInventoryListener(InventoryListener listener,
+										String managedObjectId) {
+		addListener( jt -> listener.inventoryUpdated(
+			Jsonizer.fromJson(jt, ManagedObject.class)),
+			"/managedobjects/" + managedObjectId);
+	}
+	
+	public void addEventListener(EventListener listener,
+										String deviceId) {
+		addListener( jt -> listener.eventReceived(
+			Jsonizer.fromJson(jt, Event.class)), "/events/" + deviceId);
+	}
+	
+	public void addAlarmListener(AlarmListener listener,
+										String deviceId) {
+		addListener( jt -> listener.alarmRaised(
+			Jsonizer.fromJson(jt, Alarm.class)), "/alarms/" + deviceId);
+	}
+	
+//　/<<moduleName>>/<<statementName>>
+//　/devicecontrol/notifications
+//　/<<agentId>>
+
 	
 	public void addListener(Consumer<JsonType> listener, String target) {
 		Session s = new Session();
@@ -110,6 +146,10 @@ public class C8yEventDispatcher extends Thread {
 	
 	@Override
 	public void run() {
+		try {
+			Thread.sleep(100L);
+		} catch (InterruptedException ie) {
+		}
 		while (!isStopping) {
 			handshake();
 			subscribe();
@@ -295,8 +335,8 @@ System.out.println("connect : channel " + channel);
 						s.subscribed = false;
 						System.out.println("connect expired");
 					} else {
-						System.out.println("operation 検知");
-						System.out.println(resp.toString("  "));
+//System.out.println("operation 検知");
+//System.out.println(resp.toString("  "));
 						
 						JsonType data = resp.get("data");
 						if (data == null) {
