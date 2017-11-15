@@ -709,10 +709,72 @@ public class API {
 	 *
 	 * @return		全 Operation を取得する iterable
 	 */
-	public Iterable<UsageStatistics> usageStatistics() throws IOException {
+	public Iterable<UsageStatistics> usageStatistics() {
 		return usageStatistics("");
 	}
 	
+/*----------
+ * User API
+ */
+	/**
+	 * Rest オブジェクトからテナント文字列を取得します。<br>
+	 * (1) rest.tenant があれば、それを返します<br>
+	 * (2) なければ、url の "://" と次の "." の間の文字列を返します。<br>
+	 *
+	 * @return		テナント文字列
+	 */
+	private String getTenant() {
+		String tenant = rest.tenant;
+		if (tenant == null || tenant.equals("")) {
+			tenant = rest.urlStr;
+			int i = tenant.indexOf("://");
+			int j = tenant.indexOf('.', i);
+			tenant = tenant.substring(i+3, j) + "/";
+		}
+		return tenant;
+	}
+	
+	/**
+	 * 指定されたユーザーを生成します。
+	 * ユーザーの登録先は、この API オブジェクトが保持する Rest オブジェクト
+	 * のテナントです。
+	 *
+	 * @param	user	生成するユーザー
+	 * @return	生成された結果を含むユーザー(引数オブジェクトが更新されます)
+	 */
+	public User createUser(User user) throws IOException {
+		Response resp = rest.post("/user/"+getTenant()+"users", "user", user);
+		user.fill(resp);
+		return user;
+	}
+	
+	/**
+	 * 指定された id を持つユーザーの情報を取得します。
+	 *
+	 * @param	id		ユーザーのid(ログイン時に使用する名前)
+	 * @return	取得されたユーザーオブジェクト
+	 */
+	public User readUser(String id) throws IOException {
+		Response resp = rest.get("/user/"+getTenant()+"users/"+id, "user");
+		return Jsonizer.fromJson(resp, User.class);
+	}
+	
+	public User readUserByName(String name) throws IOException {
+		Response resp = rest.get("/user/"+getTenant()+"userByName/"+name, "user");
+		return Jsonizer.fromJson(resp, User.class);
+	}
+	
+	public User updateUser(String id, User updater) throws IOException {
+		Response resp = rest.put("/user/"+getTenant()+"users/"+id, "user", updater);
+		return Jsonizer.fromJson(resp, User.class);
+	}
+	
+	public User deleteUser(String name) throws IOException {
+		Response resp = rest.delete("/user/"+getTenant()+"users/"+name, "user");
+		if (resp.code != 204) // No content
+			throw new C8yRestException("deleteUser failed: " + resp);
+		return Jsonizer.fromJson(resp, User.class);
+	}
 	
 /*------------
  * Binary API
