@@ -27,8 +27,46 @@ http://www.techscore.com/tech/Java/ApacheJakarta/Maven/2-4/#maven-2-9
 groupId ルートパッケージ名 com.example 等
 artifactId プロジェクト名
 
+■exec させる場合
+    pom.xml に以下のエントリを追加
+<project ...>
+  :
+  <build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <configuration>
+                <mainClass>misc.DiffMd</mainClass>
+                <!-- optional -->
+                <workingDirectory>.</workingDirectory>
+                <arguments>
+                    <argument>docs/event-language-en-old/introduction.html.md</argument>
+                    <argument>docs/event-language-en-new/introduction.html.md</argument>
+                </arguments>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
+  :
+</project>
+  
+    以下のコマンドで実行
+　　mvn exec:java
+　　
+
 ■ソースファイルのバージョン
   pom.xml で project.properties 内に次を追加(1.8の例)
         <java.version>1.8</java.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
+
+■dependency で使用している jar を target/dependency にコピー
+
+テスト実行時のみ利用するライブラリをコピー時に除く場合
+mvn dependency:copy-dependencies -DincludeScope=runtime
+
+全部コピーする場合
+mvn dependency:copy-dependencies
+

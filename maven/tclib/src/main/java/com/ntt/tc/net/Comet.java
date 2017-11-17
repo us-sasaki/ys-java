@@ -1,0 +1,64 @@
+package com.ntt.tc.net;
+
+import org.cometd.bayeux.Message;
+import org.cometd.bayeux.client.ClientSession;
+
+import org.cometd.client.BayeuxClient;
+import org.cometd.client.transport.ClientTransport;
+import org.cometd.client.transport.LongPollingTransport;
+
+import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.api.AuthenticationStore;
+import org.eclipse.jetty.client.util.BasicAuthentication;
+
+import java.util.Map;
+import java.util.HashMap;
+import java.net.URI;
+
+public class Comet {
+	public void handshake(String url, String user, String pass) throws Exception {
+		// Create (and eventually set up) Jetty's HttpClient:
+		HttpClient httpClient = new HttpClient();
+System.out.println("HttpClient がつくられました");
+		
+		// 基本認証を追加
+		URI uri = new URI(url);
+		AuthenticationStore auth = httpClient.getAuthenticationStore();
+		auth.addAuthentication(new BasicAuthentication(uri, "", user, pass));
+System.out.println("Authentication が登録されました");
+		
+		// Here set up Jetty's HttpClient, for example:
+		// httpClient.setMaxConnectionsPerDestination(2);
+		httpClient.start();
+System.out.println("httpClient が開始されました");
+		
+		// Prepare the transport
+		Map<String, Object> options = new HashMap<String, Object>();
+		ClientTransport transport = new LongPollingTransport(options, httpClient);
+		
+		// Create the BayeuxClient
+		ClientSession client = new BayeuxClient(url + "/cep/realtime", transport);
+		
+		// Here set up the BayeuxClient, for example:
+		// client.getChannel(Channel.META_CONNECT).addListener(new ClientSessionChannel.MessageListener() { ... });
+		
+System.out.println("handshake() します");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		// Handshake
+		client.handshake(map,
+			(a,b) -> {
+				if (b.isSuccessful()) {
+					System.out.println("handshake 成功しました" + b.getJSON() );
+				} else {
+					System.out.println("handshake 失敗しました" + b.getJSON() + b.getDataAsMap().get(Message.ERROR_FIELD) );
+				}
+			});
+System.out.println("handshake() しました");
+
+		// Subscribe
+		client.getChannel("/operations/47924").subscribe( (a,b) -> {System.out.println("subscribe が完了しました");} );
+System.out.println("subscribe() しました");
+	}
+}
