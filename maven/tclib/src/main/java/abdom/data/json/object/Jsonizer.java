@@ -27,7 +27,6 @@ import abdom.data.json.Jsonizable;
  *
  * 2017/9/8 JData カテゴリの制約をなくしました
  *
- * </pre>
  * JSON形式との相互変換対象外とする変数を定義したい場合、
  * transient 修飾子をつけて下さい。また、メソッドでは strictfp 修飾子が
  * getter, setter のいずれかに含まれると変換対象外となります(裏技)。
