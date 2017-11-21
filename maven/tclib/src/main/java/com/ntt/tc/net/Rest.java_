@@ -13,20 +13,17 @@ import abdom.data.json.JsonType;
 import abdom.data.json.JsonValue;
 import abdom.data.json.JsonObject;
 import abdom.data.json.Jsonizable;
-import abdom.data.json.JsonParseException;
 
-import com.ntt.tc.util.Base64; // till JDK1.7
+import com.ntt.tc.util.Base64;
 
 import static java.net.HttpURLConnection.*;
 
 /**
  * REST による要求を簡単に行うためのクラス。軽量化のため、外部ライブラリに
  * 非依存でつくる(java.net.HttpURLConnection ベース)
- * json-stream に対応するため、結果を JsonType.parse(Reader) で構築する。
- * レスポンスボディが JSON でない場合(cometd関連でhtmlを返す場合がある)、
- * エラー文字列を表す JsonValue レスポンスが返却されることに注意して下さい。
+ * 試験利用状態だが、各種 REST API はたたけている。
  *
- * @version	21, November 2017
+ * @version	29, November 2016
  * @author	Yusuke Sasaki
  */
 public class Rest {
@@ -65,15 +62,26 @@ public class Rest {
 		 */
 		public int code;
 		public String message;
-		protected JsonType body;
+		//public String contentType;
+		protected byte[] body;
 		
+		/**
+		 * 結果の body を byte[] で取得します。エラーの場合、null になります。
+		 */
+		public byte[] toByteArray() {
+			return body;
+		}
 		/**
 		 * 結果の body を String で取得します
 		 */
 		@Override
 		public String toString() {
 			if (body == null) return "null";
-			return body.toString();
+			try {
+				return new String(body, "UTF-8");
+			} catch (UnsupportedEncodingException uee) {
+				throw new InternalError("UTF-8 is not supported in this environment.");
+			}
 		}
 		
 		@Override
@@ -94,7 +102,7 @@ public class Rest {
 		@Override
 		public JsonType toJson() {
 			if (body == null) return new JsonValue(null);
-			return body;
+			return JsonType.parse(toString());
 		}
 	}
 	
@@ -177,20 +185,6 @@ public class Rest {
 	 */
 	public Response get(String location, String type) throws IOException {
 		return requestImpl(location, "GET", type, null);
-	}
-	
-	/**
-	 * GET リクエストを json-stream 形式で行います
-	 */
-	public Response getByStream(String location) throws IOException {
-		return requestImpl(location, "GET", "", "application/json-stream", null);
-	}
-	
-	/**
-	 * GET リクエストを json-stream 形式で行います
-	 */
-	public Response getByStream(String location, String type) throws IOException {
-		return requestImpl(location, "GET", type, "application/json-stream", null);
 	}
 	
 	/**
@@ -309,24 +303,16 @@ public class Rest {
 		con.setRequestMethod(method);
 		
 		// Content-Type
-		if (!"GET".equals(method) && !"DELETE".equals(method) ) {
-			if ("".equals(contentType)) {
-				con.setRequestProperty("Content-Type", "application/json");
-			} else {
-				con.setRequestProperty("Content-Type",
-						"application/vnd.com.nsn.cumulocity."+
-						contentType+"+json; charset=UTF-8; ver=0.9");
-			}
+		if ("".equals(contentType)) {
+			con.setRequestProperty("Content-Type", "application/json");
+		} else {
+			con.setRequestProperty("Content-Type", "application/vnd.com.nsn.cumulocity."+contentType+"+json; charset=UTF-8; ver=0.9");
 		}
 		// Accept
 		if ("".equals(accept)) {
 			con.setRequestProperty("Accept", "application/json");
-		} else if (accept.indexOf('/') == -1) {
-			con.setRequestProperty("Accept",
-						"application/vnd.com.nsn.cumulocity."+
-						accept+"+json; charset=UTF-8; ver=0.9");
 		} else {
-			con.setRequestProperty("Accept", accept);
+			con.setRequestProperty("Accept", "application/vnd.com.nsn.cumulocity."+accept+"+json; charset=UTF-8; ver=0.9");
 		}
 		// X-Cumulocity-Application-Key
 		if (appKey != null && !appKey.equals("")) {
@@ -364,22 +350,27 @@ public class Rest {
 				// 400以降のエラーが返されると InputStream が取得できない
 				in = con.getInputStream(); // may throw IOException
 			} else {
-				in = con.getErrorStream(); // may null
+				in = con.getErrorStream();
 			}
 			if (in != null) {
-				Reader r = new InputStreamReader(in, "UTF-8");
-				try {
-					JsonType result = JsonType.parse(r);
-					resp.body = result;
-				} catch (JsonParseException jpe) {
-					resp.body = new JsonValue("Not JSON : " + jpe);
+				//BufferedInputStream bis = new BufferedInputStream(in);
+				for (;;) {
+					int c = in.read(); //bis.read();
+						if (c == -1) break;
+					baos.write(c);
 				}
-				r.close(); //bis.close();
+				baos.close();
+				in.close(); //bis.close();
+				resp.body = baos.toByteArray();
 			}
 		} catch (IOException ioe) {
 			throw ioe;
 		}
+//		if (resp.code < 400) {
+//			
+//		} else {
 		resp.message = con.getResponseMessage();
+//		}
 		con.disconnect();
 		
 		//

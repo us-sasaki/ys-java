@@ -293,7 +293,13 @@ public class API {
 	 */
 	public MeasurementCollection readMeasurementCollection(String queryString)
 						throws IOException {
-		Response resp = rest.get("/measurement/measurements/?"+queryString);
+//		Response resp = rest.get("/measurement/measurements/?"+queryString);
+//		return Jsonizer.fromJson(resp, MeasurementCollection.class);
+//	}
+	
+//	public MeasurementCollection readMeasurementCollectionByStream(String queryString)
+//						throws IOException {
+		Response resp = rest.getByStream("/measurement/measurements/?"+queryString);
 		return Jsonizer.fromJson(resp, MeasurementCollection.class);
 	}
 	

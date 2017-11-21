@@ -96,8 +96,15 @@ class CollectionIterator<T extends C8yData> implements Iterator<T> {
 			if (url.indexOf('?') > -1) sep = "&";
 			String ep = url+sep+"pageSize="+pageSize+
 							"&currentPage="+currentPage;
-			Rest.Response resp = rest.get(ep);
+			Rest.Response resp = null;
 			
+			if (fieldName.equals("measurements")) {
+				// measurement の場合 v8.3 から利用できる stream を使う
+				resp = rest.getByStream(ep);
+				//System.out.print(".");
+			} else {
+				resp = rest.get(ep);
+			}
 			JsonType jt = resp.toJson().get(fieldName);
 			if (jt == null)
 				throw new C8yRestRuntimeException(
