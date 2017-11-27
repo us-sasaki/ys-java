@@ -375,6 +375,7 @@ public class Rest {
 					resp.body = new JsonValue("Not JSON : " + jpe);
 				}
 				r.close(); //bis.close();
+				in.close();
 			}
 		} catch (IOException ioe) {
 			throw ioe;
