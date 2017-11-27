@@ -364,9 +364,10 @@ public class Rest {
 				// 400以降のエラーが返されると InputStream が取得できない
 				in = con.getInputStream(); // may throw IOException
 			} else {
+				// ErrorStream で取得する
 				in = con.getErrorStream(); // may null
 			}
-			if (in != null) {
+			if (in != null) { // ErrorStream は null となることがある
 				Reader r = new InputStreamReader(in, "UTF-8");
 				try {
 					JsonType result = JsonType.parse(r);
@@ -386,11 +387,8 @@ public class Rest {
 		//
 		// レスポンスコードの処理(404 Not Found は正常応答)
 		//
-		if (resp.code >= 400 && resp.code != 404) {
-			String msg = "ep="+location+" method="+method+" type="+contentType+" code="+resp.code+" msg="+resp.message;
-			if (resp.body != null) msg = msg + " body=" + resp;
-			throw new C8yRestException(msg); //resp, location, method, contentType, accept, body);
-		}
+		if (resp.code >= 400 && resp.code != 404)
+			throw new C8yRestException(resp, location, method, contentType, accept, body);
 		
 		return resp;
 	}

@@ -2,6 +2,8 @@ package com.ntt.tc.net;
 
 import java.io.IOException;
 
+import abdom.data.json.JsonType;
+
 /**
  * Cumulocity REST で、レスポンスが400以上のときに発生する例外です。
  * REST の要求、応答のオブジェクトを保持します。
@@ -15,13 +17,13 @@ public class C8yRestException extends IOException {
 	protected String method;
 	protected String contentType;
 	protected String accept;
-	protected byte[] body;
+	protected JsonType body;
 	
 /*-------------
  * constructor
  */
-	public C8yRestException(Rest.Response response, String location, String method, String contentType, String accept, byte[] body) {
-		this("ep="+location+" method="+method+" type="+contentType+" code="+response.code+" msg="+response.message);
+	public C8yRestException(Rest.Response response, String location, String method, String contentType, String accept, JsonType body) {
+		this("ep="+location+" method="+method+" type="+contentType+" code="+response.code+" msg="+response.message+" body="+body);
 		this.response = response;
 		this.location = location;
 		this.method = method;
@@ -66,7 +68,7 @@ public class C8yRestException extends IOException {
 		return accept;
 	}
 	
-	public byte[] getBody() {
+	public JsonType getBody() {
 		return body;
 	}
 }
