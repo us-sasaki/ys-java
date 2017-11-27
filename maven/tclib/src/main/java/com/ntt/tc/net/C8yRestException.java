@@ -22,14 +22,14 @@ public class C8yRestException extends IOException {
 /*-------------
  * constructor
  */
-	public C8yRestException(Rest.Response response, String location, String method, String contentType, String accept, JsonType body) {
-		this("ep="+location+" method="+method+" type="+contentType+" code="+response.code+" msg="+response.message+" body="+body);
+	public C8yRestException(Rest.Response response, String location, String method, String contentType, String accept) {
+		this("ep="+location+" method="+method+" type="+contentType+" code="+response.code+" msg="+response.message+" body="+response.body);
 		this.response = response;
 		this.location = location;
 		this.method = method;
 		this.contentType = contentType;
 		this.accept = accept;
-		this.body = body;
+		this.body = response.body;
 	}
 	
 	public C8yRestException() {

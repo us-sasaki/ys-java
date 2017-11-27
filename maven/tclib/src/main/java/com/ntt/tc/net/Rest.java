@@ -289,7 +289,7 @@ public class Rest {
 	 * @param	type		アプリケーションタイプ(platformApi等)
 	 * @param	body		body に設定するデータ
 	 */
-	protected Response requestImpl(String location, String method,
+	protected synchronized Response requestImpl(String location, String method,
 								String contentType, String accept,
 								byte[] body) throws IOException {
 		URL url = null;
@@ -388,7 +388,7 @@ public class Rest {
 		// レスポンスコードの処理(404 Not Found は正常応答)
 		//
 		if (resp.code >= 400 && resp.code != 404)
-			throw new C8yRestException(resp, location, method, contentType, accept, body);
+			throw new C8yRestException(resp, location, method, contentType, accept);
 		
 		return resp;
 	}
@@ -401,7 +401,7 @@ public class Rest {
 	 * @param	data		upload する binary データ
 	 * @return	http レスポンス
 	 */
-	public Response postBinary(String filename, String mimetype, byte[] data)
+	public synchronized Response postBinary(String filename, String mimetype, byte[] data)
 							throws IOException {
 		
 		// body を生成する
@@ -451,7 +451,7 @@ public class Rest {
 	 * multipart/form-data を利用してファイルを送信します。
 	 * /cep/modules では 415 Unsupported Media Type が返却されます。
 	 */
-	public Response postMultipart(String endPoint, String filename, byte[] data)
+	public synchronized Response postMultipart(String endPoint, String filename, byte[] data)
 									throws IOException {
 		// body を生成する
 		String bry = "----boundary----13243546"+(long)(Math.random() * 1000000000)+"5789554----";
@@ -488,7 +488,6 @@ public class Rest {
 	 * ですが、読み込み中のブロックはキャンセルされません。
 	 */
 	public void disconnect() {
-		if (con != null) con.disconnect();
 		try {
 			if (in != null) in.close();
 			System.out.println("Rest#in closed");
@@ -501,5 +500,6 @@ public class Rest {
 		} catch (IOException ioe) {
 			System.err.println("Rest#InputStream#close() failed " + ioe);
 		}
+		if (con != null) con.disconnect(); // 最後にしてみた
 	}
 }
