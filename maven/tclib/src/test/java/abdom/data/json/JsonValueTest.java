@@ -43,7 +43,7 @@ public class JsonValueTest extends TestCase{
 		assertTrue(new JsonValue(null).getValue() == null);
 		assertTrue(new JsonValue(null).getType() == JsonType.TYPE_VOID);
 	}
-	public void testString() {
+	public void test文字列() {
 		//System.out.println("testString....");
 		assertTrue(new JsonValue("hogeo").toString().equals("\"hogeo\""));
 		JsonValue str = new JsonValue("escape char \t\n\r\"\\");

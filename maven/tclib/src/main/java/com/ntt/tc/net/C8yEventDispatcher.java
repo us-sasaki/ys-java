@@ -137,6 +137,7 @@ public class C8yEventDispatcher extends Thread {
 			for (Session s : sessions) {
 				if (s.listener == listener) {
 					s.isRemoved = true;
+					// 未実装：
 					// disconnect, unsubscribe
 					// sessions から remove
 				}
@@ -159,8 +160,8 @@ public class C8yEventDispatcher extends Thread {
 	}
 	
 	public void stopThread() {
-		this.interrupt();
 		api.getRest().disconnect();
+		//this.interrupt();		// disconnect のみで切れる
 		isStopping = true;
 	}
 	
@@ -357,6 +358,8 @@ System.out.println("connect : channel " + channel);
 			}
 		} catch (IOException ioe) {
 			System.out.println("error !! " + ioe);
+			// stopThread() した場合、java.net.SocketException: Socket closed
+			
 		}
 	}
 }

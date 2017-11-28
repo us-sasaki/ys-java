@@ -382,7 +382,7 @@ public class Rest {
 			throw ioe;
 		}
 		resp.message = con.getResponseMessage();
-		con.disconnect();
+		//con.disconnect();		// 高速化に寄与する可能性がある
 		
 		//
 		// レスポンスコードの処理(404 Not Found は正常応答)
@@ -489,17 +489,26 @@ public class Rest {
 	 */
 	public void disconnect() {
 		try {
-			if (in != null) in.close();
+			if (in != null) {
+				in.close();
+				in = null;
+			}
 			System.out.println("Rest#in closed");
 		} catch (IOException ioe) {
 			System.err.println("Rest#InputStream#close() failed " + ioe);
 		}
 		try {
-			if (out != null) out.close();
+			if (out != null) {
+				out.close();
+				out = null;
+			}
 			System.out.println("Rest#out closed");
 		} catch (IOException ioe) {
 			System.err.println("Rest#InputStream#close() failed " + ioe);
 		}
-		if (con != null) con.disconnect(); // 最後にしてみた
+		if (con != null) {
+			con.disconnect(); // 最後にしてみた
+			con = null; // ガベージコレクト対象にする
+		}
 	}
 }

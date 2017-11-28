@@ -21,9 +21,10 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
+    
     <!-- Explicitly exclude the hybrid dependency. -->
     <dependency>
         <groupId>org.cometd.java</groupId>
@@ -35,6 +36,13 @@
                 <artifactId>websocket-client</artifactId>
             </exclusion>
         </exclusions>
+    </dependency>
+    
+    <!-- SNAKE Yaml -->
+    <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>1.19</version>
     </dependency>
   </dependencies>
 </project>
