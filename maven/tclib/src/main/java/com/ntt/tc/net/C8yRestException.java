@@ -23,7 +23,9 @@ public class C8yRestException extends IOException {
  * constructor
  */
 	public C8yRestException(Rest.Response response, String location, String method, String contentType, String accept) {
-		this("ep="+location+" method="+method+" type="+contentType+" code="+response.code+" msg="+response.message+" body="+response.body);
+		this("ep=" + location + " method=" + method + " type=" + contentType +
+			" accept=" + accept + " code=" + response.code +
+			" msg=" + response.message + " body=" + response.body);
 		this.response = response;
 		this.location = location;
 		this.method = method;

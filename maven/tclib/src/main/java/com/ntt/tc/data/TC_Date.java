@@ -33,6 +33,9 @@ public class TC_Date extends C8yValue {
 	/** 内部的には java.util.Date として値を保持します */
 	protected Date date;
 	
+	/** toJson() を高速化するためのキャッシュ */
+	protected JsonValue dateCache = null;
+	
 /*-------------
  * Constructor
  */
@@ -86,6 +89,7 @@ public class TC_Date extends C8yValue {
 		} catch (ParseException pe) {
 			throw new C8yFormatException(pe.toString());
 		}
+		dateCache = null;
 	}
 	
 	/**
@@ -145,7 +149,9 @@ public class TC_Date extends C8yValue {
 	 */
 	@Override
 	public JsonType toJson() {
-		return new JsonValue(sdf.get().format(date));
+		if (dateCache == null)
+			dateCache = new JsonValue(sdf.get().format(date));
+		return dateCache;
 	}
 	
 }

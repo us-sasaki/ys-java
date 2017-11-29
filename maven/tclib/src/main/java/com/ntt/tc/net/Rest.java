@@ -286,7 +286,15 @@ public class Rest {
 	 *
 	 * @param	location	リソースの場所 /platform 等
 	 * @param	method		GET/POST/PUT/DELETE
-	 * @param	type		アプリケーションタイプ(platformApi等)
+	 * @param	contentType	アプリケーションタイプ(platformApi等, c8y 独自の
+	 *						type, または multipart/form-data などフル指定)
+	 *						'/' を含む場合、フル指定と見なされます。
+	 *						空文字列では、application/json が設定されます。
+	 *						method が GET / DELETE の場合設定されません。
+	 * @param	accept		Accept タイプ(platformApi等, c8y 独自の type,
+	 *						または application/json-stream 等フル指定)
+	 *						'/' を含む場合、フル指定と見なされます。
+	 *						空文字列では、application/json が設定されます。
 	 * @param	body		body に設定するデータ
 	 */
 	protected synchronized Response requestImpl(String location, String method,
@@ -312,10 +320,12 @@ public class Rest {
 		if (!"GET".equals(method) && !"DELETE".equals(method) ) {
 			if ("".equals(contentType)) {
 				con.setRequestProperty("Content-Type", "application/json");
-			} else {
+			} else if (contentType.indexOf('/') == -1) {
 				con.setRequestProperty("Content-Type",
 						"application/vnd.com.nsn.cumulocity."+
 						contentType+"+json; charset=UTF-8; ver=0.9");
+			} else {
+				con.setRequestProperty("Content-Type", contentType);
 			}
 		}
 		// Accept
@@ -449,7 +459,8 @@ public class Rest {
 	
 	/**
 	 * multipart/form-data を利用してファイルを送信します。
-	 * /cep/modules では 415 Unsupported Media Type が返却されます。
+	 * /cep/modules では 415 Unsupported Media Type が返却されます
+	 * 修正し、/bulkNewDeviceRequests では upload が成功しました。
 	 */
 	public synchronized Response postMultipart(String endPoint, String filename, byte[] data)
 									throws IOException {
@@ -466,7 +477,7 @@ public class Rest {
 		// file part
 		pw.print("--"+bry+CRLF);
 		pw.print("Content-Disposition: form-data; name=\"file\"; filename=\""+filename+"\""+CRLF);
-//		pw.print("Content-Type: text/plain"+CRLF);
+		pw.print("Content-Type: text/plain"+CRLF);
 //		pw.print("Content-Transfer-Encoding: binary"+CRLF);
 		pw.print(CRLF);
 		pw.flush();
@@ -479,7 +490,7 @@ public class Rest {
 		pw.print(CRLF);
 		pw.flush();
 		
-		return requestImpl(endPoint, "POST", "multipart/form-data; boundary="+bry, "cepModule", out2.toByteArray());
+		return requestImpl(endPoint, "POST", "multipart/form-data; boundary="+bry, "", out2.toByteArray());
 	}
 	
 	/**
