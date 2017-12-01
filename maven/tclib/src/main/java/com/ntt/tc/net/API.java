@@ -23,6 +23,7 @@ import com.ntt.tc.data.retention.*;
 import com.ntt.tc.data.sensor.*;
 import com.ntt.tc.data.tenants.*;
 import com.ntt.tc.data.users.*;
+import com.ntt.tc.util.Base64;
 
 import static com.ntt.tc.net.Rest.Response;
 
@@ -41,8 +42,11 @@ import static com.ntt.tc.net.Rest.Response;
  * @version		October 19, 2017
  */
 public class API {
-
+	static final String BUSR = "ZGV2aWNlYm9vdHN0cmFw";
+	static final String BPSS = "RmhkdDFiYjFm";
+	
 	protected Rest rest;
+	protected Rest bootstrapRest;
 	
 /*-------------
  * constructor
@@ -53,6 +57,7 @@ public class API {
 	
 	public API(String location, String tenant, String user, String pass) {
 		this.rest = new Rest(location, tenant, user, pass);
+		this.bootstrapRest = new Rest(location, "management", new String(Base64.decodeFromString(BUSR)), new String(Base64.decodeFromString(BPSS)));
 	}
 	
 	public API(Map<String, String> account) {
@@ -73,6 +78,98 @@ public class API {
  * Device API
  */
 	/**
+	 * 新規デバイスリクエストを取得します。
+	 *
+	 * @param	id		新規デバイスリクエストのオブジェクト
+	 * @return	結果となる NewDeviceRequest オブジェクト(存在しない場合 null)
+	 */
+	public NewDeviceRequest readNewDeviceRequest(String id)
+				throws IOException {
+		// 存在しない場合、500 Server Error が出ることに対する対処
+		try {
+			Response resp = rest.get("/devicecontrol/newDeviceRequests/"+id,
+									"newDeviceRequest");
+			if (resp.code == 404) return null;
+			return Jsonizer.fromJson(resp, NewDeviceRequest.class);
+		} catch (C8yRestException c8ye) {
+			Response resp = c8ye.getResponse();
+			if (resp.code == 500 &&
+				resp.body.get("message").getValue().
+				startsWith("Could not find entity NewDeviceRequest")) {
+				// ↑イマイチ
+				//
+				//Could not find entity NewDeviceRequest by ID {id}!
+				return null;
+			}
+			System.out.println("readNewDeviceRequest() c8y error message : " +
+								resp.body.get("message"));
+			throw c8ye;
+		}
+	}
+	
+	/**
+	 * 新規デバイスリクエストを登録します。
+	 * 新規登録後、NewDeviceRequest の status は "WAITING_FOR_CONNECTION"
+	 * になります。
+	 *
+	 * @param	req		新規デバイスリクエストのオブジェクト。id は必須です。
+	 * @return	結果オブジェクトで、元のオブジェクトの参照が返却されます
+	 */
+	public NewDeviceRequest createNewDeviceRequest(NewDeviceRequest req)
+				throws IOException {
+		Response resp = rest.post("/devicecontrol/newDeviceRequests",
+									"newDeviceRequest", req);
+		req.fill(resp);
+		return req;
+	}
+	
+	/**
+	 * 新規デバイスリクエストを登録します。
+	 * 新規登録後、NewDeviceRequest の status は "WAITING_FOR_CONNECTION"
+	 * になります。
+	 *
+	 * @param	id		新規デバイスリクエストの id。
+	 */
+	public void createNewDeviceRequest(String id) throws IOException {
+		Response resp = rest.post("/devicecontrol/newDeviceRequests",
+									"newDeviceRequest", "{\"id\":\""+id+"\"}");
+	}
+	
+	/**
+	 * デバイスクレデンシャルの承認ステータスを変更します。
+	 *
+	 * @param	updater		デバイスリクエストの更新オブジェクト
+	 */
+	public NewDeviceRequest updateNewDeviceRequest(NewDeviceRequest updater)
+					throws IOException {
+		Response resp = rest.put("/devicecontrol/newDeviceRequests/"+updater.id,
+									"newDeviceRequest", updater);
+		return Jsonizer.fromJson(resp, NewDeviceRequest.class);
+	}
+	
+	/**
+	 * デバイスクレデンシャルの承認ステータスを変更します。
+	 *
+	 * @param	id		デバイスリクエストの id
+	 * @param	status	ステータス(@see com.ntt.tc.data.DeviceNewRequest)
+	 */
+	public void updateNewDeviceRequest(String id, String status)
+					throws IOException {
+		Response resp = rest.put("/devicecontrol/newDeviceRequests/"+id,
+									"newDeviceRequest", "{\"status\":\""+status+"\"}");
+	}
+	
+	/** 
+	 * デバイスクレデンシャルの承認ステータスを変更します。
+	 *
+	 * @param	id		削除対象のデバイスリクエストの id
+	 */
+	public void deleteNewDeviceRequest(String id) throws IOException {
+		Response resp = rest.delete("/devicecontrol/newDeviceRequests/"+id,
+									"newDeviceRequest");
+	}
+	
+	/**
 	 * デバイスクレデンシャルを要求します。
 	 * bootstrap ユーザにする必要があると思われる。
 	 *
@@ -81,12 +178,12 @@ public class API {
 	 *			承認された場合、req.isValid() が true となります。
 	 *			承認されなかった場合は、値は変化しません。
 	 */
-	public DeviceCredentials createDeviceCredential(DeviceCredentials req)
+	public DeviceCredentials createDeviceCredentials(DeviceCredentials req)
 				throws IOException {
 		if (req.isValid()) return req;
 		if (req.id == null || req.id.equals(""))
 			throw new IllegalArgumentException("DeviceCredentials の id に値がありません");
-		Response resp = rest.post("/devicecontrol/deviceCredentials", "deviceCredentials", req);
+		Response resp = bootstrapRest.post("/devicecontrol/deviceCredentials", "deviceCredentials", req);
 		if (resp.code != 404) req.fill(resp);
 		return req;
 	}
