@@ -779,9 +779,13 @@ public abstract class JsonType extends Number
 		StringBuilder result = new StringBuilder();
 		while (true) {
 			int c = pr.read();
-			if (c == -1) throw new JsonParseException("文字列の途中で予期しない終了を検知しました");
+			if (c < 32) {
+				if (c == -1) throw new JsonParseException(
+								"文字列の途中で予期しない終了を検知しました");
+				throw new JsonParseException("文字列の途中で改行などのコントロールコードを検知しました。code = " + c);
+			}
 			if (c == '\"') return result.toString();
-			if (c < 32) throw new JsonParseException("文字列の途中で改行などのコントロールコードを検知しました。code = " + c);
+
 			if (c == '\\') {
 				c = pr.read();
 				if (c == -1) throw new JsonParseException("\\ の次に予期しない終了を検知しました");
