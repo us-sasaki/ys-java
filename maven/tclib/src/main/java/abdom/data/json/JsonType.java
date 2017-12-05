@@ -9,138 +9,138 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * JsonЊ`Ћ®‚Й‚Ё‚Ї‚йЊ^€к”К(var)‚р•\‚µ‚Ь‚·ЃB‚Ь‚ЅЃAѓXѓgѓЉЃ[ѓЂЃA•¶Ћљ—с‚©‚з‚М parse 
- * ѓЃѓ\ѓbѓh‚р’с‹џ‚µ‚Ь‚·ЃB
- * —•Цђ«‚М‚Ѕ‚ЯЃAѓLѓѓѓXѓg‚№‚ё‚Й——p‚·‚йѓAѓNѓZѓXѓЃѓ\ѓbѓh‚р’и‹`‚µ‚Д‚ў‚Ь‚·ЃB
- * ‚±‚к‚з‚МѓЃѓ\ѓbѓh‚М JsonType ‚Е‚МѓfѓtѓHѓ‹ѓg‚МЋА‘•‚Н ClassCastException 
- * ‚МѓXѓЌЃ[‚Е‚ ‚иЃAЊpЏі‚µ‚ЅЉeѓNѓ‰ѓX‚Е‰В”\‚ИѓIѓyѓЊЃ[ѓVѓ‡ѓ“‚рЋА‘•‚µ‚Ь‚·ЃB
- * ——p‚Е‚«‚И‚ўѓIѓyѓЊЃ[ѓVѓ‡ѓ“‚Е‚НЃAClassCastException ‚Є”­ђ¶‚µ‚Ь‚·ЃB
+ * JsonеЅўејЏгЃ«гЃЉгЃ‘г‚‹ећ‹дёЂи€¬(var)г‚’иЎЁгЃ—гЃѕгЃ™гЂ‚гЃѕгЃџгЂЃг‚№гѓ€гѓЄгѓјгѓ гЂЃж–‡е­—е€—гЃ‹г‚‰гЃ® parse 
+ * гѓЎг‚Ѕгѓѓгѓ‰г‚’жЏђдѕ›гЃ—гЃѕгЃ™гЂ‚
+ * е€©дѕїжЂ§гЃ®гЃџг‚ЃгЂЃг‚­гѓЈг‚№гѓ€гЃ›гЃљгЃ«е€©з”ЁгЃ™г‚‹г‚ўг‚Їг‚»г‚№гѓЎг‚Ѕгѓѓгѓ‰г‚’е®љзѕ©гЃ—гЃ¦гЃ„гЃѕгЃ™гЂ‚
+ * гЃ“г‚Њг‚‰гЃ®гѓЎг‚Ѕгѓѓгѓ‰гЃ® JsonType гЃ§гЃ®гѓ‡гѓ•г‚©гѓ«гѓ€гЃ®е®џиЈ…гЃЇ ClassCastException 
+ * гЃ®г‚№гѓ­гѓјгЃ§гЃ‚г‚ЉгЂЃз¶™ж‰їгЃ—гЃџеђ„г‚Їгѓ©г‚№гЃ§еЏЇиѓЅгЃЄг‚Єгѓљгѓ¬гѓјг‚·гѓ§гѓіг‚’е®џиЈ…гЃ—гЃѕгЃ™гЂ‚
+ * е€©з”ЁгЃ§гЃЌгЃЄгЃ„г‚Єгѓљгѓ¬гѓјг‚·гѓ§гѓігЃ§гЃЇгЂЃClassCastException гЃЊз™єз”џгЃ—гЃѕгЃ™гЂ‚
  *
  * @version		November 19, 2016
  * @author		Yusuke Sasaki
  */
 public abstract class JsonType extends Number
 								implements Iterable<JsonType>, Jsonizable {
-	/** getType() ‚Е•Ф‹p‚і‚к‚йЃAJavaScript ‚Е‚МЊ^ void(null) ‚р•\‚·’иђ”‚Е‚· */
+	/** getType() гЃ§иї”еЌґгЃ•г‚Њг‚‹гЂЃJavaScript гЃ§гЃ®ећ‹ void(null) г‚’иЎЁгЃ™е®љж•°гЃ§гЃ™ */
 	public static final int TYPE_VOID = 0;
 	
-	/** getType() ‚Е•Ф‹p‚і‚к‚йЃAJavaScript ‚Е‚МЊ^ boolean ‚р•\‚·’иђ”‚Е‚· */
+	/** getType() гЃ§иї”еЌґгЃ•г‚Њг‚‹гЂЃJavaScript гЃ§гЃ®ећ‹ boolean г‚’иЎЁгЃ™е®љж•°гЃ§гЃ™ */
 	public static final int TYPE_BOOLEAN = 1;
 	
-	/** getType() ‚Е•Ф‹p‚і‚к‚йЃAJavaScript ‚Е‚МЊ^ number(int) ‚р•\‚·’иђ”‚Е‚· */
+	/** getType() гЃ§иї”еЌґгЃ•г‚Њг‚‹гЂЃJavaScript гЃ§гЃ®ећ‹ number(int) г‚’иЎЁгЃ™е®љж•°гЃ§гЃ™ */
 	public static final int TYPE_INT = 2;
 	
 	/**
-	 * getType() ‚Е•Ф‹p‚і‚к‚йЃAJavaScript ‚Е‚МЊ^ number(double) ‚р•\‚·’иђ”‚Е‚·
+	 * getType() гЃ§иї”еЌґгЃ•г‚Њг‚‹гЂЃJavaScript гЃ§гЃ®ећ‹ number(double) г‚’иЎЁгЃ™е®љж•°гЃ§гЃ™
 	 */
 	public static final int TYPE_DOUBLE = 3;
 	
-	/** getType() ‚Е•Ф‹p‚і‚к‚йЃAJavaScript ‚Е‚МЊ^ string ‚р•\‚·’иђ”‚Е‚· */
+	/** getType() гЃ§иї”еЌґгЃ•г‚Њг‚‹гЂЃJavaScript гЃ§гЃ®ећ‹ string г‚’иЎЁгЃ™е®љж•°гЃ§гЃ™ */
 	public static final int TYPE_STRING = 4;
 	
-	/** getType() ‚Е•Ф‹p‚і‚к‚йЃAJavaScript ‚Е‚МЊ^ array ‚р•\‚·’иђ”‚Е‚· */
+	/** getType() гЃ§иї”еЌґгЃ•г‚Њг‚‹гЂЃJavaScript гЃ§гЃ®ећ‹ array г‚’иЎЁгЃ™е®љж•°гЃ§гЃ™ */
 	public static final int TYPE_ARRAY = 10;
 	
-	/** getType() ‚Е•Ф‹p‚і‚к‚йЃAJavaScript ‚Е‚МЊ^ object ‚р•\‚·’иђ”‚Е‚· */
+	/** getType() гЃ§иї”еЌґгЃ•г‚Њг‚‹гЂЃJavaScript гЃ§гЃ®ећ‹ object г‚’иЎЁгЃ™е®љж•°гЃ§гЃ™ */
 	public static final int TYPE_OBJECT = 20;
 	
 	/**
-	 * getType() ‚Е•Ф‹p‚і‚к‚йЃA‚З‚МЊ^‚Е‚а‚И‚ў‚±‚Ж‚р•\‚·’иђ”‚Е‚·ЃB
-	 * ‚±‚М’l‚Є•Ф‹p‚і‚к‚й‚±‚Ж‚Н’КЏн‚ ‚и‚Ь‚№‚сЃBJsonType ‚рЊpЏі‚µ‚ЅђV‚µ‚ў
-	 * ѓNѓ‰ѓX‚рЌмђ¬‚µ‚Ѕ‚иЃAJsonValue ‚рЊpЏі‚µ‚Д value, quote ‚ЙђV‚µ‚ў’l‚р
-	 * ’и‹`‚µ‚ЅЏкЌ‡‚Й•Ф‹p‚і‚к‚й‰В”\ђ«‚Є‚ ‚и‚Ь‚·ЃB
+	 * getType() гЃ§иї”еЌґгЃ•г‚Њг‚‹гЂЃгЃ©гЃ®ећ‹гЃ§г‚‚гЃЄгЃ„гЃ“гЃЁг‚’иЎЁгЃ™е®љж•°гЃ§гЃ™гЂ‚
+	 * гЃ“гЃ®еЂ¤гЃЊиї”еЌґгЃ•г‚Њг‚‹гЃ“гЃЁгЃЇйЂљеёёгЃ‚г‚ЉгЃѕгЃ›г‚“гЂ‚JsonType г‚’з¶™ж‰їгЃ—гЃџж–°гЃ—гЃ„
+	 * г‚Їгѓ©г‚№г‚’дЅњж€ђгЃ—гЃџг‚ЉгЂЃJsonValue г‚’з¶™ж‰їгЃ—гЃ¦ value, quote гЃ«ж–°гЃ—гЃ„еЂ¤г‚’
+	 * е®љзѕ©гЃ—гЃџе ґеђ€гЃ«иї”еЌґгЃ•г‚Њг‚‹еЏЇиѓЅжЂ§гЃЊгЃ‚г‚ЉгЃѕгЃ™гЂ‚
 	 */
 	public static final int TYPE_UNKNOWN = 99;
 	
 	/**
-	 * Ќ‚‘¬‰»‚М‚Ѕ‚ЯЃASystem.getProperty("line.separator")
-	 * ‚М’l‚р•ЫЋќ‚µ‚Ь‚·ЃB
+	 * й«йЂџеЊ–гЃ®гЃџг‚ЃгЂЃSystem.getProperty("line.separator")
+	 * гЃ®еЂ¤г‚’дїќжЊЃгЃ—гЃѕгЃ™гЂ‚
 	 */
 	protected static final String LS = System.getProperty("line.separator");
 	
 	/**
-	 * JsonValue ‚Ж‚µ‚Д‚М’l‚р•¶Ћљ—с‚ЕЋж“ѕ‚µ‚Ь‚·ЃB‚±‚МѓIѓuѓWѓFѓNѓg‚Є
-	 * JsonValue ‚Е‚И‚ўЏкЌ‡ЃAClassCastException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
-	 * •¶Ћљ—с‚МЏкЌ‡ЃAJSON ‚Й‚Ё‚Ї‚йѓ_ѓuѓ‹ѓNѓIЃ[ѓeЃ[ѓVѓ‡ѓ“Љ‡‚и‚рЏњ‹Ћ‚µ‚Ѕ
-	 * Њ`Ћ®‚Й‚И‚и‚Ь‚·ЃB‚Ь‚ЅЃAѓRѓ“ѓgѓЌЃ[ѓ‹ѓRЃ[ѓh‚МѓGѓXѓPЃ[ѓvѓVЃ[ѓPѓ“ѓX‚Є
-	 * ‰рЏњ‚і‚к‚Ь‚·ЃB
+	 * JsonValue гЃЁгЃ—гЃ¦гЃ®еЂ¤г‚’ж–‡е­—е€—гЃ§еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚гЃ“гЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃЊ
+	 * JsonValue гЃ§гЃЄгЃ„е ґеђ€гЂЃClassCastException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * ж–‡е­—е€—гЃ®е ґеђ€гЂЃJSON гЃ«гЃЉгЃ‘г‚‹гѓЂгѓ–гѓ«г‚Їг‚Єгѓјгѓ†гѓјг‚·гѓ§гѓіж‹¬г‚Љг‚’й™¤еЋ»гЃ—гЃџ
+	 * еЅўејЏгЃ«гЃЄг‚ЉгЃѕгЃ™гЂ‚гЃѕгЃџгЂЃг‚ігѓігѓ€гѓ­гѓјгѓ«г‚ігѓјгѓ‰гЃ®г‚Ёг‚№г‚±гѓјгѓ—г‚·гѓјг‚±гѓіг‚№гЃЊ
+	 * и§Јй™¤гЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @return	JsonValue ‚Ж‚µ‚Д‚М•¶Ћљ—с’l
+	 * @return	JsonValue гЃЁгЃ—гЃ¦гЃ®ж–‡е­—е€—еЂ¤
 	 */
 	public String getValue() {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAgetValue ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃgetValue гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	
 /*--------------------
  * overrides (Number)
  */
 	/**
-	 * JsonValue ‚Ж‚µ‚Д‚М’l‚рђ®ђ”’l‚ЕЋж“ѕ‚µ‚Ь‚·ЃB‚±‚МѓIѓuѓWѓFѓNѓg‚Є
-	 * JsonValue ‚Е‚И‚ўЏкЌ‡ЃAClassCastException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
-	 * ‚Ь‚ЅЃAJsonValue ‚Е‚ађ®ђ”‚Ж‚µ‚Д”FЋЇ‚Е‚«‚И‚ўЏкЌ‡(Integer.parseInt ‚Є
-	 * Ћё”s)ЃANumberFormatException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
-	 * •¶Ћљ—с‚Е‚ ‚Б‚ЅЏкЌ‡‚Е‚аЃAђ”’l‚Ж‚µ‚Д”FЋЇ‚Е‚«‚к‚О’l‚Є•Ф‹p‚і‚к‚Ь‚·ЃB
+	 * JsonValue гЃЁгЃ—гЃ¦гЃ®еЂ¤г‚’ж•ґж•°еЂ¤гЃ§еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚гЃ“гЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃЊ
+	 * JsonValue гЃ§гЃЄгЃ„е ґеђ€гЂЃClassCastException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * гЃѕгЃџгЂЃJsonValue гЃ§г‚‚ж•ґж•°гЃЁгЃ—гЃ¦иЄЌи­гЃ§гЃЌгЃЄгЃ„е ґеђ€(Integer.parseInt гЃЊ
+	 * е¤±ж•—)гЂЃNumberFormatException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * ж–‡е­—е€—гЃ§гЃ‚гЃЈгЃџе ґеђ€гЃ§г‚‚гЂЃж•°еЂ¤гЃЁгЃ—гЃ¦иЄЌи­гЃ§гЃЌг‚ЊгЃ°еЂ¤гЃЊиї”еЌґгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @return	JsonValue ‚Ж‚µ‚Д‚М int ’l
+	 * @return	JsonValue гЃЁгЃ—гЃ¦гЃ® int еЂ¤
 	 */
 	@Override
 	public int intValue() {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAintValue ‚рЋќ‚ї‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃintValue г‚’жЊЃгЃЎгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * JsonValue ‚Ж‚µ‚Д‚М’l‚рђ®ђ”’l‚ЕЋж“ѕ‚µ‚Ь‚·ЃB‚±‚МѓIѓuѓWѓFѓNѓg‚Є
-	 * JsonValue ‚Е‚И‚ўЏкЌ‡ЃAClassCastException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
-	 * ‚Ь‚ЅЃAJsonValue ‚Е‚ађ®ђ”‚Ж‚µ‚Д”FЋЇ‚Е‚«‚И‚ўЏкЌ‡(Long.parseLong ‚Є
-	 * Ћё”s)ЃANumberFormatException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
-	 * •¶Ћљ—с‚Е‚ ‚Б‚ЅЏкЌ‡‚Е‚аЃAђ”’l‚Ж‚µ‚Д”FЋЇ‚Е‚«‚к‚О’l‚Є•Ф‹p‚і‚к‚Ь‚·ЃB
+	 * JsonValue гЃЁгЃ—гЃ¦гЃ®еЂ¤г‚’ж•ґж•°еЂ¤гЃ§еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚гЃ“гЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃЊ
+	 * JsonValue гЃ§гЃЄгЃ„е ґеђ€гЂЃClassCastException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * гЃѕгЃџгЂЃJsonValue гЃ§г‚‚ж•ґж•°гЃЁгЃ—гЃ¦иЄЌи­гЃ§гЃЌгЃЄгЃ„е ґеђ€(Long.parseLong гЃЊ
+	 * е¤±ж•—)гЂЃNumberFormatException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * ж–‡е­—е€—гЃ§гЃ‚гЃЈгЃџе ґеђ€гЃ§г‚‚гЂЃж•°еЂ¤гЃЁгЃ—гЃ¦иЄЌи­гЃ§гЃЌг‚ЊгЃ°еЂ¤гЃЊиї”еЌґгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @return	JsonValue ‚Ж‚µ‚Д‚М long ’l
+	 * @return	JsonValue гЃЁгЃ—гЃ¦гЃ® long еЂ¤
 	 */
 	@Override
 	public long longValue() {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAlongValue ‚рЋќ‚ї‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃlongValue г‚’жЊЃгЃЎгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * JsonValue ‚Ж‚µ‚Д‚М’l‚рfloat’l‚ЕЋж“ѕ‚µ‚Ь‚·ЃB‚±‚МѓIѓuѓWѓFѓNѓg‚Є
-	 * JsonValue ‚Е‚И‚ўЏкЌ‡ЃAClassCastException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
-	 * ‚Ь‚ЅЃAJsonValue ‚Е‚а float ‚Ж‚µ‚Д”FЋЇ‚Е‚«‚И‚ўЏкЌ‡
-	 * (Float.parseFloat ‚ЄЋё”s)ЃANumberFormatException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
-	 * •¶Ћљ—с‚Е‚ ‚Б‚ЅЏкЌ‡‚Е‚аЃAђ”’l‚Ж‚µ‚Д”FЋЇ‚Е‚«‚к‚О’l‚Є•Ф‹p‚і‚к‚Ь‚·ЃB
+	 * JsonValue гЃЁгЃ—гЃ¦гЃ®еЂ¤г‚’floatеЂ¤гЃ§еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚гЃ“гЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃЊ
+	 * JsonValue гЃ§гЃЄгЃ„е ґеђ€гЂЃClassCastException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * гЃѕгЃџгЂЃJsonValue гЃ§г‚‚ float гЃЁгЃ—гЃ¦иЄЌи­гЃ§гЃЌгЃЄгЃ„е ґеђ€
+	 * (Float.parseFloat гЃЊе¤±ж•—)гЂЃNumberFormatException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * ж–‡е­—е€—гЃ§гЃ‚гЃЈгЃџе ґеђ€гЃ§г‚‚гЂЃж•°еЂ¤гЃЁгЃ—гЃ¦иЄЌи­гЃ§гЃЌг‚ЊгЃ°еЂ¤гЃЊиї”еЌґгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @return	JsonValue ‚Ж‚µ‚Д‚М float ’l
+	 * @return	JsonValue гЃЁгЃ—гЃ¦гЃ® float еЂ¤
 	 */
 	@Override
 	public float floatValue() {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAfloatValue ‚рЋќ‚ї‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃfloatValue г‚’жЊЃгЃЎгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * JsonValue ‚Ж‚µ‚Д‚М’l‚рdouble’l‚ЕЋж“ѕ‚µ‚Ь‚·ЃB‚±‚МѓIѓuѓWѓFѓNѓg‚Є
-	 * JsonValue ‚Е‚И‚ўЏкЌ‡ЃAClassCastException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
-	 * ‚Ь‚ЅЃAJsonValue ‚Е‚а double ‚Ж‚µ‚Д”FЋЇ‚Е‚«‚И‚ўЏкЌ‡
-	 * (Double.parseDouble ‚ЄЋё”s)ЃANumberFormatException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
-	 * •¶Ћљ—с‚Е‚ ‚Б‚ЅЏкЌ‡‚Е‚аЃAђ”’l‚Ж‚µ‚Д”FЋЇ‚Е‚«‚к‚О’l‚Є•Ф‹p‚і‚к‚Ь‚·ЃB
+	 * JsonValue гЃЁгЃ—гЃ¦гЃ®еЂ¤г‚’doubleеЂ¤гЃ§еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚гЃ“гЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃЊ
+	 * JsonValue гЃ§гЃЄгЃ„е ґеђ€гЂЃClassCastException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * гЃѕгЃџгЂЃJsonValue гЃ§г‚‚ double гЃЁгЃ—гЃ¦иЄЌи­гЃ§гЃЌгЃЄгЃ„е ґеђ€
+	 * (Double.parseDouble гЃЊе¤±ж•—)гЂЃNumberFormatException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * ж–‡е­—е€—гЃ§гЃ‚гЃЈгЃџе ґеђ€гЃ§г‚‚гЂЃж•°еЂ¤гЃЁгЃ—гЃ¦иЄЌи­гЃ§гЃЌг‚ЊгЃ°еЂ¤гЃЊиї”еЌґгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @return	JsonValue ‚Ж‚µ‚Д‚М double ’l
+	 * @return	JsonValue гЃЁгЃ—гЃ¦гЃ® double еЂ¤
 	 */
 	@Override
 	public double doubleValue() {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAdoubleValue ‚рЋќ‚ї‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃdoubleValue г‚’жЊЃгЃЎгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * boolean ’l‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * JsonValue ‚МЏкЌ‡ЃA
-	 * false ‚Ж‚И‚й‚М‚НЃAboolean ‚М false ‚Ж‚И‚йЏкЌ‡‚©ЃAnull ‚МЏкЌ‡‚ЙЊА‚з‚к‚Ь‚·ЃB
-	 * ‚»‚М‘ј(trueЃAђ”’lЃA•¶Ћљ—с)‚МЏкЌ‡ЃAtrue ‚Є•Ф‹p‚і‚к‚Ь‚·ЃB<br>
-	 * JsonArray/JsonObject ‚МЏкЌ‡ЃA—v‘f‚рЉЬ‚ЮЏкЌ‡ЃAtrue ‚Є•Ф‹p‚і‚к‚Ь‚·ЃB<br>
+	 * boolean еЂ¤г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * JsonValue гЃ®е ґеђ€гЂЃ
+	 * false гЃЁгЃЄг‚‹гЃ®гЃЇгЂЃboolean гЃ® false гЃЁгЃЄг‚‹е ґеђ€гЃ‹гЂЃnull гЃ®е ґеђ€гЃ«й™ђг‚‰г‚ЊгЃѕгЃ™гЂ‚
+	 * гЃќгЃ®д»–(trueгЂЃж•°еЂ¤гЂЃж–‡е­—е€—)гЃ®е ґеђ€гЂЃtrue гЃЊиї”еЌґгЃ•г‚ЊгЃѕгЃ™гЂ‚<br>
+	 * JsonArray/JsonObject гЃ®е ґеђ€гЂЃи¦Ѓзґ г‚’еђ«г‚Ђе ґеђ€гЂЃtrue гЃЊиї”еЌґгЃ•г‚ЊгЃѕгЃ™гЂ‚<br>
 	 *
-	 * @return		‚±‚МѓIѓuѓWѓFѓNѓg‚М boolean ‚Ж‚µ‚Д‚М’l
+	 * @return		гЃ“гЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ® boolean гЃЁгЃ—гЃ¦гЃ®еЂ¤
 	 */
 	public boolean booleanValue() {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAbooleanValue ‚рЋќ‚ї‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃbooleanValue г‚’жЊЃгЃЎгЃѕгЃ›г‚“");
 	}
 
 	
@@ -149,13 +149,13 @@ public abstract class JsonType extends Number
  * instance methods
  */
 	/**
-	 * JsonObject ‚Ж‚µ‚ДЃAЋw’и‚і‚к‚ЅѓLЃ[‚М’l‚рЋќ‚Б‚Д‚ў‚й‚©ѓeѓXѓg‚µ‚Ь‚·ЃB
-	 * JsonObject ‚Е‚И‚ўЏкЌ‡ЃAfalse ‚Є•Ф‹p‚і‚к‚Ь‚·ЃB
+	 * JsonObject гЃЁгЃ—гЃ¦гЂЃжЊ‡е®љгЃ•г‚ЊгЃџг‚­гѓјгЃ®еЂ¤г‚’жЊЃгЃЈгЃ¦гЃ„г‚‹гЃ‹гѓ†г‚№гѓ€гЃ—гЃѕгЃ™гЂ‚
+	 * JsonObject гЃ§гЃЄгЃ„е ґеђ€гЂЃfalse гЃЊиї”еЌґгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @param	key		ѓeѓXѓg‘ОЏЫ‚МѓLЃ[
-	 * @return	Ћw’и‚і‚к‚ЅѓLЃ[‚М’l‚рЋќ‚Б‚Д‚ў‚йЏкЌ‡ trueЃAѓLЃ[‚Є‚ ‚Б‚Д‚а
-	 *			’l‚Є JsonValue(null) ‚Е‚ ‚йЏкЌ‡ЃA‚Ь‚Ѕ‚НѓLЃ[‚Є‚И‚ўЏкЌ‡ЃA
-	 *			‚Ь‚Ѕ‚Н‚±‚МѓCѓ“ѓXѓ^ѓ“ѓX‚Є JsonObject ‚Е‚И‚ўЏкЌ‡ false
+	 * @param	key		гѓ†г‚№гѓ€еЇѕи±ЎгЃ®г‚­гѓј
+	 * @return	жЊ‡е®љгЃ•г‚ЊгЃџг‚­гѓјгЃ®еЂ¤г‚’жЊЃгЃЈгЃ¦гЃ„г‚‹е ґеђ€ trueгЂЃг‚­гѓјгЃЊгЃ‚гЃЈгЃ¦г‚‚
+	 *			еЂ¤гЃЊ JsonValue(null) гЃ§гЃ‚г‚‹е ґеђ€гЂЃгЃѕгЃџгЃЇг‚­гѓјгЃЊгЃЄгЃ„е ґеђ€гЂЃ
+	 *			гЃѕгЃџгЃЇгЃ“гЃ®г‚¤гѓіг‚№г‚їгѓіг‚№гЃЊ JsonObject гЃ§гЃЄгЃ„е ґеђ€ false
 	 */
 	public boolean hasKey(String key) {
 		if (!(this instanceof JsonObject)) return false;
@@ -165,71 +165,71 @@ public abstract class JsonType extends Number
 	}
 	
 	/**
-	 * JsonObject ‚Ж‚µ‚ДЃAЋw’и‚і‚к‚ЅѓLЃ[‚М’l‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * JsonObject ‚Е‚И‚ўЏкЌ‡ЃAClassCastException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
-	 * ѓLЃ[’l‚Й‚НЃAЉK‘w“I‚ИѓIѓuѓWѓFѓNѓgЌ\‘ў‚р’H‚й‚Ѕ‚Я‚М . (dot)•\‹L‚Є
-	 * ѓTѓ|Ѓ[ѓg‚і‚к‚Ь‚·ЃB
+	 * JsonObject гЃЁгЃ—гЃ¦гЂЃжЊ‡е®љгЃ•г‚ЊгЃџг‚­гѓјгЃ®еЂ¤г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * JsonObject гЃ§гЃЄгЃ„е ґеђ€гЂЃClassCastException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * г‚­гѓјеЂ¤гЃ«гЃЇгЂЃйљЋе±¤зљ„гЃЄг‚Єгѓ–г‚ёг‚§г‚Їгѓ€ж§‹йЂ г‚’иѕїг‚‹гЃџг‚ЃгЃ® . (dot)иЎЁиЁгЃЊ
+	 * г‚µгѓќгѓјгѓ€гЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @param	key		’l‚рЋж“ѕ‚µ‚Ѕ‚ўѓLЃ[–ј
-	 * @return	Ћж“ѕ‚і‚к‚й’l(JsonType)
+	 * @param	key		еЂ¤г‚’еЏ–еѕ—гЃ—гЃџгЃ„г‚­гѓјеђЌ
+	 * @return	еЏ–еѕ—гЃ•г‚Њг‚‹еЂ¤(JsonType)
 	 */
 	public JsonType get(String key) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAget(String) ‚НѓTѓ|Ѓ[ѓg‚і‚к‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃget(String) гЃЇг‚µгѓќгѓјгѓ€гЃ•г‚ЊгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * JsonObject ‚Ж‚µ‚ДЃAЋw’и‚і‚к‚ЅѓLЃ[‚М’l‚рЋж“ѕ‚µЃAЌнЏњ‚µ‚Ь‚·ЃB(cut)
-	 * JsonObject ‚Е‚И‚ўЏкЌ‡ЃAClassCastException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
-	 * ѓLЃ[’l‚Й‚НЃAЉK‘w“I‚ИѓIѓuѓWѓFѓNѓgЌ\‘ў‚р’H‚й‚Ѕ‚Я‚М . (dot)•\‹L‚Є
-	 * ѓTѓ|Ѓ[ѓg‚і‚к‚Ь‚·ЃB
+	 * JsonObject гЃЁгЃ—гЃ¦гЂЃжЊ‡е®љгЃ•г‚ЊгЃџг‚­гѓјгЃ®еЂ¤г‚’еЏ–еѕ—гЃ—гЂЃе‰Љй™¤гЃ—гЃѕгЃ™гЂ‚(cut)
+	 * JsonObject гЃ§гЃЄгЃ„е ґеђ€гЂЃClassCastException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * г‚­гѓјеЂ¤гЃ«гЃЇгЂЃйљЋе±¤зљ„гЃЄг‚Єгѓ–г‚ёг‚§г‚Їгѓ€ж§‹йЂ г‚’иѕїг‚‹гЃџг‚ЃгЃ® . (dot)иЎЁиЁгЃЊ
+	 * г‚µгѓќгѓјгѓ€гЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @param	key		’l‚рЋж“ѕ‚µЃAЌнЏњ‚µ‚Ѕ‚ўѓLЃ[–ј
-	 * @return	Ћж“ѕ‚і‚к‚й’l(JsonType)ЃBѓLЃ[‚Є‘¶ЌЭ‚µ‚И‚ўЏкЌ‡ЃAnull
+	 * @param	key		еЂ¤г‚’еЏ–еѕ—гЃ—гЂЃе‰Љй™¤гЃ—гЃџгЃ„г‚­гѓјеђЌ
+	 * @return	еЏ–еѕ—гЃ•г‚Њг‚‹еЂ¤(JsonType)гЂ‚г‚­гѓјгЃЊе­ењЁгЃ—гЃЄгЃ„е ґеђ€гЂЃnull
 	 */
 	public JsonType cut(String key) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAcut(String) ‚НѓTѓ|Ѓ[ѓg‚і‚к‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃcut(String) гЃЇг‚µгѓќгѓјгѓ€гЃ•г‚ЊгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * JsonArray ‚Ж‚µ‚ДЃAЋw’и‚і‚к‚Ѕ index ‚М’l‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * JsonArray ‚Е‚И‚ўЏкЌ‡ЃAClassCastException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
+	 * JsonArray гЃЁгЃ—гЃ¦гЂЃжЊ‡е®љгЃ•г‚ЊгЃџ index гЃ®еЂ¤г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * JsonArray гЃ§гЃЄгЃ„е ґеђ€гЂЃClassCastException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @param	index	index’l( 0 ? size()-1 )
-	 * @return	Ћж“ѕ‚і‚к‚й’l(JsonType)
+	 * @param	index	indexеЂ¤( 0 ? size()-1 )
+	 * @return	еЏ–еѕ—гЃ•г‚Њг‚‹еЂ¤(JsonType)
 	 */
 	public JsonType get(int index) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAget(int) ‚НѓTѓ|Ѓ[ѓg‚і‚к‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃget(int) гЃЇг‚µгѓќгѓјгѓ€гЃ•г‚ЊгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * JsonArray ‚Ж‚µ‚ДЃAЋw’и‚і‚к‚Ѕ index ‚М’l‚рЋж“ѕ‚µЃAЌнЏњ‚µ‚Ь‚·ЃB
-	 * JsonArray ‚Е‚И‚ўЏкЌ‡ЃAClassCastException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
+	 * JsonArray гЃЁгЃ—гЃ¦гЂЃжЊ‡е®љгЃ•г‚ЊгЃџ index гЃ®еЂ¤г‚’еЏ–еѕ—гЃ—гЂЃе‰Љй™¤гЃ—гЃѕгЃ™гЂ‚
+	 * JsonArray гЃ§гЃЄгЃ„е ґеђ€гЂЃClassCastException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @param	index	index’l( 0 ? size()-1 )
-	 * @return	Ћж“ѕ‚і‚к‚й’l(JsonType)
+	 * @param	index	indexеЂ¤( 0 ? size()-1 )
+	 * @return	еЏ–еѕ—гЃ•г‚Њг‚‹еЂ¤(JsonType)
 	 */
 	public JsonType cut(int index) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAcut(int) ‚НѓTѓ|Ѓ[ѓg‚і‚к‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃcut(int) гЃЇг‚µгѓќгѓјгѓ€гЃ•г‚ЊгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * JsonArray ‚Ж‚µ‚ДЃA—v‘fђ”‚р•Ф‹p‚µ‚Ь‚·ЃB
-	 * JsonArray ‚Е‚И‚ўЏкЌ‡ЃAClassCastException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
+	 * JsonArray гЃЁгЃ—гЃ¦гЂЃи¦Ѓзґ ж•°г‚’иї”еЌґгЃ—гЃѕгЃ™гЂ‚
+	 * JsonArray гЃ§гЃЄгЃ„е ґеђ€гЂЃClassCastException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @return	—v‘fђ”
+	 * @return	и¦Ѓзґ ж•°
 	 */
 	public int size() {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAsize() ‚НѓTѓ|Ѓ[ѓg‚і‚к‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃsize() гЃЇг‚µгѓќгѓјгѓ€гЃ•г‚ЊгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * ‚±‚М JsonType ‚Є JavaScript ‚М‚З‚МЊ^‚Е‚ ‚й‚©‚рЋ¦‚·’иђ”‚р•Ф‹p‚µ‚Ь‚·ЃB
-	 * Number Њ^‚Й‚В‚ў‚Д‚Н TYPE_INT, TYPE_DOUBLE ‚М‚ў‚ё‚к‚©‚Й•Є—Ю‚і‚к‚Ь‚·‚ЄЃA
-	 * Long.parseLong ‚Єђ¬Њч‚·‚йЏкЌ‡ЃATYPE_INT ‚Є•Ф‹p‚і‚к‚Ь‚·ЃB
-	 * (TYPE_INT ‚Є TYPE_DOUBLE ‚Й—Dђж‚µ‚Ь‚·)
-	 * ђ”’l‚Ж”FЋЇ‚Е‚«‚й•¶Ћљ—с‚МЏкЌ‡ TYPE_STRING ‚Є•Ф‹p‚і‚к‚Ь‚·ЃB
+	 * гЃ“гЃ® JsonType гЃЊ JavaScript гЃ®гЃ©гЃ®ећ‹гЃ§гЃ‚г‚‹гЃ‹г‚’з¤єгЃ™е®љж•°г‚’иї”еЌґгЃ—гЃѕгЃ™гЂ‚
+	 * Number ећ‹гЃ«гЃ¤гЃ„гЃ¦гЃЇ TYPE_INT, TYPE_DOUBLE гЃ®гЃ„гЃљг‚ЊгЃ‹гЃ«е€†йЎћгЃ•г‚ЊгЃѕгЃ™гЃЊгЂЃ
+	 * Long.parseLong гЃЊж€ђеЉџгЃ™г‚‹е ґеђ€гЂЃTYPE_INT гЃЊиї”еЌґгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * (TYPE_INT гЃЊ TYPE_DOUBLE гЃ«е„Єе…€гЃ—гЃѕгЃ™)
+	 * ж•°еЂ¤гЃЁиЄЌи­гЃ§гЃЌг‚‹ж–‡е­—е€—гЃ®е ґеђ€ TYPE_STRING гЃЊиї”еЌґгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @return	Њ^‚рЋ¦‚·’иђ”
+	 * @return	ећ‹г‚’з¤єгЃ™е®љж•°
 	 * @see		#TYPE_VOID
 	 * @see		#TYPE_BOOLEAN
 	 * @see		#TYPE_INT
@@ -247,313 +247,313 @@ public abstract class JsonType extends Number
  * set(array)
  */
 	/**
-	 * ”z—с’l‚рЋw’и‚і‚к‚Ѕ€шђ”‚ЕђЭ’и‚µ‚Ь‚·ЃB
-	 * ЊіЃXЋќ‚Б‚Д‚ў‚Ѕ”z—с’l‚НЌнЏњ‚і‚к‚Ь‚·ЃB
-	 * ‚±‚МѓIѓuѓWѓFѓNѓg‚Є JsonArray ‚Е‚И‚ўЏкЌ‡ЃAClassCastException
-	 * ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
+	 * й…Ќе€—еЂ¤г‚’жЊ‡е®љгЃ•г‚ЊгЃџеј•ж•°гЃ§иЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * е…ѓгЂ…жЊЃгЃЈгЃ¦гЃ„гЃџй…Ќе€—еЂ¤гЃЇе‰Љй™¤гЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * гЃ“гЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃЊ JsonArray гЃ§гЃЄгЃ„е ґеђ€гЂЃClassCastException
+	 * гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @param	array	JsonArray ‚М—v‘f‚Ж‚µ‚ДђЭ’и‚·‚й’l
+	 * @param	array	JsonArray гЃ®и¦Ѓзґ гЃЁгЃ—гЃ¦иЁ­е®љгЃ™г‚‹еЂ¤
 	 */
 	public void set(Object... array) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAset ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃset гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	
 /*
  * add methods
  */
 	/**
-	 * ‚±‚М JsonObject ‚Й—v‘f‚р’З‰Б‚µ‚Ь‚·ЃB
-	 * put ‚Ж‚М€б‚ў‚НЃA‚·‚Е‚Й name ‚ЕЋw’и‚і‚к‚й—v‘f‚Є‘¶ЌЭ‚µ‚ЅЏкЌ‡ЃA
-	 * name ‚М’l‚р JsonArray ‚Й•ПЉ·‚µ‚Д’l‚р’З‰Б‚·‚й“_‚ЖЃAnull ’l‚р
-	 * Ћw’и‚µ‚Д‚ў‚ЅЏкЌ‡ЃA‰Ѕ‚а‚µ‚И‚ў“_‚Е‚·ЃB
-	 * ‚·‚Е‚Й name ‚ЕЋw’и‚і‚к‚й—v‘f‚Є JsonArray ‚Е‚ ‚Б‚ЅЏкЌ‡ЃA
-	 * ‚»‚М JsonArray ‚ЙЋw’и‚і‚к‚Ѕ—v‘f‚Є’З‰Б(push)‚і‚к‚Ь‚·ЃB
-	 * ѓLЃ[’l‚Й‚НЃAЉK‘w“I‚ИѓIѓuѓWѓFѓNѓgЌ\‘ў‚р’H‚й‚Ѕ‚Я‚М . (dot)•\‹L‚Є
-	 * ѓTѓ|Ѓ[ѓg‚і‚к‚Ь‚·ЃB
-	 * ‚И‚ЁЃAѓIѓuѓWѓFѓNѓg‚ЄЃA"a" ‚МѓGѓ“ѓgѓЉ‚рЋќ‚Б‚Д‚ў‚ЅЏкЌ‡ЃA
-	 * add("a.b", value) ‚рЌs‚Б‚Д‚аЃA"a" ‚МѓGѓ“ѓgѓЉ‚Є”z—с‰»‚і‚к‚й‚±‚Ж‚Н
-	 * ‚И‚­ЃA––’[‚МѓIѓuѓWѓFѓNѓg‚М‚Э‚Є”z—с‰»‚М‘ОЏЫ‚Ж‚И‚и‚Ь‚·ЃB
+	 * гЃ“гЃ® JsonObject гЃ«и¦Ѓзґ г‚’иїЅеЉ гЃ—гЃѕгЃ™гЂ‚
+	 * put гЃЁгЃ®йЃ•гЃ„гЃЇгЂЃгЃ™гЃ§гЃ« name гЃ§жЊ‡е®љгЃ•г‚Њг‚‹и¦Ѓзґ гЃЊе­ењЁгЃ—гЃџе ґеђ€гЂЃ
+	 * name гЃ®еЂ¤г‚’ JsonArray гЃ«е¤‰жЏ›гЃ—гЃ¦еЂ¤г‚’иїЅеЉ гЃ™г‚‹з‚№гЃЁгЂЃnull еЂ¤г‚’
+	 * жЊ‡е®љгЃ—гЃ¦гЃ„гЃџе ґеђ€гЂЃдЅ•г‚‚гЃ—гЃЄгЃ„з‚№гЃ§гЃ™гЂ‚
+	 * гЃ™гЃ§гЃ« name гЃ§жЊ‡е®љгЃ•г‚Њг‚‹и¦Ѓзґ гЃЊ JsonArray гЃ§гЃ‚гЃЈгЃџе ґеђ€гЂЃ
+	 * гЃќгЃ® JsonArray гЃ«жЊ‡е®љгЃ•г‚ЊгЃџи¦Ѓзґ гЃЊиїЅеЉ (push)гЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * г‚­гѓјеЂ¤гЃ«гЃЇгЂЃйљЋе±¤зљ„гЃЄг‚Єгѓ–г‚ёг‚§г‚Їгѓ€ж§‹йЂ г‚’иѕїг‚‹гЃџг‚ЃгЃ® . (dot)иЎЁиЁгЃЊ
+	 * г‚µгѓќгѓјгѓ€гЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * гЃЄгЃЉгЂЃг‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃЊгЂЃ"a" гЃ®г‚Ёгѓігѓ€гѓЄг‚’жЊЃгЃЈгЃ¦гЃ„гЃџе ґеђ€гЂЃ
+	 * add("a.b", value) г‚’иЎЊгЃЈгЃ¦г‚‚гЂЃ"a" гЃ®г‚Ёгѓігѓ€гѓЄгЃЊй…Ќе€—еЊ–гЃ•г‚Њг‚‹гЃ“гЃЁгЃЇ
+	 * гЃЄгЃЏгЂЃжњ«з«ЇгЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ®гЃїгЃЊй…Ќе€—еЊ–гЃ®еЇѕи±ЎгЃЁгЃЄг‚ЉгЃѕгЃ™гЂ‚
 	 *
-	 * @param	name	—v‘f–ј
-	 * @param	t		’l
-	 * @return	—v‘f‚Є’З‰Б‚і‚к‚Ѕ JsonObject (this)
+	 * @param	name	и¦Ѓзґ еђЌ
+	 * @param	t		еЂ¤
+	 * @return	и¦Ѓзґ гЃЊиїЅеЉ гЃ•г‚ЊгЃџ JsonObject (this)
 	 * @see		#put(String, boolean)
 	 */
 	public JsonObject add(String name, boolean t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAadd ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃadd гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject add(String name, Jsonizable t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAadd ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃadd гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject add(String name, String t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAadd ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃadd гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject add(String name, byte t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAadd ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃadd гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject add(String name, char t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAadd ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃadd гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject add(String name, short t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAadd ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃadd гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject add(String name, int t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAadd ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃadd гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject add(String name, long t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAadd ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃadd гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject add(String name, float t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAadd ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃadd гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject add(String name, double t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAadd ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃadd гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject add(String name, Jsonizable[] t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAadd ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃadd гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 /*
- * put methods (add ‚Ж“Ї“™‚ѕ‚ЄЃA’l‚рЏгЏ‘‚«)
+ * put methods (add гЃЁеђЊз­‰гЃ гЃЊгЂЃеЂ¤г‚’дёЉж›ёгЃЌ)
  */
 	/**
-	 * ‚±‚М JsonObject ‚Й—v‘f‚р’З‰Б‚µ‚Ь‚·ЃB
-	 * add ‚Ж‚М€б‚ў‚НЃA‚·‚Е‚Й name ‚ЕЋw’и‚і‚к‚й—v‘f‚Є‘¶ЌЭ‚µ‚ЅЏкЌ‡ЃA
-	 * name ‚М’l‚рЏгЏ‘‚«‚·‚й“_‚ЖЃAnull ’l‚рЋw’и‚µ‚ЅЏкЌ‡ЃAJsonValue(null)
-	 * ‚ЕЏгЏ‘‚«‚·‚й“_‚Е‚·ЃB
-	 * ѓLЃ[’l‚Й‚НЃAЉK‘w“I‚ИѓIѓuѓWѓFѓNѓgЌ\‘ў‚р’H‚й‚Ѕ‚Я‚М . (dot)•\‹L‚Є
-	 * ѓTѓ|Ѓ[ѓg‚і‚к‚Ь‚·ЃB
+	 * гЃ“гЃ® JsonObject гЃ«и¦Ѓзґ г‚’иїЅеЉ гЃ—гЃѕгЃ™гЂ‚
+	 * add гЃЁгЃ®йЃ•гЃ„гЃЇгЂЃгЃ™гЃ§гЃ« name гЃ§жЊ‡е®љгЃ•г‚Њг‚‹и¦Ѓзґ гЃЊе­ењЁгЃ—гЃџе ґеђ€гЂЃ
+	 * name гЃ®еЂ¤г‚’дёЉж›ёгЃЌгЃ™г‚‹з‚№гЃЁгЂЃnull еЂ¤г‚’жЊ‡е®љгЃ—гЃџе ґеђ€гЂЃJsonValue(null)
+	 * гЃ§дёЉж›ёгЃЌгЃ™г‚‹з‚№гЃ§гЃ™гЂ‚
+	 * г‚­гѓјеЂ¤гЃ«гЃЇгЂЃйљЋе±¤зљ„гЃЄг‚Єгѓ–г‚ёг‚§г‚Їгѓ€ж§‹йЂ г‚’иѕїг‚‹гЃџг‚ЃгЃ® . (dot)иЎЁиЁгЃЊ
+	 * г‚µгѓќгѓјгѓ€гЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @param	name	—v‘f–ј
-	 * @param	t		’l
-	 * @return	—v‘f‚Є’З‰Б‚і‚к‚Ѕ JsonObject (this)
+	 * @param	name	и¦Ѓзґ еђЌ
+	 * @param	t		еЂ¤
+	 * @return	и¦Ѓзґ гЃЊиїЅеЉ гЃ•г‚ЊгЃџ JsonObject (this)
 	 * @see		#add(String, boolean)
 	 */
 	public JsonObject put(String name, Jsonizable t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAput ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃput гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject put(String name, String t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAput ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃput гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject put(String name, boolean t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAput ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃput гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject put(String name, byte t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAput ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃput гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject put(String name, char t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAput ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃput гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject put(String name, short t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAput ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃput гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject put(String name, int t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAput ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃput гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject put(String name, long t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAput ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃput гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject put(String name, float t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAput ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃput гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject put(String name, double t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAput ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃput гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonObject put(String name, Jsonizable[] t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAput ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃput гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 /*
- * push methods (”z—с‚МЌЕЊг”ц‚Й’l’З‰Б)
+ * push methods (й…Ќе€—гЃ®жњЂеѕЊе°ѕгЃ«еЂ¤иїЅеЉ )
  */
 	/**
-	 * ‚±‚М JsonArray ‚МЌЕЊг”ц(index ‚Є size() - 1 ‚МЊг‚л)‚Й—v‘f‚р’З‰Б‚µ‚Ь‚·ЃB
+	 * гЃ“гЃ® JsonArray гЃ®жњЂеѕЊе°ѕ(index гЃЊ size() - 1 гЃ®еѕЊг‚Ќ)гЃ«и¦Ѓзґ г‚’иїЅеЉ гЃ—гЃѕгЃ™гЂ‚
 	 *
-	 * @param	t		’l
-	 * @return	—v‘f‚Є’З‰Б‚і‚к‚Ѕ JsonArray (this)
+	 * @param	t		еЂ¤
+	 * @return	и¦Ѓзґ гЃЊиїЅеЉ гЃ•г‚ЊгЃџ JsonArray (this)
 	 */
 	public JsonArray push(boolean t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃApush ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃpush гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * ‚±‚М JsonArray ‚МЌЕЊг”ц(index ‚Є size() - 1 ‚МЊг‚л)‚Й Jsonizable
-	 * ‚р’З‰Б‚µ‚Ь‚·ЃBJsonizable ‚Є JsonArray ‚Е‚ ‚Б‚ЅЏкЌ‡‚аЃA’P“Ж‚М—v‘f‚Ж‚µ‚Д
-	 * ’З‰Б‚і‚к‚Ь‚·ЃB—v‘f‚Й•Є‰р‚µ‚ДЊ‹Ќ‡‚·‚йЏкЌ‡ЃAconcat, splice ‚рЋg—p‚µ‚Д
-	 * ‰є‚і‚ўЃB
+	 * гЃ“гЃ® JsonArray гЃ®жњЂеѕЊе°ѕ(index гЃЊ size() - 1 гЃ®еѕЊг‚Ќ)гЃ« Jsonizable
+	 * г‚’иїЅеЉ гЃ—гЃѕгЃ™гЂ‚Jsonizable гЃЊ JsonArray гЃ§гЃ‚гЃЈгЃџе ґеђ€г‚‚гЂЃеЌз‹¬гЃ®и¦Ѓзґ гЃЁгЃ—гЃ¦
+	 * иїЅеЉ гЃ•г‚ЊгЃѕгЃ™гЂ‚и¦Ѓзґ гЃ«е€†и§ЈгЃ—гЃ¦зµђеђ€гЃ™г‚‹е ґеђ€гЂЃconcat, splice г‚’дЅїз”ЁгЃ—гЃ¦
+	 * дё‹гЃ•гЃ„гЂ‚
 	 *
-	 * @param	t		’l
-	 * @return	—v‘f‚Є’З‰Б‚і‚к‚Ѕ JsonArray (this)
+	 * @param	t		еЂ¤
+	 * @return	и¦Ѓзґ гЃЊиїЅеЉ гЃ•г‚ЊгЃџ JsonArray (this)
 	 */
 	public JsonArray push(Jsonizable t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃApush ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃpush гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray push(String t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃApush ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃpush гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray push(byte t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃApush ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃpush гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray push(char t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃApush ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃpush гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray push(short t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃApush ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃpush гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray push(int t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃApush ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃpush гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray push(long t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃApush ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃpush гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray push(float t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃApush ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃpush гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray push(double t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃApush ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃpush гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	//public JsonArray push(Jsonizable[] t) {
-	//	throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃApush ‚Е‚«‚Ь‚№‚с");
+	//	throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃpush гЃ§гЃЌгЃѕгЃ›г‚“");
 	//}
 	
 /*
- * pop methods (”z—с‚МЌЕЊг‚М—v‘f‚рЋж“ѕ‚µЃAЌнЏњ)
+ * pop methods (й…Ќе€—гЃ®жњЂеѕЊгЃ®и¦Ѓзґ г‚’еЏ–еѕ—гЃ—гЂЃе‰Љй™¤)
  */
 	/**
-	 * ‚±‚М JsonArray ‚МЌЕЊг”ц(index ‚Є size() - 1)‚М—v‘f‚рЋж“ѕ‚µЃA
-	 * ЌнЏњ‚µ‚Ь‚·ЃB”z—с’·‚Н‚PЏ­‚И‚­‚И‚и‚Ь‚·ЃB
+	 * гЃ“гЃ® JsonArray гЃ®жњЂеѕЊе°ѕ(index гЃЊ size() - 1)гЃ®и¦Ѓзґ г‚’еЏ–еѕ—гЃ—гЂЃ
+	 * е‰Љй™¤гЃ—гЃѕгЃ™гЂ‚й…Ќе€—й•·гЃЇпј‘е°‘гЃЄгЃЏгЃЄг‚ЉгЃѕгЃ™гЂ‚
 	 *
-	 * @return	—v‘f‚ЄЏ­‚И‚­‚И‚Б‚Ѕ JsonArray (this)
+	 * @return	и¦Ѓзґ гЃЊе°‘гЃЄгЃЏгЃЄгЃЈгЃџ JsonArray (this)
 	 */
 	public JsonType pop() {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃApop ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃpop гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	
 /*
- * shift methods (”z—с‚МЌЕЏ‰‚Й’l’З‰Б)
+ * shift methods (й…Ќе€—гЃ®жњЂе€ќгЃ«еЂ¤иїЅеЉ )
  */
 	/**
-	 * ‚±‚М JsonArray ‚МЌЕЏ‰(index ‚Є 0)‚Й—v‘f‚р’З‰Б‚µЃAЊг‘±‚МѓCѓ“ѓfѓbѓNѓX‚р
-	 * +1 ‚µ‚Ь‚·ЃB
+	 * гЃ“гЃ® JsonArray гЃ®жњЂе€ќ(index гЃЊ 0)гЃ«и¦Ѓзґ г‚’иїЅеЉ гЃ—гЂЃеѕЊз¶љгЃ®г‚¤гѓігѓ‡гѓѓг‚Їг‚№г‚’
+	 * +1 гЃ—гЃѕгЃ™гЂ‚
 	 *
-	 * @param	t		’l
-	 * @return	—v‘f‚Є’З‰Б‚і‚к‚Ѕ JsonArray (this)
+	 * @param	t		еЂ¤
+	 * @return	и¦Ѓзґ гЃЊиїЅеЉ гЃ•г‚ЊгЃџ JsonArray (this)
 	 */
 	public JsonArray shift(boolean t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAshift ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃshift гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray shift(Jsonizable t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAshift ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃshift гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray shift(String t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAshift ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃshift гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray shift(byte t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAshift ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃshift гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray shift(char t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAshift ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃshift гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray shift(short t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAshift ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃshift гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray shift(int t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAshift ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃshift гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray shift(long t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAshift ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃshift гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray shift(float t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAshift ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃshift гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray shift(double t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAshift ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃshift гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	public JsonArray shift(Jsonizable[] t) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAshift ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃshift гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	
 /*
- * unshift methods (”z—с‚МЌЕЏ‰‚М—v‘f‚рЋж“ѕ‚µЃAЌнЏњ)
+ * unshift methods (й…Ќе€—гЃ®жњЂе€ќгЃ®и¦Ѓзґ г‚’еЏ–еѕ—гЃ—гЂЃе‰Љй™¤)
  */
 	/**
-	 * ‚±‚М JsonArray ‚МЌЕЏ‰(index ‚Є 0)‚М—v‘f‚рЋж“ѕ‚µЃAЌнЏњ‚µ‚Ь‚·ЃB
-	 * Њг‘±‚М—v‘f‚М index ‚Н -1 ‚і‚кЃA”z—с’·‚Н‚PЏ­‚И‚­‚И‚и‚Ь‚·ЃB
+	 * гЃ“гЃ® JsonArray гЃ®жњЂе€ќ(index гЃЊ 0)гЃ®и¦Ѓзґ г‚’еЏ–еѕ—гЃ—гЂЃе‰Љй™¤гЃ—гЃѕгЃ™гЂ‚
+	 * еѕЊз¶љгЃ®и¦Ѓзґ гЃ® index гЃЇ -1 гЃ•г‚ЊгЂЃй…Ќе€—й•·гЃЇпј‘е°‘гЃЄгЃЏгЃЄг‚ЉгЃѕгЃ™гЂ‚
 	 *
-	 * @return	—v‘f‚ЄЏ­‚И‚­‚И‚Б‚Ѕ JsonArray (this)
+	 * @return	и¦Ѓзґ гЃЊе°‘гЃЄгЃЏгЃЄгЃЈгЃџ JsonArray (this)
 	 */
 	public JsonType unshift() {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAunshift ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃunshift гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * JavaScript ‚Й‚Ё‚Ї‚й slice ‘ЂЌм(•”•Є”z—с‚МђШ‚иЏo‚µ)‚Е‚·ЃB
+	 * JavaScript гЃ«гЃЉгЃ‘г‚‹ slice ж“ЌдЅњ(йѓЁе€†й…Ќе€—гЃ®е€‡г‚Ље‡єгЃ—)гЃ§гЃ™гЂ‚
 	 * 
-	 * @param	s	ѓRѓsЃ[‚·‚йЌЕЏ‰‚МѓCѓ“ѓfѓbѓNѓX(ЉЬ‚Э‚Ь‚·)
-	 * @param	e	ѓRѓsЃ[‚·‚й––”ц‚МѓCѓ“ѓfѓbѓNѓX(ЉЬ‚Э‚Ь‚№‚с)
-	 * @return	ђШ‚иЋж‚Б‚Ѕ JsonArray (—v‘f‚НЋQЏЖ‚Е‚·(shallow copy))
+	 * @param	s	г‚ігѓ”гѓјгЃ™г‚‹жњЂе€ќгЃ®г‚¤гѓігѓ‡гѓѓг‚Їг‚№(еђ«гЃїгЃѕгЃ™)
+	 * @param	e	г‚ігѓ”гѓјгЃ™г‚‹жњ«е°ѕгЃ®г‚¤гѓігѓ‡гѓѓг‚Їг‚№(еђ«гЃїгЃѕгЃ›г‚“)
+	 * @return	е€‡г‚ЉеЏ–гЃЈгЃџ JsonArray (и¦Ѓзґ гЃЇеЏ‚з…§гЃ§гЃ™(shallow copy))
 	 */
 	public JsonArray slice(int s, int e) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAslice ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃslice гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * JavaScript ‚Й‚Ё‚Ї‚й concat (Њ‹Ќ‡ЃA”с”j‰у“I‚ЕЊі‚М’l‚р•Ы‚В) ‚Е‚·ЃB
-	 * JsonArray €ИЉO‚рЋw’и‚·‚й‚ЖЃAClassCastException ‚ЄѓXѓЌЃ[‚і‚к‚Ь‚·ЃB
+	 * JavaScript гЃ«гЃЉгЃ‘г‚‹ concat (зµђеђ€гЂЃйќћз ґеЈЉзљ„гЃ§е…ѓгЃ®еЂ¤г‚’дїќгЃ¤) гЃ§гЃ™гЂ‚
+	 * JsonArray д»Ґе¤–г‚’жЊ‡е®љгЃ™г‚‹гЃЁгЂЃClassCastException гЃЊг‚№гѓ­гѓјгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @param	target	Њ‹Ќ‡‚·‚й JsonArray
-	 * @return	Њ‹Ќ‡Њг‚М JsonArrayЃBЊі‚М JsonArray (this) ‚Н•ПЌX‚і‚к‚Ь‚№‚сЃB
+	 * @param	target	зµђеђ€гЃ™г‚‹ JsonArray
+	 * @return	зµђеђ€еѕЊгЃ® JsonArrayгЂ‚е…ѓгЃ® JsonArray (this) гЃЇе¤‰ж›ґгЃ•г‚ЊгЃѕгЃ›г‚“гЂ‚
 	 */
 	public JsonArray concat(Jsonizable target) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAconcat ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃconcat гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * JavaScript ‚Й‚Ё‚Ї‚й splice (Њp‚¬Ќ‡‚н‚№) ‚Е‚·ЃB
-	 * Њі‚МѓIѓuѓWѓFѓNѓg‚Н push “Ї—l•ПЌX‚і‚к‚Ь‚·(”j‰у“I)ЃB
+	 * JavaScript гЃ«гЃЉгЃ‘г‚‹ splice (з¶™гЃЋеђ€г‚ЏгЃ›) гЃ§гЃ™гЂ‚
+	 * е…ѓгЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃЇ push еђЊж§е¤‰ж›ґгЃ•г‚ЊгЃѕгЃ™(з ґеЈЉзљ„)гЂ‚
 	 *
-	 * @param	index	‘}“ь‚·‚йѓCѓ“ѓfѓbѓNѓX
-	 * @param	delete	‘}“ь‚·‚йѓCѓ“ѓfѓbѓNѓX‚©‚зЌнЏњ‚·‚й—v‘fђ”
-	 * @param	toAdd	index ‚М€К’u‚Й‘}“ь‚·‚й—v‘f(JsonArray) JsonArray ‚Е‚И‚ў
-	 *					ЏкЌ‡ЃA’P€к—v‘f‚Ж‚µ‚Д‘}“ь‚і‚к‚Ь‚·ЃB
-	 * @return	•ПЌXЊг‚МѓCѓ“ѓXѓ^ѓ“ѓX
+	 * @param	index	жЊїе…ҐгЃ™г‚‹г‚¤гѓігѓ‡гѓѓг‚Їг‚№
+	 * @param	delete	жЊїе…ҐгЃ™г‚‹г‚¤гѓігѓ‡гѓѓг‚Їг‚№гЃ‹г‚‰е‰Љй™¤гЃ™г‚‹и¦Ѓзґ ж•°
+	 * @param	toAdd	index гЃ®дЅЌзЅ®гЃ«жЊїе…ҐгЃ™г‚‹и¦Ѓзґ (JsonArray) JsonArray гЃ§гЃЄгЃ„
+	 *					е ґеђ€гЂЃеЌдёЂи¦Ѓзґ гЃЁгЃ—гЃ¦жЊїе…ҐгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * @return	е¤‰ж›ґеѕЊгЃ®г‚¤гѓіг‚№г‚їгѓіг‚№
 	 */
 	public JsonArray splice(int index, int delete, Jsonizable toAdd) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAsplice ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃsplice гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	
 	/**
-	 * JavaScript ‚Й‚Ё‚Ї‚й splice (Њp‚¬Ќ‡‚н‚№) ‚Е‚·ЃB
-	 * Њі‚МѓIѓuѓWѓFѓNѓg‚Н push “Ї—l•ПЌX‚і‚к‚Ь‚·(”j‰у“I)ЃB
-	 * toAdd ‚Ж‚µ‚ДЃAJsonType ‚р‚P‚В‚ѕ‚ЇЋw’и‚µ‚ЅЏкЌ‡ЃAsplice(int,int,Jsonizable)
-	 * ‚ЄЊД‚О‚кЃAJsonType ‚Є JsonArray ‚ѕ‚Б‚ЅЏкЌ‡‚Й”z—с‚М‰рЏњ‚ЄЌs‚н‚к‚Ь‚·ЃB
+	 * JavaScript гЃ«гЃЉгЃ‘г‚‹ splice (з¶™гЃЋеђ€г‚ЏгЃ›) гЃ§гЃ™гЂ‚
+	 * е…ѓгЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃЇ push еђЊж§е¤‰ж›ґгЃ•г‚ЊгЃѕгЃ™(з ґеЈЉзљ„)гЂ‚
+	 * toAdd гЃЁгЃ—гЃ¦гЂЃJsonType г‚’пј‘гЃ¤гЃ гЃ‘жЊ‡е®љгЃ—гЃџе ґеђ€гЂЃsplice(int,int,Jsonizable)
+	 * гЃЊе‘јгЃ°г‚ЊгЂЃJsonType гЃЊ JsonArray гЃ гЃЈгЃџе ґеђ€гЃ«й…Ќе€—гЃ®и§Јй™¤гЃЊиЎЊг‚Џг‚ЊгЃѕгЃ™гЂ‚
 	 *
-	 * @param	index	‘}“ь‚·‚йѓCѓ“ѓfѓbѓNѓX
-	 * @param	delete	ЌнЏњ‚·‚й—v‘fђ”
-	 * @param	toAdd	index ‚М€К’u‚Й‘}“ь‚·‚й•Ўђ”—v‘f
+	 * @param	index	жЊїе…ҐгЃ™г‚‹г‚¤гѓігѓ‡гѓѓг‚Їг‚№
+	 * @param	delete	е‰Љй™¤гЃ™г‚‹и¦Ѓзґ ж•°
+	 * @param	toAdd	index гЃ®дЅЌзЅ®гЃ«жЊїе…ҐгЃ™г‚‹и¤‡ж•°и¦Ѓзґ 
 	 */
 	public JsonArray splice(int index, int delete, Object... toAdd) {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAsplice ‚Е‚«‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃsplice гЃ§гЃЌгЃѕгЃ›г‚“");
 	}
 	/**
-	 * JsonObject ‚Ж‚µ‚Д‚МѓLЃ[(keySet)‚рЋж“ѕ‚µ‚Ь‚·ЃB
+	 * JsonObject гЃЁгЃ—гЃ¦гЃ®г‚­гѓј(keySet)г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
 	 *
-	 * @return	ѓLЃ[ЏWЌ‡(Set<String>)
+	 * @return	г‚­гѓјй›†еђ€(Set<String>)
 	 */
 	public Set<String> keySet() {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAkeySet ‚рЋќ‚ї‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃkeySet г‚’жЊЃгЃЎгЃѕгЃ›г‚“");
 	}
 	
 /*---------------
  * class methods
  */
 	/*
-	 * new JsonObject ‚р“ѕ‚й‚Ѕ‚Я‚М•Ц—ЉЦђ”‚Е‚·ЃB
-	 * •¶Ћљђ”(ѓ^ѓCѓvђ”)‚рЊё‚з‚·–Ъ“I‚ЕђЭ’и‚і‚к‚Д‚ў‚Ь‚·ЃB
-	 * new JsonObject().add("name", "value") ‚р
-	 * JsonType.o("name", "value") ‚ЕЋж“ѕ‚Е‚«‚Ь‚·ЃB
+	 * new JsonObject г‚’еѕ—г‚‹гЃџг‚ЃгЃ®дѕїе€©й–ўж•°гЃ§гЃ™гЂ‚
+	 * ж–‡е­—ж•°(г‚їг‚¤гѓ—ж•°)г‚’жё›г‚‰гЃ™з›®зљ„гЃ§иЁ­е®љгЃ•г‚ЊгЃ¦гЃ„гЃѕгЃ™гЂ‚
+	 * new JsonObject().add("name", "value") г‚’
+	 * JsonType.o("name", "value") гЃ§еЏ–еѕ—гЃ§гЃЌгЃѕгЃ™гЂ‚
 	 *
-	 * @param	name	ѓLЃ[–ј
-	 * @param	t		ѓoѓЉѓ…Ѓ[
-	 * @return	ђV‚µ‚­ђ¶ђ¬‚і‚к‚ЅJsonObject
+	 * @param	name	г‚­гѓјеђЌ
+	 * @param	t		гѓђгѓЄгѓҐгѓј
+	 * @return	ж–°гЃ—гЃЏз”џж€ђгЃ•г‚ЊгЃџJsonObject
 	 */
 	public static JsonObject o(String name, Jsonizable t) {
 		return new JsonObject().put(name, t);
@@ -590,15 +590,15 @@ public abstract class JsonType extends Number
 	}
 	
 	/**
-	 * new JsonArray ‚р“ѕ‚й‚Ѕ‚Я‚М•Ц—ЉЦђ”‚Е‚·ЃBѓ^ѓCѓvђ”‚рЊё‚з‚·–Ъ“I‚Е
-	 * ђЭ’и‚і‚к‚Д‚ў‚Ь‚·ЃB
-	 * new JsonArray().push(5).push("hoe") ‚Ь‚Ѕ‚Н
+	 * new JsonArray г‚’еѕ—г‚‹гЃџг‚ЃгЃ®дѕїе€©й–ўж•°гЃ§гЃ™гЂ‚г‚їг‚¤гѓ—ж•°г‚’жё›г‚‰гЃ™з›®зљ„гЃ§
+	 * иЁ­е®љгЃ•г‚ЊгЃ¦гЃ„гЃѕгЃ™гЂ‚
+	 * new JsonArray().push(5).push("hoe") гЃѕгЃџгЃЇ
 	 * new JsonArray().set(5, "hoe");
-	 * new JsonArray().splice(0,0,5,"hoe") ‚р
+	 * new JsonArray().splice(0,0,5,"hoe") г‚’
 	 * JsonType.a(5, "hoe")
-	 * ‚М‚ж‚¤‚ЙЋж“ѕ‚Е‚«‚Ь‚·ЃB
+	 * гЃ®г‚€гЃ†гЃ«еЏ–еѕ—гЃ§гЃЌгЃѕгЃ™гЂ‚
 	 *
-	 * @param		param	”z—с‚рЌ\ђ¬‚·‚й—v‘f
+	 * @param		param	й…Ќе€—г‚’ж§‹ж€ђгЃ™г‚‹и¦Ѓзґ 
 	 */
 	public static JsonArray a(Object... param) {
 		JsonArray result = new JsonArray();
@@ -615,34 +615,34 @@ public abstract class JsonType extends Number
 			else if (t instanceof Float) result.push((Float)t);
 			else if (t instanceof Double) result.push((Double)t);
 			else if (t instanceof Boolean) result.push((Boolean)t);
-			else throw new ClassCastException(t.getClass() + " ‚Н JsonArray ‚М—v‘f‚ЙЋw’и‚Е‚«‚Ь‚№‚с");
+			else throw new ClassCastException(t.getClass() + " гЃЇ JsonArray гЃ®и¦Ѓзґ гЃ«жЊ‡е®љгЃ§гЃЌгЃѕгЃ›г‚“");
 		}
 		return result;
 	}
 	
 	/**
-	 * Ћw’и‚і‚к‚Ѕ JSON •¶Ћљ—с‚©‚з JsonType ‚рђ¶ђ¬‚µ‚Ь‚·ЃB
-	 * ‚±‚МѓЃѓ\ѓbѓh‚Н‹¤—LЏу‘Ф‚рЋќ‚Ѕ‚ёѓXѓЊѓbѓhѓZЃ[ѓt‚Е‚·ЃB
+	 * жЊ‡е®љгЃ•г‚ЊгЃџ JSON ж–‡е­—е€—гЃ‹г‚‰ JsonType г‚’з”џж€ђгЃ—гЃѕгЃ™гЂ‚
+	 * гЃ“гЃ®гѓЎг‚Ѕгѓѓгѓ‰гЃЇе…±жњ‰зЉ¶ж…‹г‚’жЊЃгЃџгЃљг‚№гѓ¬гѓѓгѓ‰г‚»гѓјгѓ•гЃ§гЃ™гЂ‚
 	 *
-	 * @param	str		JSON •¶Ћљ—с
-	 * @return	Ћw’и‚і‚к‚Ѕ•¶Ћљ—с‚М•\‚· JsonType
+	 * @param	str		JSON ж–‡е­—е€—
+	 * @return	жЊ‡е®љгЃ•г‚ЊгЃџж–‡е­—е€—гЃ®иЎЁгЃ™ JsonType
 	 */
 	public static JsonType parse(String str) {
 		try {
 			return parse(new StringReader(str));
 		} catch (IOException e) {
-			throw new InternalError("StringReader ‚Е IOException ‚Є”­ђ¶‚µ‚Ь‚µ‚Ѕ"+e);
+			throw new InternalError("StringReader гЃ§ IOException гЃЊз™єз”џгЃ—гЃѕгЃ—гЃџ"+e);
 		}
 	}
 	
 	/**
-	 * Ћw’и‚і‚к‚Ѕ Reader ‚©‚з JSON value ‚р‚P‚В“З‚ЭЌћ‚Э‚Ь‚·ЃB
-	 * Reader ‚Н JSON value ЏI—№€К’u‚Ь‚Е“З‚ЭЌћ‚Ь‚кЃAclose() ‚і‚к‚Ь‚№‚сЃB
-	 * Reader ‚Н“а•”“I‚Й PushbackReader ‚Ж‚µ‚Д——p‚і‚к‚Ь‚·ЃB
-	 * ‚±‚МѓЃѓ\ѓbѓh‚Н‹¤—LЏу‘Ф‚рЋќ‚Ѕ‚ёѓXѓЊѓbѓhѓZЃ[ѓt‚Е‚·ЃB
+	 * жЊ‡е®љгЃ•г‚ЊгЃџ Reader гЃ‹г‚‰ JSON value г‚’пј‘гЃ¤иЄ­гЃїиѕјгЃїгЃѕгЃ™гЂ‚
+	 * Reader гЃЇ JSON value зµ‚дє†дЅЌзЅ®гЃѕгЃ§иЄ­гЃїиѕјгЃѕг‚ЊгЂЃclose() гЃ•г‚ЊгЃѕгЃ›г‚“гЂ‚
+	 * Reader гЃЇе†…йѓЁзљ„гЃ« PushbackReader гЃЁгЃ—гЃ¦е€©з”ЁгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * гЃ“гЃ®гѓЎг‚Ѕгѓѓгѓ‰гЃЇе…±жњ‰зЉ¶ж…‹г‚’жЊЃгЃџгЃљг‚№гѓ¬гѓѓгѓ‰г‚»гѓјгѓ•гЃ§гЃ™гЂ‚
 	 *
-	 * @param	in	Json•¶Ћљ—с‚р“ь—Н‚·‚й ReaderЃB
-	 * @return	ђ¶ђ¬‚і‚к‚Ѕ JsonType
+	 * @param	in	Jsonж–‡е­—е€—г‚’е…ҐеЉ›гЃ™г‚‹ ReaderгЂ‚
+	 * @return	з”џж€ђгЃ•г‚ЊгЃџ JsonType
 	 */
 	public static JsonType parse(Reader in) throws IOException {
 		PushbackReader pr = new PushbackReader(in);
@@ -650,8 +650,8 @@ public abstract class JsonType extends Number
 	}
 	
 	/**
-	 * ѓXѓyЃ[ѓX•¶Ћљ‚рѓXѓLѓbѓv‚µ‚Ь‚·ЃB
-	 * ѓXѓyЃ[ѓX•¶Ћљ‚НЃAspace, tab, CR, LF ‚Е‚·ЃB
+	 * г‚№гѓљгѓјг‚№ж–‡е­—г‚’г‚№г‚­гѓѓгѓ—гЃ—гЃѕгЃ™гЂ‚
+	 * г‚№гѓљгѓјг‚№ж–‡е­—гЃЇгЂЃspace, tab, CR, LF гЃ§гЃ™гЂ‚
 	 */
 	private static void skipspaces(PushbackReader pr) throws IOException {
 		while (true) {
@@ -670,8 +670,8 @@ public abstract class JsonType extends Number
 	}
 	
 	/**
-	 * Ћw’и‚і‚к‚Ѕ PushbackReader ‚©‚з JSON value ‚р‚P‚В“З‚ЭЌћ‚ЭЃA
-	 * JsonType ‚Ж‚µ‚Д•Ф‹p‚µ‚Ь‚·ЃB
+	 * жЊ‡е®љгЃ•г‚ЊгЃџ PushbackReader гЃ‹г‚‰ JSON value г‚’пј‘гЃ¤иЄ­гЃїиѕјгЃїгЂЃ
+	 * JsonType гЃЁгЃ—гЃ¦иї”еЌґгЃ—гЃѕгЃ™гЂ‚
 	 */
 	private static JsonType parseValue(PushbackReader pr) throws IOException {
 		skipspaces(pr);
@@ -710,29 +710,29 @@ public abstract class JsonType extends Number
 			}
 		}
 		if (jt == null) {
-			if (c == -1) throw new JsonParseException("ѓXѓgѓЉЃ[ѓЂ‚ЄЏI‚н‚и‚М‚Ѕ‚ЯЃAvalue ‚Є“З‚ЭЌћ‚Я‚Ь‚№‚с");
-			throw new JsonParseException("value ‚Мђж“Є•¶Ћљ‚Є•sђі‚Е‚· : " +
+			if (c == -1) throw new JsonParseException("г‚№гѓ€гѓЄгѓјгѓ гЃЊзµ‚г‚Џг‚ЉгЃ®гЃџг‚ЃгЂЃvalue гЃЊиЄ­гЃїиѕјг‚ЃгЃѕгЃ›г‚“");
+			throw new JsonParseException("value гЃ®е…€й ­ж–‡е­—гЃЊдёЌж­ЈгЃ§гЃ™ : " +
 								(char)c + " / code=" + c);
 		}
 		return jt;
 	}
 	
 	/**
-	 * Ћw’и‚µ‚Ѕ•¶Ћљ—с‚Ж‚И‚Б‚Д‚ў‚й‚±‚Ж‚рѓ`ѓFѓbѓN‚µ‚Ь‚·ЃB
-	 * (”дЉr‚Н‚Q•¶Ћљ–Ъ‚©‚зЌs‚н‚к‚Ь‚·)
-	 * ѓXѓgѓЉЃ[ѓЂ‚МЏI‚н‚и‚рЊџЏo‚µ‚Ѕ‚иЃAЋw’и‚µ‚Ѕ•¶Ћљ—с‚Ж€Щ‚И‚Б‚Д‚ў‚йЏкЌ‡ЃA
-	 * JsonParseException ‚рѓXѓЌЃ[‚µ‚Ь‚·ЃB
+	 * жЊ‡е®љгЃ—гЃџж–‡е­—е€—гЃЁгЃЄгЃЈгЃ¦гЃ„г‚‹гЃ“гЃЁг‚’гѓЃг‚§гѓѓг‚ЇгЃ—гЃѕгЃ™гЂ‚
+	 * (жЇ”ијѓгЃЇпј’ж–‡е­—з›®гЃ‹г‚‰иЎЊг‚Џг‚ЊгЃѕгЃ™)
+	 * г‚№гѓ€гѓЄгѓјгѓ гЃ®зµ‚г‚Џг‚Љг‚’ж¤ње‡єгЃ—гЃџг‚ЉгЂЃжЊ‡е®љгЃ—гЃџж–‡е­—е€—гЃЁз•°гЃЄгЃЈгЃ¦гЃ„г‚‹е ґеђ€гЂЃ
+	 * JsonParseException г‚’г‚№гѓ­гѓјгЃ—гЃѕгЃ™гЂ‚
 	 */
 	private static void expect(PushbackReader pr, String expected) throws IOException {
 		for (int i = 1; i < expected.length(); i++) {
 			int c = pr.read();
-			if (c == -1) throw new JsonParseException("—\Љъ‚µ‚И‚ўЏI—№‚рЊџЏo‚µ‚Ь‚µ‚ЅЃB—\Љъ‚µ‚Ѕ•¶Ћљ—с:"+expected);
-			if (expected.charAt(i) != (char)c) throw new JsonParseException("—\Љъ‚µ‚И‚ў•¶Ћљ‚рЊџЏo‚µ‚Ь‚µ‚Ѕ:"+(char)c+" —\Љъ‚µ‚Ѕ•¶Ћљ:"+expected.charAt(i)+" —\Љъ‚µ‚Ѕ•¶Ћљ—с:"+expected);
+			if (c == -1) throw new JsonParseException("дє€жњџгЃ—гЃЄгЃ„зµ‚дє†г‚’ж¤ње‡єгЃ—гЃѕгЃ—гЃџгЂ‚дє€жњџгЃ—гЃџж–‡е­—е€—:"+expected);
+			if (expected.charAt(i) != (char)c) throw new JsonParseException("дє€жњџгЃ—гЃЄгЃ„ж–‡е­—г‚’ж¤ње‡єгЃ—гЃѕгЃ—гЃџ:"+(char)c+" дє€жњџгЃ—гЃџж–‡е­—:"+expected.charAt(i)+" дє€жњџгЃ—гЃџж–‡е­—е€—:"+expected);
 		}
 	}
 	
 	/**
-	 * ђ”’l‚М‰В”\ђ«‚М‚ ‚йѓgЃ[ѓNѓ“(0-9, -+.eE ‚©‚з‚И‚й•¶Ћљ—с)‚р’ЉЏo‚µ‚Ь‚·ЃB
+	 * ж•°еЂ¤гЃ®еЏЇиѓЅжЂ§гЃ®гЃ‚г‚‹гѓ€гѓјг‚Їгѓі(0-9, -+.eE гЃ‹г‚‰гЃЄг‚‹ж–‡е­—е€—)г‚’жЉЅе‡єгЃ—гЃѕгЃ™гЂ‚
 	 */
 	private static String readNumberToken(PushbackReader pr) throws IOException {
 		StringBuilder result = new StringBuilder();
@@ -751,7 +751,7 @@ public abstract class JsonType extends Number
 	}
 	
 	/**
-	 * ђ”’l‚р“З‚ЭЌћ‚Э‚Ь‚·ЃBђ”’l‚Е‚И‚ўЏкЌ‡ЃAJsonParseException ‚рѓXѓЌЃ[‚µ‚Ь‚·ЃB
+	 * ж•°еЂ¤г‚’иЄ­гЃїиѕјгЃїгЃѕгЃ™гЂ‚ж•°еЂ¤гЃ§гЃЄгЃ„е ґеђ€гЂЃJsonParseException г‚’г‚№гѓ­гѓјгЃ—гЃѕгЃ™гЂ‚
 	 */
 	private static JsonValue parseNumber(PushbackReader pr) throws IOException {
 		String token = readNumberToken(pr);
@@ -764,12 +764,12 @@ public abstract class JsonType extends Number
 				return new JsonValue(v);
 			}
 		} catch (NumberFormatException nfe) {
-			throw new JsonParseException("ђ”’lѓtѓHЃ[ѓ}ѓbѓg€ЩЏн : " + token);
+			throw new JsonParseException("ж•°еЂ¤гѓ•г‚©гѓјгѓћгѓѓгѓ€з•°еёё : " + token);
 		}
 	}
 	
 	/**
-	 * " ‚МЋџ‚М•¶Ћљ‚ЙѓXѓgѓЉЃ[ѓЂ‚Є‚ ‚й‘O’с‚ЕЃA‘±‚­•¶Ћљ—с‚рЋж“ѕ‚µ‚Ь‚·ЃB
+	 * " гЃ®ж¬ЎгЃ®ж–‡е­—гЃ«г‚№гѓ€гѓЄгѓјгѓ гЃЊгЃ‚г‚‹е‰ЌжЏђгЃ§гЂЃз¶љгЃЏж–‡е­—е€—г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
 	 */
 	private static JsonValue parseString(PushbackReader pr) throws IOException {
 		return new JsonValue(readString(pr));
@@ -779,12 +779,12 @@ public abstract class JsonType extends Number
 		StringBuilder result = new StringBuilder();
 		while (true) {
 			int c = pr.read();
-			if (c == -1) throw new JsonParseException("•¶Ћљ—с‚М“r’†‚Е—\Љъ‚µ‚И‚ўЏI—№‚рЊџ’m‚µ‚Ь‚µ‚Ѕ");
+			if (c == -1) throw new JsonParseException("ж–‡е­—е€—гЃ®йЂ”дё­гЃ§дє€жњџгЃ—гЃЄгЃ„зµ‚дє†г‚’ж¤њзџҐгЃ—гЃѕгЃ—гЃџ");
 			if (c == '\"') return result.toString();
-			if (c < 32) throw new JsonParseException("•¶Ћљ—с‚М“r’†‚Е‰ьЌs‚И‚З‚МѓRѓ“ѓgѓЌЃ[ѓ‹ѓRЃ[ѓh‚рЊџ’m‚µ‚Ь‚µ‚ЅЃBcode = " + c);
+			if (c < 32) throw new JsonParseException("ж–‡е­—е€—гЃ®йЂ”дё­гЃ§ж”№иЎЊгЃЄгЃ©гЃ®г‚ігѓігѓ€гѓ­гѓјгѓ«г‚ігѓјгѓ‰г‚’ж¤њзџҐгЃ—гЃѕгЃ—гЃџгЂ‚code = " + c);
 			if (c == '\\') {
 				c = pr.read();
-				if (c == -1) throw new JsonParseException("\\ ‚МЋџ‚Й—\Љъ‚µ‚И‚ўЏI—№‚рЊџ’m‚µ‚Ь‚µ‚Ѕ");
+				if (c == -1) throw new JsonParseException("\\ гЃ®ж¬ЎгЃ«дє€жњџгЃ—гЃЄгЃ„зµ‚дє†г‚’ж¤њзџҐгЃ—гЃѕгЃ—гЃџ");
 				switch (c) {
 				case '\"':	result.append(c); continue;
 				case '\\':	result.append(c); continue;
@@ -801,7 +801,7 @@ public abstract class JsonType extends Number
 						if (c >= '0' && c <= '9') u = 16*u + (c-'0');
 						else if (c >= 'A' && c <= 'F') u = 16*u + (c-'A') +10;
 						else if (c >= 'a' && c <= 'f') u = 16*u + (c-'a') +10;
-						else throw new JsonParseException("\\u‚МЊг‚М•¶Ћљ—с‚Є•sђі‚Е‚· : " + (char)c);
+						else throw new JsonParseException("\\uгЃ®еѕЊгЃ®ж–‡е­—е€—гЃЊдёЌж­ЈгЃ§гЃ™ : " + (char)c);
 					}
 					if (u == 0xfffd) // replacement character
 						result.append("\\ufffd");
@@ -814,13 +814,13 @@ public abstract class JsonType extends Number
 		}
 	}
 	/**
-	 * [ ‚Є‚ ‚й‘O’с(Reader‚МЊ»ЌЭ€К’u‚Н [ ‚МЋџ)‚ЕЃA‘±‚­”z—с‚рЋж“ѕ‚µ‚Ь‚·ЃB
+	 * [ гЃЊгЃ‚г‚‹е‰ЌжЏђ(ReaderгЃ®зЏѕењЁдЅЌзЅ®гЃЇ [ гЃ®ж¬Ў)гЃ§гЂЃз¶љгЃЏй…Ќе€—г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
 	 */
 	private static JsonArray parseArray(PushbackReader pr) throws IOException {
 		skipspaces(pr);
 		int c = pr.read();
 		if (c == ']') {
-			return new JsonArray(); // ‹у‚МJsonArray
+			return new JsonArray(); // з©єгЃ®JsonArray
 		}
 		pr.unread(c);
 		JsonArray result = new JsonArray();
@@ -830,46 +830,46 @@ public abstract class JsonType extends Number
 			result.push(j);
 			skipspaces(pr);
 			c = pr.read();
-			if (c == -1) throw new JsonParseException("”z—с‚МЏI‚и‚М‘O‚ЙЏI—№‚рЊџ’m‚µ‚Ь‚µ‚Ѕ");
+			if (c == -1) throw new JsonParseException("й…Ќе€—гЃ®зµ‚г‚ЉгЃ®е‰ЌгЃ«зµ‚дє†г‚’ж¤њзџҐгЃ—гЃѕгЃ—гЃџ");
 			if (c == ']') {
 				return result;
 			}
-			if (c != ',') throw new JsonParseException("”z—с“а‚Й•sђі‚И•¶Ћљ‚рЊџЏo‚µ‚Ь‚µ‚Ѕ : " + (char)c);
+			if (c != ',') throw new JsonParseException("й…Ќе€—е†…гЃ«дёЌж­ЈгЃЄж–‡е­—г‚’ж¤ње‡єгЃ—гЃѕгЃ—гЃџ : " + (char)c);
 		}
 	}
 	
 	/**
-	 * { ‚Є‚ ‚й‘O’с(Reader‚МЊ»ЌЭ€К’u‚Н { ‚МЋџ)‚ЕЃA‘±‚­ѓIѓuѓWѓFѓNѓg‚рЋж“ѕ
-	 * ‚µ‚Ь‚·ЃB
+	 * { гЃЊгЃ‚г‚‹е‰ЌжЏђ(ReaderгЃ®зЏѕењЁдЅЌзЅ®гЃЇ { гЃ®ж¬Ў)гЃ§гЂЃз¶љгЃЏг‚Єгѓ–г‚ёг‚§г‚Їгѓ€г‚’еЏ–еѕ—
+	 * гЃ—гЃѕгЃ™гЂ‚
 	 */
 	private static JsonObject parseObject(PushbackReader pr) throws IOException {
 		JsonObject result = new JsonObject();
 		skipspaces(pr);
 		int c = pr.read();
-		if (c == '}') return result; // ‹у‚МѓIѓuѓWѓFѓNѓg
+		if (c == '}') return result; // з©єгЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€
 		pr.unread(c);
 		
 		while (true) {
 			skipspaces(pr);
 			c = pr.read();
-			if (c != '\"') throw new JsonParseException("ѓIѓuѓWѓFѓNѓg“а‚М—v‘f–ј‚Є \" ‚ЕЋn‚Ь‚Б‚Д‚ў‚Ь‚№‚с");
+			if (c != '\"') throw new JsonParseException("г‚Єгѓ–г‚ёг‚§г‚Їгѓ€е†…гЃ®и¦Ѓзґ еђЌгЃЊ \" гЃ§е§‹гЃѕгЃЈгЃ¦гЃ„гЃѕгЃ›г‚“");
 			String name = readString(pr);
-			// ‚±‚±‚Е name ‚Ж‚µ‚Д“ь‚Б‚Д‚ў‚Д‚Н‚И‚з‚И‚ў•¶Ћљ‚рѓ`ѓFѓbѓN
-			// -> RFC 7159 ‚Й‚ж‚й‚ЖЃAstring ‚Ж‚ ‚иЃA‚И‚с‚Е‚аOK
-			// Ѓ@Ѓ@“Б‚ЙЃA"." ‚а OK
+			// гЃ“гЃ“гЃ§ name гЃЁгЃ—гЃ¦е…ҐгЃЈгЃ¦гЃ„гЃ¦гЃЇгЃЄг‚‰гЃЄгЃ„ж–‡е­—г‚’гѓЃг‚§гѓѓг‚Ї
+			// -> RFC 7159 гЃ«г‚€г‚‹гЃЁгЂЃstring гЃЁгЃ‚г‚ЉгЂЃгЃЄг‚“гЃ§г‚‚OK
+			// гЂЂгЂЂз‰№гЃ«гЂЃ"." г‚‚ OK
 			skipspaces(pr);
 			c = pr.read();
-			if (c == -1) throw new JsonParseException("ѓIѓuѓWѓFѓNѓg‚М—v‘f–ј‚МЊг‚Й—\Љъ‚µ‚И‚ўЏI—№‚рЊџ’m‚µ‚Ь‚µ‚Ѕ");
-			if (c != ':') throw new JsonParseException("ѓIѓuѓWѓFѓNѓg‚М—v‘f–ј‚МЊг‚Й—\Љъ‚µ‚И‚ў•¶Ћљ‚рЊџ’m‚µ‚Ь‚µ‚Ѕ : "+(char)c);
+			if (c == -1) throw new JsonParseException("г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ®и¦Ѓзґ еђЌгЃ®еѕЊгЃ«дє€жњџгЃ—гЃЄгЃ„зµ‚дє†г‚’ж¤њзџҐгЃ—гЃѕгЃ—гЃџ");
+			if (c != ':') throw new JsonParseException("г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ®и¦Ѓзґ еђЌгЃ®еѕЊгЃ«дє€жњџгЃ—гЃЄгЃ„ж–‡е­—г‚’ж¤њзџҐгЃ—гЃѕгЃ—гЃџ : "+(char)c);
 			skipspaces(pr);
 			JsonType jt = parseValue(pr);
 			result.add(name, jt);
 			skipspaces(pr);
 			c = pr.read();
-			if (c == -1) throw new JsonParseException("ѓIѓuѓWѓFѓNѓg‚МЏI‚и‚М‘O‚Й—\Љъ‚µ‚И‚ўЏI—№‚рЊџ’m‚µ‚Ь‚µ‚Ѕ");
+			if (c == -1) throw new JsonParseException("г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ®зµ‚г‚ЉгЃ®е‰ЌгЃ«дє€жњџгЃ—гЃЄгЃ„зµ‚дє†г‚’ж¤њзџҐгЃ—гЃѕгЃ—гЃџ");
 			if (c == ',') continue;
 			if (c == '}') return result;
-			throw new JsonParseException("ѓIѓuѓWѓFѓNѓg“а‚Й•sђі‚И•¶Ћљ‚рЊџЏo‚µ‚Ь‚µ‚Ѕ : " + (char)c);
+			throw new JsonParseException("г‚Єгѓ–г‚ёг‚§г‚Їгѓ€е†…гЃ«дёЌж­ЈгЃЄж–‡е­—г‚’ж¤ње‡єгЃ—гЃѕгЃ—гЃџ : " + (char)c);
 		}
 	}
 
@@ -878,16 +878,16 @@ public abstract class JsonType extends Number
  */
 	@Override
 	public java.util.Iterator<JsonType> iterator() {
-		throw new ClassCastException("‚±‚М JsonType ‚Н " + getClass() + " ‚М‚Ѕ‚ЯЃAiterator ‚рЋќ‚ї‚Ь‚№‚с");
+		throw new ClassCastException("гЃ“гЃ® JsonType гЃЇ " + getClass() + " гЃ®гЃџг‚ЃгЂЃiterator г‚’жЊЃгЃЎгЃѕгЃ›г‚“");
 	}
 	
 /*------------------------
  * implements(Jsonizable)
  */
 	/**
-	 * JsonType ‚Е‚Н toJson() ‚Н‚±‚МѓIѓuѓWѓFѓNѓgЋ©ђg‚р•Ф‹p‚µ‚Ь‚·ЃB
+	 * JsonType гЃ§гЃЇ toJson() гЃЇгЃ“гЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€и‡Єиє«г‚’иї”еЌґгЃ—гЃѕгЃ™гЂ‚
 	 *
-	 * @return	‚±‚МѓIѓuѓWѓFѓNѓg
+	 * @return	гЃ“гЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€
 	 */
 	@Override
 	public JsonType toJson() {
@@ -895,45 +895,45 @@ public abstract class JsonType extends Number
 	}
 	
 	/**
-	 * JSON •¶Ћљ—с•\Њ»‚р•Ф‹p‚µ‚Ь‚·ЃB
-	 * toString() ‚М•¶Ћљ—с•\Њ»‚НЃA‰ьЌs‚вѓXѓyЃ[ѓX•¶Ћљ‚рЉЬ‚Ь‚И‚ў JSON Њ`Ћ®‚Е‚·ЃB
-	 * string Њ^ (JsonValue ‚Е•ЫЋќ‚·‚й’l‚Є String ‚МЏкЌ‡) ‚Е‚Н
-	 * Њ‹‰К‚Н ""(ѓ_ѓuѓ‹ѓNѓIЃ[ѓeЃ[ѓVѓ‡ѓ“) ‚ЕЉ‡‚з‚к‚й‚±‚Ж‚Й’Ќ€У‚µ‚Д‚­‚ѕ‚і‚ўЃB
+	 * JSON ж–‡е­—е€—иЎЁзЏѕг‚’иї”еЌґгЃ—гЃѕгЃ™гЂ‚
+	 * toString() гЃ®ж–‡е­—е€—иЎЁзЏѕгЃЇгЂЃж”№иЎЊг‚„г‚№гѓљгѓјг‚№ж–‡е­—г‚’еђ«гЃѕгЃЄгЃ„ JSON еЅўејЏгЃ§гЃ™гЂ‚
+	 * string ећ‹ (JsonValue гЃ§дїќжЊЃгЃ™г‚‹еЂ¤гЃЊ String гЃ®е ґеђ€) гЃ§гЃЇ
+	 * зµђжћњгЃЇ ""(гѓЂгѓ–гѓ«г‚Їг‚Єгѓјгѓ†гѓјг‚·гѓ§гѓі) гЃ§ж‹¬г‚‰г‚Њг‚‹гЃ“гЃЁгЃ«жіЁж„ЏгЃ—гЃ¦гЃЏгЃ гЃ•гЃ„гЂ‚
 	 *
-	 * @return	‚±‚МѓIѓuѓWѓFѓNѓg‚М JSON Њ`Ћ®(•¶Ћљ—с)
+	 * @return	гЃ“гЃ®г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ® JSON еЅўејЏ(ж–‡е­—е€—)
 	 */
 	@Override
 	public abstract String toString();
 	
 	/**
-	 * Ћw’и‚і‚к‚Ѕ•¶Ћљ—с‚ЄЃAJSON ‚Й‚Ё‚Ї‚й‹у”’•¶Ћљ(space, tab, CR, LF)
-	 * ‚М‚Э‚©‚з‚И‚й‚©‚рѓ`ѓFѓbѓN‚µ‚Ь‚·ЃB
-	 * €Щ‚И‚й•¶Ћљ‚ЄЉЬ‚Ь‚к‚йЏкЌ‡ЃAIllegalArgumentException ‚рѓXѓЌЃ[‚µ‚Ь‚·ЃB
+	 * жЊ‡е®љгЃ•г‚ЊгЃџж–‡е­—е€—гЃЊгЂЃJSON гЃ«гЃЉгЃ‘г‚‹з©єз™Ѕж–‡е­—(space, tab, CR, LF)
+	 * гЃ®гЃїгЃ‹г‚‰гЃЄг‚‹гЃ‹г‚’гѓЃг‚§гѓѓг‚ЇгЃ—гЃѕгЃ™гЂ‚
+	 * з•°гЃЄг‚‹ж–‡е­—гЃЊеђ«гЃѕг‚Њг‚‹е ґеђ€гЂЃIllegalArgumentException г‚’г‚№гѓ­гѓјгЃ—гЃѕгЃ™гЂ‚
 	 *
-	 * @throws	IllegalArgumentException	Ћw’и‚і‚к‚Ѕ•¶Ћљ‚Є JSON ‹у”’•¶Ћљ€ИЉO‚р
-	 *										ЉЬ‚с‚Е‚ў‚й‚Ж‚«
+	 * @throws	IllegalArgumentException	жЊ‡е®љгЃ•г‚ЊгЃџж–‡е­—гЃЊ JSON з©єз™Ѕж–‡е­—д»Ґе¤–г‚’
+	 *										еђ«г‚“гЃ§гЃ„г‚‹гЃЁгЃЌ
 	 */
 	void checkIndentIsWhiteSpace(String indent) {
 		int len = indent.length();
-		// ’x‚ўЋА‘•ЃBђl‚ЄЊ©‚й•¶Ћљ—с‚М‚Ѕ‚ЯЃAѓRЃ[ѓ‹‰сђ”‚НЏ­‚И‚ў‚Ж‘z’иЃB
-		// check ЌП‚Э‚М String ѓIѓuѓWѓFѓNѓg‚©‚З‚¤‚©‚р”»’и‚µ‚Ѕ‚Щ‚¤‚Є
-		// ‘Ѓ‚ў‰В”\ђ«‚Є‚ ‚йЃBtoCharArray ‚ж‚и charAt ‚М•ы‚Є‘¬‚»‚¤ЃB
+		// йЃ…гЃ„е®џиЈ…гЂ‚дєєгЃЊи¦‹г‚‹ж–‡е­—е€—гЃ®гЃџг‚ЃгЂЃг‚ігѓјгѓ«е›ћж•°гЃЇе°‘гЃЄгЃ„гЃЁжѓіе®љгЂ‚
+		// check жё€гЃїгЃ® String г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ‹гЃ©гЃ†гЃ‹г‚’е€¤е®љгЃ—гЃџгЃ»гЃ†гЃЊ
+		// ж—©гЃ„еЏЇиѓЅжЂ§гЃЊгЃ‚г‚‹гЂ‚toCharArray г‚€г‚Љ charAt гЃ®ж–№гЃЊйЂџгЃќгЃ†гЂ‚
 		for (int i = 0; i < len; i++) {
 			char c = indent.charAt(i);
 			if (c == ' ' || c == '\t' || c == '\r' || c == '\n') continue;
-			throw new IllegalArgumentException("indent ‚ЙЋw’и‚Е‚«‚й‚М‚НЃAJSON ‚Е‚М‹у”’•¶Ћљ‚М‚Э‚Е‚·ЃBЋw’и‚і‚к‚Ѕ indent = " + indent);
+			throw new IllegalArgumentException("indent гЃ«жЊ‡е®љгЃ§гЃЌг‚‹гЃ®гЃЇгЂЃJSON гЃ§гЃ®з©єз™Ѕж–‡е­—гЃ®гЃїгЃ§гЃ™гЂ‚жЊ‡е®љгЃ•г‚ЊгЃџ indent = " + indent);
 		}
 	}
 	
 	/**
-	 * ђl‚ЄЊ©‚в‚·‚ўѓCѓ“ѓfѓ“ѓg‚рЉЬ‚с‚ѕ JSON Њ`Ћ®‚Е•¶Ћљ—с‰»‚µ‚Ь‚·ЃB
-	 * ЌЕ‘е‰Ў•ќ‚НѓfѓtѓHѓ‹ѓg’l(80)‚ЄђЭ’и‚і‚к‚Ь‚·ЃB
-	 * ЌЕ‘е‰Ў•ќ‚Н JsonArray, JsonObject ‚МЉe—v‘f‚ЄЋы‚Ь‚йЏкЌ‡‚Й€кЌs‰»‚·‚й•ќ
-	 * ‚Е‚ ‚иЃA‚·‚Ч‚Д‚МЌs‚ЄЌЕ‘е‰Ў•ќ€И“а‚ЙЋы‚Ь‚й‚н‚Ї‚Е‚Н‚ ‚и‚Ь‚№‚сЃB
-	 * (JSON ‚Е‚Н•¶Ћљ—с—v‘f‚М“r’†‰ьЌs‹L–@‚Є‚ ‚и‚Ь‚№‚с)
+	 * дєєгЃЊи¦‹г‚„гЃ™гЃ„г‚¤гѓігѓ‡гѓігѓ€г‚’еђ«г‚“гЃ  JSON еЅўејЏгЃ§ж–‡е­—е€—еЊ–гЃ—гЃѕгЃ™гЂ‚
+	 * жњЂе¤§жЁЄе№…гЃЇгѓ‡гѓ•г‚©гѓ«гѓ€еЂ¤(80)гЃЊиЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * жњЂе¤§жЁЄе№…гЃЇ JsonArray, JsonObject гЃ®еђ„и¦Ѓзґ гЃЊеЏЋгЃѕг‚‹е ґеђ€гЃ«дёЂиЎЊеЊ–гЃ™г‚‹е№…
+	 * гЃ§гЃ‚г‚ЉгЂЃгЃ™гЃ№гЃ¦гЃ®иЎЊгЃЊжњЂе¤§жЁЄе№…д»Ґе†…гЃ«еЏЋгЃѕг‚‹г‚ЏгЃ‘гЃ§гЃЇгЃ‚г‚ЉгЃѕгЃ›г‚“гЂ‚
+	 * (JSON гЃ§гЃЇж–‡е­—е€—и¦Ѓзґ гЃ®йЂ”дё­ж”№иЎЊиЁжі•гЃЊгЃ‚г‚ЉгЃѕгЃ›г‚“)
 	 *
-	 * @param	indent	ѓCѓ“ѓfѓ“ѓg(•Ўђ”‚МѓXѓyЃ[ѓX‚вѓ^ѓu)
-	 * @return	ѓCѓ“ѓfѓ“ѓgЃA‰ьЌs‚рЉЬ‚Ю JSON •¶Ћљ—с
+	 * @param	indent	г‚¤гѓігѓ‡гѓігѓ€(и¤‡ж•°гЃ®г‚№гѓљгѓјг‚№г‚„г‚їгѓ–)
+	 * @return	г‚¤гѓігѓ‡гѓігѓ€гЂЃж”№иЎЊг‚’еђ«г‚Ђ JSON ж–‡е­—е€—
 	 */
 	@Override
 	public String toString(String indent) {
@@ -941,16 +941,16 @@ public abstract class JsonType extends Number
 	}
 	
 	/**
-	 * ђl‚ЄЊ©‚в‚·‚ўѓCѓ“ѓfѓ“ѓg‚рЉЬ‚с‚ѕ JSON Њ`Ћ®‚Е•¶Ћљ—с‰»‚µ‚Ь‚·ЃB
-	 * JsonObject, JsonArray ’l‚р€кЌs‚Е•\‚№‚й‚И‚з‰ьЌs‚і‚№‚И‚ў‚Ѕ‚Я‚МЃA€кЌs‚М
-	 * •¶Ћљђ”‚рЋw’и‚µ‚Ь‚·ЃB
+	 * дєєгЃЊи¦‹г‚„гЃ™гЃ„г‚¤гѓігѓ‡гѓігѓ€г‚’еђ«г‚“гЃ  JSON еЅўејЏгЃ§ж–‡е­—е€—еЊ–гЃ—гЃѕгЃ™гЂ‚
+	 * JsonObject, JsonArray еЂ¤г‚’дёЂиЎЊгЃ§иЎЁгЃ›г‚‹гЃЄг‚‰ж”№иЎЊгЃ•гЃ›гЃЄгЃ„гЃџг‚ЃгЃ®гЂЃдёЂиЎЊгЃ®
+	 * ж–‡е­—ж•°г‚’жЊ‡е®љгЃ—гЃѕгЃ™гЂ‚
 	 *
-	 * @param	indent		ѓCѓ“ѓfѓ“ѓg(•Ўђ”‚МѓXѓyЃ[ѓX‚вѓ^ѓu)
-	 * @param	textwidth	object, array ‚ЙЉЦ‚µЃA‚±‚М•¶Ћљђ”‚ЙЋы‚Ь‚йЏкЌ‡
-	 *						•Ўђ”Ќs‚Й•Є‚Ї‚И‚ўЏ€—ќ‚рЌs‚¤‚Ѕ‚Я‚Ми‡’lЃB
-	 *						0 €И‰є‚рЋw’и‚·‚й‚ЖЃA€кЌs‰»‚рЋЋ‚Э‚ёЃAЏн‚Й•Ўђ”Ќs‰»
-	 *						‚і‚к‚Ь‚·ЃB(‚±‚М•ы‚ЄЌ‚‘¬)
-	 * @return	ѓCѓ“ѓfѓ“ѓgЃA‰ьЌs‚рЉЬ‚Ю JSON •¶Ћљ—с
+	 * @param	indent		г‚¤гѓігѓ‡гѓігѓ€(и¤‡ж•°гЃ®г‚№гѓљгѓјг‚№г‚„г‚їгѓ–)
+	 * @param	textwidth	object, array гЃ«й–ўгЃ—гЂЃгЃ“гЃ®ж–‡е­—ж•°гЃ«еЏЋгЃѕг‚‹е ґеђ€
+	 *						и¤‡ж•°иЎЊгЃ«е€†гЃ‘гЃЄгЃ„е‡¦зђ†г‚’иЎЊгЃ†гЃџг‚ЃгЃ®й–ѕеЂ¤гЂ‚
+	 *						0 д»Ґдё‹г‚’жЊ‡е®љгЃ™г‚‹гЃЁгЂЃдёЂиЎЊеЊ–г‚’и©¦гЃїгЃљгЂЃеёёгЃ«и¤‡ж•°иЎЊеЊ–
+	 *						гЃ•г‚ЊгЃѕгЃ™гЂ‚(гЃ“гЃ®ж–№гЃЊй«йЂџ)
+	 * @return	г‚¤гѓігѓ‡гѓігѓ€гЂЃж”№иЎЊг‚’еђ«г‚Ђ JSON ж–‡е­—е€—
 	 */
 	@Override
 	public final String toString(String indent, int textwidth) {
@@ -959,28 +959,28 @@ public abstract class JsonType extends Number
 	
 	
 	/**
-	 * ђl‚ЄЊ©‚в‚·‚ўѓCѓ“ѓfѓ“ѓg‚рЉЬ‚с‚ѕJSONЊ`Ћ®‚Е•¶Ћљ—с‰»‚µ‚Ь‚·ЃB
-	 * ѓCѓ“ѓfѓ“ѓg‚рѓTѓ|Ѓ[ѓg‚·‚й‚Ѕ‚ЯЃAЊ»ЌЭ‚МѓCѓ“ѓfѓ“ѓg‚рЋ¦‚· indent,
-	 * Ћџ‚МѓCѓ“ѓfѓ“ѓg‚рЌм‚й‚Ѕ‚Я‚М indentStep, Ќs‚Є’·‚­‚И‚з‚И‚ўЏкЌ‡‚Й
-	 * €кЌs‰»‚·‚й‚Ѕ‚Я‚М textwidth, JsonObject ‚Й‚Ї‚й "name" : Њг‚Й
-	 * { ‚р“ЇЌs‚Й”z’u‚·‚й“Б—бЏ€—ќ‚р‚·‚й‚Ѕ‚Я‚Мѓtѓ‰ѓO(objElement)‚р
-	 * Ћќ‚Б‚Д‚ў‚Ь‚·ЃB
-	 * •Ўђ”Ќs‚Й•Є‚Ї‚й‚Ѕ‚Я‚М‰ьЌsѓRЃ[ѓh‚НЃAJsonType.LS ‚Ж‚µ‚Д•ЫЋќ‚і‚к‚Д‚ў‚Ь‚·ЃB
+	 * дєєгЃЊи¦‹г‚„гЃ™гЃ„г‚¤гѓігѓ‡гѓігѓ€г‚’еђ«г‚“гЃ JSONеЅўејЏгЃ§ж–‡е­—е€—еЊ–гЃ—гЃѕгЃ™гЂ‚
+	 * г‚¤гѓігѓ‡гѓігѓ€г‚’г‚µгѓќгѓјгѓ€гЃ™г‚‹гЃџг‚ЃгЂЃзЏѕењЁгЃ®г‚¤гѓігѓ‡гѓігѓ€г‚’з¤єгЃ™ indent,
+	 * ж¬ЎгЃ®г‚¤гѓігѓ‡гѓігѓ€г‚’дЅњг‚‹гЃџг‚ЃгЃ® indentStep, иЎЊгЃЊй•·гЃЏгЃЄг‚‰гЃЄгЃ„е ґеђ€гЃ«
+	 * дёЂиЎЊеЊ–гЃ™г‚‹гЃџг‚ЃгЃ® textwidth, JsonObject гЃ«гЃ‘г‚‹ "name" : еѕЊгЃ«
+	 * { г‚’еђЊиЎЊгЃ«й…ЌзЅ®гЃ™г‚‹з‰№дѕ‹е‡¦зђ†г‚’гЃ™г‚‹гЃџг‚ЃгЃ®гѓ•гѓ©г‚°(objElement)г‚’
+	 * жЊЃгЃЈгЃ¦гЃ„гЃѕгЃ™гЂ‚
+	 * и¤‡ж•°иЎЊгЃ«е€†гЃ‘г‚‹гЃџг‚ЃгЃ®ж”№иЎЊг‚ігѓјгѓ‰гЃЇгЂЃJsonType.LS гЃЁгЃ—гЃ¦дїќжЊЃгЃ•г‚ЊгЃ¦гЃ„гЃѕгЃ™гЂ‚
 	 * <pre>
 	 *
-	 * [indent]*ЉJЋn€К’u(objElement==true ‚МЋћ‚Н indent ‚р‚В‚Ї‚И‚ў)
-	 * [indent][indentStep]*ѓCѓ“ѓfѓ“ѓg•t‚МЋџ‚МЌs‚МЉJЋn€К’u
-	 * -------------------------(textwidth‚Ь‚Е‚Н€кЌs‰»‚і‚к‚й‚±‚Ж‚ ‚и)-----
+	 * [indent]*й–‹е§‹дЅЌзЅ®(objElement==true гЃ®ж™‚гЃЇ indent г‚’гЃ¤гЃ‘гЃЄгЃ„)
+	 * [indent][indentStep]*г‚¤гѓігѓ‡гѓігѓ€д»гЃ®ж¬ЎгЃ®иЎЊгЃ®й–‹е§‹дЅЌзЅ®
+	 * -------------------------(textwidthгЃѕгЃ§гЃЇдёЂиЎЊеЊ–гЃ•г‚Њг‚‹гЃ“гЃЁгЃ‚г‚Љ)-----
 	 * </pre>
 	 * 
-	 * @param	indent		ѓCѓ“ѓfѓ“ѓg(‚ў‚­‚В‚©‚МѓXѓyЃ[ѓX)
-	 * @param	indentStep	ѓCѓ“ѓfѓ“ѓg€к‰с•Є‚МѓXѓyЃ[ѓX‚вѓ^ѓu
-	 * @param	textwidth	object, array ‚ЙЉЦ‚µЃA‚±‚М•¶Ћљђ”‚ЙЋы‚Ь‚йЏкЌ‡
-	 *						•Ўђ”Ќs‚Й•Є‚Ї‚И‚ўЏ€—ќ‚рЌs‚¤‚Ѕ‚Я‚Ми‡’lЃB
-	 *						0 €И‰є‚рЋw’и‚·‚й‚ЖЃA€кЌs‰»‚рЋЋ‚Э‚ёЃAЏн‚Й•Ўђ”Ќs‰»
-	 *						‚і‚к‚Ь‚·ЃB(‚±‚М•ы‚ЄЌ‚‘¬)
-	 * @param	objElement	true..ѓIѓuѓWѓFѓNѓg‚М—v‘f–ј‚МЊг‚л
-	 * @return	‰ьЌsЃAѓXѓyЃ[ѓX‚И‚З‚рЉЬ‚Ю String
+	 * @param	indent		г‚¤гѓігѓ‡гѓігѓ€(гЃ„гЃЏгЃ¤гЃ‹гЃ®г‚№гѓљгѓјг‚№)
+	 * @param	indentStep	г‚¤гѓігѓ‡гѓігѓ€дёЂе›ће€†гЃ®г‚№гѓљгѓјг‚№г‚„г‚їгѓ–
+	 * @param	textwidth	object, array гЃ«й–ўгЃ—гЂЃгЃ“гЃ®ж–‡е­—ж•°гЃ«еЏЋгЃѕг‚‹е ґеђ€
+	 *						и¤‡ж•°иЎЊгЃ«е€†гЃ‘гЃЄгЃ„е‡¦зђ†г‚’иЎЊгЃ†гЃџг‚ЃгЃ®й–ѕеЂ¤гЂ‚
+	 *						0 д»Ґдё‹г‚’жЊ‡е®љгЃ™г‚‹гЃЁгЂЃдёЂиЎЊеЊ–г‚’и©¦гЃїгЃљгЂЃеёёгЃ«и¤‡ж•°иЎЊеЊ–
+	 *						гЃ•г‚ЊгЃѕгЃ™гЂ‚(гЃ“гЃ®ж–№гЃЊй«йЂџ)
+	 * @param	objElement	true..г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ®и¦Ѓзґ еђЌгЃ®еѕЊг‚Ќ
+	 * @return	ж”№иЎЊгЂЃг‚№гѓљгѓјг‚№гЃЄгЃ©г‚’еђ«г‚Ђ String
 	 */
 	protected abstract String toString(String indent, String indentStep,
 						int textwidth, boolean objElement);
