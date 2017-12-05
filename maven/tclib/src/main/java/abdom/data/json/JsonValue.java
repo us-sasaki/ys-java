@@ -59,6 +59,7 @@ public class JsonValue extends JsonType {
 			case '\'':	sb.append("\\\'");	break;
 			case '\"':	sb.append("\\\"");	break;
 			case '\\':	sb.append("\\\\");	break;
+//			case '\ufffd': sb.append("\\ufffd"); break;
 			default:
 				sb.append(c);
 			}
