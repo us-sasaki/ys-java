@@ -281,6 +281,13 @@ public class Rest {
 	}
 	
 	/**
+	 * 指定された文字列に + が含まれる場合、%2B に置換します。
+	 */
+	private static String convLocation(String target) {
+		return target.replace("+", "%2B");
+	}
+	
+	/**
 	 * Httpリクエストの実処理を行います。
 	 * Cumulocity 固有のヘッダを付加します。
 	 *
@@ -301,6 +308,7 @@ public class Rest {
 								String contentType, String accept,
 								byte[] body) throws IOException {
 		URL url = null;
+		location = convLocation(location);
 		if (location.startsWith("http://") ||
 				location.startsWith("https://")) {
 			url = new URL(location);

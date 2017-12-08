@@ -99,7 +99,7 @@ public class JsonValue extends JsonType {
 				case '\"':	sb.append('\"');	break;
 				case '\\':	sb.append('\\');	break;
 				case 'u':
-					if (i+4 >= value.length()) throw new InternalError();
+					if (i+4 > value.length()) throw new InternalError();
 					String hex = value.substring(i+1, i+5);
 					i += 5;
 					char u = (char)Integer.parseInt(hex, 16);

@@ -803,9 +803,9 @@ public abstract class JsonType extends Number
 						else if (c >= 'a' && c <= 'f') u = 16*u + (c-'a') +10;
 						else throw new JsonParseException("\\uの後の文字列が不正です : " + (char)c);
 					}
-					if (u == 0xfffd) // replacement character
-						result.append("\\ufffd");
-					else
+//					if (u == 0xfffd) // replacement character
+//						result.append("\\ufffd");
+//					else
 						result.append((char)u);
 					continue;
 				}

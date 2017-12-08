@@ -219,6 +219,18 @@ public class API {
 		Response resp = rest.post("/identity/globalIds/"+id+"/externalIds", "externalId", jo);
 	}
 	
+	/**
+	 * 指定された type, 外部ID を削除します。 
+	 *
+	 * @param	type	external ID の type (c8y_Serial等)
+	 * @param	externalId	external ID の値
+	 */
+	public void deleteExternalID(String type, String externalId)
+				throws IOException {
+		Response resp = rest.delete("/identity/externalIds/" + type +
+										"/" + externalId);
+	}
+	
 /*---------------
  * Inventory API
  */
@@ -275,9 +287,9 @@ public class API {
 		jo.put("c8y_Position.lat", lat);
 		jo.put("c8y_Position.lng", lng);
 		jo.put("c8y_Position.alt", alt);
-		//System.out.println(jo.toString("  "));
 		
-		Response resp = rest.put("/inventory/managedObjects/" + id, "managedObject", jo);
+		Response resp = rest.put("/inventory/managedObjects/" + id,
+									"managedObject", jo);
 	}
 	
 	/**
@@ -287,7 +299,8 @@ public class API {
 	 * @return	ManagedObject
 	 */
 	public ManagedObject readManagedObject(String id) throws IOException {
-		Response resp = rest.get("/inventory/managedObjects/"+id, "managedObject");
+		Response resp = rest.get("/inventory/managedObjects/"+id,
+									"managedObject");
 		return Jsonizer.fromJson(resp, ManagedObject.class);
 	}
 	
