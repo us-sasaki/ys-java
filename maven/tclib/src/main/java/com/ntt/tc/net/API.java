@@ -53,11 +53,11 @@ public class API {
  */
 	public API(Rest rest) {
 		this.rest = rest;
+		bootstrapRest = new Rest(location, "management", new String(Base64.decodeFromString(BUSR)), new String(Base64.decodeFromString(BPSS)));
 	}
 	
 	public API(String location, String tenant, String user, String pass) {
-		this.rest = new Rest(location, tenant, user, pass);
-		this.bootstrapRest = new Rest(location, "management", new String(Base64.decodeFromString(BUSR)), new String(Base64.decodeFromString(BPSS)));
+		this(new Rest(location, tenant, user, pass));
 	}
 	
 	public API(Map<String, String> account) {
