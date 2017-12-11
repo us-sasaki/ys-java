@@ -147,6 +147,13 @@ public class Rest {
  * instance methods
  */
 	/**
+	 * REST を提供する URL を取得します。
+	 */
+	public String getLocation() {
+		return urlStr;
+	}
+	
+	/**
 	 * アプリケーションキーを設定します。
 	 */
 	public void setApplicationKey(String key) {

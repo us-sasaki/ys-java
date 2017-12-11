@@ -37,4 +37,8 @@ public class TC_Boolean extends C8yValue {
 		this.value = value;
 	}
 	
+	public boolean booleanValue() {
+		return value;
+	}
+	
 }

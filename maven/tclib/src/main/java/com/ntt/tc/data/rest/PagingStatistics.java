@@ -1,6 +1,7 @@
 package com.ntt.tc.data.rest;
 
 import com.ntt.tc.data.C8yData;
+import com.ntt.tc.data.TC_Int;
 
 /**
  * PagingStatistics class
@@ -13,7 +14,7 @@ public class PagingStatistics extends C8yData {
 	 * Occurs : 1
 	 * </pre>
 	 */
-	public int totalRecords;
+	public TC_Int totalPages;
 	
 	/**
 	 * Maximum number of records contained in this query.

@@ -17,6 +17,18 @@ public class TC_Int extends C8yValue {
 	protected int value;
 	protected JsonValue cachedValue = null;
 	
+	public TC_Int() {
+		value = 0;
+	}
+	
+	public TC_Int(int value) {
+		this.value = value;
+	}
+	
+	public int intValue() {
+		return value;
+	}
+	
 	public void fill(Jsonizable arg) {
 		JsonType jt = arg.toJson();
 		if (jt.getType() != JsonType.TYPE_INT)
@@ -30,17 +42,4 @@ public class TC_Int extends C8yValue {
 		if (cachedValue == null) cachedValue = new JsonValue(value);
 		return cachedValue;
 	}
-	
-	public TC_Int() {
-		value = 0;
-	}
-	
-	public TC_Int(int value) {
-		this.value = value;
-	}
-	
-	public int intValue() {
-		return value;
-	}
-	
 }

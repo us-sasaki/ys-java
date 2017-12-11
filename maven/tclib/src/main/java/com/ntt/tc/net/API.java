@@ -53,7 +53,7 @@ public class API {
  */
 	public API(Rest rest) {
 		this.rest = rest;
-		bootstrapRest = new Rest(location, "management", new String(Base64.decodeFromString(BUSR)), new String(Base64.decodeFromString(BPSS)));
+		bootstrapRest = new Rest(rest.getLocation(), "management", new String(Base64.decodeFromString(BUSR)), new String(Base64.decodeFromString(BPSS)));
 	}
 	
 	public API(String location, String tenant, String user, String pass) {
@@ -73,7 +73,7 @@ public class API {
 	public Rest getRest() {
 		return rest;
 	}
-
+	
 /*------------
  * Device API
  */
