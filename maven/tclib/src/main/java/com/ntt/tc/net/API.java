@@ -70,8 +70,22 @@ public class API {
 /*------------------
  * instance methods
  */
+	/**
+	 * 保持している REST オブジェクトを返却します。
+	 *
+	 * @return REST オブジェクト
+	 */
 	public Rest getRest() {
 		return rest;
+	}
+	
+	/**
+	 * 保持している Bootstrap 用の REST オブジェクトを返却します。
+	 *
+	 * @return	REST と同一ドメインに対する Bootstrap 用の REST オブジェクト
+	 */
+	public Rest getBootstrapRest() {
+		return bootstrapRest;
 	}
 	
 /*------------
@@ -875,22 +889,69 @@ public class API {
 		return Jsonizer.fromJson(resp, User.class);
 	}
 	
+	/**
+	 * ユーザをユーザ名で取得します。
+	 *
+	 * @param		name	ユーザ名
+	 * @return		User オブジェクト
+	 */
 	public User readUserByName(String name) throws IOException {
 		Response resp = rest.get("/user/"+getTenant()+"userByName/"+name, "user");
 		return Jsonizer.fromJson(resp, User.class);
 	}
 	
+	/**
+	 * ユーザ情報を更新します。
+	 *
+	 * @param		id		ユーザID
+	 * @param		updater	更新内容を示す User オブジェクト
+	 * @return		更新後の User オブジェクト
+	 */
 	public User updateUser(String id, User updater) throws IOException {
 		Response resp = rest.put("/user/"+getTenant()+"users/"+id, "user", updater);
 		return Jsonizer.fromJson(resp, User.class);
 	}
 	
-	public User deleteUser(String name) throws IOException {
-		Response resp = rest.delete("/user/"+getTenant()+"users/"+name, "user");
+	/**
+	 * ユーザ情報を削除します。
+	 *
+	 * @param		id		ユーザID
+	 */
+	public void deleteUser(String id) throws IOException {
+		Response resp = rest.delete("/user/"+getTenant()+"users/"+id, "user");
 		if (resp.code != 204) // No content
 			throw new C8yRestException("deleteUser failed: " + resp);
-		return Jsonizer.fromJson(resp, User.class);
 	}
+	
+	/**
+	 * ユーザーコレクションAPIを用いて、Javaのforループで使える
+	 * UserCollection の iterator を取得します。
+	 * <pre>
+	 * 使用例：
+	 * for (UsageStatistics u : api.usageStatistics("dateFrom=2017-08-01&dateTill=2017-09-05&pageSize=15")) {
+	 * 		( u に対する処理 )
+	 * }
+	 * </pre>
+	 *
+	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
+	 * に変換され、元の例外は cause として設定されます。
+	 *
+	 * @param	queryString	取得条件を指定します。
+	 */
+//	public Iterable<UsageStatistics> usageStatistics(final String queryString) {
+//		return ( () -> new CollectionIterator<UsageStatistics>(
+//							rest, "/tenant/statistics/?"+queryString,
+//							"usageStatistics", UsageStatistics.class) );
+//	}
+	
+	/**
+	 * 全 Operation を取得する便利メソッドです。
+	 *
+	 * @return		全 Operation を取得する iterable
+	 */
+//	public Iterable<UsageStatistics> usageStatistics() {
+//		return usageStatistics("");
+//	}
 	
 /*------------
  * Binary API
@@ -908,6 +969,5 @@ public class API {
 /*----------------------------
  * Real-time Notification API
  */
-	// 動きが単純でないため、RAW-API は準備せず、イベントモデルで実装した
 	// C8yEventDispatcher を利用のこと
 }
