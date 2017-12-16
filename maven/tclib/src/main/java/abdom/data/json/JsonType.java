@@ -53,6 +53,26 @@ public abstract class JsonType extends Number
 	public static final int TYPE_UNKNOWN = 99;
 	
 	/**
+	 * JsonType の定数値 null を表すオブジェクトです。
+	 */
+	public static final JsonType NULL = new JsonValue(null); // immutable
+	
+	/**
+	 * JsonType の定数値 0 を表すオブジェクトです。
+	 */
+	public static final JsonType ZERO = new JsonValue(0);
+	
+	/**
+	 * JsonType の定数値 true を表すオブジェクトです。
+	 */
+	public static final JsonType TRUE = new JsonValue(true);
+	
+	/**
+	 * JsonType の定数値 false を表すオブジェクトです。
+	 */
+	public static final JsonType FALSE = new JsonValue(false);
+	
+	/**
 	 * 高速化のため、System.getProperty("line.separator")
 	 * の値を保持します。
 	 */
@@ -690,15 +710,15 @@ public abstract class JsonType extends Number
 			break;
 		case 't':
 			expect(pr, "true");
-			jt = new JsonValue(true);
+			jt = TRUE;
 			break;
 		case 'f':
 			expect(pr, "false");
-			jt = new JsonValue(false);
+			jt = FALSE;
 			break;
 		case 'n':
 			expect(pr, "null");
-			jt = new JsonValue(null);
+			jt = NULL;
 			break;
 		case '\"':
 			jt = parseString(pr);
@@ -786,9 +806,9 @@ public abstract class JsonType extends Number
 				c = pr.read();
 				if (c == -1) throw new JsonParseException("\\ の次に予期しない終了を検知しました");
 				switch (c) {
-				case '\"':	result.append(c); continue;
-				case '\\':	result.append(c); continue;
-				case '/':	result.append(c); continue;
+				case '\"':	result.append('\"'); continue;
+				case '\\':	result.append('\\'); continue;
+				//case '/':	result.append('/'); continue;
 				case 'b':	result.append('\b'); continue;
 				case 'f':	result.append('\f'); continue;
 				case 'n':	result.append('\n'); continue;

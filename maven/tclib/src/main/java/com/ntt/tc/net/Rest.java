@@ -93,7 +93,7 @@ public class Rest {
 		 */
 		@Override
 		public JsonType toJson() {
-			if (body == null) return new JsonValue(null);
+			if (body == null) return JsonType.NULL;
 			return body;
 		}
 	}
@@ -295,8 +295,10 @@ public class Rest {
 	}
 	
 	/**
-	 * Httpリクエストの実処理を行います。
-	 * Cumulocity 固有のヘッダを付加します。
+	 * Httpリクエストの実処理を行います。Cumulocity 固有のヘッダを付加します。
+	 * レスポンスコードが400台、500台のものはエラーと見なし、
+	 * com.ntt.tc.net.C8yRestException がスローされます。
+	 * ただし、404 Not Found は例外的に正常応答と見なします。
 	 *
 	 * @param	location	リソースの場所 /platform 等
 	 * @param	method		GET/POST/PUT/DELETE

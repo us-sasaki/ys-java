@@ -54,9 +54,10 @@ abstract class Accessor {
 	 * @return	JSON 表現(JsonType)
 	 */
 	JsonType toJson(Object value, Class<?> type) {
-		if (value == null) return new JsonValue(null);
+		if (value == null) return JsonType.NULL;
 		if (type == boolean.class)
-			return new JsonValue( ((Boolean)value).booleanValue() );
+			return (((Boolean)value).booleanValue())?
+						JsonType.TRUE:JsonType.FALSE;
 		if (type == byte.class)
 			return new JsonValue( ((Byte)value).byteValue() );
 		if (type == short.class)
