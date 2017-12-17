@@ -21,7 +21,6 @@ import abdom.data.json.JsonValue;
  * を実行すると、ManagedObject の (pretty)JSON 形式が得られます。
  */
 public abstract class C8yData extends JData {
-	private static final JsonValue CACHED_NULL = new JsonValue(null);
 	
 	/**
 	 * 指定されたオブジェクトをこのオブジェクトに値を一致させる
@@ -63,7 +62,7 @@ public abstract class C8yData extends JData {
 			}
 			if (ja.equals(jb)) continue;
 			
-			if (jb == null) result.put(field, CACHED_NULL);
+			if (jb == null) result.put(field, JsonType.NULL);
 			else result.put(field, jb);
 		}
 		return result;

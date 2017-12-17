@@ -13,8 +13,6 @@ import abdom.data.json.object.IllegalFieldTypeException;
  * ない)」を設定できるようオブジェクト化しています。 
  */
 public class TC_Boolean extends C8yValue {
-	private static final JsonType CACHED_TRUE = new JsonValue(true);
-	private static final JsonType CACHED_FALSE = new JsonValue(false);
 	
 	protected boolean value;
 	
@@ -27,7 +25,7 @@ public class TC_Boolean extends C8yValue {
 	}
 	
 	public JsonType toJson() {
-		return (value)? CACHED_TRUE : CACHED_FALSE;
+		return (value)? JsonType.TRUE : JsonType.FALSE;
 	}
 	
 	public TC_Boolean() {
