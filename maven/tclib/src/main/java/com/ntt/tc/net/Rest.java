@@ -147,10 +147,28 @@ public class Rest {
  * instance methods
  */
 	/**
-	 * REST を提供する URL を取得します。
+	 * REST で使用する接続先 URL を取得します。
+	 *
+	 * @return		接続先 URL
 	 */
 	public String getLocation() {
 		return urlStr;
+	}
+	
+	/**
+	 * REST に含まれるテナントを取得します。
+	 *
+	 * @return		テナント名
+	 */
+	public String getTenant() {
+		if ("".equals(tenant)) {
+			int c = urlStr.indexOf("://");
+			int i = urlStr.indexOf('.');
+			if (i == -1) throw new IllegalStateException("location にテナント名が含まれません:"+urlStr);
+			if (c == -1) return urlStr.substring(0, i);
+			return urlStr.substring(c+3, i);
+		}
+		return tenant;
 	}
 	
 	/**

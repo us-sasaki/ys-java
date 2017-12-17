@@ -101,9 +101,11 @@ public class Event extends C8yData {
 		this.type = type;
 		this.text = text;
 		this.source = new ManagedObject();
+		if (mo.id == null)
+				throw new NullPointerException("指定された ManagedObject の id に null を指定することはできません:"+mo);
 		this.source.id = mo.id;
-		this.source.name = mo.name;
-		this.source.type = mo.type;
+		if (mo.name != null) this.source.name = mo.name;
+		if (mo.type != null) this.source.type = mo.type;
 	}
 	
 	/**

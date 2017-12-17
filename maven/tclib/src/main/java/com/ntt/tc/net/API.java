@@ -928,7 +928,7 @@ public class API {
 	 * UserCollection の iterator を取得します。
 	 * <pre>
 	 * 使用例：
-	 * for (UsageStatistics u : api.usageStatistics("dateFrom=2017-08-01&dateTill=2017-09-05&pageSize=15")) {
+	 * for (User u : api.users("pageSize=300")) {
 	 * 		( u に対する処理 )
 	 * }
 	 * </pre>
@@ -938,20 +938,30 @@ public class API {
 	 *
 	 * @param	queryString	取得条件を指定します。
 	 */
-//	public Iterable<UsageStatistics> usageStatistics(final String queryString) {
-//		return ( () -> new CollectionIterator<UsageStatistics>(
-//							rest, "/tenant/statistics/?"+queryString,
-//							"usageStatistics", UsageStatistics.class) );
-//	}
+	public Iterable<User> users(final String queryString) {
+		return users(rest.getTenant(), queryString);
+	}
 	
 	/**
-	 * 全 Operation を取得する便利メソッドです。
+	 * テナント名を指定してユーザーコレクションを取得します。
 	 *
-	 * @return		全 Operation を取得する iterable
+	 * @param		tenant	テナント名
+	 * @param		queryString	pageSize 等の設定
 	 */
-//	public Iterable<UsageStatistics> usageStatistics() {
-//		return usageStatistics("");
-//	}
+	public Iterable<User> users(final String tenant, final String queryString) {
+		return ( () -> new CollectionIterator<User>(
+							rest, "/user/"+tenant+"/users?"+queryString,
+							"users", User.class) );
+	}
+	
+	/**
+	 * 全 User を取得する便利メソッドです。
+	 *
+	 * @return		全 User を取得する iterable
+	 */
+	public Iterable<User> users() {
+		return users("");
+	}
 	
 /*------------
  * Binary API
