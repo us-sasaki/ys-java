@@ -143,29 +143,36 @@ class SimpleAccessor extends Accessor {
 							"\" is boolean while json value is " + arg);
 				}
 			}
-			if (type == int.class) {
-				prop.setObj(instance, arg.intValue());
-				return;
-			}
-			if (type == long.class) {
-				prop.setObj(instance, arg.longValue());
-				return;
-			}
-			if (type == float.class) {
-				prop.setObj(instance, arg.floatValue());
-				return;
-			}
-			if (type == double.class) {
-				prop.setObj(instance, arg.doubleValue());
-				return;
-			}
-			if (type == short.class) {
-				prop.setObj(instance, (short)arg.intValue() );
-				return;
-			}
-			if (type == byte.class) {
-				prop.setObj(instance, (byte)arg.intValue() );
-				return;
+			try {
+				if (type == int.class) {
+					prop.setObj(instance, arg.intValue());
+					return;
+				}
+				if (type == long.class) {
+					prop.setObj(instance, arg.longValue());
+					return;
+				}
+				if (type == float.class) {
+					prop.setObj(instance, arg.floatValue());
+					return;
+				}
+				if (type == double.class) {
+					prop.setObj(instance, arg.doubleValue());
+					return;
+				}
+				if (type == short.class) {
+					prop.setObj(instance, (short)arg.intValue() );
+					return;
+				}
+				if (type == byte.class) {
+					prop.setObj(instance, (byte)arg.intValue() );
+					return;
+				}
+			} catch (NumberFormatException nfe) {
+				throw new IllegalFieldTypeException("\"" +
+						prop.getName() + "\" field of class \"" +
+						instance.getClass().getName() +
+						"\" is "+type+" while json value is " + arg, nfe);
 			}
 			if (type == char.class) {
 				prop.setObj(instance, arg.getValue().charAt(0) );

@@ -92,6 +92,42 @@ public abstract class JData extends JValue {
 		_extra.put(key, jt.toJson());
 	}
 	
+	public void putExtra(String key, boolean arg) {
+		putExtra(key, arg?JsonType.TRUE:JsonType.FALSE);
+	}
+	
+	public void putExtra(String key, byte arg) {
+		putExtra(key, new JsonValue(arg));
+	}
+	
+	public void putExtra(String key, short arg) {
+		putExtra(key, new JsonValue(arg));
+	}
+	
+	public void putExtra(String key, char arg) {
+		putExtra(key, new JsonValue(arg));
+	}
+	
+	public void putExtra(String key, int arg) {
+		putExtra(key, new JsonValue(arg));
+	}
+	
+	public void putExtra(String key, long arg) {
+		putExtra(key, new JsonValue(arg));
+	}
+	
+	public void putExtra(String key, float arg) {
+		putExtra(key, new JsonValue(arg));
+	}
+	
+	public void putExtra(String key, double arg) {
+		putExtra(key, new JsonValue(arg));
+	}
+	
+	public void putExtra(String key, String arg) {
+		putExtra(key, new JsonValue(arg));
+	}
+	
 	/**
 	 * このインスタンスが持つ extra オブジェクト(JsonObject)
 	 * の参照を返却します。内容の参照/変更を簡便に行うことを想定した
@@ -127,6 +163,42 @@ public abstract class JData extends JValue {
 	 */
 	public void set(String name, Jsonizable arg) {
 		Jsonizer.set(this, name, arg);
+	}
+	
+	public void set(String key, boolean arg) {
+		set(key, arg?JsonType.TRUE:JsonType.FALSE);
+	}
+	
+	public void set(String key, byte arg) {
+		set(key, new JsonValue(arg));
+	}
+	
+	public void set(String key, short arg) {
+		set(key, new JsonValue(arg));
+	}
+	
+	public void set(String key, char arg) {
+		set(key, new JsonValue(arg));
+	}
+	
+	public void set(String key, int arg) {
+		set(key, new JsonValue(arg));
+	}
+	
+	public void set(String key, long arg) {
+		set(key, new JsonValue(arg));
+	}
+	
+	public void set(String key, float arg) {
+		set(key, new JsonValue(arg));
+	}
+	
+	public void set(String key, double arg) {
+		set(key, new JsonValue(arg));
+	}
+	
+	public void set(String key, String arg) {
+		set(key, new JsonValue(arg));
 	}
 	
 	/**
