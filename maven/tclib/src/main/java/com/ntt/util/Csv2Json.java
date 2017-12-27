@@ -1,5 +1,7 @@
 package com.ntt.util;
 
+import java.util.List;
+
 import abdom.data.json.*;
 import abdom.util.CsvReader;
 
@@ -13,10 +15,21 @@ import abdom.util.CsvReader;
  * @author		Yusuke Sasaki
  */
 public class Csv2Json {
+	protected String[] type;
 	
+	/**
+	 * 指定された csv ファイルを読み込み、JsonArray 形式で返却します。
+	 * csv ファイルの一行目はタイトル行と見なされます。
+	 * JsonArray の各要素は JsonObject で、カラム名:値 の形で格納されます。
+	 * 2 パスで処理され、1 パス目で各カラムの型(Number / String)を判定します。
+	 *
+	 * @param		csv		csvファイル名
+	 * @return		csv の JsonArray 化
+	 */
 	public JsonArray read(String csv) {
 		String[] columnName = null;
-		String[] type = null; // 自動 type 検知
+		String[] type = null;
+		this.type = null; // 自動 type 検知
 		
 		// pass 1  type 検知する
 		// 優先順位 long > double > String(低い)
@@ -49,6 +62,8 @@ public class Csv2Json {
 			size++;
 		}
 		
+		this.type = type;
+		
 		// データを読み込む
 		JsonArray result = new JsonArray();
 		first = true;
@@ -78,15 +93,14 @@ public class Csv2Json {
 		return result;
 	}
 	
-/*---------------
- * main for test
- */
 	/**
+	 * 直前に読み込んだ csv ファイルの各カラムの型を返却します。
+	 * ファイルを読み込んでいない等で型が確定していない場合、null が
+	 * 返却されます。
 	 *
+	 * @return		型情報(String/long/double 等)の配列
 	 */
-	public static void main(String[] args) {
-		Csv2Json c2j = new Csv2Json();
-		JsonArray ja = c2j.read("CarData.csv");
-		System.out.println(ja.toString("  "));
+	public String[] getType() {
+		return type;
 	}
 }
