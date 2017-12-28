@@ -196,7 +196,7 @@ public class API {
 				throws IOException {
 		if (req.isValid()) return req;
 		if (req.id == null || req.id.equals(""))
-			throw new IllegalArgumentException("DeviceCredentials の id に値がありません");
+			throw new IllegalArgumentException("DeviceCredentials の id 値は必須です");
 		Response resp = bootstrapRest.post("/devicecontrol/deviceCredentials", "deviceCredentials", req);
 		if (resp.code != 404) req.fill(resp);
 		return req;
@@ -251,6 +251,7 @@ public class API {
 	/**
 	 * Managed Object を登録します。
 	 * 登録後、渡した ManagedObject は id などが追加され、更新されます。
+	 * 返却値は渡した ManagedObject です。
 	 *
 	 * @param	mo		登録したい Managed Object
 	 * @return	登録後、更新された Managed Object
