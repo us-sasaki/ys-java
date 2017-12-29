@@ -55,23 +55,26 @@ abstract class Accessor {
 	 */
 	JsonType toJson(Object value, Class<?> type) {
 		if (value == null) return JsonType.NULL;
-		if (type == boolean.class)
-			return (((Boolean)value).booleanValue())?
-						JsonType.TRUE:JsonType.FALSE;
-		if (type == byte.class)
-			return new JsonValue( ((Byte)value).byteValue() );
-		if (type == short.class)
-			return new JsonValue( ((Short)value).shortValue() );
-		if (type == char.class)
-			return new JsonValue( value.toString() );
-		if (type == int.class)
-			return new JsonValue( ((Integer)value).intValue() );
-		if (type == float.class)
-			return new JsonValue( ((Float)value).floatValue() );
-		if (type == long.class)
-			return new JsonValue( ((Long)value).longValue() );
-		if (type == double.class)
-			return new JsonValue( ((Double)value).doubleValue() );
+		if (type.isPrimitive()) {
+			if (type == char.class)
+				return new JsonValue( value.toString() );
+			if (type == int.class)
+				return new JsonValue( ((Integer)value).intValue() );
+			if (type == float.class)
+				return new JsonValue( ((Float)value).floatValue() );
+			if (type == long.class)
+				return new JsonValue( ((Long)value).longValue() );
+			if (type == double.class)
+				return new JsonValue( ((Double)value).doubleValue() );
+			if (type == boolean.class)
+				return (((Boolean)value).booleanValue())?
+							JsonType.TRUE:JsonType.FALSE;
+			if (type == byte.class)
+				return new JsonValue( ((Byte)value).byteValue() );
+			if (type == short.class)
+				return new JsonValue( ((Short)value).shortValue() );
+		}
+		// not primitive
 		if (type == String.class)
 			return new JsonValue( (String)value );
 		if (JsonType.class.isAssignableFrom(type))
