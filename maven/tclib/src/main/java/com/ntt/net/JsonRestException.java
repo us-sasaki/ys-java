@@ -8,7 +8,7 @@ import abdom.data.json.JsonType;
  * Cumulocity REST で、レスポンスが400以上のときに発生する例外です。
  * REST の要求、応答のオブジェクトを保持します。
  *
- * @version		September 25, 2017
+ * @version		December 17, 2017
  * @author		Yusuke Sasaki
  */
 public class JsonRestException extends IOException {
