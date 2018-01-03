@@ -255,12 +255,15 @@ public class JsonObject extends JsonType {
 		if (!objElement) sb.append(indent);
 		sb.append('{');
 		boolean first = true;
+		boolean elm1 = (map.size() == 1);
 		for (String name : map.keySet() ) {
 			if (!first) sb.append(',');
 			else first = false;
-			sb.append(JsonType.LS);
-			sb.append(indent);
-			sb.append(indentStep);
+			if (!elm1) {
+				sb.append(JsonType.LS);
+				sb.append(indent);
+				sb.append(indentStep);
+			}
 			sb.append('\"');
 			sb.append(name);
 			sb.append("\": ");
@@ -306,8 +309,10 @@ public class JsonObject extends JsonType {
 				sb.append(jt.toString(indent+indentStep, indentStep, textwidth, true));
 			}
 		}
-		sb.append(JsonType.LS);
-		sb.append(indent);
+		if (!elm1) {
+			sb.append(JsonType.LS);
+			sb.append(indent);
+		}
 		sb.append('}');
 		
 		return sb.toString();
