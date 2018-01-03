@@ -82,8 +82,8 @@ public class JsonObject extends JsonType {
 	}
 	
 	private JsonObject addImpl(String name, Jsonizable j) {
+		if (j == null) return this; // 何もしない
 		JsonType t = j.toJson();
-		if (t == null) return this; // 何もしない
 		int index = name.indexOf('.');
 		if (index > -1) {
 			// dot がある場合、recursive
@@ -255,7 +255,7 @@ public class JsonObject extends JsonType {
 		if (!objElement) sb.append(indent);
 		sb.append('{');
 		boolean first = true;
-		boolean elm1 = (map.size() == 1);
+		boolean elm1 = (map.size() == 1); // 1要素のみの場合、簡略表示
 		for (String name : map.keySet() ) {
 			if (!first) sb.append(',');
 			else first = false;
