@@ -73,6 +73,11 @@ public abstract class JsonType extends Number
 	public static final JsonType FALSE = new JsonValue(false);
 	
 	/**
+	 * JsonType の定数値 "" を表すオブジェクトです。
+	 */
+	public static final JsonType NULL_STRING = new JsonValue("");
+	
+	/**
 	 * 高速化のため、System.getProperty("line.separator")
 	 * の値を保持します。
 	 */
