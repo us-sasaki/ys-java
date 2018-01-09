@@ -1,18 +1,27 @@
 package abdom.data.json.object;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonValue;
 import abdom.data.json.Jsonizable;
 
 /**
- * オブジェクトとしての double 値(nullを取りうる)をラップします。
- * 初期状態、および JsonValue(null) で fill した場合、toJson() は
- * JsonType.NULL を返却します。
+ * 日付値をとる JValue オブジェクトです。
+ * このオブジェクトは、フォーマット(DateFormat)の参照を保持しており、
+ * これに基づいて JSON 変換が行われます。
+ * フォーマットは static 変数の defaultFormat として指定するか、
+ * オブジェクト生成時に指定します。
  *
+ * @version		January 9, 2018
  * @author		Yusuke Sasaki
  */
-public class JDouble extends JValue {
-	protected Double value;
+public class JDate extends JValue {
+	protected static DateFormat defaultFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+	
+	protected Date date;
 	protected JsonValue cachedValue = null;
 	
 /*-------------
