@@ -1,8 +1,8 @@
 package com.ntt.tc.data;
 
 /**
- * C8y �Ō��߂Ă�����t��I�u�W�F�N�g�\�����̃t�H�[�}�b�g�ُ킪
- * �������ꍇ�ɃX���[������O�ł��B
+ * C8y で決めている日付やオブジェクト構造等のフォーマット異常が
+ * あった場合にスローされる例外です。
  *
  */
 public class C8yFormatException extends IllegalArgumentException {

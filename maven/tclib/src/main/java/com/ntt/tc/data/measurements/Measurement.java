@@ -5,6 +5,7 @@ import abdom.data.json.JsonValue;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.TC_Date;
+import com.ntt.tc.data.C8yFormatException;
 import com.ntt.tc.data.inventory.ManagedObject;
 import com.ntt.tc.data.sensor.C8y_Battery;
 import com.ntt.tc.data.sensor.C8y_AccelerationMeasurement;
