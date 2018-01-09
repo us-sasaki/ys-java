@@ -175,8 +175,12 @@ public class Stats<T> {
 		max = -Double.MAX_VALUE;
 		min = Double.MAX_VALUE;
 		
-		List<T> list = new ArrayList<T>();
-		data.iterator().forEachRemaining(list::add);
+        List<T> list = null;
+        if (data instanceof List) list = (List<T>)data;
+        else {
+            list = new ArrayList<T>();
+            data.iterator().forEachRemaining(list::add);
+        }
 		
 		int i = 0;
 		for (T datum : data) {
