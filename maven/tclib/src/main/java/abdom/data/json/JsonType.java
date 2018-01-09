@@ -55,7 +55,7 @@ public abstract class JsonType extends Number
 	/**
 	 * JsonType の定数値 null を表すオブジェクトです。
 	 */
-	public static final JsonType NULL = new JsonValue(null); // immutable
+	public static final JsonType NULL = new JsonValue(null);
 	
 	/**
 	 * JsonType の定数値 0 を表すオブジェクトです。
