@@ -148,6 +148,12 @@ public class Measurement extends C8yData {
 	 */
 	public void put(String fragment, String measurementName,
 					double value, String unit) {
+		int c = fragment.indexOf('.');
+		if (c > 0)
+			throw new C8yFormatException("fragment には . を含められません:"+fragment);
+		c = measurementName.indexOf('.');
+		if (c > 0)
+			throw new C8yFormatException("measurementName には . を含められません:"+measurementName);
 		put(fragment+"."+measurementName, value, unit);
 	}
 	
@@ -163,6 +169,12 @@ public class Measurement extends C8yData {
 	 * @param	unit		メジャーメントの単位
 	 */
 	public void put(String measurementPath, double value, String unit) {
+		int c1 = measurementPath.indexOf('.');
+		if (c1 == -1)
+			throw new C8yFormatException("measurementPath は fragment, シリーズの name を指定する必要があります。fragment.name の形で指定してください");
+		int c2 = measurementPath.indexOf('.', c1+1);
+		if (c2 != -1)
+			throw new C8yFormatException("measurementPath は fragment, シリーズの name を指定する必要があります。fragment.name の形で指定してください");
 		set(measurementPath+".value", new JsonValue(value));
 		set(measurementPath+".unit", new JsonValue(unit));
 	}
