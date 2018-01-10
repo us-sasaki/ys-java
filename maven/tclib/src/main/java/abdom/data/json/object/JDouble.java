@@ -50,6 +50,18 @@ public class JDouble extends JValue {
 		}
 	}
 	
+/*------------------
+ * instance methods
+ */
+	/**
+	 * 値を取得します。
+	 * 値がない場合、Double.NaN が返却されます。
+	 */
+	public double doubleValue() {
+		if (value == null) return Double.NaN;
+		return value;
+	}
+	
 /*-----------
  * overrides
  */
