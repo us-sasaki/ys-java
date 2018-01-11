@@ -47,13 +47,13 @@ import abdom.data.json.Jsonizable;
  * を設定する場合を考えます。
  * この状態を示す JSON文字列としては "null" 以外の表記がなく、いずれかを暗黙
  * 的に決めておく必要があります。
- * この実装では、JSON文字列 "null" は、一律 Javaオブジェクトの null を設定
- * します。
+ * この実装では、JSON文字列 "null" は、一律 Javaオブジェクトの null の明示的な
+ * 設定とします。
  *
  * @version	December 24, 2016
  * @author	Yusuke Sasaki
  */
-public class Jsonizer {
+public final class Jsonizer {
 
 	/**
 	 * Field, Method Accessor の生成はクラスごとに１度だけ行えばよいため、
@@ -68,6 +68,10 @@ public class Jsonizer {
 	private static class MethodPair {
 		Method getter;
 		List<Method> setter = new ArrayList<Method>();
+	}
+	
+	/** インスタンス化させないための定義 */
+	private Jsonizer() {
 	}
 	
 /*---------------
@@ -195,6 +199,7 @@ public class Jsonizer {
 	 * 変換します。変換規則は、このパッケージの説明を参照してください。
 	 * JValue の子クラスでは、JValue#toJson が呼ばれます。
 	 * JData の子クラスでは、extra を無視することに注意して下さい。
+	 * extra を含ませたい場合は JData#toJson を使用して下さい。
 	 *
 	 * @param	instance	JsonType に変換する Java オブジェクト
 	 * @return	変換された JsonType
@@ -212,6 +217,8 @@ public class Jsonizer {
 			if (value != null) result.put(name, value);
 		}
 		return result;
+		// JData の子クラスの場合、extra は結果に含まれないため、
+		// 含ませたい場合、JData側で実装
 	}
 	
 	/**

@@ -29,17 +29,6 @@ public abstract class JData extends JValue {
 	/** Jsonizer.fill できなかった値を格納する予約領域 */
 	protected JsonObject _extra;
 	
-/*-------------
- * constructor
- */
-	protected JData() {
-		// JData のプロパティ宣言が規約に基づいていない場合、
-		// JDataDefinitionException が発生するが、なるべく早期
-		// (生成時)にチェックしデバッグを容易にするため、デフォルト
-		// コンストラクタ内で getAccessors() を呼んでおく
-		Jsonizer.getAccessors(this);
-	}
-	
 /*------------------
  * instance methods
  */
@@ -203,7 +192,7 @@ public abstract class JData extends JValue {
 	
 	/**
 	 * 指定された JsonObject の内容をこのオブジェクトに設定します。
-	 * 引数の型は、利便性のため JsonType としていますが、JsonObject
+	 * 引数の型は、利便性のため Jsonizable としていますが、object
 	 * 以外を指定すると、ClassCastException がスローされます。
 	 * このメソッドは値を追加し、既存値は上書きされなければ保存される
 	 * ことに注意してください。_extra も同様です。
@@ -216,7 +205,7 @@ public abstract class JData extends JValue {
 	}
 	
 	/**
-	 * このオブジェクトを JsonObject に変換します。
+	 * このオブジェクトを JsonType に変換します。
 	 *
 	 * @return	JsonObject
 	 */
