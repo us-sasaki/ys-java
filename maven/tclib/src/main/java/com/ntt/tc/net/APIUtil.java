@@ -28,8 +28,8 @@ import com.ntt.tc.util.Base64;
 import static com.ntt.tc.net.Rest.Response;
 
 /**
- * Things Cloud の Rest API でよく使う一連の処理をまとめた
- * 便利クラスです。
+ * Things Cloud の Rest API でよく使う一連の処理をまとめた便利クラスです。
+ * 判断ロジックを含む複数の API コールをまとめることを意図しています。
  *
  * @author		Yusuke Sasaki
  * @version		December 14, 2017
