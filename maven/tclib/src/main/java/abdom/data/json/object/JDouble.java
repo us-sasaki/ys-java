@@ -7,7 +7,7 @@ import abdom.data.json.Jsonizable;
 /**
  * オブジェクトとしての double 値(nullを取りうる)をラップします。
  * 初期状態、および JsonValue(null) で fill した場合、toJson() は
- * JsonType.NULL を返却します。
+ * JsonType.NULL の値 (JsonValue(null)) を返却します。
  *
  * @author		Yusuke Sasaki
  */
@@ -65,6 +65,12 @@ public class JDouble extends JValue {
 /*-----------
  * overrides
  */
+	/**
+	 * JsonType 値を返却します。
+	 *
+	 * @return		値を持たない場合、JsonValue(null) を返却します。
+	 *				値を持つ場合、その値を保持する JsonValue を返却します。
+	 */
 	@Override
 	public JsonType toJson() {
 		if (value == null) return JsonType.NULL;
@@ -74,6 +80,16 @@ public class JDouble extends JValue {
 		return cachedValue;
 	}
 	
+	/**
+	 * Jsonizable 値を設定します。
+	 * 型が JsonType における TYPE_VOID, TYPE_STRING, TYPE_DOUBLE, TYPE_INT
+	 * 以外の場合、IllegalFieldTypeException がスローされます。
+	 * TYPE_VOID であった場合、値をクリアします。
+	 * TYPE_STRING であっても、数値と認識することができる場合は設定されます。
+	 * 認識できない場合、NumberFormatException がスローされます。
+	 * 
+	 * @param		value	設定したい値
+	 */
 	@Override
 	public void fill(Jsonizable value) {
 		JsonType j = value.toJson();
