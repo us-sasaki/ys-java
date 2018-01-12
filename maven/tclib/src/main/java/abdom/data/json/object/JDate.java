@@ -68,6 +68,8 @@ public class JDate extends JValue {
 	 * ミリ秒を与えてインスタンスを生成します。
 	 * これによって、このオブジェクトは、「エポック」(すなわち、1970 年 1 月
 	 * 1 日 00:00:00 GMT) である標準時からの指定されたミリ秒数を表します。
+	 *
+	 * @param	date		1970 年 1 月 1 日 00:00:00 GMT からのミリ秒
 	 */
 	public JDate(long date) {
 		this.date = new Date(date);
@@ -80,7 +82,8 @@ public class JDate extends JValue {
 	/**
 	 * デフォルトで使用する DateFormat を指定します。
 	 * この指定は、ThreadLocal 変数に格納されるため、スレッドごとに
-	 * 指定が必要です。
+	 * 指定が必要です。何も指定しない場合のフォーマットは ISO8601 の
+	 * SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX") です。
 	 *
 	 * @param		dateFormat		以降このスレッドで日付解析に利用する
 	 *								デフォルトの DateFormat オブジェクト
@@ -102,6 +105,16 @@ public class JDate extends JValue {
 		} catch (ParseException pe) {
 			throw new IllegalArgumentException(pe.toString());
 		}
+		cachedDate = null;
+	}
+	
+	/**
+	 * 1970 年 1 月 1 日 00:00:00 GMT からのミリ秒値でこのオブジェクトを
+	 * 設定します。
+	 */
+	strictfp // JSON プロパティから除外
+	public void setTime(long time) {
+		date.setTime(time);
 		cachedDate = null;
 	}
 	
