@@ -9,9 +9,9 @@ package abdom.data.json;
  * @version		November 25, 2016
  * @author		Yusuke Sasaki
  */
-public class JsonValue extends JsonType {
-	protected String value;
-	protected String quote = "";
+public final class JsonValue extends JsonType {
+	private String value;
+	private String quote = "";
 	
 /*-------------
  * constructor

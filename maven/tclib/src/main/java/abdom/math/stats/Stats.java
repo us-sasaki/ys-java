@@ -146,8 +146,9 @@ public class Stats<T> {
 	 *     (1つ前の点との x 軸の差) に関する統計量を得る
 	 *</pre>
 	 *
-	 * @param	data	double 値を出力できるクラスのリスト
-	 * @param	f		要素を含むリストと添え字から Double を出力する関数
+	 * @param	data	double 値を出力できるクラスの Iterable
+	 * @param	f		Iterable から生成されるリストと添え字から Double を
+	 *					出力する関数
 	 * @return	計算された Stats オブジェクト
 	 */
 	public static <T> Stats<T> value(Iterable<T> data, BiFunction<List<T>, Integer, Double> f) {
@@ -165,8 +166,9 @@ public class Stats<T> {
 	 *     (1つ前の点との x 軸の差) に関する統計量を得る
 	 *</pre>
 	 *
-	 * @param	data	double 値を出力できるクラスのリスト
-	 * @param	f		要素を含むリストと添え字から Double を出力する関数
+	 * @param	data	double 値を出力できるクラスの Iterable
+	 * @param	f		Iterable から生成されるリストと添え字から Double を
+	 *					出力する関数
 	 */
 	public void apply(Iterable<T> data, BiFunction<List<T>, Integer, Double> f) {
 		n = 0;

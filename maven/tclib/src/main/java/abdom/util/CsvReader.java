@@ -163,30 +163,40 @@ public class CsvReader implements Closeable {
  */
 	private static class CsvRowIterator
 					implements Iterator<String[]>, Closeable {
-		private CsvReader reader;
+		private CsvReader cr;
 		private String[] next;
-		private String fname;
+		private Reader reader;
+		
+	/*-------------
+	 * constructor
+	 */
+		private CsvRowIterator(Reader reader) {
+			csvRowIterator(reader);
+		}
 		
 		private CsvRowIterator(String fname) {
 			try {
-				FileReader fr = new FileReader(fname);
-				reader = new CsvReader(fr);
-				this.fname = fname;
-			} catch (IOException ioe) {
-				try {
-					close();
-				} catch (IOException ignored) {
-				}
-				throw new IllegalArgumentException("指定されたファイル" + fname + "が読み込めませんでした", ioe);
+				csvRowIterator(new FileReader(fname));
+			} catch (java.io.IOException ioe) {
+				throw new IllegalArgumentException("指定されたファイル" +
+							fname + "は存在しません", ioe);
 			}
+		}
+	
+	/*-----------------
+	 * instance method
+	 */
+		private void csvRowIterator(Reader reader) {
+			this.reader = reader;
+			cr = new CsvReader(reader);
 			try {
-				next = reader.readRow();
+				next = cr.readRow();
 			} catch (IOException ioe) {
 				try {
 					close();
 				} catch (IOException ignored) {
 				}
-				throw new IllegalArgumentException("指定されたファイル" + fname + "の読み込み中にエラーが発生しました", ioe);
+				throw new IllegalArgumentException("指定されたReader" + reader + "の読み込み中にエラーが発生しました", ioe);
 			}
 		}
 		
@@ -199,20 +209,20 @@ public class CsvReader implements Closeable {
 		public String[] next() {
 			String[] ret = next;
 			try {
-				next = reader.readRow();
+				next = cr.readRow();
 			} catch (IOException ioe) {
 				try {
 					close();
 				} catch (IOException ignored) {
 				}
-				throw new IllegalArgumentException("指定されたファイル" + fname + "の読み込み中にエラーが発生しました", ioe);
+				throw new IllegalArgumentException("指定されたReader" + reader + "の読み込み中にエラーが発生しました", ioe);
 			}
 			return ret;
 		}
 		
 		@Override
 		public void close() throws IOException {
-			if (reader != null) reader.close();
+			if (cr != null) cr.close();
 		}
 		
 	}
@@ -234,12 +244,24 @@ public class CsvReader implements Closeable {
 	 * </pre>
 	 */
 	public static Iterable<String[]> rows(final String fname) {
-		return new Iterable<String[]>() {
-			@Override
-			public Iterator<String[]> iterator() {
-				return new CsvRowIterator(fname);
-			}
-		};
+		return ( () -> new CsvRowIterator(fname) );
+	}
+	
+	/**
+	 * Iterator として Reader を扱うための便利メソッドです。
+	 * IOException は IllegalArgumentException に変換されます。
+	 * <pre>
+	 * 使用例
+	 * for (String[] row : CsvReader.rows(some_reader) {
+	 *     // row に関する処理
+	 *     for (String column : row) {
+	 *         // column に関する処理
+	 *     }
+	 * }
+	 * </pre>
+	 */
+	public static Iterable<String[]> rows(final Reader reader) {
+		return ( () -> new CsvRowIterator(reader) );
 	}
 	
 	/**
