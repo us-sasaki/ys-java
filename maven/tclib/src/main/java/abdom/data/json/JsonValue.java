@@ -118,7 +118,7 @@ public final class JsonValue extends JsonType {
 	
 	@Override
 	public int intValue() {
-		return Integer.parseInt(value);
+		return (int)doubleValue();
 	}
 	
 	@Override
@@ -128,7 +128,7 @@ public final class JsonValue extends JsonType {
 	
 	@Override
 	public float floatValue() {
-		return Float.parseFloat(value);
+		return (float)doubleValue();
 	}
 	
 	@Override

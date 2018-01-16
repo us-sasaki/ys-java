@@ -79,6 +79,10 @@ public class CsvCategorizer {
 /*------------------
  * instance methods
  */
+	public void forceHeaderExists() {
+		headerExists = true;
+	}
+	
 	public void categorize(String filename) throws IOException {
 		if (metaData != null || data != null)
 			throw new IllegalStateException("すでにこのオブジェクトでファイルを読み込み済みです");
@@ -106,20 +110,22 @@ public class CsvCategorizer {
 				}
 			}
 		}
-		// ヘッダの型判定が上と整合するか(する=ヘッダなし、しない=ヘッダあり)
-		String[] columns = rows.get(0);
-		
-	lp:
-		for (int i = 0; i < cols; i++) {
-			for (int j = 0; j < matchers.size(); j++) {
-				// すでに対象外となっている型のチェックは行わない
-				if (unavailableTypes[i][j]) continue;
-				boolean available = matchers.get(j).matches(columns[i]);
-				if (!available) {
-					headerExists = true;
-					break lp;
+		if (!headerExists) {
+			// ヘッダの型判定が上と整合するか(する=ヘッダなし、しない=ヘッダあり)
+			String[] columns = rows.get(0);
+			
+		lp:
+			for (int i = 0; i < cols; i++) {
+				for (int j = 0; j < matchers.size(); j++) {
+					// すでに対象外となっている型のチェックは行わない
+					if (unavailableTypes[i][j]) continue;
+					boolean available = matchers.get(j).matches(columns[i]);
+					if (!available) {
+						headerExists = true;
+						break lp;
+					}
+					unavailableTypes[i][j] = !available;
 				}
-				unavailableTypes[i][j] = !available;
 			}
 		}
 		// meta data (共通部分)追加
