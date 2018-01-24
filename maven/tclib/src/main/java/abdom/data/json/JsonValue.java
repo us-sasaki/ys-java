@@ -12,6 +12,7 @@ package abdom.data.json;
 public final class JsonValue extends JsonType {
 	private String value;
 	private String quote = "";
+	private int typeCache = TYPE_UNKNOWN;
 	
 /*-------------
  * constructor
@@ -150,6 +151,11 @@ public final class JsonValue extends JsonType {
 	
 	@Override
 	public int getType() {
+		if (typeCache == TYPE_UNKNOWN) typeCache = getTypeImpl();
+		return typeCache;
+	}
+	
+	private int getTypeImpl() {
 		if ("\"".equals(quote)) return TYPE_STRING;
 		if ("null".equals(value)) return TYPE_VOID;
 		if ("true".equals(value)) return TYPE_BOOLEAN;
@@ -164,6 +170,7 @@ public final class JsonValue extends JsonType {
 			} catch (NumberFormatException nfe2) {
 			}
 		}
+		// never fall back here
 		return TYPE_UNKNOWN;
 	}
 	

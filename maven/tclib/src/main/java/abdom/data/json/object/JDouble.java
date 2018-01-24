@@ -86,7 +86,7 @@ public class JDouble extends JValue {
 	 * 以外の場合、IllegalFieldTypeException がスローされます。
 	 * TYPE_VOID であった場合、値をクリアします。
 	 * TYPE_STRING であっても、数値と認識することができる場合は設定されます。
-	 * 認識できない場合、NumberFormatException がスローされます。
+	 * 認識できない場合、IllegalFieldTypeException がスローされます。
 	 * 
 	 * @param		value	設定したい値
 	 */
@@ -102,9 +102,13 @@ public class JDouble extends JValue {
 			break;
 			
 		case JsonType.TYPE_STRING:
-			this.value = Double.parseDouble(j.getValue());
-			cachedValue = null;
-			break;
+			try {
+				this.value = Double.parseDouble(j.getValue());
+				cachedValue = null;
+				break;
+			} catch (NumberFormatException nfe) {
+				throw new IllegalFieldTypeException("JDouble に指定できない値を指定しました:"+j);
+			}
 		
 		case JsonType.TYPE_DOUBLE:
 			this.value = j.doubleValue();

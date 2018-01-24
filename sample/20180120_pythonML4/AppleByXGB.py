@@ -1,19 +1,20 @@
-from sklearn.tree import DecisionTreeClassifier
+import xgboost as xgb
+from sklearn.model_selection import GridSearchCV
 from sklearn import datasets
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
-# Iris データは sklearn に入っている
-iris = datasets.load_iris()
+#
+# 説明変数を全体にする
+#
 
-print('iris type {0}'.format(type(iris)))
+df = pd.read_csv('apple.csv', index_col=None, header=0, names=list(range(0,6)));
 
-# 説明変数は3,4列目
-X = iris.data[:,[2,3]]
-print('X type {0}'.format(type(X)))
+X=np.array(df[[0,1,2,3,4]][:])
+print(X)
+y=np.array(df[5][:])
 
-# 目的変数(Iris のクラスラベル)
-y = iris.target
 print("分類ラベル数:", np.unique(y))
 
 from sklearn.cross_validation import train_test_split
@@ -41,16 +42,23 @@ X_combined = np.vstack((X_train, X_test))
 y_combined = np.hstack((y_train, y_test))
 
 #---------------------------------------------------------------------
-# DecisionTree のインスタンスを生成
-tree = DecisionTreeClassifier(criterion='entropy', max_depth=3, random_state=0)
+# XGBoosting のインスタンスを生成
+clf = xgb.XGBClassifier()
 
-# トレーニングデータをモデルに適合させる
-# X_train_std である必要はない。(決定木のため)
-tree.fit(X_train, y_train)
+# ハイパーパラメータ探索
+clf_cv = GridSearchCV(clf, {'max_depth':[2,4,8,10],
+						'n_estimators':[6,12,50]}, verbose=1)
+clf_cv.fit(X_train, y_train)
+print(clf_cv.best_params_, clf_cv.best_score_)
 
+# 改めて最適パラメータで学習
+clf = xgb.XGBClassifier(**clf_cv.best_params_)
+clf.fit(X_train, y_train)
+
+"""
 # 決定境界をプロット
 from ClassPlot import plot_decision_regions
-plot_decision_regions(X_combined, y_combined, classifier=tree,
+plot_decision_regions(X_combined, y_combined, classifier=clf,
 						test_idx=range(105,150))
 
 # 軸のラベルを設定
@@ -60,11 +68,18 @@ plt.ylabel('petal width [standardized]')
 plt.legend(loc='upper left')
 
 plt.show()
+"""
 
 #------------------------------------------
 # 正解率を表示
 from sklearn.metrics import accuracy_score
 
 # 表示
-y_pred = tree.predict(X_test)
+y_pred = clf.predict(X_test)
 print('正解率: %.2f' % accuracy_score(y_test, y_pred))
+
+
+X_add = np.array([[0,0,0,0,0],[0,1,2,2,1]])
+print(X_add)
+y_pred2 = clf.predict(X_add)
+print(y_pred2)

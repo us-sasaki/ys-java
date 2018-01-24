@@ -1,16 +1,17 @@
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.svm import SVC
 from sklearn import datasets
 import numpy as np
 import matplotlib.pyplot as plt
 
+#
+# 説明変数を全体にする
+#
+
 # Iris データは sklearn に入っている
 iris = datasets.load_iris()
 
-print('iris type {0}'.format(type(iris)))
-
-# 説明変数は3,4列目
-X = iris.data[:,[2,3]]
-print('X type {0}'.format(type(X)))
+# 説明変数は1～4列目
+X = iris.data[:,[0,3]]
 
 # 目的変数(Iris のクラスラベル)
 y = iris.target
@@ -37,20 +38,18 @@ X_test_std = sc.transform(X_test)
 
 # 可視化
 X_combined_std = np.vstack((X_train_std, X_test_std))
-X_combined = np.vstack((X_train, X_test))
 y_combined = np.hstack((y_train, y_test))
 
 #---------------------------------------------------------------------
-# DecisionTree のインスタンスを生成
-tree = DecisionTreeClassifier(criterion='entropy', max_depth=3, random_state=0)
+# SVM(kernelは非線形のrbf(radial basis function))のインスタンスを生成
+svm = SVC(kernel='rbf', gamma=100.0, C=1.0, random_state=0)
 
 # トレーニングデータをモデルに適合させる
-# X_train_std である必要はない。(決定木のため)
-tree.fit(X_train, y_train)
+svm.fit(X_train_std, y_train)
 
 # 決定境界をプロット
 from ClassPlot import plot_decision_regions
-plot_decision_regions(X_combined, y_combined, classifier=tree,
+plot_decision_regions(X_combined_std, y_combined, classifier=svm,
 						test_idx=range(105,150))
 
 # 軸のラベルを設定
@@ -66,5 +65,5 @@ plt.show()
 from sklearn.metrics import accuracy_score
 
 # 表示
-y_pred = tree.predict(X_test)
+y_pred = svm.predict(X_test_std)
 print('正解率: %.2f' % accuracy_score(y_test, y_pred))
