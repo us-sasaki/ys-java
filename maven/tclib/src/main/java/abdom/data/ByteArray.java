@@ -11,7 +11,10 @@ import abdom.util.CommentCutInputStream;
  * @author		Yusuke Sasaki
  * @version		release		19, October 2016
  */
-public class ByteArray {
+public final class ByteArray {
+	
+	private ByteArray() {
+	}
 	
 	/**
 	 * ２配列を連結した byte 配列を作成します。
@@ -170,8 +173,6 @@ public class ByteArray {
 		return st.toString();
 	}
 	
-//	public static byte[] set(byte[] src, int value, int pos) {
-//	}
 	/**
 	 * 指定された文字列の byte 列を抽出し、解釈結果の byte[] を返却します。
 	 * 解釈は、C/C++ コメントを除外し、スペース、タブコード、または改行コード(CR, LF)で区切られた
