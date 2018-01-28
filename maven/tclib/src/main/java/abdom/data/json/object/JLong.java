@@ -31,7 +31,7 @@ public class JLong extends JValue {
 	 *
 	 * @param	v		初期値
 	 */
-	public JLong(int v) {
+	public JLong(long v) {
 		value = v;
 	}
 	
@@ -58,7 +58,7 @@ public class JLong extends JValue {
 	 * 値を取得します。
 	 * 値がない場合、Long.MIN_VALUE が返却されます。
 	 */
-	public int longValue() {
+	public long longValue() {
 		if (value == null) return Long.MIN_VALUE;
 		return value;
 	}
