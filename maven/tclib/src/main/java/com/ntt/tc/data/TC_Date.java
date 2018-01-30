@@ -124,6 +124,16 @@ public class TC_Date extends C8yValue {
 		return date.getTime();
 	}
 	
+	/**
+	 * 1970 年 1 月 1 日 00:00:00 GMT からのミリ秒値でこのオブジェクトを
+	 * 設定します。
+	 */
+	strictfp // JSON プロパティから除外
+	public void setTime(long time) {
+		date.setTime(time);
+		dateCache = null;
+	}
+	
 /*-----------
  * overrides
  */
