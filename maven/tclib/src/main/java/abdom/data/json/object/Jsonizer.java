@@ -426,12 +426,14 @@ public final class Jsonizer {
 			String methodName = m.getName();
 			if (methodName.length() < 4) continue; // メソッド名４文字未満は除外
 			char c = methodName.charAt(3);
-			if (Character.isLowerCase(c)) continue; // 4文字目小文字は除外
+			if (!Character.isUpperCase(c)) continue; // 4文字目大文字以外は除外
 			// geta() と getA() が異なるメソッドだが同一プロパティとなるため
 			
 			// プロパティ名を Java Beans 規則にのっとり生成
 			String name;
-			if (methodName.length() == 4) name = methodName;
+			if (methodName.length() == 4)
+				name = String.valueOf(Character.toLowerCase(
+										methodName.charAt(3)));
 			else {
 				if (Character.isUpperCase(methodName.charAt(4))) {
 					// 二文字目が大文字の場合、そのまま
@@ -440,7 +442,8 @@ public final class Jsonizer {
 				} else {
 					// 一文字目を小文字に
 					// 例 getCount() / setCount() -> count
-					name = ""+Character.toLowerCase(c)+methodName.substring(4);
+					name = String.valueOf(Character.toLowerCase(c))+
+								methodName.substring(4);
 				}
 			}
 			

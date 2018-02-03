@@ -243,7 +243,7 @@ public class JsonizerTest extends TestCase{
 	}
 	
 	// get の dot オペレーション
-	public void testJ8() {
+	public void testJ7_2() {
 		J7 j7 = new J7();
 		j7.j5 = new J5();
 		j7.j6 = new J6();
@@ -257,5 +257,37 @@ public class JsonizerTest extends TestCase{
 		assertEquals(new JsonValue("い"), Jsonizer.get(j7, "j6.g"));
 		assertEquals(new JsonValue("い"), Jsonizer.get(j7, "j6.h.i"));
 		
+	}
+	
+	// メソッド名のテスト
+	static class J8 {
+		protected int value;
+		
+		public int getA() {	return value;}
+		public void setA(int a) {value = a;}
+		
+		// 4文字目が小文字のものは除外
+		public int getb() { return value+1;}
+		public void setb(int b) { value = b; }
+		
+		// 4文字目が数字や_も除外
+		public int get1() {return 1;}
+		public void set1(int a) { }
+		
+		public int get_() {return 0;}
+		public void set_(int a) { }
+		
+		// 4文字目が日本語も除外
+		public int get値() {return value;}
+		public void set値(int v) {value=v;}
+	}
+	
+	public void testJ8() {
+		J8 j8 = new J8();
+		j8.setA(12);
+		j8.setb(12);
+		j8.set_(100);
+		j8.set値(12);
+		assertEquals(Jsonizer.toString(j8), "{\"a\":12}");
 	}
 }
