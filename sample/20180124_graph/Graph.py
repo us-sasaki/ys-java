@@ -10,6 +10,7 @@ y = np.arange(0, 2000000)
 
 price = 0
 
+# y に c8y デバイス料を格納
 for i in range(2000000):
 	y[i] = price
 	if i <= 1000:
@@ -33,8 +34,10 @@ for i in range(2000000):
 	else:
 		price += 0.06
 
+# グラフにプロット
 plt.plot(x,y)
 
+# 近似式をプロット
 xx = x[1:]
 z = (3.05 * xx) -0.17*(xx * np.log(xx) - xx)/math.log(2)
 plt.plot(xx,z)
