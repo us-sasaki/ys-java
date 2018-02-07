@@ -41,7 +41,7 @@
             <version>1.2.1</version>
             <configuration>
                 <mainClass>misc.DiffMd</mainClass>
-                <!-- optional -->
+                <!-- optional DiffMd.main で args は無視される。これはサンプル -->
                 <workingDirectory>.</workingDirectory>
                 <arguments>
                     <argument>docs/event-language-en-old/introduction.html.md</argument>
