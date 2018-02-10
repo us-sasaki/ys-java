@@ -201,6 +201,7 @@ public abstract class JData extends JValue {
 	 */
 	@Override
 	public void fill(Jsonizable json) {
+		// fill は特例的に Jsonizer 内で extra 処理を行う
 		Jsonizer.fill(this, json);
 	}
 	
