@@ -18,7 +18,7 @@ import misc.*;
  * MarkExtractor のテスト。
  */
 public class MarkExtractorTest extends TestCase{
-	static final String PATH = "G:\\GitHub\\ys-java\\maven\\diffmd\\testdocs\\";
+	static final String PATH = ".\\testdocs\\";
 	static final String EN_ORG = "event-language-en-old\\";
 	static final String EN_NEW = "event-language-en-new\\";
 	static final String JA_ORG = "event-language-ja-old\\";
