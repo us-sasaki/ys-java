@@ -187,13 +187,18 @@ public class DiffMd {
 	private void listDirectoryImpl(File root, String path, int index)
 						throws IOException {
 		File f = new File(root, path);
+		String rootPathStr = root.getCanonicalPath();
+		// root の一つ上のディレクトリを取得
+		int rootPathStrLen = rootPathStr.lastIndexOf(
+								System.getProperty("file.separator"));
+		
 		// 除外ディレクトリ/ファイルになっているか確認
 		if (except != null) {
 			String canpath = f.getCanonicalPath();
 			for (String e : except) {
 				File g = new File(root, e);
 				if (canpath.startsWith(g.getCanonicalPath())) {
-					report.println("　対象外　：" + f.getCanonicalPath());
+					report.println("　対象外　：" + f.getCanonicalPath().substring(rootPathStrLen));
 					return;
 				}
 			}
@@ -213,7 +218,7 @@ public class DiffMd {
 				putTriplets(root, path, index);
 			} else {
 				// スキップ
-				report.println("　スキップ：" + f.getCanonicalPath());
+				report.println("　スキップ：" + f.getCanonicalPath().substring(rootPathStrLen));
 			}
 		}
 	}
@@ -314,7 +319,6 @@ public class DiffMd {
 			if (key.endsWith("/") || !t.isFilled()) continue;
 			
 			Path p0 = t.f[0].toPath();
-System.out.println("パス：" + p0);
 			Path p1 = t.f[1].toPath();
 			Path p2 = t.f[2].toPath();
 			Path newPath = new File(newTranslatedDir, key).toPath();

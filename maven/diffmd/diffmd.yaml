@@ -11,38 +11,38 @@ target: docs/
 except:
   - benutzerhandbuch
   - cpp
-  - devices\RedLion-RAM-series.html.md
-  - devices\RedLion-StratusConnect-MC-Gateway.html.md
-  - devices\adeunis.html.md
-  - devices\beaglebone-black.html.md
-  - devices\cinterion.html.md
-  - devices\cloudgate.html.md
-  - devices\dell_edge_gateway5000.html.md
-  - devices\icom.html.md
-  - devices\insys.html.md
-  - devices\janztec.html.md
-  - devices\libelium-meshlium.html.md
-  - devices\mbed-ublox-C027.html.md
-  - devices\meitrack.html.md
-  - devices\nethix_we500.html.md
-  - devices\opcua.html.md
-  - devices\owa3x.html.md
-  - devices\queclink.html.md
-  - devices\r3000.html.md
-  - devices\sigfox.html.md
-  - devices\smartbox-io.html.md
-  - devices\smartbox-mini.html.md
-  - devices\smartbox-modbus.html.md
-  - devices\smartbox-release-notes.html.md
-  - devices\smartbox.html.md
-  - devices\stw.html.md
-  - devices\telic.html.md
-  - devices\tixi.html.md
+  - devices/RedLion-RAM-series.html.md
+  - devices/RedLion-StratusConnect-MC-Gateway.html.md
+  - devices/adeunis.html.md
+  - devices/beaglebone-black.html.md
+  - devices/cinterion.html.md
+  - devices/cloudgate.html.md
+  - devices/dell_edge_gateway5000.html.md
+  - devices/icom.html.md
+  - devices/insys.html.md
+  - devices/janztec.html.md
+  - devices/libelium-meshlium.html.md
+  - devices/mbed-ublox-C027.html.md
+  - devices/meitrack.html.md
+  - devices/nethix_we500.html.md
+  - devices/opcua.html.md
+  - devices/owa3x.html.md
+  - devices/queclink.html.md
+  - devices/r3000.html.md
+  - devices/sigfox.html.md
+  - devices/smartbox-io.html.md
+  - devices/smartbox-mini.html.md
+  - devices/smartbox-modbus.html.md
+  - devices/smartbox-release-notes.html.md
+  - devices/smartbox.html.md
+  - devices/stw.html.md
+  - devices/telic.html.md
+  - devices/tixi.html.md
   - java
   - konzepte
   - mqtt
-  - users-guide\android-cloud-sensor-app.html.md
-  - users-guide\jasper.html.md
-  - users-guide\saas-integration.html.md
+  - users-guide/android-cloud-sensor-app.html.md
+  - users-guide/jasper.html.md
+  - users-guide/saas-integration.html.md
   - zapier.html.md
 

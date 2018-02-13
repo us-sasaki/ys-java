@@ -88,7 +88,7 @@ public class MarkExtractorTest extends TestCase{
 		List<String> text = dmit.toText();
 		
 		
-		Files.write(FileSystems.getDefault().getPath("./" + resultFname), text, StandardCharsets.UTF_8 );
+		Files.write(FileSystems.getDefault().getPath(PATH + resultFname), text, StandardCharsets.UTF_8 );
 	}
 	public void test2() {
 	}
