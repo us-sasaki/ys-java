@@ -4,6 +4,7 @@ misc\DiffMdInTranslate2.class
 misc\LooseMap.class
 misc\LooseMap$Row.class
 misc\DiffMd$1.class
+misc\DiffMdProps.class
 misc\DiffMdInTranslate.class
 misc\MarkExtractor.class
 misc\DiffMd$Triplet.class

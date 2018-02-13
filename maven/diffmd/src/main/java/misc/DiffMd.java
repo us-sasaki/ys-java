@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.yaml.snakeyaml.Yaml;
+
 /**
  * オリジナル原文ディレクトリ、更新後原文ディレクトリ、翻訳文ディレクトリ、
  * 新翻訳文ディレクトリを指定し、
@@ -68,6 +70,9 @@ public class DiffMd {
 	private Map<String, Triplet> triplets;
 	
 	private PrintWriter report;
+	private String reportFilename;
+	
+	private String[] except;
 	
 /*--------------------
  * inner static class
@@ -95,7 +100,8 @@ public class DiffMd {
 	public DiffMd(	String oldOriginalDir,
 					String newOriginalDir,
 					String oldTranslatedDir,
-					String newTranslatedDir) {
+					String newTranslatedDir,
+					String reportFilename) {
 		// 指定されたパラメータがディレクトリであることを確認する
 		this.oldOriginalDir = new File(oldOriginalDir);
 		if (!this.oldOriginalDir.isDirectory())
@@ -112,13 +118,21 @@ public class DiffMd {
 		if (!this.newTranslatedDir.isDirectory())
 			throw new IllegalArgumentException("newTranslatedDir にはディレクトリを指定してください：" + newTranslatedDir);
 		
+		this.reportFilename = reportFilename;
 	}
 	
 /*------------------
  * instance methods
  */
+	/**
+	 * 対象外ディレクトリを設定
+	 */
+	public void setExcept(String[] except) {
+		this.except = except;
+	}
+	
 	public void exec() throws IOException {
-		report = new PrintWriter(new FileWriter("report.txt"));
+		report = new PrintWriter(new FileWriter(reportFilename));
 		report.println("DiffMd レポート (" + new Date() + ")");
 		report.println();
 		report.println("■対象ディレクトリ");
@@ -128,6 +142,14 @@ public class DiffMd {
 		report.println("　更新前　訳文ディレクトリ：" + this.oldTranslatedDir.getCanonicalPath());
 		report.println("　更新後　訳文ディレクトリ：" + this.newTranslatedDir.getCanonicalPath());
 		report.println();
+		if (except != null) {
+			report.println("■除外ディレクトリ/ファイル");
+			report.println();
+			for (String e : except) {
+				report.println(e);
+			}
+			report.println();
+		}
 		
 		// Triplets を格納する
 		listDirectories();
@@ -147,6 +169,8 @@ public class DiffMd {
 	private void listDirectories() throws IOException {
 		report.println("■ファイル読み込み");
 		report.println();
+		report.println("　*.md ファイル以外のファイル、除外ディレクトリ/ファイルはスキップされます");
+		report.println();
 		triplets = new TreeMap<String, Triplet>();
 		
 		listDirectory(oldOriginalDir, 0);
@@ -163,6 +187,18 @@ public class DiffMd {
 	private void listDirectoryImpl(File root, String path, int index)
 						throws IOException {
 		File f = new File(root, path);
+		// 除外ディレクトリ/ファイルになっているか確認
+		if (except != null) {
+			String canpath = f.getCanonicalPath();
+			for (String e : except) {
+				File g = new File(root, e);
+				if (canpath.startsWith(g.getCanonicalPath())) {
+					report.println("　対象外　：" + f.getCanonicalPath());
+					return;
+				}
+			}
+		}
+		
 		if (f.isDirectory()) {
 			// ディレクトリもリストに登録
 			putTriplets(root, path + "/", index);
@@ -299,7 +335,7 @@ System.out.println("パス：" + p0);
 			if (r == 0) {
 				report.println("　変更なし：" + key);
 				notChanged++;
-			} else if (r >= 30) {
+			} else if (r >= 20) {
 				report.println("　差大("+r+"%)：" + key);
 				muchChanged++;
 			} else {
@@ -333,11 +369,19 @@ System.out.println("パス：" + p0);
 	}
 	
 	public static void main(String[] args) throws Exception {
-		String oldOrg = "docs/0_en-old";
-		String newOrg = "docs/1_en-new";
-		String oldJa  = "docs/2_ja-old";
-		String newJa  = "docs/3_ja-new";
-		DiffMd d = new DiffMd(oldOrg, newOrg, oldJa, newJa);
+		Yaml yaml = new Yaml();
+		DiffMdProps props = yaml.loadAs(new FileReader("diffmd.yaml"), DiffMdProps.class);
+		
+		String target = props.getTarget();
+		
+		String oldOrg = target + "0_en-old";
+		String newOrg = target + "1_en-new";
+		String oldJa  = target + "2_ja-old";
+		String newJa  = target + "3_ja-new";
+		String report = target + "report.txt";
+		DiffMd d = new DiffMd(oldOrg, newOrg, oldJa, newJa, report);
+		d.setExcept(props.getExcept());
+		
 		try {
 			d.exec();
 		} catch (Exception e) {
