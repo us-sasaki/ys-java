@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score
 
 class SBS():
 	"""
-	逐次交代選択(sequential backward selection)を実行するクラス
+	逐次後退選択(sequential backward selection)を実行するクラス
 	"""
 	
 	def __init__(self, estimator, k_features, scoring=accuracy_score,
