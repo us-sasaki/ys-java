@@ -46,8 +46,8 @@ class LooseMap {
 	
 	/**
 	 * List の要素番号 : en の行番号
-	 * 要素の [0] : 対応する ja の行番号(最小値) (含む)
-	 * 要素の [1] : 対応する ja の行番号(最大値) (含む)
+	 * 要素の min : 対応する ja の行番号(最小値) (含む)
+	 * 要素の max : 対応する ja の行番号(最大値) (含む)
 	 */
 	List<Row> map;
 	
@@ -67,6 +67,14 @@ class LooseMap {
 /*-------------
  * constructor
  */
+	/**
+	 * 指定された原文(行のリスト)、翻訳文(行のリスト)から、
+	 * DiffUtils によって取得した diff 情報を元に、原文各行に対応する、
+	 * ゆるいマッピング(LooseMap)情報を構築します。
+	 *
+	 * @param	domain	原文(markdown 形式、行のリスト)
+	 * @param	range	翻訳分(markdown 形式、行のリスト)
+	 */
 	LooseMap(List<String> domain, List<String> range) {
 		map(domain, range);
 	}
@@ -82,7 +90,8 @@ class LooseMap {
 	 */
 	private void map(List<String> domain, List<String> range) {
 		map = new ArrayList<Row>();
-		
+//domain.stream().forEach(System.out::println);
+//range.stream().forEach(System.out::println);
 		int ji = 0;
 		int ei = 0;
 		// まず、書式抽出された原文、訳文の diff をとる
@@ -94,6 +103,14 @@ class LooseMap {
 			// last() は要素数でなく、行番号
 			int jDeltaEnd	= delta.getRevised().last();
 			int eDeltaEnd	= delta.getOriginal().last();
+//System.out.println("jΔ=["+jDeltaStart+","+jDeltaEnd+"]");
+//System.out.println("eΔ=["+eDeltaStart+","+eDeltaEnd+"]");
+//Chunk jc = delta.getRevised();
+//System.out.println("----------jΔ--------");
+//jc.getLines().stream().forEach(System.out::println);
+//Chunk ec = delta.getOriginal();
+//System.out.println("----------eΔ--------");
+//ec.getLines().stream().forEach(System.out::println);
 			
 			// 完全一致部分を登録
 			for (; ei < eDeltaStart; ei++) {

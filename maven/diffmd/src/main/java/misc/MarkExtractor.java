@@ -31,15 +31,16 @@ class MarkExtractor {
 			"* ","- ", " * ", " - ", 
 			"1. ","2. ","3. ","4. ","5. ", "6. ","7. ","8. ","9. ","10. ",
 			"    ",
-			"|:-", "|"
+			"| :-", "|:-", "|" // 修正(| :- を追加)
 		} );
 	}
 	
 	/**
-	 * Markdown を英語/日本語によらない書式文字列に変換します。
+	 * Markdown で英語/日本語のマッピングを取りやすくするため
+	 * 書式文字列を抽出します。
 	 * 1行を1行にマッピングします。
-	 * これにより、異なる言語の２ファイルの書式が同一であるか、行の間の
-	 * 対応関係を把握することができるようになります。
+	 * これにより、異なる言語の２ファイルの書式部分が同一であるかを一致判定
+	 * で行えるようにし、行の間の対応関係を diff で処理できるようにします。
 	 *
 	 * @param		target	抽出元の文書の各行の List
 	 * @return		抽出された書式文字列のみからなる各行の List。
@@ -47,13 +48,27 @@ class MarkExtractor {
 	 */
 	List<String> extract(List<String> target) {
 		List<String> result = new ArrayList<String>();
+		
 		for (String line : target) {
+			// line 行頭が書式文字列(HEAD_MARKS)であるか検索します
 			int index = 0;
 			for (String mark : HEAD_MARKS) {
 				if (line.startsWith(mark)) break;
 				index++;
 			}
-			if (index < HEAD_MARKS.size()) result.add(HEAD_MARKS.get(index));
+			// 書式文字列であれば、その行は書式文字列のみに変換します
+			// (英語/日本語はカットします)
+			if (index < HEAD_MARKS.size()) {
+				String head = HEAD_MARKS.get(index);
+				if (head.equals("    ")) {
+					// ただし、code 部分で、7bit ASCII のみの行は
+					// そのままとします
+			// line が 7bit ascii のみから構成される場合、そのままとする
+					if (stringConsistsOf7bit(line)) result.add(line);
+					continue;
+				}
+				result.add(HEAD_MARKS.get(index));
+			}
 			// 空行は乱数に置き換え
 			// (HEAD_MARKSと違い、対応性が保証されないと仮定)
 			else if (line.equals("")) result.add(""+Math.random());
@@ -63,6 +78,17 @@ class MarkExtractor {
 			//else result.add("sentence:"+Math.random());
 		}
 		return result;
+	}
+	
+	/**
+	 * 指定された行が 7bit ASCII(code < 128)のみからなるかをテストします。
+	 */
+	private static boolean stringConsistsOf7bit(String line) {
+		for (int i = 0; i < line.length(); i++) {
+			int c = line.charAt(i);
+			if (c >= 128) return false;
+		}
+		return true;
 	}
 	
 /*-----------------
