@@ -214,10 +214,13 @@ public class ManagedObject extends C8yData {
 	 * Device Management.
 	 * Rest developer's guide / Device Management Library に記載されており、
 	 * 予約語扱いのため、明示的フィールド化。
-	 * これを設定すると、デバイスとして認識され、
-	 * デバイス管理で表示される
-	 * デバイス数としてカウントされる
-	 * ようになる。
+	 * これを設定すると、デバイスとして認識され、デバイス管理で表示される
+	 * デバイス数としてカウントされるようになる。
+	 * 設定は、
+	 * <pre>
+	 * managedObject.c8y_IsDevice = new abdom.data.json.JsonObject();
+	 * </pre>
+	 * のように、JsonObject を設定して下さい。(JSON上、{} となる)
 	 */
 	public JsonObject c8y_IsDevice;
 	
@@ -233,6 +236,11 @@ public class ManagedObject extends C8yData {
 	 * エージェントをインベントリ内で作成する場合、フラグメント
 	 * 「com_cumulocity_model_Agent」を有するマネージドオブジェクトを作成する
 	 * 必要があります。
+	 * 設定は、
+	 * <pre>
+	 * managedObject.com_cumulocity_model_Agent = new abdom.data.json.JsonObject();
+	 * </pre>
+	 * のように、JsonObject を設定して下さい。(JSON上、{} となる)
 	 */
 	public JsonObject com_cumulocity_model_Agent;
 	
