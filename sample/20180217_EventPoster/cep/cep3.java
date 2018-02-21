@@ -15,3 +15,4 @@ select
 from
 	EventCreated e
 output last every 5 seconds;
+

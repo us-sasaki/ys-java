@@ -70,3 +70,32 @@ mvn dependency:copy-dependencies -DincludeScope=runtime
 全部コピーする場合
 mvn dependency:copy-dependencies
 
+■ローカルのライブラリを jar に含める
+
+  </dependencies>
+    :
+    <!-- ローカルファイル(lib/tclib-0.9.jar) を含める -->
+    <dependency>
+      <groupId>comiot</groupId>
+      <artifactId>tclib</artifactId>
+      <version>0.9</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/tclib-0.9.jar</systemPath>
+    </dependency>
+    :
+  </dependencies>
+
+■SNAME YAMLを含める
+
+  </dependencies>
+    :
+    <!-- SNAKE Yaml -->
+    <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>1.19</version>
+    </dependency>
+    :
+  </dependencies>
+
+
