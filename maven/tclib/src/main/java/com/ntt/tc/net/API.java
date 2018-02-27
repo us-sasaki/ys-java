@@ -836,13 +836,63 @@ public class API {
 	}
 	
 	/**
-	 * 全 Operation を取得する便利メソッドです。
+	 * 全 UsageStatistics を取得する便利メソッドです。
 	 *
-	 * @return		全 Operation を取得する iterable
+	 * @return		全 UsageStatistics を取得する iterable
 	 */
 	public Iterable<UsageStatistics> usageStatistics() {
 		return usageStatistics("");
 	}
+	
+	/**
+	 * テナントオプションAPIを用いて、Javaのforループで使える
+	 * Option の iterator を取得します。
+	 * <pre>
+	 * 使用例：
+	 * for (Option o : api.tenantOptions("pageSize=15")) {
+	 * 		( o に対する処理 )
+	 * }
+	 * </pre>
+	 */
+	public Iterable<Option> tenantOptions(final String queryString) {
+		return ( () -> new CollectionIterator<Option>(
+							rest, "/tenant/options/?"+queryString,
+							"options", Option.class) );
+	}
+	
+	/**
+	 * 全 Option を取得する便利メソッドです。
+	 *
+	 * @return		全 Option を取得する iterable
+	 */
+	public Iterable<Option> tenantOptions() {
+		return tenantOptions("");
+	}
+	
+	/**
+	 * 指定されたカテゴリ、キーのテナントオプションを取得します。
+	 *
+	 * @param	category	カテゴリ
+	 * @param	key			キー
+	 * @return	取得された Option
+	 */
+	public Option readOption(String category, String key) throws IOException {
+		Response resp = rest.get("/tenant/options/"+category+"/"+key, "option");
+		return Jsonizer.fromJson(resp, Option.class);
+	}
+	
+	/**
+	 * 指定されたカテゴリ、キーのテナントオプションを変更します。
+	 *
+	 * @param	category	カテゴリ
+	 * @param	key			キー
+	 * @return	変更後の Option で、新しいインスタンスが返却されます。
+	 */
+	public Option updateOption(String category, String key, Option updater) throws IOException {
+		Response resp = rest.put("/tenant/options/"+category+"/"+key, "option", updater);
+		return Jsonizer.fromJson(resp, Option.class);
+	}
+	
 	
 /*----------
  * User API
