@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
 
 /**
  * md ファイルを読み込み、以下処理をします。<pre>
@@ -53,13 +54,13 @@ public class MdLinkChecker {
 	protected List<String> resources;
 	
 	/**
-	 * この文書ディレクトリに含まれる画像ファイルのリスト
-	 * 画像ファイルは、URL のフルパス指定とします。
+	 * この文書ディレクトリに含まれる画像のリスト
+	 * 画像は、URL のフルパス指定とします。
 	 */
 	protected List<String> imageFiles;
 	
 	/**
-	 * この文書から実際にリンクされる画像ファイルのリスト
+	 * この文書からリンクされている画像リンクのリスト
 	 * 値は URL のフルパス指定とします。
 	 */
 	protected List<String> linkedImages;
@@ -122,7 +123,7 @@ public class MdLinkChecker {
 		cutComments();
 		pickResources();
 		findTokens();
-		//check();
+		check();
 	}
 	
 	/**
@@ -245,8 +246,8 @@ public class MdLinkChecker {
 					ind2 = line.indexOf("\"", ind2);
 					int ei = line.indexOf("\"", ind2+1);
 					String res = line.substring(ind2+1, ei);
-					resources.add(rootUrl + htmlPath + "#" + res);
-					resources.add(rootUrl + htmlPath2 + "#" + res);
+					resources.add(htmlPath + "#" + res);
+					resources.add(htmlPath2 + "#" + res);
 					if (line.indexOf("<a", ei) > -1)
 						throw new Error("warn: 2つ目の<a があります:" +
 											e.key + ":" + line);
@@ -456,5 +457,61 @@ public class MdLinkChecker {
 		return url;
 	}
 	
+	/**
+	 * md ファイルを読み込み、以下処理をします。<pre>
+	 *  (1) 外部リンクのリストを生成
+	 *  (2) 有効でない内部リンクのリストを生成
+	 *  (3) リンクされていない画像のリストを生成
+	 */
+	void check() {
+		// (1) 外部リンクのリストを生成
+		List<String> outerLinks = new ArrayList<String>();
+		
+		for (String link : links) {
+			if (!link.startsWith(rootUrl))
+				outerLinks.add(link);
+		}
+		
+		// (2) 有効でない内部リンクのリストを生成
+		List<String> absentLinks = new ArrayList<String>();
+		Set<String> resourseSet = resources.stream().collect(Collectors.toSet());
+		
+		for (String link : links) {
+			if (link.startsWith(rootUrl) && !(resourseSet.contains(link)))
+				absentLinks.add(link);
+		}
+		// (3) リンクされていない画像のリストを生成
+		//     同時に、使われていない画像ファイルのリストを生成
+		List<String> absentImages = new ArrayList<String>();
+		List<String> nolinkImages = new ArrayList<String>();
+		Set<String> ifile = imageFiles.stream().collect(Collectors.toSet());
+		Set<String> limage = linkedImages.stream().collect(Collectors.toSet());
+		
+		for (String image : imageFiles) {
+			if (!limage.contains(image)) // どこからも使われていないファイル
+				nolinkImages.add(image); 
+		}
+		for (String image : linkedImages) {
+			if (!ifile.contains(image)) // リンクされているが存在しない
+				absentImages.add(image);
+		}
+		
+		// 表示する
+		System.out.println("-------- 外部リンク --------");
+		System.out.println("総数 : " + outerLinks.size());
+		outerLinks.stream().forEach(System.out::println);
+		
+		System.out.println("-------- 有効でない内部リンク --------");
+		System.out.println("総数 : " + absentLinks.size());
+		absentLinks.stream().forEach(System.out::println);
+		
+		System.out.println("-------- リンク切れ画像(要追加) --------");
+		System.out.println("総数 : " + absentImages.size());
+		absentImages.stream().forEach(System.out::println);
+		
+		System.out.println("-------- 使われていない画像ファイル(削除可) --------");
+		System.out.println("総数 : " + nolinkImages.size());
+		nolinkImages.stream().forEach(System.out::println);
+	}
 }
 

@@ -4,6 +4,14 @@ title: LoRa Actility
 layout: default
 ---
 
+テスト用のリンク
+[ファイルがないリンク](/iot/docs/users-guide/notfound)
+[外部リンク](http://www.ntt.com/)
+<a href="http://developer.ntt.com/hoge>外部リンク</a>
+<img src="http://developer.ntt.com/hoge.png>外部イメージ</img>
+![ファイルがない画像リンク](/iot/docs/users-guide/notfound.png)
+
+
 ## <a name="overview"></a>概要
 Things Cloud ではActilityのThingPark Wirelessを介してLoRaデバイスと接続し、以下の機能が使用できます。
 

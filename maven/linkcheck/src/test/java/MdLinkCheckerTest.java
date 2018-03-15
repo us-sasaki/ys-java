@@ -119,26 +119,28 @@ class MdLinkCheckerTest {
 		@Test
 		void test() throws Exception {
 			md.read(md.docDir);
-md.lines.stream().forEach( (e) -> {	System.out.println(e.key); } );
+//md.lines.stream().forEach( (e) -> {	System.out.println(e.key); } );
 			md.pickImageFiles(md.imageDir);
 			assertEquals(24, md.imageFiles.size());
-System.out.println("----- イメージファイル -----");
-md.imageFiles.stream().forEach(System.out::println);
+//System.out.println("----- イメージファイル -----");
+//md.imageFiles.stream().forEach(System.out::println);
 			md.cutComments();
-			assertEquals(236, md.lines.get(0).value.size());
-System.out.println("----- コメントカット後 -----");
-md.lines.get(0).value.stream().forEach(System.out::println);
+			assertEquals(244, md.lines.get(0).value.size());
+//System.out.println("----- コメントカット後 -----");
+//md.lines.get(0).value.stream().forEach(System.out::println);
 			md.pickResources();
 			assertEquals(24, md.resources.size());
-System.out.println("----- リソース -----");
-md.resources.stream().forEach(System.out::println);
+//System.out.println("----- リソース -----");
+//md.resources.stream().forEach(System.out::println);
 			md.findTokens();
-			assertEquals(8, md.links.size());
-			assertEquals(20, md.linkedImages.size());
-System.out.println("----- リンク -----");
-md.links.stream().forEach(System.out::println);
-System.out.println("----- 画像リンク -----");
-md.linkedImages.stream().forEach(System.out::println);
+			assertEquals(10, md.links.size());
+			assertEquals(21, md.linkedImages.size());
+//System.out.println("----- リンク -----");
+//md.links.stream().forEach(System.out::println);
+//System.out.println("----- 画像リンク -----");
+//md.linkedImages.stream().forEach(System.out::println);
+			
+			md.check();
 		}
 	}
 	
