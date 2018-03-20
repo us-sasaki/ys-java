@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  *  (3) リンクされていない画像のリストを生成
  * 
  * ただし、<!-- ... --> のコメント部分は除く
- * リンクは []() を対象とする。
+ * リンクは []() または <A HREF= のいずれかを対象とする。
  * 画像は ![]() または <IMG SRC= のいずれかを対象とする。
  * </pre>
  * 
@@ -117,7 +117,7 @@ public class MdLinkChecker {
 /*------------------
  * instance methods
  */
-	void exec() throws IOException {
+	public void exec() throws IOException {
 		read(docDir);
 		pickImageFiles(imageDir);
 		cutComments();
