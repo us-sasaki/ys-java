@@ -514,4 +514,3 @@ public class MdLinkChecker {
 		nolinkImages.stream().forEach(System.out::println);
 	}
 }
-
