@@ -244,7 +244,12 @@ public class CsvReader implements Closeable {
 	 * </pre>
 	 */
 	public static Iterable<String[]> rows(final String fname) {
-		return ( () -> new CsvRowIterator(fname) );
+		return new Iterable<String[]>() {
+			public Iterator<String[]> iterator() {
+				return new CsvRowIterator(fname);
+			}
+		
+		};
 	}
 	
 	/**
@@ -261,8 +266,12 @@ public class CsvReader implements Closeable {
 	 * </pre>
 	 */
 	public static Iterable<String[]> rows(final Reader reader) {
-		return ( () -> new CsvRowIterator(reader) );
-	}
+		return new Iterable<String[]>() {
+			public Iterator<String[]> iterator() {
+				return new CsvRowIterator(reader);
+			}
+		
+		};	}
 	
 	/**
 	 * CSV ファイルをすべて読み込み、List<String[]> 形式で返却します。

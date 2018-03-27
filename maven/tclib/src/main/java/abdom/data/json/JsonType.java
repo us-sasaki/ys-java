@@ -174,19 +174,17 @@ public abstract class JsonType extends Number
  * instance methods
  */
 	/**
-	 * JsonObject として、指定されたキーの値を持っているかテストします。
+	 * JsonObject として、指定されたキーを持っているかテストします。
 	 * JsonObject でない場合、false が返却されます。
 	 *
 	 * @param	key		テスト対象のキー
-	 * @return	指定されたキーの値を持っている場合 true、キーがあっても
-	 *			値が JsonValue(null) である場合、またはキーがない場合、
+	 * @return	指定されたキーを持っている場合 true、キーがない場合、
 	 *			またはこのインスタンスが JsonObject でない場合 false
 	 */
 	public boolean hasKey(String key) {
 		if (!(this instanceof JsonObject)) return false;
-		JsonType val = get(key);
-		return ( (val != null) && (!(val instanceof JsonValue)) &&
-				(!val.toString().equals("null")) );
+		JsonObject jo = (JsonObject)this;
+		return jo.map.containsKey(key);
 	}
 	
 	/**

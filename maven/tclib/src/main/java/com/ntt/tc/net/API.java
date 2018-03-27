@@ -2,6 +2,7 @@ package com.ntt.tc.net;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Iterator;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonArray;
@@ -356,9 +357,13 @@ public class API {
 	 *						 "dateFrom={from}&dateTo={to}&revert=true"
 	 */
 	public Iterable<ManagedObject> managedObjects(final String queryString) {
-		return ( () -> new CollectionIterator<ManagedObject>(rest,
+		return ( new Iterable<ManagedObject>() {
+			public Iterator<ManagedObject> iterator() {
+				return new CollectionIterator<ManagedObject>(rest,
 								"/inventory/managedObjects/?"+queryString,
-								"managedObjects", ManagedObject.class) );
+								"managedObjects", ManagedObject.class);
+			}
+		} );
 	}
 	
 	/**
@@ -445,9 +450,13 @@ public class API {
 	 *						 "dateFrom={from}&dateTo={to}&revert=true"
 	 */
 	public Iterable<Measurement> measurements(final String queryString) {
-		return ( () -> new CollectionIterator<Measurement>(rest,
+		return new Iterable<Measurement>() {
+			public Iterator<Measurement> iterator() {
+				return new CollectionIterator<Measurement>(rest,
 							"/measurement/measurements/?"+queryString,
-							"measurements", Measurement.class) );
+							"measurements", Measurement.class);
+			}
+		};
 	}
 	
 	/**
@@ -580,9 +589,13 @@ public class API {
 	 *						 "dateFrom={from}&dateTo={to}&revert=true"
 	 */
 	public Iterable<Event> events(final String queryString) {
-		return ( () -> new CollectionIterator<Event>(rest,
+		return new Iterable<Event>() {
+			public Iterator<Event> iterator() {
+				return new CollectionIterator<Event>(rest,
 							"/event/events/?"+queryString,
-							"events", Event.class));
+							"events", Event.class);
+			}
+		};
 	}
 	
 	/**
@@ -674,9 +687,13 @@ public class API {
 	 *						 "dateFrom={from}&dateTo={to}&revert=true"
 	 */
 	public Iterable<Alarm> alarms(final String queryString) {
-		return ( () -> new CollectionIterator<Alarm>(rest,
+		return new Iterable<Alarm>() {
+			public Iterator<Alarm> iterator() {
+				return new CollectionIterator<Alarm>(rest,
 								"/alarm/alarms/?"+queryString,
-								"alarms", Alarm.class) );
+								"alarms", Alarm.class);
+			}
+		};
 	}
 	
 	/**
@@ -782,9 +799,13 @@ public class API {
 	 *						 "dateFrom={from}&dateTo={to}&revert=true"
 	 */
 	public Iterable<Operation> operations(final String queryString) {
-		return ( () -> new CollectionIterator<Operation>(rest,
+		return new Iterable<Operation>() {
+			public Iterator<Operation> iterator() {
+				return new CollectionIterator<Operation>(rest,
 								"/devicecontrol/operations/?"+queryString,
-								"operations", Operation.class) );
+								"operations", Operation.class);
+			}
+		};
 	}
 	
 	/**
@@ -830,9 +851,13 @@ public class API {
 	 * @param	queryString	取得条件を指定します。
 	 */
 	public Iterable<UsageStatistics> usageStatistics(final String queryString) {
-		return ( () -> new CollectionIterator<UsageStatistics>(
+		return new Iterable<UsageStatistics>() {
+			public Iterator<UsageStatistics> iterator() {
+				return new CollectionIterator<UsageStatistics>(
 							rest, "/tenant/statistics/?"+queryString,
-							"usageStatistics", UsageStatistics.class) );
+							"usageStatistics", UsageStatistics.class);
+			}
+		};
 	}
 	
 	/**
@@ -855,9 +880,13 @@ public class API {
 	 * </pre>
 	 */
 	public Iterable<Option> tenantOptions(final String queryString) {
-		return ( () -> new CollectionIterator<Option>(
+		return new Iterable<Option>() {
+			public Iterator<Option> iterator() {
+				return new CollectionIterator<Option>(
 							rest, "/tenant/options/?"+queryString,
-							"options", Option.class) );
+							"options", Option.class);
+			}
+		};
 	}
 	
 	/**
@@ -1000,9 +1029,13 @@ public class API {
 	 * @param		queryString	pageSize 等の設定
 	 */
 	public Iterable<User> users(final String tenant, final String queryString) {
-		return ( () -> new CollectionIterator<User>(
+		return new Iterable<User>() {
+			public Iterator<User> iterator() {
+				return new CollectionIterator<User>(
 							rest, "/user/"+tenant+"/users?"+queryString,
-							"users", User.class) );
+							"users", User.class);
+			}
+		};
 	}
 	
 	/**
