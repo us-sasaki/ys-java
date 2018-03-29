@@ -1,0 +1,102 @@
+<HTML>
+<HEAD><TITLE></TITLE>
+</HEAD>
+<BODY>
+このパッケージはオブジェクトモデルの、JSON 操作に便利なライブラリを用意しています。JSON における値、配列、オブジェクトを表し、JSON 文字列との相互変換、配列やオブジェクトフィールドへのアクセス等の各種オペレーションを提供するクラスが含まれます。<br/>
+<br/>
+<h2>主なクラスの説明</h2>
+<ul>
+<li>JsonType...JSON の各種オブジェクトの親クラス。抽象クラスですが各種オペレーションを定義し、このクラスだけで基本的な JSON 操作ができるようになっています。また、文字列やストリームからオブジェクトを生成する static メソッドがあります。</li>
+<li>JsonValue...JsonType の子クラスで、JSON における真偽値、数値、文字列を表す具象クラスです。</li>
+<li>JsonArray...JsonType の子クラスで、JSON の各種オブジェクトを要素に持つ配列を表す具象クラスです。</li>
+<li>JsonObject...JsonType の子クラスで、キーバリュー型の JSON object を表す具象クラスです。</li>
+</ul>
+<h2>利用例</h2>
+<h3>JSON 文字列からのオブジェクトの生成</h3>
+<pre>
+JSON 文字列からオブジェクトを生成するには、JsonType.parse() メソッドを利用します。
+
+    JsonType jNumber = JsonType.parse("135");
+
+    jNumber には、数値(135)を表す JSON オブジェクトが格納されます。同様に、
+
+    JsonType jString = JsonType.parse("\"135\"");
+
+とすることで、jString には文字("135")を表す JSON オブジェクトが格納されます。
+parse メソッドの引数は JSON 文字列のため、上記の値の他、配列やオブジェクトも生成できます。
+</pre>
+<h3>JsonValue を利用したJSON値の生成</h3>
+<pre>
+値を生成するには、parse() メソッドの他、JsonValue を利用することもできます。上述の２つの例は、以下と処理結果は等価です。
+
+    JsonType jNumber = new JsonValue(135);
+
+    JsonType jString = new JsonValue("135");
+
+</pre>
+<h3>配列の生成</h3>
+<pre>
+配列を生成する方法としては parse() メソッド以外に、JsonType.a() メソッドを利用して Java 値から直接配列を生成することもできます。
+
+    JsonType jArray = JsonType.a(1, 2, 3, 4, 5);
+
+jArray には5つの数値要素からなる配列 [1, 2, 3, 4, 5] が設定されます。
+
+    JsonType jArray2 = JsonType.a(1, 2, 3, "string", "string2");
+
+jArray には5つの数値、文字列要素からなる配列 [1, 2, 3, "string", "string2"] が設定されます。
+JsonArray を利用した場合、上述の２つの例は、以下と処理結果は等価です。
+
+    JsonType jArray = new JsonArray(1, 2, 3, 4, 5);
+
+    JsonType jArray2 = new JsonArray(1, 2, 3, "string", "string2");
+
+</pre>
+<h3>オブジェクトの生成</h3>
+<pre>
+オブジェクトを生成する方法としては、parse() メソッドの他、JsonType.o() メソッドを利用して JSON オブジェクトを構築することもできます。
+
+    JsonType jObject = JsonType.o("key", 5);
+
+jObject として、"key" のキーに数値 5 が格納された JSON オブジェクトが設定されます。続けて任意のキー/バリューの組を追加できます。
+
+    jObject.put("key2", "string");
+    jObject.put("key3", jsonValue); // jsonValue は JsonValue 型
+    jObject.put("key4", jsonArray); // jsonArray は JsonArray 型
+    jObject.put("key5", jsonObject); // jsonObject は JsonObject 型
+
+</pre>
+<h2>文字列への変換</h3>
+<pre>
+JSON オブジェクトを JSON 文字列に変換するには、toString() を呼び出してください。
+上述の jArray を用いた場合、 jArray.toString() は以下の文字列を返却します。
+
+    [1,2,3,4,5]
+
+toString() は改行/スペースを含まない形式ですが、toString(String) を利用すると人が見やすい形式で出力することもできます。
+
+    JsonType jObject = JsonType.o("key", 5);
+    jObject.put("array", jArray);
+
+とした場合、jObject.toString("  ") (引数はスペース2つ)は以下の文字列を返却します。
+
+    {
+      "array": [1,2,3,4,5],
+      "key": 5
+    }
+
+jObject.toString("  ", 0) とすると、(要素の配列やオブジェクトを)一行化しない形式になります。
+    {
+      "array": [1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "key": 5
+    }
+
+</pre>
+
+</BODY>
+</HTML>
