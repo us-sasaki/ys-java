@@ -185,10 +185,10 @@ public class Alarm extends C8yData {
 	 */
 	public Alarm(String sourceId, String type, String text, String status, String severity) {
 		if (status != ACTIVE && status != ACKNOWLEDGED && status != CLEARED)
-			throw new IllegalArgumentException("Alarm の status は ACTIVE/ACKNOWLEDGED/CLEARED のいずれかである必要があります");
+			throw new IllegalArgumentException("Alarm の status は ACTIVE/ACKNOWLEDGED/CLEARED のいずれかである必要があります。指定値:"+status);
 		if (severity != CRITICAL && severity != MAJOR &&
 			severity != MINOR && severity != WARNING)
-				throw new IllegalArgumentException("Alarm の severity は CRITICAL/MAJOR/MINOR/WARNING のいずれかである必要があります");
+				throw new IllegalArgumentException("Alarm の severity は CRITICAL/MAJOR/MINOR/WARNING のいずれかである必要があります。指定値:"+severity);
 		source = new ManagedObject();
 		source.id = sourceId;
 		time = new TC_Date();

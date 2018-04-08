@@ -17,6 +17,7 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
   </properties>
 
+  <!-- ¡JUNIT 5 -->
   <dependencies>
      <dependency>
         <groupId>org.junit.platform</groupId>
@@ -78,5 +79,6 @@
       </plugin>
     </plugins>
   </build>
+  <!-- ¡JUNIT 5 ‚±‚±‚Ü‚Å -->
   
 </project>
