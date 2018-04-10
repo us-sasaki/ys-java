@@ -15,7 +15,7 @@ import com.ntt.tc.data.C8yData;
  */
 public class C8y_Position extends C8yData {
 	/** 高度(m) */
-	public double alt;
+	public double alt; // accept null value
 	/** 経度(度) */
 	public double lng;
 	/** 緯度(度) */
