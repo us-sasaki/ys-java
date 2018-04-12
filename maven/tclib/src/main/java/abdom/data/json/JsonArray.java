@@ -42,7 +42,7 @@ public class JsonArray extends JsonType {
 		this.array.clear();
 		
 		for (Object t : toSet) {
-			if (t == null) array.add(new JsonValue(null));
+			if (t == null) array.add(JsonType.NULL);
 			else if (t instanceof JsonType) array.add((JsonType)t);
 			else if (t instanceof Jsonizable) array.add( ((Jsonizable)t).toJson() );
 			else if (t instanceof String)
@@ -82,7 +82,7 @@ public class JsonArray extends JsonType {
  */
 	@Override
 	public JsonArray push(Jsonizable val) {
-		if (val == null) val = new JsonValue(null);
+		if (val == null) val = JsonType.NULL;
 		this.array.add(val.toJson());
 		return this;
 	}
@@ -144,7 +144,7 @@ public class JsonArray extends JsonType {
  */
 	@Override
 	public JsonArray shift(Jsonizable val) {
-		if (val == null) this.array.add(0, new JsonValue(null));
+		if (val == null) this.array.add(0, JsonType.NULL);
 		else this.array.add(0,val.toJson());
 		return this;
 	}
@@ -260,7 +260,10 @@ public class JsonArray extends JsonType {
 		for (int i = 0; i < deleteLen; i++) array.remove(index);
 		
 		// 挿入
-		for (int i = 0; i < toAdd.length; i++) array.add(index+i, toAdd[i]);
+		for (int i = 0; i < toAdd.length; i++) {
+			if (toAdd[i] == null) array.add(index+i, JsonType.NULL);
+			else array.add(index+i, toAdd[i]);
+		}
 		
 		return this;
 	}
@@ -274,7 +277,7 @@ public class JsonArray extends JsonType {
 		
 		for (int i = 0; i < a.length; i++) {
 			Object t = toAdd[i];
-			if (t == null) a[i] = new JsonValue(null);
+			if (t == null) a[i] = JsonType.NULL;
 			else if (t instanceof JsonType) a[i] = (JsonType)t;
 			else if (t instanceof Jsonizable) a[i] = ((Jsonizable)t).toJson();
 			else if (t instanceof String) a[i] = new JsonValue((String)t);
