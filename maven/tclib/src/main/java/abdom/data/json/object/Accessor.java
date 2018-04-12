@@ -124,6 +124,9 @@ class SimpleAccessor extends Accessor {
 		Class<?> type = prop.getType(); // 宣言型
 		
 		if (type.isPrimitive()) {
+			// primitive に対する null set は何もしない
+			if (arg == null || arg.getType() == JsonType.TYPE_VOID)
+				return;
 			// primitive のときは arg は JsonValue の必要がある
 			if (!(arg instanceof JsonValue))
 				throw new IllegalFieldTypeException("\"" +
@@ -309,85 +312,103 @@ class ArrayAccessor extends Accessor {
 		
 		Object result = Array.newInstance(compType, arg.size());
 		
-		if (compType == boolean.class) {
-			int i = 0;
-			for (JsonType elm : arg) {
-				switch (elm.toString()) {
-				case "true":
-					Array.setBoolean(result, i++, true);
-					break;
-				case "false":
-					Array.setBoolean(result, i++, false);
-					break;
-				default:
-					throw new IllegalFieldTypeException("\"" +
-						prop.getName() + "\" field component of class \"" +
-						instance.getClass().getName() +
-						"\" is boolean while json value is " + elm);
+		if (compType.isPrimitive()) {
+			if (compType == boolean.class) {
+				int i = 0;
+				for (JsonType elm : arg) {
+					switch (elm.toString()) {
+					case "true":
+						Array.setBoolean(result, i++, true);
+						break;
+					case "false":
+						Array.setBoolean(result, i++, false);
+						break;
+					case "null": // null 設定は何もしない
+						break;
+					default:
+						throw new IllegalFieldTypeException("\"" +
+							prop.getName() + "\" field component of class \"" +
+							instance.getClass().getName() +
+							"\" is boolean while json value is " + elm);
+					}
 				}
+			} else if (compType == int.class) {
+				int i = 0;
+				for (JsonType elm : arg)
+					// primitive では null 設定は何もしない
+					// arg は JsonArray であり、null はない
+					if (elm.getType() != JsonType.TYPE_VOID)
+						Array.setInt(result, i++, elm.intValue());
+			} else if (compType == long.class) {
+				int i = 0;
+				for (JsonType elm : arg)
+					if (elm.getType() != JsonType.TYPE_VOID)
+						Array.setLong(result, i++, elm.longValue());
+			} else if (compType == float.class) {
+				int i = 0;
+				for (JsonType elm : arg)
+					if (elm.getType() != JsonType.TYPE_VOID)
+						Array.setFloat(result, i++, elm.floatValue());
+			} else if (compType == double.class) {
+				int i = 0;
+				for (JsonType elm : arg)
+					if (elm.getType() != JsonType.TYPE_VOID)
+						Array.setDouble(result, i++, elm.doubleValue());
+			} else if (compType == byte.class) {
+				int i = 0;
+				for (JsonType elm : arg)
+					if (elm.getType() != JsonType.TYPE_VOID)
+						Array.setByte(result, i++, elm.byteValue());
+			} else if (compType == short.class) {
+				int i = 0;
+				for (JsonType elm : arg)
+					if (elm.getType() != JsonType.TYPE_VOID)
+						Array.setShort(result, i++, elm.shortValue());
+			} else if (compType == char.class) {
+				int i = 0;
+				for (JsonType elm : arg)
+					if (elm.getType() != JsonType.TYPE_VOID)
+						Array.setChar(result, i++, elm.getValue().charAt(0));
 			}
-		} else if (compType == int.class) {
-			int i = 0;
-			for (JsonType elm : arg)
-				Array.setInt(result, i++, elm.intValue());
-		} else if (compType == long.class) {
-			int i = 0;
-			for (JsonType elm : arg)
-				Array.setLong(result, i++, elm.longValue());
-		} else if (compType == float.class) {
-			int i = 0;
-			for (JsonType elm : arg)
-				Array.setFloat(result, i++, elm.floatValue());
-		} else if (compType == double.class) {
-			int i = 0;
-			for (JsonType elm : arg)
-				Array.setDouble(result, i++, elm.doubleValue());
-		} else if (compType == byte.class) {
-			int i = 0;
-			for (JsonType elm : arg)
-				Array.setByte(result, i++, elm.byteValue());
-		} else if (compType == short.class) {
-			int i = 0;
-			for (JsonType elm : arg)
-				Array.setShort(result, i++, elm.shortValue());
-		} else if (compType == char.class) {
-			int i = 0;
-			for (JsonType elm : arg)
-				Array.setChar(result, i++, elm.getValue().charAt(0));
-		} else if (compType == String.class) {
-			int i = 0;
-			for (JsonType elm : arg)
-				Array.set(result, i++, elm.getValue());
-		} else if (JsonObject.class.isAssignableFrom(compType)) {
-			int i = 0;
-			for (JsonType elm : arg)
-				Array.set(result, i++, elm); // そのまま設定
 		} else {
-			// 一般のオブジェクト
-			int i = 0;
-			for (JsonType elm : arg) {
-				if (elm == null || elm.getType() == JsonType.TYPE_VOID) {
-					Array.set(result, i++, null);
-					continue;
+			if (compType == String.class) {
+				int i = 0;
+				for (JsonType elm : arg)
+					if (arg.getType() == JsonType.TYPE_VOID)
+						Array.set(result, i++, null);
+					else
+						Array.set(result, i++, elm.getValue());
+			} else if (JsonObject.class.isAssignableFrom(compType)) {
+				int i = 0;
+				for (JsonType elm : arg)
+					Array.set(result, i++, elm); // そのまま設定
+			} else {
+				// 一般のオブジェクト
+				int i = 0;
+				for (JsonType elm : arg) {
+					if (elm.getType() == JsonType.TYPE_VOID) {
+						Array.set(result, i++, null);
+						continue;
+					}
+					Object newObj;
+					try {
+						newObj = compType.newInstance();
+					} catch (ReflectiveOperationException roe) {
+						throw new JDataDefinitionException(
+								"Failed to instantiate \"" +
+								prop.getName() +
+								"\". Default constructor of class \"" +
+								compType.getName() +
+								"\" may not be accessible and defined.", roe);
+					}
+					// JValue の特例
+					if (JValue.class.isAssignableFrom(compType)) {
+						((JValue)newObj).fill(elm);
+					} else {
+						Jsonizer.fill(newObj, elm);
+					}
+					Array.set(result, i++, newObj);
 				}
-				Object newObj;
-				try {
-					newObj = compType.newInstance();
-				} catch (ReflectiveOperationException roe) {
-					throw new JDataDefinitionException(
-							"Failed to instantiate \"" +
-							prop.getName() +
-							"\". Default constructor of class \"" +
-							compType.getName() +
-							"\" may not be accessible and defined.", roe);
-				}
-				// JValue の特例
-				if (JValue.class.isAssignableFrom(compType)) {
-					((JValue)newObj).fill(elm);
-				} else {
-					Jsonizer.fill(newObj, elm);
-				}
-				Array.set(result, i++, newObj);
 			}
 		}
 		prop.setObj(instance, result);
