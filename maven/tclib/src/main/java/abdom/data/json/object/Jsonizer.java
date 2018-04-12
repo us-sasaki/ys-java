@@ -230,6 +230,8 @@ public final class Jsonizer {
 	 * @param	instance	取得対象の Java オブジェクト
 	 * @param	name		取得フィールド名(dot 記法が使えます)
 	 * @return	取得された値(フィールドが存在しない場合、null)
+	 *			null 値の場合、Accessor.get の仕様で null が返却されます。
+	 *			JsonValue(null)とはなりません。
 	 */
 	public static JsonType get(Object instance, String name) {
 		Map<String, Accessor> accessors = getAccessors(instance);
@@ -248,7 +250,7 @@ public final class Jsonizer {
 		} else {
 			if (accessors.keySet().contains(name)) {
 				Accessor a = accessors.get(name);
-				return a.get(instance);
+				return a.get(instance); // may return null
 			}
 		}
 		// dot があって dot 以前で示されるプロパティがない場合

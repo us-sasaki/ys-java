@@ -17,7 +17,14 @@ import abdom.data.json.JsonObject;
  * フィールド、メソッドを統一的に扱うためのインターフェースです。
  * 単一オブジェクトでは、SimpleAccessor, 配列では ArrayAccessor を
  * インスタンス実体として利用します。
+ *
+ *<pre>
  * 2017/9/8 byte, char 等にも対応。
+ * 2018/4/12 primitive 型に対する null set は何もしない仕様に変更
+ *           (これまでは IllegalFieldTypeException)
+ *           c8y_Position.alt などが c8y で null となっている場合があり、
+ *           REST 結果を fill() した場合に例外となることから変更。
+ *</pre>
  *
  * @version		23 December, 2016
  * @author		Yusuke Sasaki
@@ -336,7 +343,7 @@ class ArrayAccessor extends Accessor {
 				int i = 0;
 				for (JsonType elm : arg)
 					// primitive では null 設定は何もしない
-					// arg は JsonArray であり、null はない
+					// arg は JsonArray であり、null は許容しない
 					if (elm.getType() != JsonType.TYPE_VOID)
 						Array.setInt(result, i++, elm.intValue());
 			} else if (compType == long.class) {
