@@ -48,6 +48,20 @@ class JsonTypeTest {
 			assertEquals("true", jtrue.toString());
 		}
 		
+		@Test
+		void array_parseでJsonArrayとなる() {
+			JsonType ja = JsonType.parse("[1,false,\"3\"]");
+			assertEquals(JsonType.TYPE_ARRAY, ja.getType());
+			assertEquals(JsonType.FALSE, ja.get(1));
+			assertEquals(3, ja.size());
+		}
+		
+		@Test
+		void object_parseでJsonObjectとなる() {
+			JsonType jo = JsonType.parse("{\"key\": \"string\"}");
+			assertEquals(JsonType.TYPE_OBJECT, jo.getType());
+			assertEquals("string", jo.get("key").getValue());
+		}
 	}
 	
 	@Nested
@@ -86,12 +100,5 @@ class JsonTypeTest {
 			assertEquals(json, j.toString());
 		}
 	}
-	
-	@Test
-	void testArrayAndObject() {
-		assertEquals(JsonType.TYPE_ARRAY, new JsonArray().getType());
-		assertEquals(JsonType.TYPE_OBJECT, new JsonObject().getType());
-	}
-	
 	
 }
