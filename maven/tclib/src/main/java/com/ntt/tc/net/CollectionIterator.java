@@ -3,6 +3,7 @@ package com.ntt.tc.net;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import abdom.data.json.object.Jsonizer;
 import abdom.data.json.JsonType;
@@ -113,9 +114,12 @@ class CollectionIterator<T extends C8yData> implements Iterator<T> {
 					"フィールド名があっているか確認して下さい。 結果" +
 					resp.toJson().toString().substring(0, 20) );
 			
-			buffer = (T[])Jsonizer.toArray(resp.toJson().get(fieldName),
+			JsonType elements = resp.toJson().get(fieldName);
+			if (elements.size() == 0) buffer = null;
+			else {
+				buffer = (T[])Jsonizer.toArray(elements,
 								(T[])Array.newInstance(compType, 0));
-			
+			}
 			cursor = 0;
 		} catch (IOException ioe) {
 			throw new C8yRestRuntimeException(ioe);
@@ -124,15 +128,22 @@ class CollectionIterator<T extends C8yData> implements Iterator<T> {
 	
 	@Override
 	public boolean hasNext() {
-		if (buffer == null) fetch();
+		if (buffer == null) {
+			fetch();
+			if (buffer == null) return false;
+		}
 		return (cursor < buffer.length);
 	}
 	
 	@Override
 	public T next() {
-		if (buffer == null) fetch();
+		if (buffer == null) {
+			fetch();
+			if (buffer == null)
+				throw new NoSuchElementException("CollectionIterator が終わりに達している状態で next() を呼び出しました。(url="+url+", field="+fieldName+")");
+		}
 		T result = buffer[cursor++];
-		if (cursor == buffer.length) fetch();
+		if (cursor == buffer.length) buffer = null;
 		
 		return result;
 	}
