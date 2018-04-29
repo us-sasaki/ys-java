@@ -1,6 +1,7 @@
 package com.ntt.tc.net;
 
 import java.io.IOException;
+import java.util.TreeMap;
 import java.util.Map;
 
 import abdom.data.json.JsonType;
@@ -85,4 +86,133 @@ public class APIUtil {
 								 throws IOException {
 		return createManagedObjectIfAbsent("c8y_Serial", extId, asDefault);
 	}
+	
+	/**
+	 * Managed Object の type 一覧を返却します。
+	 * 返却される map は type 値と、存在数です。
+	 * 数が多い場合、時間がかかることがあります。
+	 *
+	 * @param		query	取得する ManagedObject に条件を追加します
+	 * @return		(type, count) からなる Map です。一般に null キーを含みます。
+	 */
+	public Map<String, Integer> getManagedObjectTypes(String query) {
+		Map<String, Integer> result = new TreeMap<String, Integer>();
+		
+		for (ManagedObject m : api.managedObjects(query)) {
+			String type = m.type;
+			Integer c = result.get(type);
+			if (c == null) c = 0;
+			result.put(type, c+1);
+		}
+		return result;
+	}
+	
+	/**
+	 * Managed Object の type 一覧を返却します。
+	 * 返却される map は type 値と、存在数です。
+	 * 数が多い場合、時間がかかることがあります。
+	 *
+	 * @return		(type, count) からなる Map です。一般に null キーを含みます。
+	 */
+	public Map<String, Integer> getManagedObjectTypes() {
+		return getManagedObjectTypes("pageSize=1000");
+	}
+	
+	/**
+	 * Measurement の type 一覧を返却します。
+	 * 返却される map は type 値と、存在数です。
+	 * Measurement は数が多く、一般に時間がかかります。
+	 * (数時間以上かかる場合もあります)
+	 *
+	 * @param		query	取得する Measurement に条件を追加します
+	 * @return		(type, count) からなる Map です。
+	 */
+	public Map<String, Integer> getMeasurementTypes(String query) {
+		Map<String, Integer> result = new TreeMap<String, Integer>();
+		
+		for (Measurement m : api.measurements(query)) {
+			String type = m.type;
+			Integer c = result.get(type);
+			if (c == null) c = 0;
+			result.put(type, c+1);
+		}
+		return result;
+	}
+	
+	/**
+	 * Measurement の type 一覧を返却します。
+	 * 返却される map は type 値と、存在数です。
+	 * Measurement は数が多く、一般に時間がかかります。
+	 * (数時間以上かかる場合もあります)
+	 *
+	 * @return		(type, count) からなる Map です。
+	 */
+	public Map<String, Integer> getMeasurementTypes() {
+		return getMeasurementTypes("pageSize=2000");
+	}
+	
+	/**
+	 * Event の type 一覧を返却します。
+	 * 返却される map は type 値と、存在数です。
+	 * Event は数が多く、一般に時間がかかります。
+	 * (数時間以上かかる場合もあります)
+	 *
+	 * @param		query	取得する Event に条件を追加します
+	 * @return		(type, count) からなる Map です。
+	 */
+	public Map<String, Integer> getEventTypes(String query) {
+		Map<String, Integer> result = new TreeMap<String, Integer>();
+		
+		for (Event e : api.events(query)) {
+			String type = e.type;
+			Integer c = result.get(type);
+			if (c == null) c = 0;
+			result.put(type, c+1);
+		}
+		return result;
+	}
+	
+	/**
+	 * Event の type 一覧を返却します。
+	 * 返却される map は type 値と、存在数です。
+	 * Event は数が多く、一般に時間がかかります。
+	 * (数時間以上かかる場合もあります)
+	 *
+	 * @return		(type, count) からなる Map です。
+	 */
+	public Map<String, Integer> getEventTypes() {
+		return getEventTypes("pageSize=2000");
+	}
+	
+	/**
+	 * Alarm の type 一覧を返却します。
+	 * 返却される map は type 値と、存在数です。
+	 * 数が多い場合、時間がかかります。
+	 *
+	 * @param		query	取得する Alarm に条件を追加します
+	 * @return		(type, count) からなる Map です。
+	 */
+	public Map<String, Integer> getAlarmTypes(String query) {
+		Map<String, Integer> result = new TreeMap<String, Integer>();
+		
+		for (Alarm a : api.alarms(query)) {
+			String type = a.type;
+			Integer c = result.get(type);
+			if (c == null) c = 0;
+			result.put(type, c+1);
+		}
+		return result;
+	}
+	
+	/**
+	 * Alarm の type 一覧を返却します。
+	 * 返却される map は type 値と、存在数です。
+	 * 数が多い場合、時間がかかります。
+	 *
+	 * @return		(type, count) からなる Map です。
+	 */
+	public Map<String, Integer> getAlarmTypes() {
+		return getAlarmTypes("pageSize=1000");
+	}
+	
 }
