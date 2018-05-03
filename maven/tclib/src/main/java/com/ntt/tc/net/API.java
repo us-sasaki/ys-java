@@ -1,8 +1,10 @@
 package com.ntt.tc.net;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonArray;
@@ -1064,4 +1066,118 @@ public class API {
  * Real-time Notification API
  */
 	// C8yEventDispatcher を利用のこと
+
+/*-------------------------
+ * Real-time statement API
+ */
+	/**
+	 * 指定された id の Module を取得します。
+	 */
+	public Module readModule(String id) throws IOException {
+		// end point は文書に記載がなく、管理APの電文を見てわかった
+		Response resp = rest.get("/cep/modules/"+id, "cepModule");
+		
+		return Jsonizer.fromJson(resp, Module.class);
+	}
+	
+	/**
+	 * 指定された id の Module スクリプトを取得します。
+	 */
+	public String readModuleText(String id) throws IOException {
+		// end point は文書に記載がなく、管理APの電文を見てわかった
+		Response resp = rest.requestImpl("/cep/modules/"+id+"?text", "GET", "cepModule", "text/plain", null); // text/plain 指定のため impl を使う
+		
+		return resp.getBody();
+	}
+	
+	/**
+	 * ModuleCollection を取得します。
+	 *
+	 * @return		登録されている CEP Module の Collection
+	 */
+	public ModuleCollection readModuleCollection() throws IOException {
+		Response resp = rest.get("/cep/modules", "cepModuleCollection");
+		return Jsonizer.fromJson(resp, ModuleCollection.class);
+	}
+	
+	/**
+	 * 指定された CEP モジュールを登録します。
+	 * 登録後、デプロイ済み状態になります。
+	 * CEP コンパイルエラーとなる場合、 C8yRestException がスローされます。
+	 * スクリプト内の改行は LF が標準と思われますが、CR+LF でも問題なく
+	 * 動作しています。
+	 *
+	 * @param		moduleName		モジュール名
+	 * @param		text			CEPステートメント
+	 */
+	public void createModule(String moduleName, String text)
+					throws IOException {
+		byte[] toPost = ("module "+moduleName+";\n"+text).getBytes("UTF-8");
+		
+		Response resp = rest.postMultipart("/cep/modules", "cepmodule", toPost);
+	}
+	
+	public void createModule(String moduleName, List<String> lines)
+					throws IOException {
+		createModule(moduleName, lines.stream().collect(Collectors.joining("\n")));
+	}
+	
+	/**
+	 * CEP モジュールのデプロイステータスを変更します。
+	 *
+	 * @param		id			CEP のモジュール id
+	 * @param		deployed	デプロイ(true)、アンデプロイ(false)
+	 */
+	public void updateModule(String id, boolean deployed)
+					throws IOException {
+		String status = (deployed)?"DEPLOYED":"NOT_DEPLOYED";
+		Module m = new Module();
+		m.status = status;
+		
+		Response resp = rest.put("/cep/modules/"+id, "cepModule", m);
+	}
+	
+	/**
+	 * CEP モジュールのスクリプトを変更します。
+	 * スクリプト内の改行は LF が標準と思われますが、CR+LF でも問題なく
+	 * 動作しています。
+	 *
+	 * @param		id			CEP のモジュール id
+	 * @param		text		スクリプト
+	 */
+	public void updateModuleText(String id, String moduleName, String text)
+					throws IOException {
+		Response resp = rest.requestImpl("/cep/modules/"+id, "PUT", "text/plain", "", ("module "+moduleName+";\n"+text).getBytes("UTF-8")); // text/plain 指定のため impl を使う
+	}
+	
+	public void updateModuleText(String id, String moduleName, List<String> lines)
+					throws IOException {
+		updateModuleText(id, moduleName, lines.stream().collect(Collectors.joining("\n")));
+	}
+	
+	/**
+	 * モジュールコレクションを取得します。
+	 *
+	 * @param		queryString	pageSize 等の設定
+	 * @return		登録されている module の itarable
+	 */
+	public Iterable<Module> modules(final String queryString) {
+		return new Iterable<Module>() {
+			public Iterator<Module> iterator() {
+				return new CollectionIterator<Module>(
+							rest, "/cep/modules?"+queryString,
+							"modules", Module.class);
+			}
+		};
+	}
+	
+	/**
+	 * モジュールコレクションを取得します。
+	 *
+	 * @return		登録されている module の itarable
+	 */
+	public Iterable<Module> modules() {
+		return modules("");
+	}
+	
 }

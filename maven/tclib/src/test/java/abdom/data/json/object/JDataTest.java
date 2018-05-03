@@ -178,4 +178,28 @@ public class JDataTest extends TestCase{
 		no2.fill("{\"jo\":{\"value\":null}}");
 		assertEquals("{\"jo\":{\"value\":null}}", no2.toString());
 	}
+	
+	static class ObjectObj extends JData {
+		public Object obj;
+		public Object jdata;
+	}
+	
+	static class EmptyJData extends JData {
+	}
+	
+	public void testObject() {
+		ObjectObj o = new ObjectObj();
+		o.obj = new Object();
+		assertEquals("{\"obj\":{}}", o.toString());
+		
+		ObjectObj o2 = new ObjectObj();
+		JData j = new EmptyJData();
+		o2.jdata = j;
+//		System.out.println("★★"+o2);
+		j.putExtra("newField", "hoge"); //new JsonValue("hoge"));
+//		System.out.println("★★"+o2);
+		// o2 は宣言型が Object のため、JData 処理が行われない
+		// Accessor で宣言型で判定しているのをやめるべきか。
+//		System.out.println(j);
+	}
 }

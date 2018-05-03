@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 //import java.util.Base64; // since JDK1.8
 import java.util.Date;
+import java.util.Map;
 import java.text.SimpleDateFormat;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -87,6 +88,27 @@ public class Rest {
 		}
 		
 		/**
+		 * 結果が JSON 文字列でないことがわかっている場合、
+		 * このメソッドで文字列を取得可能。
+		 * ただし、たまたま JSON 文字列になる場合、取得できない。
+		 * body の型を String とすべきだが、暫定的にこの実装とする。
+		 */
+		public String getBody() {
+			if (body == null) return null;
+			if (!(body instanceof JsonValue)) return toString();
+			if (body.getType() != JsonType.TYPE_STRING) return toString();
+			String str = body.getValue();
+			
+			if (str.charAt(0) == '[') {
+				int index = str.indexOf(':');
+				if (index == -1) return "Rest.Response body format error.";
+				int len = Integer.parseInt(str.substring(1, index));
+				return str.substring(index+1, index+1 + len);
+			}
+			return str;
+		}
+		
+		/**
 		 * 結果の body を JsonType で取得します。
 		 * エラーレスポンスに関する結果は不定で、通常 JsonParseExcception
 		 * がスローされます。
@@ -130,6 +152,13 @@ public class Rest {
 		this.tenant = tenant + "/";
 		this.user = user;
 		this.password = password;
+	}
+	
+	public Rest(Map<String, String> account) {
+		this(account.get("url"),
+				account.get("tenant"),
+				account.get("user"),
+				account.get("password"));
 	}
 	
 /*---------------
@@ -414,20 +443,37 @@ public class Rest {
 			}
 			if (in != null) { // ErrorStream は null となることがある
 				Reader r = new InputStreamReader(in, "UTF-8");
-				try {
-					JsonType result = JsonType.parse(r);
-					resp.body = result;
-				} catch (JsonParseException jpe) {
-					resp.body = new JsonValue("Not JSON : " + jpe);
+				StringBuilder sb = new StringBuilder();
+				while (true) {
+					int c = r.read();
+					if (c == -1) break;
+					sb.append( (char)c );
 				}
 				r.close(); //bis.close();
+				try {
+					JsonType result = JsonType.parse(sb.toString());
+					resp.body = result;
+				} catch (JsonParseException jpe) {
+					// このエラーメッセージの先頭部分[]は、getBody() でJSON
+					// でない電文を取得するのに利用する場合があるため、
+					// フォーマット変更時は両方変更すること
+					//
+					// 暫定実装であり、Response.body を String または byte[]
+					// とするべき
+					try {
+						resp.body = new JsonValue("["+sb.length() + ":" +
+											sb+"] is not JSON: " + jpe);
+					} catch (Exception e) {
+						resp.body = new JsonValue("not JSON: " + jpe + e);
+					}
+				}
 				in.close();
 			}
 		} catch (IOException ioe) {
 			throw ioe;
 		}
 		resp.message = con.getResponseMessage();
-		//con.disconnect();		// 高速化に寄与する可能性がある
+		//con.disconnect();		// 高速化に寄与する可能性があるためコメントアウト
 		
 		//
 		// レスポンスコードの処理(404 Not Found は正常応答)
