@@ -436,6 +436,15 @@ public class API {
 	}
 	
 	/**
+	 * Measurement を削除します。
+	 *
+	 * @param		queryString		削除対象の条件
+	 */
+	public void deleteMeasurements(String queryString) throws IOException {
+		Response resp = rest.delete("/measurement/measurements/?"+queryString);
+	}
+	
+	/**
 	 * メジャーメントコレクションAPIを用いて、Javaのforループで使える
 	 * Measurement の iterator を取得します。
 	 * <pre>
@@ -570,6 +579,15 @@ public class API {
 	}
 	
 	/**
+	 * Measurement を削除します。
+	 *
+	 * @param		queryString		削除対象の条件
+	 */
+	public void deleteEvents(String queryString) throws IOException {
+		Response resp = rest.delete("/event/events/?"+queryString);
+	}
+	
+	/**
 	 * イベントコレクションAPIを用いて、Javaのforループで使える
 	 * Event の iterator を取得します。
 	 * <pre>
@@ -666,6 +684,15 @@ public class API {
 						throws IOException {
 		Response resp = rest.get("/alarm/alarms/?"+queryString);
 		return Jsonizer.fromJson(resp, AlarmCollection.class);
+	}
+	
+	/**
+	 * Alarm を削除します。
+	 *
+	 * @param		queryString		削除対象の条件
+	 */
+	public void deleteAlarms(String queryString) throws IOException {
+		Response resp = rest.delete("/alarm/alarms/?"+queryString);
 	}
 	
 	/**
