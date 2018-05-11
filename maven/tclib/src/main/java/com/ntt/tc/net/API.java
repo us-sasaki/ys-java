@@ -1,6 +1,10 @@
 package com.ntt.tc.net;
 
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Iterator;
@@ -47,6 +51,7 @@ import static com.ntt.tc.net.Rest.Response;
 public class API {
 	static final String BUSR = "ZGV2aWNlYm9vdHN0cmFw";
 	static final String BPSS = "RmhkdDFiYjFm";
+	static final Charset UTF8 = StandardCharsets.UTF_8;
 	
 	protected Rest rest;
 	protected Rest bootstrapRest;
@@ -1123,6 +1128,17 @@ public class API {
 	}
 	
 	/**
+	 * 指定された path にあるファイルの内容で CEP モジュールを登録します。
+	 *
+	 * @param		moduleName	モジュール名
+	 * @param		fileName	ファイルのpath
+	 */
+	public void createModuleTextByFile(String moduleName,
+										String fileName) throws IOException {
+		createModule(moduleName, Files.readAllLines(Paths.get(fileName), UTF8));
+	}
+	
+	/**
 	 * CEP モジュールのデプロイステータスを変更します。
 	 *
 	 * @param		id			CEP のモジュール id
@@ -1153,6 +1169,19 @@ public class API {
 	public void updateModuleText(String id, String moduleName, List<String> lines)
 					throws IOException {
 		updateModuleText(id, moduleName, lines.stream().collect(Collectors.joining("\n")));
+	}
+	
+	/**
+	 * 指定された path にあるファイルの内容で CEP モジュールを更新します。
+	 *
+	 * @param		id			CEP のモジュール id
+	 * @param		moduleName	モジュール名
+	 * @param		fileName	ファイルのpath
+	 */
+	public void updateModuleTextByFile(String id,
+										String moduleName,
+										String fileName) throws IOException {
+		updateModuleText(id, moduleName, Files.readAllLines(Paths.get(fileName), UTF8));
 	}
 	
 	/**

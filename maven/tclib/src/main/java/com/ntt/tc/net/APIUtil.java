@@ -1,6 +1,8 @@
 package com.ntt.tc.net;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.Map;
 
@@ -214,5 +216,23 @@ public class APIUtil {
 	public Map<String, Integer> getAlarmTypes() {
 		return getAlarmTypes("pageSize=1000");
 	}
+	
+	public void undeployModuleForName(final String moduleName)
+							throws IOException {
+		List<Module> modules = new ArrayList<>();
+		api.modules().iterator().forEachRemaining(modules::add);
+		
+		Module m = modules.stream().
+						filter( a -> a.name.equals(moduleName) ).
+						reduce(null, (a, b) -> {
+							if (a != null) return a;
+							return b; // 最初に見つかったものとする
+						});
+		if (m == null)
+				throw new IllegalArgumentException("Module " + moduleName
+							+ "was not found.");
+		api.updateModule(m.id, false);
+	}
+	
 	
 }
