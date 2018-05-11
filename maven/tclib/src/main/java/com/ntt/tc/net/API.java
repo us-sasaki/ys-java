@@ -1087,6 +1087,13 @@ public class API {
 	
 	/**
 	 * 指定された id の Module スクリプトを取得します。
+	 * 存在しない場合、エラーJSON文字列が返却されます。
+	 * <pre>
+	 * {"error":"cep-server/Not Found","info":"https://www.cumulocity.com/guides/reference-guide/#error_reporting","message":"Not found module file for id 6 : Could not find entity CepModule by ID 6!"}
+	 * </pre>
+	 *
+	 * @param		id		モジュール id
+	 * @return		スクリプト文字列、またはエラーJSON
 	 */
 	public String readModuleText(String id) throws IOException {
 		// end point は文書に記載がなく、管理APの電文を見てわかった
@@ -1172,6 +1179,7 @@ public class API {
 	}
 	
 	/**
+<<<<<<< HEAD
 	 * 指定された path にあるファイルの内容で CEP モジュールを更新します。
 	 *
 	 * @param		id			CEP のモジュール id
@@ -1185,7 +1193,8 @@ public class API {
 	}
 	
 	/**
-	 * モジュールコレクションを取得します。
+	 * モジュールコレクションAPIを用いて、Javaのforループで使える
+	 * Module の iterator を取得します。
 	 *
 	 * @param		queryString	pageSize 等の設定
 	 * @return		登録されている module の itarable
@@ -1201,7 +1210,7 @@ public class API {
 	}
 	
 	/**
-	 * モジュールコレクションを取得します。
+	 * 全モジュールコレクションを取得する便利メソッドです。
 	 *
 	 * @return		登録されている module の itarable
 	 */
