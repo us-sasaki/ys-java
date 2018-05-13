@@ -1072,27 +1072,46 @@ public class API {
  */
 	/**
 	 * 指定された id の Module を取得します。
+	 * 存在しない場合、C8yNoSuchObjectException がスローされます。
+	 * <pre>
+	 * {"error":"cep-server/Not Found",
+	 *  "info":"https://www.cumulocity.com/guides/reference-guide/#error_reporting",
+	 *  "message":"Not found module file for id 6 : Could not find entity CepModule by ID 6!"
+	 * }
+	 * </pre>
+	 *
+	 * @param		id		モジュール id
+	 * @return		Module
 	 */
 	public Module readModule(String id) throws IOException {
 		// end point は文書に記載がなく、管理APの電文を見てわかった
 		Response resp = rest.get("/cep/modules/"+id, "cepModule");
 		
+		if (resp.code == 404)
+			throw new C8yNoSuchObjectException("指定された id("+
+						id+")のモジュールは存在しません:"+resp);
 		return Jsonizer.fromJson(resp, Module.class);
 	}
 	
 	/**
 	 * 指定された id の Module スクリプトを取得します。
-	 * 存在しない場合、エラーJSON文字列が返却されます。
+	 * 存在しない場合、C8yNoSuchObjectException がスローされます。
 	 * <pre>
-	 * {"error":"cep-server/Not Found","info":"https://www.cumulocity.com/guides/reference-guide/#error_reporting","message":"Not found module file for id 6 : Could not find entity CepModule by ID 6!"}
+	 * {"error":"cep-server/Not Found",
+	 *  "info":"https://www.cumulocity.com/guides/reference-guide/#error_reporting",
+	 *  "message":"Not found module file for id 6 : Could not find entity CepModule by ID 6!"
+	 * }
 	 * </pre>
 	 *
 	 * @param		id		モジュール id
-	 * @return		スクリプト文字列、またはエラーJSON
+	 * @return		スクリプト文字列
 	 */
 	public String readModuleText(String id) throws IOException {
 		// end point は文書に記載がなく、管理APの電文を見てわかった
 		Response resp = rest.requestImpl("/cep/modules/"+id+"?text", "GET", "cepModule", "text/plain", null); // text/plain 指定のため impl を使う
+		if (resp.code == 404)
+			throw new C8yNoSuchObjectException("指定された id("+
+						id+")のモジュールは存在しません:"+resp);
 		
 		return resp.getBody();
 	}
