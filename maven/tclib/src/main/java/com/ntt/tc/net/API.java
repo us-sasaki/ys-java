@@ -1198,7 +1198,6 @@ public class API {
 	}
 	
 	/**
-<<<<<<< HEAD
 	 * 指定された path にあるファイルの内容で CEP モジュールを更新します。
 	 *
 	 * @param		id			CEP のモジュール id
