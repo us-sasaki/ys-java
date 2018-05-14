@@ -78,7 +78,7 @@
   </dependencies>
   <!-- ¡JUNIT 5  -->
   <build>
-    <finalName>introduction-to-junit5</finalName>
+    <!-- <finalName>introduction-to-junit5</finalName> -->
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -3,6 +3,7 @@ package com.ntt.tc.net;
 /**
  * Cumulocity REST で、指定されたオブジェクトが存在しない場合に
  * スローされる例外です。
+ * 存在しないことが想定されず、通知する必要がある場合にスローされます。
  *
  * @version		May 9, 2018
  * @author		Yusuke Sasaki

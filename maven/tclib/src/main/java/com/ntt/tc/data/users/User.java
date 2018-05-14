@@ -98,7 +98,6 @@ public class User extends C8yData {
 	 */
 	public TC_Boolean sendPasswordResetEmail;
 	public JsonObject customProperties;
-	public JsonObject groups;
 	
 	/**
 	 * List of device permissions
@@ -112,7 +111,9 @@ public class User extends C8yData {
 	/**
 	 * docs にないが、例にあるので追加。
 	 */
-	public JsonObject roles;
+	public RoleReferenceCollection roles;
+	public GroupReferenceCollection groups;
+	
 	/**
 	 * List of all roles a current user has assignedﾂ?(explicitly or implicitly
 	 * via associated groups).

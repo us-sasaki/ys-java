@@ -114,10 +114,9 @@ class CollectionIterator<T extends C8yData> implements Iterator<T> {
 					"フィールド名があっているか確認して下さい。 結果" +
 					resp.toJson().toString().substring(0, 20) );
 			
-			JsonType elements = resp.toJson().get(fieldName);
-			if (elements.size() == 0) buffer = null;
+			if (jt.size() == 0) buffer = null;
 			else {
-				buffer = (T[])Jsonizer.toArray(elements,
+				buffer = (T[])Jsonizer.toArray(jt,
 								(T[])Array.newInstance(compType, 0));
 			}
 			cursor = 0;

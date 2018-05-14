@@ -828,6 +828,87 @@ public class API {
  * Tenant API
  */
 	/**
+	 * テナントコレクションを GET します。
+	 *
+	 * @param		queryString		クエリ文字列
+	 */
+	public TenantCollection readTenantCollection(String queryString)
+								throws IOException {
+		Response resp = rest.get("/tenant/tenants/?"+queryString, "tenantCollection");
+		return Jsonizer.fromJson(resp, TenantCollection.class);
+	}
+	
+	/**
+	 * テナントコレクション API を用いて、Java の for ループで利用できる
+	 * Iterable を取得します。
+	 *
+	 * @param	queryString	取得条件を指定します。
+	 */
+	public Iterable<Tenant> tenants(String queryString) throws IOException {
+		return new Iterable<Tenant>() {
+			public Iterator<Tenant> iterator() {
+				return new CollectionIterator<Tenant>(rest,
+								"/tenant/tenants/?"+queryString,
+								"tenants", Tenant.class);
+			}
+		};
+	}
+	
+	/**
+	 * テナントコレクション API を用いて、Java の for ループで利用できる
+	 * Iterable を取得します。
+	 */
+	public Iterable<Tenant> tenants() throws IOException {
+		return tenants("");
+	}
+	
+	/**
+	 * テナントを新規作成します。
+	 *
+	 * @param		tenant		新規作成するテナントの情報
+	 *							(作成結果によって上書きされます)
+	 * @return		登録結果によって更新された tenant
+	 */
+	public Tenant createTenant(Tenant tenant) throws IOException {
+		Response resp = rest.post("/tenant/tenants", "tenant", tenant);
+		tenant.fill(resp);
+		return tenant;
+	}
+	
+	/**
+	 * 指定された id のテナント情報を取得します。
+	 *
+	 * @param		id		テナント id
+	 * @return		テナント情報
+	 */
+	public Tenant readTenant(String id) throws IOException {
+		Response resp = rest.get("/tenant/tenants/"+id, "tenant");
+		return Jsonizer.fromJson(resp, Tenant.class);
+	}
+	
+	/**
+	 * 既存のテナントを更新します。
+	 *
+	 * @param		id		テナント id
+	 * @param		updater	更新オブジェクト
+	 * @return		更新後の Tenant 情報
+	 */
+	public Tenant updateTenant(String id, Tenant updater) throws IOException {
+		Response resp = rest.put("/tenant/tenants/"+id, "tenant", updater);
+		return Jsonizer.fromJson(resp, Tenant.class);
+	}
+	
+	/**
+	 * 指定された id のテナント情報を削除します。
+	 *
+	 * @param		id		テナント id
+	 */
+	public void deleteTenant(String id) throws IOException {
+		Response resp = rest.delete("/tenant/tenants/"+id, "tenant");
+	}
+	
+	
+	/**
 	 * テナント使用状況統計コレクションを取得します。
 	 * Collection API では、結果のアトミック性が保証されていないことに注意して
 	 * 下さい。
@@ -874,6 +955,19 @@ public class API {
 	 */
 	public Iterable<UsageStatistics> usageStatistics() {
 		return usageStatistics("");
+	}
+	
+	/**
+	 * このテナントのテナントオプションを登録します。
+	 *
+	 * @param		option		登録対象のテナントオプション
+	 *							(成功時上書きされます)
+	 * @return		登録結果によって更新された option
+	 */
+	public Option createOption(Option option) throws IOException {
+		Response resp = rest.post("/tenant/options/", "option", option);
+		option.fill(resp);
+		return option;
 	}
 	
 	/**
@@ -949,6 +1043,18 @@ public class API {
 			tenant = tenant.substring(i+3, j) + "/";
 		}
 		return tenant;
+	}
+	
+	/**
+	 * UserCollection を get します。
+	 *
+	 * @param		queryString		queryとして指定する文字列
+	 * @return		UserCollection
+	 */
+	public UserCollection readUserCollection(String queryString)
+								throws IOException {
+		Response resp = rest.get("/user/"+getTenant()+"users", "userCollection");
+		return Jsonizer.fromJson(resp, UserCollection.class);
 	}
 	
 	/**
@@ -1039,7 +1145,7 @@ public class API {
 		return new Iterable<User>() {
 			public Iterator<User> iterator() {
 				return new CollectionIterator<User>(
-							rest, "/user/"+tenant+"/users?"+queryString,
+							rest, "/user/"+tenant+"users/?"+queryString,
 							"users", User.class);
 			}
 		};
