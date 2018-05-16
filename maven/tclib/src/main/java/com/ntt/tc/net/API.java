@@ -883,6 +883,9 @@ public class API {
 	 */
 	public Tenant readTenant(String id) throws IOException {
 		Response resp = rest.get("/tenant/tenants/"+id, "tenant");
+		if (resp.code == 404)
+			throw new C8yNoSuchObjectException("tenant "+id+" is not found."+
+						resp);
 		return Jsonizer.fromJson(resp, Tenant.class);
 	}
 	
