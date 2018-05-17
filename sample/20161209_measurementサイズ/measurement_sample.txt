@@ -1,1 +1,0 @@
-{"c8y_Battery":{"level":{"unit":"%","value":23.0}},"c8y_TemperatureMeasurement":{"T":{"unit":"C","value":30.75}},"source":{"id":"19331972"},"time":"2016-12-09T17:05:04.728+09:00","type":"c8y_PTCMeasurement"}

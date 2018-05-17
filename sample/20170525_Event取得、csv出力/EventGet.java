@@ -18,7 +18,7 @@ import com.ntt.tc.data.inventory.*;
 public class EventGet {
 	public static void main(String[] args) throws Exception {
 		// REST アクセスオブジェクトの生成
-		Rest r = new Rest("https://iottf_lora.je1.thingscloud.ntt.com", "us.sasaki@ntt.com", "Nttcomsasaki3");
+		Rest r = new Rest("https://iottf_lora.je1.thingscloud.ntt.com", "", "");
 		
 		//------------------------------
 		// EventCollection の取得
