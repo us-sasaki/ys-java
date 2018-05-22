@@ -6,7 +6,7 @@ import abdom.data.json.JsonObject;
 
 /**
  * Tenant class
- * This source is machine-generated from c8y-markdown docs.
+ * create する際の必須情報を引数としたコンストラクタを追加
  */
 public class Tenant extends C8yData {
 	/**
@@ -168,5 +168,21 @@ public class Tenant extends C8yData {
 	 * </pre>
 	 */
 	public String parent;
+	
+/*-------------
+ * constructor
+ */
+	public Tenant() {
+	}
+	
+	public Tenant(String id,
+					String domain,
+					String adminName,
+					String adminPass) {
+		this.id				= id;
+		this.domain			= domain;
+		this.adminName		= adminName;
+		this.adminPassword	= adminPass;
+	}
 	
 }
