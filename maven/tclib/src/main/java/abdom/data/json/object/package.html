@@ -4,6 +4,47 @@
 <BODY>
 このパッケージは Java オブジェクトと JSON 形式の相互変換に関するユーティリティクラス群を含んでいます。このパッケージにある JData を継承することで、Java オブジェクトを JSON 形式として直列化する toJson() メソッド、逆に JSON 形式から Java オブジェクトの値を設定する fill() メソッドが利用できるようになります。<br/>
 <br/>
+<h2>JData利用例</h2>
+
+JData を継承したクラスを作成します。
+<pre>
+public class JObject extends JData {
+	public int number;
+	public String string;
+	protected int internalState;
+	
+	public void setState(boolean flag) {
+		internalState = (flag)?0:1;
+	}
+	
+	public boolean getState() {
+		return (internalState == 0);
+	}
+}
+</pre>
+JData を継承することで、このオブジェクトと JSON 形式の相互変換が可能となります。
+例えば、JObject を次のように初期化したとします。
+<pre>
+JObject j = new JObject();
+j.number = 1;
+j.string = "hello";
+</pre>
+
+<h3>JSON変換</h3>
+JObject の toString() は JSON 形式への変換を行います。
+<pre>System.out.println(j);</pre>
+結果は以下のような JSON 形式となります。
+<pre>{"number":1,"string":"hello","state":true}</pre>
+JSON化の対象となるプロパティは、public フィールド、および java beans 命名規則にしたがった public getter, setter メソッドのペアです。メソッドペアは、getter の返り値と setter の引数の型が一致している必要があります。
+上記の例では internalState 変数は protected のため対象外となります。
+また、getState / setState の組があるため、boolean 型の state プロパティが対象となります。<br>
+
+<h3>JSON値の設定</h3>
+JObject の fill() によって JSON 形式の値の設定ができます。
+<pre>j.fill("{\"state\":false}");</pre>
+これにより、<code>j.internalState</code>の値は 1 となります。JSON として指定されていないプロパティの値は変化しません。<br>
+Java オブジェクトと JSON 値の対応については、次の項を参照ください。
+
 <h2>Java オブジェクトと JSON 形式の変換ルール</h2>
 <table align=center width=80% border=1 cellspacing=0 bordercolor="#aaaaaa" cellpadding=5>
 <tr><td>Javaオブジェクト</td><td>JSON</td><td>説明</td></tr>
