@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 /**
- * 練習で作った JsonArray テスト。
+ * 練習で作った JsonArray テスト。JUnit5
  */
 class JsonArrayTest {
 	@Nested

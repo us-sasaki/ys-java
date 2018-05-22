@@ -24,6 +24,9 @@ import abdom.data.json.JsonObject;
  *           (これまでは IllegalFieldTypeException)
  *           c8y_Position.alt などが c8y で null となっている場合があり、
  *           REST 結果を fill() した場合に例外となることから変更。
+ * 今後修正  get は JsonType をサポートしているようだが、set がサポート
+ *           されていない。
+ *
  *</pre>
  *
  * @version		23 December, 2016
