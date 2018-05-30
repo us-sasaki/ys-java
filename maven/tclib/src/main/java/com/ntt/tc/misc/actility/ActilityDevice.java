@@ -9,6 +9,7 @@ import com.ntt.tc.data.TC_Date;
 
 /**
  * ダミー Actility として、HTTPS で XML を POST します。
+ * 試験で利用できるよう、HTTPヘッダや XML を変更できます。
  * makeXML は https://support.cumulocity.com/hc/en-us/requests/16770
  * での Ozge の例に準拠しています。
  *

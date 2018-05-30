@@ -3,6 +3,8 @@ package com.ntt.net;
 import java.io.IOException;
 
 import abdom.data.json.JsonType;
+import abdom.data.json.JsonValue;
+import abdom.data.json.JsonParseException;
 
 /**
  * Cumulocity REST で、レスポンスが400以上のときに発生する例外です。
@@ -27,7 +29,11 @@ public class JsonRestException extends IOException {
 		this.response = response;
 		this.location = location;
 		this.method = method;
-		this.body = response.body;
+		try {
+			this.body = response.toJson();
+		} catch (JsonParseException e) {
+			this.body = new JsonValue("not json:" + new String(response.body, java.nio.charset.StandardCharsets.UTF_8));
+		}
 	}
 	
 	public JsonRestException() {

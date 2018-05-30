@@ -5,11 +5,10 @@ import java.net.*;
 import java.util.Map;
 import java.util.HashMap;
 import java.text.SimpleDateFormat;
+import java.nio.charset.StandardCharsets;
 
-import abdom.data.json.JsonArray;
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonValue;
-import abdom.data.json.JsonObject;
 import abdom.data.json.Jsonizable;
 import abdom.data.json.JsonParseException;
 
@@ -27,7 +26,7 @@ import static java.net.HttpURLConnection.*;
  */
 public class JsonRest {
 	
-	/** host を示す URL 文字列(http:// or https://) */
+	/** host を示す URL 文字列(http:// or https://) スラッシュは含めない */
 	protected String urlStr;
 	
 	/** HEADER に指定する項目 */
@@ -49,15 +48,16 @@ public class JsonRest {
 		 */
 		public int code;
 		public String message;
-		protected JsonType body;
+		protected byte[] body;
 		
 		/**
 		 * 結果の body を String で取得します
+		 * JSON 解析を行わず、body の内容そのままを出力します。
 		 */
 		@Override
 		public String toString() {
 			if (body == null) return "null";
-			return body.toString();
+			return new String(body, StandardCharsets.UTF_8);
 		}
 		
 		@Override
@@ -77,8 +77,10 @@ public class JsonRest {
 		 */
 		@Override
 		public JsonType toJson() {
-			if (body == null) return new JsonValue(null);
-			return body;
+			if (body == null) return JsonType.NULL;
+			String jsonStr = new String(body, StandardCharsets.UTF_8);
+			JsonType result = JsonType.parse(jsonStr);
+			return result;
 		}
 	}
 	
@@ -102,6 +104,9 @@ public class JsonRest {
  */
 	/**
 	 * ヘッダを指定します。
+	 * デフォルトで、"Content-Type"="application/json"
+	 * "Accept"="application/json" が指定されていますが上書き可能です。
+	 * value が null となる Header は出力されません。
 	 */
 	public void putHeader(String key, String value) {
 		header.put(key, value);
@@ -149,6 +154,8 @@ public class JsonRest {
 	 */
 	public Response post(String location, Jsonizable json)
 							throws IOException {
+		if (json == null)
+			return requestImpl(location, "POST", null);
 		return post(location, json.toString());
 	}
 	
@@ -157,6 +164,8 @@ public class JsonRest {
 	 */
 	public Response post(String location, String body)
 							throws IOException {
+		if (body == null)
+			return requestImpl(location, "POST", null);
 		return requestImpl(location, "POST", body.getBytes("UTF-8"));
 	}
 	
@@ -165,6 +174,7 @@ public class JsonRest {
 	 * Cumulocity 固有のヘッダを付加します。
 	 *
 	 * @param	location	リソースの場所 /platform 等
+	 *						http:// https:// ではじまる場合、そのURLを使用します
 	 * @param	method		GET/POST/PUT/DELETE
 	 * @param	contentType	アプリケーションタイプ(platformApi等, c8y 独自の
 	 *						type, または multipart/form-data などフル指定)
@@ -201,8 +211,8 @@ public class JsonRest {
 				if (key.equals("Content-Type") &&
 							("GET".equals(method) || "DELETE".equals(method)))
 								continue;
-				
-				con.setRequestProperty(key, header.get(key));
+				String value = header.get(key);
+				if (value != null) con.setRequestProperty(key, header.get(key));
 			}
 		}
 		
@@ -217,6 +227,7 @@ public class JsonRest {
 		// 結果オブジェクトの生成
 		Response resp = new Response();
 		resp.code = con.getResponseCode();
+		resp.message = con.getResponseMessage();
 		
 		ByteArrayOutputStream baos =  new ByteArrayOutputStream();
 		try {
@@ -228,27 +239,19 @@ public class JsonRest {
 				// ErrorStream で取得する
 				in = con.getErrorStream(); // may null
 			}
-			if (in != null) { // ErrorStream は null となることがある
-				Reader r = new InputStreamReader(in, "UTF-8");
-				try {
-					JsonType result = JsonType.parse(r);
-					resp.body = result;
-				} catch (JsonParseException jpe) {
-					resp.body = new JsonValue("Not JSON : " + jpe);
-				}
-				r.close(); //bis.close();
-				in.close();
+			while (true) {
+				int c = in.read(); // byte[] buff を使った方が早い
+				if (c == -1) break;
+				baos.write(c);
 			}
+			in.close();
+			baos.close();
+			
+			resp.body = baos.toByteArray();
+			
 		} catch (IOException ioe) {
 			throw ioe;
 		}
-		resp.message = con.getResponseMessage();
-		
-		//
-		// レスポンスコードの処理(404 Not Found は正常応答)
-		//
-		if (resp.code >= 400 && resp.code != 404)
-			throw new JsonRestException(resp, location, method);
 		
 		return resp;
 	}
