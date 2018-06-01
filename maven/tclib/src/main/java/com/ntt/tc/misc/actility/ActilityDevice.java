@@ -107,6 +107,19 @@ public class ActilityDevice {
 	}
 	
 	/**
+	 * XML を POST します。
+	 *
+	 * @param		xml		xml 値
+	 * @return		結果を byte 列にしたもの
+	 */
+	public HttpResp postXML(String xml) throws IOException {
+		byte[] body = xml.getBytes();
+		Map<String, String> header = new HashMap<String, String>();
+		header.put("Content-Type", "application/xml");
+		return post(serverUrl+"?LrnDevEui="+devEui, header, body);
+	}
+	
+	/**
 	 * POST の実処理を行います。(java.net.* を利用した実装)
 	 * 指定された任意の body を post します。
 	 * post(payload_hex) では、
