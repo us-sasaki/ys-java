@@ -62,7 +62,7 @@ public class JsonArray extends JsonType {
 			else if (t instanceof Double)
 				array.add(new JsonValue( (Double)t ));
 			else if (t instanceof Boolean)
-				array.add(new JsonValue( (Boolean)t ));
+				array.add(( (Boolean)t ).booleanValue()?TRUE:FALSE);
 			else throw new ClassCastException(t.getClass() + " は JsonArray の要素に指定できません");
 		}
 	}
@@ -128,7 +128,7 @@ public class JsonArray extends JsonType {
 	}
 	@Override
 	public JsonArray push(boolean val) {
-		this.array.add(new JsonValue(val));
+		this.array.add(val?TRUE:FALSE);
 		return this;
 	}
 /*
@@ -190,7 +190,7 @@ public class JsonArray extends JsonType {
 	}
 	@Override
 	public JsonArray shift(boolean val) {
-		this.array.add(0, new JsonValue(val));
+		this.array.add(0, val?TRUE:FALSE);
 		return this;
 	}
 /*
@@ -296,7 +296,7 @@ public class JsonArray extends JsonType {
 			else if (t instanceof Double)
 				a[i] = new JsonValue( (Double)t );
 			else if (t instanceof Boolean)
-				a[i] = new JsonValue( (Boolean)t );
+				a[i] = ( (Boolean)t ).booleanValue()?TRUE:FALSE;
 			else throw new ClassCastException(t.getClass() + " は JsonArray の要素に指定できません");
 		}
 		return spliceImpl(index, delete, a);

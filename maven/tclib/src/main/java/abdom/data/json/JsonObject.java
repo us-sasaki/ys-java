@@ -50,7 +50,7 @@ public class JsonObject extends JsonType {
 	}
 	@Override
 	public JsonObject add(String name, boolean value) {
-		return addImpl(name, new JsonValue(value));
+		return addImpl(name, value?TRUE:FALSE);
 	}
 	@Override
 	public JsonObject add(String name, byte value) {
@@ -140,7 +140,7 @@ public class JsonObject extends JsonType {
 	}
 	@Override
 	public JsonObject put(String name, boolean value) {
-		return putImpl(name, new JsonValue(value));
+		return putImpl(name, value?TRUE:FALSE);
 	}
 	@Override
 	public JsonObject put(String name, byte value) {
