@@ -961,6 +961,30 @@ public class API {
 	}
 	
 	/**
+	 * テナント使用状況サマリを取得します。
+	 * 10分置き程度に更新される最新情報が取得可能です。
+	 *
+	 * @param	query	dateFrom, dateTill で期間を指定します。
+	 *					省略した場合、月初から現在までとなります。
+	 *					yyyy-MM-dd の形式で、dateTill を省略することもできます。
+	 */
+	public UsageStatistics readTenantStatisticsSummary(String queryString)
+								throws IOException {
+		Response resp = rest.get("/tenant/statistics/summary?"+queryString);
+		return Jsonizer.fromJson(resp, UsageStatistics.class);
+	}
+	
+	/**
+	 * テナント使用状況サマリを取得します。
+	 * 10分置き程度に更新される最新情報が取得可能です。
+	 *
+	 */
+	public UsageStatistics readTenantStatisticsSummary(String queryString)
+								throws IOException {
+		return readTenantStatisticsSummary("");
+	}
+	
+	/**
 	 * このテナントのテナントオプションを登録します。
 	 *
 	 * @param		option		登録対象のテナントオプション
