@@ -338,6 +338,28 @@ public class Rest {
 	 * 指定された文字列に + が含まれる場合、%2B に置換します。
 	 */
 	private static String convLocation(String target) {
+/*		try {
+			int i = target.indexOf('?');
+			if (i == -1) return target;
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append(target.substring(0, i+1));
+			String[] kv = target.substring(i+1).split("&");
+			for (int j = 0; j < kv.length; j++) {
+				if (j > 0) sb.append('&');
+				String s = kv[j];
+				int ind = s.indexOf('=');
+				if (ind == -1) {
+					sb.append(s);
+					continue;
+				}
+				sb.append(s.substring(0, ind+1));
+				sb.append(URLEncoder.encode(s.substring(ind+1), "UTF-8"));
+			}
+			return sb.toString();
+		} catch (UnsupportedEncodingException uee) {
+			throw new InternalError("UTF-8 が利用できません");
+		}*/
 		return target.replace("+", "%2B");
 	}
 	
