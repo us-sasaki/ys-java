@@ -251,8 +251,41 @@ public class API {
 				throws IOException {
 		Response resp = rest.delete("/identity/externalIds/" + type +
 										"/" + externalId);
+		// 204 NO CONTENT となるはず
 	}
 	
+	/**
+	 * 外部IDコレクションを取得します。
+	 */
+	public ExternalIDCollection readExternalIDCollection(String globalId) throws IOException {
+		Response resp = rest.get("/identity/globalIds/"+globalId+"/externalIds");
+		return Jsonizer.fromJson(resp, ExternalIDCollection.class);
+	}
+	
+	/**
+	 * 外部IDコレクションAPIを用いて、Javaのforループで使える
+	 * ExternalID の iterator を取得します。
+	 * <pre>
+	 * 使用例：
+	 * for (ExternalID id : api.externalIDs() {
+	 * 		( id に対する処理 )
+	 * }
+	 * </pre>
+	 * 
+	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
+	 * に変換され、元の例外は cause として設定されます。<br>
+	 *
+	 * @param		globalId	Managed Object ID
+	 */
+	public Iterable<ExternalID> externalIDs(String globalId) {
+		return ( new Iterable<ExternalID>() {
+			public Iterator<ExternalID> iterator() {
+				return new CollectionIterator<ExternalID>(rest,
+								"/identity/globalIds/"+globalId+"/externalIds",
+								"externalIds", ExternalID.class);
+			}
+		} );
+	}
 /*---------------
  * Inventory API
  */
@@ -958,6 +991,30 @@ public class API {
 	 */
 	public Iterable<UsageStatistics> usageStatistics() {
 		return usageStatistics("");
+	}
+	
+	/**
+	 * テナント使用状況サマリを取得します。
+	 * 10分置き程度に更新される最新情報が取得可能です。
+	 *
+	 * @param	query	dateFrom, dateTill で期間を指定します。
+	 *					省略した場合、月初から現在までとなります。
+	 *					yyyy-MM-dd の形式で、dateTill を省略することもできます。
+	 */
+	public UsageStatistics readTenantStatisticsSummary(String queryString)
+								throws IOException {
+		Response resp = rest.get("/tenant/statistics/summary?"+queryString);
+		return Jsonizer.fromJson(resp, UsageStatistics.class);
+	}
+	
+	/**
+	 * テナント使用状況サマリを取得します。
+	 * 10分置き程度に更新される最新情報が取得可能です。
+	 *
+	 */
+	public UsageStatistics readTenantStatisticsSummary()
+								throws IOException {
+		return readTenantStatisticsSummary("");
 	}
 	
 	/**

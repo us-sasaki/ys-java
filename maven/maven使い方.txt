@@ -98,4 +98,11 @@ mvn dependency:copy-dependencies
     :
   </dependencies>
 
+■exec
+    mvn exec:java -Dexec.mainClass="c8y.example.App"
 
+複数の args を指定
+    mvn exec:java -Dexec.mainClass=example.Main -Dexec.args="Hello World"
+
+スペース付きの複数の args を指定
+    mvn exec:java -Dexec.mainClass=example.Main -Dexec.args="'Hello World' 'foo bar' fuga hoge"
