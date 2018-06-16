@@ -11,8 +11,8 @@ import abdom.data.ByteArray;
  * UTF-8N に変換する。
  * バックアップファイルとして .orig ファイルを生成する。
  */
-public class EncodingConverter {
-
+public class Encodings {
+	
 	private static boolean useBackup = true;
 	
 	/**
@@ -42,7 +42,7 @@ public class EncodingConverter {
 	 * Terapad は 0x4A になるが、sakura では 0x42 だったので、
 	 * Terapad の変換がイレギュラーなのかもしれない。
 	 */
-	public static String detectEncoding(byte[] text) {
+	public static String detect(byte[] text) {
 		for (String encoding : ENCODINGS) {
 			if (checkEncoding(text, encoding))
 				return encoding;
@@ -107,7 +107,7 @@ public class EncodingConverter {
 	 * 指定された１ファイルを変換する。
 	 * 変換の必要がない(もともと指定されたエンコーディング)場合、何もしない。
 	 */
-	private static void convertFile(File f, String encoding) throws IOException {
+	public static void convertFile(File f, String encoding) throws IOException {
 		System.out.println("Convert : " + f.getAbsolutePath());
 		
 		// ファイルを読み込み baos に格納
@@ -123,7 +123,7 @@ public class EncodingConverter {
 		
 		byte[] fileimage = baos.toByteArray();
 		
-		String orgenc = detectEncoding(fileimage);
+		String orgenc = detect(fileimage);
 		System.out.println("File " + f.getName() + " encoding : " + orgenc);
 		if (orgenc.equals(encoding)) return; // 変換不要
 		
@@ -164,7 +164,7 @@ public class EncodingConverter {
 			if (args.length > 2) {
 				encoding = args[2];
 			}
-			EncodingConverter.useBackup = usebackup;
+			Encodings.useBackup = usebackup;
 			String root = new File(".").getCanonicalPath();
 			File f = new File(args[0]);
 			if (!f.getCanonicalPath().startsWith(root)) {
