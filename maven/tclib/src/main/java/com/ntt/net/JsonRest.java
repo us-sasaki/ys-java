@@ -52,7 +52,12 @@ public class JsonRest {
 		
 		/**
 		 * 結果の body を String で取得します
-		 * JSON 解析を行わず、body の内容そのままを出力します。
+		 * JSON 解析を行わず、body の内容そのままを UTF-8 形式で出力します。
+		 * このため、body が HTML などの JSON でない形式になる場合があります。
+		 * body が存在しない場合、文字列 "null" が返却されます。
+		 *
+		 * @return		body 文字列 (通常 JSON 形式ですが、RESTサーバからの
+		 *				HTML エラー文字列等になる場合があります)
 		 */
 		@Override
 		public String toString() {
@@ -60,6 +65,15 @@ public class JsonRest {
 			return new String(body, StandardCharsets.UTF_8);
 		}
 		
+		/**
+		 * pretty JSON 形式の文字列を取得します。
+		 * body が JSON 形式でない場合、abdom.data.json.JsonParseException
+		 * がスローされます。
+		 *
+		 * @return		pretty JSON 形式
+		 * @throw		abdom.data.json.JsonParseException	body の JSON parse
+		 *				に失敗した
+		 */
 		@Override
 		public String toString(String indent) {
 			return toJson().toString(indent);
@@ -72,8 +86,12 @@ public class JsonRest {
 		
 		/**
 		 * 結果の body を JsonType で取得します。
-		 * エラーレスポンスに関する結果は不定で、通常 JsonParseExcception
-		 * がスローされます。
+		 * レスポンスは JsonType.parse を行っているため、エラー文字列等で
+		 * あった場合、JsonParseExcception がスローされます。
+		 *
+		 * @return		pretty JSON 形式
+		 * @throw		abdom.data.json.JsonParseException	body の JSON parse
+		 *				に失敗した
 		 */
 		@Override
 		public JsonType toJson() {
