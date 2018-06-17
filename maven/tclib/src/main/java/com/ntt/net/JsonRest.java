@@ -46,9 +46,9 @@ public class JsonRest {
 		 *
 		 * @see		java.net.HttpURLConnection
 		 */
-		public int code;
+		public int status;
 		public String message;
-		protected byte[] body;
+		public byte[] body;
 		
 		/**
 		 * 結果の body を String で取得します
@@ -121,18 +121,35 @@ public class JsonRest {
  * instance methods
  */
 	/**
+	 * REST で使用する接続先 URL を取得します。
+	 *
+	 * @return		接続先 URL
+	 */
+	public String getLocation() {
+		return urlStr;
+	}
+	
+	/**
 	 * ヘッダを指定します。
 	 * デフォルトで、"Content-Type"="application/json"
 	 * "Accept"="application/json" が指定されていますが上書き可能です。
 	 * value が null となる Header は出力されません。
 	 */
-	public void putHeader(String key, String value) {
+	public synchronized void putHeader(String key, String value) {
 		header.put(key, value);
 	}
 	
-	public void setHeader(Map<String, String> header) {
-		this.header = header;
+	public synchronized void removeHeader(String key) {
+		header.remove(key);
 	}
+	
+	public synchronized String getHeader(String key) {
+		return header.get(key);
+	}
+	
+	//public void setHeader(Map<String, String> header) {
+	//	this.header = header;
+	//}
 	
 	/**
 	 * GET リクエストをします。
@@ -141,30 +158,38 @@ public class JsonRest {
 	 * @return	Rest.Response オブジェクト
 	 */
 	public Response get(String location) throws IOException {
-		return requestImpl(location, "GET", null);
+		return request(location, "GET", null);
 	}
 	
 	/**
 	 * DELETE リクエストをします。
 	 */
 	public Response delete(String location) throws IOException {
-		return requestImpl(location, "DELETE", null);
+		return request(location, "DELETE", null);
 	}
 	
 	/**
 	 * PUT リクエストをします。
 	 */
-	public Response put(String resource, Jsonizable json)
+	public Response put(String location, Jsonizable json)
 							throws IOException {
-		return put(resource, json.toString());
+		return put(location, json.toString());
 	}
 	
 	/**
 	 * PUT リクエストをします。
 	 */
-	public Response put(String resource, String body)
+	public Response put(String location, String body)
 							throws IOException {
-		return requestImpl(resource, "PUT", body.getBytes("UTF-8"));
+		return request(location, "PUT", body.getBytes("UTF-8"));
+	}
+	
+	/**
+	 * PUT リクエストをします。
+	 */
+	public Response put(String location, byte[] body)
+							throws IOException {
+		return request(location, "PUT", body);
 	}
 	
 	/**
@@ -173,41 +198,43 @@ public class JsonRest {
 	public Response post(String location, Jsonizable json)
 							throws IOException {
 		if (json == null)
-			return requestImpl(location, "POST", null);
+			return request(location, "POST", null);
 		return post(location, json.toString());
 	}
 	
 	/**
-	 * Content-Type を指定して POST リクエストをします。
+	 * POST リクエストをします。
 	 */
 	public Response post(String location, String body)
 							throws IOException {
 		if (body == null)
-			return requestImpl(location, "POST", null);
-		return requestImpl(location, "POST", body.getBytes("UTF-8"));
+			return request(location, "POST", null);
+		return request(location, "POST", body.getBytes("UTF-8"));
+	}
+	
+	/**
+	 * POST リクエストをします。
+	 */
+	public Response post(String location, byte[] body)
+							throws IOException {
+		if (body == null)
+			return request(location, "POST", null);
+		return request(location, "POST", body);
 	}
 	
 	/**
 	 * Httpリクエストの実処理を行います。
-	 * Cumulocity 固有のヘッダを付加します。
+	 * 400 以上のステータスコードであっても例外は発生しません。
 	 *
 	 * @param	location	リソースの場所 /platform 等
 	 *						http:// https:// ではじまる場合、そのURLを使用します
 	 * @param	method		GET/POST/PUT/DELETE
-	 * @param	contentType	アプリケーションタイプ(platformApi等, c8y 独自の
-	 *						type, または multipart/form-data などフル指定)
-	 *						'/' を含む場合、フル指定と見なされます。
-	 *						空文字列では、application/json が設定されます。
-	 *						method が GET / DELETE の場合設定されません。
-	 * @param	accept		Accept タイプ(platformApi等, c8y 独自の type,
-	 *						または application/json-stream 等フル指定)
-	 *						'/' を含む場合、フル指定と見なされます。
-	 *						空文字列では、application/json が設定されます。
 	 * @param	body		body に設定するデータ
 	 */
-	protected synchronized Response requestImpl(String location, String method,
+	public synchronized Response request(String location, String method,
 								byte[] body) throws IOException {
 		URL url = null;
+		location = convLocation(location);
 		if (location.startsWith("http://") ||
 				location.startsWith("https://")) {
 			url = new URL(location);
@@ -244,13 +271,13 @@ public class JsonRest {
 		
 		// 結果オブジェクトの生成
 		Response resp = new Response();
-		resp.code = con.getResponseCode();
+		resp.status = con.getResponseCode();
 		resp.message = con.getResponseMessage();
 		
 		ByteArrayOutputStream baos =  new ByteArrayOutputStream();
 		try {
 			in = null;
-			if (resp.code < 400) {
+			if (resp.status < 400) {
 				// 400以降のエラーが返されると InputStream が取得できない
 				in = con.getInputStream(); // may throw IOException
 			} else {
@@ -303,4 +330,34 @@ public class JsonRest {
 			con = null; // ガベージコレクト対象にする
 		}
 	}
+	
+	/**
+	 * 指定された文字列に + が含まれる場合、%2B に置換します。
+	 */
+	protected static String convLocation(String target) {
+/*		try {
+			int i = target.indexOf('?');
+			if (i == -1) return target;
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append(target.substring(0, i+1));
+			String[] kv = target.substring(i+1).split("&");
+			for (int j = 0; j < kv.length; j++) {
+				if (j > 0) sb.append('&');
+				String s = kv[j];
+				int ind = s.indexOf('=');
+				if (ind == -1) {
+					sb.append(s);
+					continue;
+				}
+				sb.append(s.substring(0, ind+1));
+				sb.append(URLEncoder.encode(s.substring(ind+1), "UTF-8"));
+			}
+			return sb.toString();
+		} catch (UnsupportedEncodingException uee) {
+			throw new InternalError("UTF-8 が利用できません");
+		}*/
+		return target.replace("+", "%2B");
+	}
+	
 }

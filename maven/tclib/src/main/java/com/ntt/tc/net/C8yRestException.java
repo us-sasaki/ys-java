@@ -1,6 +1,7 @@
 package com.ntt.tc.net;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import abdom.data.json.JsonType;
 
@@ -24,14 +25,14 @@ public class C8yRestException extends IOException {
  */
 	public C8yRestException(Rest.Response response, String location, String method, String contentType, String accept) {
 		this("ep=" + location + " method=" + method + " type=" + contentType +
-			" accept=" + accept + " code=" + response.code +
-			" msg=" + response.message + " body=" + response.body);
+			" accept=" + accept + " status=" + response.status +
+			" msg=" + response.message + " body=" + new String(response.body, StandardCharsets.UTF_8));
 		this.response = response;
 		this.location = location;
 		this.method = method;
 		this.contentType = contentType;
 		this.accept = accept;
-		this.body = response.body;
+		this.body = JsonType.parse(new String(response.body, StandardCharsets.UTF_8));
 	}
 	
 	public C8yRestException() {

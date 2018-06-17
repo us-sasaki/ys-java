@@ -111,12 +111,12 @@ public class API {
 		try {
 			Response resp = rest.get("/devicecontrol/newDeviceRequests/"+id,
 									"newDeviceRequest");
-			if (resp.code == 404) return null;
+			if (resp.status == 404) return null;
 			return Jsonizer.fromJson(resp, NewDeviceRequest.class);
 		} catch (C8yRestException c8ye) {
 			Response resp = c8ye.getResponse();
-			if (resp.code == 500 &&
-				resp.body.get("message").getValue().
+			if (resp.status == 500 &&
+				resp.toJson().get("message").getValue().
 				startsWith("Could not find entity NewDeviceRequest")) {
 				// ↑イマイチ
 				//
@@ -124,7 +124,7 @@ public class API {
 				return null;
 			}
 			System.out.println("readNewDeviceRequest() c8y error message : " +
-								resp.body.get("message"));
+								resp.toJson().get("message"));
 			throw c8ye;
 		}
 	}
@@ -206,7 +206,7 @@ public class API {
 		if (req.id == null || req.id.equals(""))
 			throw new IllegalArgumentException("DeviceCredentials の id 値は必須です");
 		Response resp = bootstrapRest.post("/devicecontrol/deviceCredentials", "deviceCredentials", req);
-		if (resp.code != 404) req.fill(resp);
+		if (resp.status != 404) req.fill(resp);
 		return req;
 	}
 	
@@ -223,7 +223,7 @@ public class API {
 	public String readIDByExternalID(String type, String externalId)
 				throws IOException {
 		Response resp = rest.get("/identity/externalIds/"+type+"/"+externalId, "externalId");
-		if (resp.code == 404) return null;	// not found
+		if (resp.status == 404) return null;	// not found
 		
 		return resp.toJson().get("managedObject.id").getValue();
 	}
@@ -326,7 +326,7 @@ public class API {
 	 */
 	public void deleteManagedObject(String id) throws IOException {
 		Response resp = rest.delete("/inventory/managedObjects/" + id, "managedObject");
-		if (resp.code != 204) throw new IOException("managed object 削除失敗" + id + ":" + resp);
+		if (resp.status != 204) throw new IOException("managed object 削除失敗" + id + ":" + resp);
 	}
 	
 	/**
@@ -916,7 +916,7 @@ public class API {
 	 */
 	public Tenant readTenant(String id) throws IOException {
 		Response resp = rest.get("/tenant/tenants/"+id, "tenant");
-		if (resp.code == 404)
+		if (resp.status == 404)
 			throw new C8yNoSuchObjectException("tenant "+id+" is not found."+
 						resp);
 		return Jsonizer.fromJson(resp, Tenant.class);
@@ -1088,24 +1088,6 @@ public class API {
  * User API
  */
 	/**
-	 * Rest オブジェクトからテナント文字列を取得します。<br>
-	 * (1) rest.tenant があれば、それを返します<br>
-	 * (2) なければ、url の "://" と次の "." の間の文字列を返します。<br>
-	 *
-	 * @return		テナント文字列
-	 */
-	private String getTenant() {
-		String tenant = rest.tenant;
-		if (tenant == null || tenant.equals("")) {
-			tenant = rest.urlStr;
-			int i = tenant.indexOf("://");
-			int j = tenant.indexOf('.', i);
-			tenant = tenant.substring(i+3, j) + "/";
-		}
-		return tenant;
-	}
-	
-	/**
 	 * UserCollection を get します。
 	 *
 	 * @param		queryString		queryとして指定する文字列
@@ -1113,7 +1095,7 @@ public class API {
 	 */
 	public UserCollection readUserCollection(String queryString)
 								throws IOException {
-		Response resp = rest.get("/user/"+getTenant()+"users", "userCollection");
+		Response resp = rest.get("/user/"+rest.getTenant()+"users", "userCollection");
 		return Jsonizer.fromJson(resp, UserCollection.class);
 	}
 	
@@ -1126,7 +1108,7 @@ public class API {
 	 * @return	生成された結果を含むユーザー(引数オブジェクトが更新されます)
 	 */
 	public User createUser(User user) throws IOException {
-		Response resp = rest.post("/user/"+getTenant()+"users", "user", user);
+		Response resp = rest.post("/user/"+rest.getTenant()+"users", "user", user);
 		user.fill(resp);
 		return user;
 	}
@@ -1138,7 +1120,7 @@ public class API {
 	 * @return	取得されたユーザーオブジェクト
 	 */
 	public User readUser(String id) throws IOException {
-		Response resp = rest.get("/user/"+getTenant()+"users/"+id, "user");
+		Response resp = rest.get("/user/"+rest.getTenant()+"users/"+id, "user");
 		return Jsonizer.fromJson(resp, User.class);
 	}
 	
@@ -1149,7 +1131,7 @@ public class API {
 	 * @return		User オブジェクト
 	 */
 	public User readUserByName(String name) throws IOException {
-		Response resp = rest.get("/user/"+getTenant()+"userByName/"+name, "user");
+		Response resp = rest.get("/user/"+rest.getTenant()+"userByName/"+name, "user");
 		return Jsonizer.fromJson(resp, User.class);
 	}
 	
@@ -1161,7 +1143,7 @@ public class API {
 	 * @return		更新後の User オブジェクト
 	 */
 	public User updateUser(String id, User updater) throws IOException {
-		Response resp = rest.put("/user/"+getTenant()+"users/"+id, "user", updater);
+		Response resp = rest.put("/user/"+rest.getTenant()+"users/"+id, "user", updater);
 		return Jsonizer.fromJson(resp, User.class);
 	}
 	
@@ -1171,8 +1153,8 @@ public class API {
 	 * @param		id		ユーザID
 	 */
 	public void deleteUser(String id) throws IOException {
-		Response resp = rest.delete("/user/"+getTenant()+"users/"+id, "user");
-		if (resp.code != 204) // No content
+		Response resp = rest.delete("/user/"+rest.getTenant()+"users/"+id, "user");
+		if (resp.status != 204) // No content
 			throw new C8yRestException("deleteUser failed: " + resp);
 	}
 	
@@ -1258,7 +1240,7 @@ public class API {
 		// end point は文書に記載がなく、管理APの電文を見てわかった
 		Response resp = rest.get("/cep/modules/"+id, "cepModule");
 		
-		if (resp.code == 404)
+		if (resp.status == 404)
 			throw new C8yNoSuchObjectException("指定された id("+
 						id+")のモジュールは存在しません:"+resp);
 		return Jsonizer.fromJson(resp, Module.class);
@@ -1279,12 +1261,12 @@ public class API {
 	 */
 	public String readModuleText(String id) throws IOException {
 		// end point は文書に記載がなく、管理APの電文を見てわかった
-		Response resp = rest.requestImpl("/cep/modules/"+id+"?text", "GET", "cepModule", "text/plain", null); // text/plain 指定のため impl を使う
-		if (resp.code == 404)
+		Response resp = rest.request("/cep/modules/"+id+"?text", "GET", "cepModule", "text/plain", null); // text/plain 指定のため impl を使う
+		if (resp.status == 404)
 			throw new C8yNoSuchObjectException("指定された id("+
 						id+")のモジュールは存在しません:"+resp);
 		
-		return resp.getBody();
+		return new String(resp.body, "UTF-8");
 	}
 	
 	/**
@@ -1355,7 +1337,7 @@ public class API {
 	 */
 	public void updateModuleText(String id, String moduleName, String text)
 					throws IOException {
-		Response resp = rest.requestImpl("/cep/modules/"+id, "PUT", "text/plain", "", ("module "+moduleName+";\n"+text).getBytes("UTF-8")); // text/plain 指定のため impl を使う
+		Response resp = rest.request("/cep/modules/"+id, "PUT", "text/plain", "", ("module "+moduleName+";\n"+text).getBytes("UTF-8")); // text/plain 指定のため impl を使う
 	}
 	
 	public void updateModuleText(String id, String moduleName, List<String> lines)

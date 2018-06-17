@@ -2,7 +2,7 @@ package com.ntt.tc.net;
 
 import java.io.*;
 import java.net.*;
-//import java.util.Base64; // since JDK1.8
+//import java.util.Base64; // from JDK1.8
 import java.util.Date;
 import java.util.Map;
 import java.text.SimpleDateFormat;
@@ -16,6 +16,8 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.Jsonizable;
 import abdom.data.json.JsonParseException;
 
+import com.ntt.net.BaseRest;
+import com.ntt.net.JsonRest;
 import com.ntt.tc.util.Base64; // till JDK1.7
 
 import static java.net.HttpURLConnection.*;
@@ -25,15 +27,15 @@ import static java.net.HttpURLConnection.*;
  * 非依存でつくる(java.net.HttpURLConnection ベース)
  * json-stream に対応するため、結果を JsonType.parse(Reader) で構築する。
  * レスポンスボディが JSON でない場合(cometd関連でhtmlを返す場合がある)、
- * エラー文字列を表す JsonValue レスポンスが返却されることに注意して下さい。
+ * エラー文字列を表すレスポンスが返却されることに注意して下さい。
  *
- * @version	21, November 2017
+ * @version	16, June 2018
  * @author	Yusuke Sasaki
  */
 public class Rest {
 	
-	/** host を示す URL 文字列(http:// or https://) */
-	protected String urlStr;
+	/** JsonRest の一般的な処理を行うオブジェクト(委譲先) */
+	protected JsonRest r;
 	
 	/** Cumulocity におけるテナント名(内部的に末尾に/を付加します) */
 	protected String tenant;
@@ -44,79 +46,14 @@ public class Rest {
 	/** Cumulocity ユーザパスワード */
 	protected String password;
 	
-	/** Cumulocity App-key */
-	protected String appKey;
-	
-	/** Processing Mode */
-	protected boolean modeIsTransient = false;
-	
-	/** HttpURLConnection */
-	protected HttpURLConnection con;
-	protected InputStream in;
-	protected OutputStream out;
-	
 	/**
 	 * HTTP レスポンスを表す内部クラス
 	 */
-	public static class Response implements Jsonizable {
-		/**
-		 * HTTP レスポンスコードを返却します。
-		 *
-		 * @see		java.net.HttpURLConnection
-		 */
-		public int code;
-		public String message;
-		protected JsonType body;
-		
-		/**
-		 * 結果の body を String で取得します
-		 */
-		@Override
-		public String toString() {
-			if (body == null) return "null";
-			return body.toString();
-		}
-		
-		@Override
-		public String toString(String indent) {
-			return toJson().toString(indent);
-		}
-		
-		@Override
-		public String toString(String indent, int maxwidth) {
-			return toJson().toString(indent, maxwidth);
-		}
-		
-		/**
-		 * 結果が JSON 文字列でないことがわかっている場合、
-		 * このメソッドで文字列を取得可能。
-		 * ただし、たまたま JSON 文字列になる場合、取得できない。
-		 * body の型を String とすべきだが、暫定的にこの実装とする。
-		 */
-		public String getBody() {
-			if (body == null) return null;
-			if (!(body instanceof JsonValue)) return toString();
-			if (body.getType() != JsonType.TYPE_STRING) return toString();
-			String str = body.getValue();
-			
-			if (str.charAt(0) == '[') {
-				int index = str.indexOf(':');
-				if (index == -1) return "Rest.Response body format error.";
-				int len = Integer.parseInt(str.substring(1, index));
-				return str.substring(index+1, index+1 + len);
-			}
-			return str;
-		}
-		
-		/**
-		 * 結果の body を JsonType で取得します。
-		 * エラーレスポンスに関する結果は不定で、通常 JsonParseExcception
-		 * がスローされます。
-		 */
-		@Override
-		public JsonType toJson() {
-			if (body == null) return JsonType.NULL;
-			return body;
+	public static class Response extends JsonRest.Response {
+		public Response(JsonRest.Response src) {
+			this.status = src.status;
+			this.message = src.message;
+			this.body = src.body;
 		}
 	}
 	
@@ -128,30 +65,29 @@ public class Rest {
 	 * tenant は host に含まれているものとします。
 	 */
 	public Rest(String urlStr, String user, String password) {
-		if (urlStr == null)
-			throw new IllegalArgumentException("url が指定されていません");
+		r = new JsonRest(urlStr);
 		if (user == null)
 			throw new IllegalArgumentException("user が指定されていません");
 		if (password == null)
-			throw new IllegalArgumentException("passuword が指定されていません");		this.urlStr = urlStr;
+			throw new IllegalArgumentException("passuword が指定されていません");
 		this.tenant = "";
 		this.user = user;
 		this.password = password;
+		setAuthentication();
 	}
 	
 	public Rest(String urlStr, String tenant, String user, String password) {
-		if (urlStr == null)
-			throw new IllegalArgumentException("url が指定されていません");
+		r = new JsonRest(urlStr);
 		if (tenant == null)
 			throw new IllegalArgumentException("tenant が指定されていません");
 		if (user == null)
 			throw new IllegalArgumentException("user が指定されていません");
 		if (password == null)
 			throw new IllegalArgumentException("passuword が指定されていません");
-		this.urlStr = urlStr;
 		this.tenant = tenant + "/";
 		this.user = user;
 		this.password = password;
+		setAuthentication();
 	}
 	
 	public Rest(Map<String, String> account) {
@@ -175,27 +111,78 @@ public class Rest {
 /*------------------
  * instance methods
  */
-	/**
-	 * REST で使用する接続先 URL を取得します。
-	 *
-	 * @return		接続先 URL
-	 */
 	public String getLocation() {
-		return urlStr;
+		return r.getLocation();
+	}
+	
+	/**
+	 * Authentication ヘッダを指定します。
+	 */
+	private void setAuthentication() {
+		// 基本認証
+		if (user != null && password != null) {
+			String authStr = Base64.encodeToString((tenant + user + ":" + password).getBytes());
+			r.putHeader("Authorization", "Basic " + authStr);
+		}
+	}
+	
+	/**
+	 * header に指定された contentType を設定します。
+	 * / が入っていない場合、application/vnd.com.nsn.cumulocity.{}+json;
+	 * charset=UTF-8; ver=0.9 を付加します。
+	 * / がある場合(application/json 等)、そのまま指定します。
+	 * 空文字列の場合、application/json を指定します。
+	 *
+	 * @param		contentType		Content-Type に指定する文字列
+	 */
+	private void setContentType(String contentType) {
+		// Content-Type
+		if ("".equals(contentType)) {
+			r.putHeader("Content-Type", "application/json");
+		} else if (contentType.indexOf('/') == -1) {
+			r.putHeader("Content-Type",
+					"application/vnd.com.nsn.cumulocity."+
+					contentType+"+json; charset=UTF-8; ver=0.9");
+		} else {
+			r.putHeader("Content-Type", contentType);
+		}
+	}
+	
+	/**
+	 * header に指定された accept を設定します。
+	 * / が入っていない場合、application/vnd.com.nsn.cumulocity.{}+json;
+	 * charset=UTF-8; ver=0.9 を付加します。
+	 * / がある場合(application/json 等)、そのまま指定します。
+	 * 空文字列の場合、application/json を指定します。
+	 *
+	 * @param		accept		Accept に指定する文字列
+	 */
+	private void setAccept(String accept) {
+		// Accept
+		if ("".equals(accept)) {
+			r.putHeader("Accept", "application/json");
+		} else if (accept.indexOf('/') == -1) {
+			r.putHeader("Accept",
+						"application/vnd.com.nsn.cumulocity."+
+						accept+"+json; charset=UTF-8; ver=0.9");
+		} else {
+			r.putHeader("Accept", accept);
+		}
 	}
 	
 	/**
 	 * REST に含まれるテナントを取得します。
 	 *
-	 * @return		テナント名
+	 * @return		テナント名(末尾に "/" がつきます)
 	 */
 	public String getTenant() {
 		if ("".equals(tenant)) {
-			int c = urlStr.indexOf("://");
-			int i = urlStr.indexOf('.');
-			if (i == -1) throw new IllegalStateException("location にテナント名が含まれません:"+urlStr);
-			if (c == -1) return urlStr.substring(0, i);
-			return urlStr.substring(c+3, i);
+			String t = r.getLocation();
+			int c = t.indexOf("://");
+			int i = t.indexOf('.');
+			if (i == -1) throw new IllegalStateException("location にテナント名が含まれません:"+t);
+			if (c == -1) return t.substring(0, i)+"/";
+			return t.substring(c+3, i)+"/";
 		}
 		return tenant;
 	}
@@ -204,7 +191,11 @@ public class Rest {
 	 * アプリケーションキーを設定します。
 	 */
 	public void setApplicationKey(String key) {
-		this.appKey = key;
+		if (key == null) {
+			r.removeHeader("X-Cumulocity-Application-Key");
+		} else {
+			r.putHeader("X-Cumulocity-Application-Key", key);
+		}
 	}
 	
 	/**
@@ -213,81 +204,103 @@ public class Rest {
 	 * @param	isTransient	TRANSIENTモード(DBに書き込まない)を利用するか
 	 */
 	public void setProcessingMode(boolean isTransient) {
-		modeIsTransient = isTransient;
+		if (isTransient) {
+			r.putHeader("X-Cumulocity-Processing-Mode", "TRANSIENT");
+		} else {
+			r.removeHeader("X-Cumulocity-Processing-Mode");
+		}
 	}
 	
 	/**
 	 * GET リクエストをします。
 	 *
-	 * @param	resource	GETするリソース
+	 * @param	location	GETするリソース
 	 * @return	Rest.Response オブジェクト
 	 */
-	public Response get(String resource) throws IOException {
-		return get(resource, "");
+	public Response get(String location) throws IOException {
+		setAccept("");
+		return requestImpl(location, "GET");
+		//return requestImpl(location, "GET", "", null);
 	}
 	
 	/**
 	 * GET リクエストをします。
 	 */
-	public Response get(String location, String type) throws IOException {
-		return requestImpl(location, "GET", type, null);
+	public Response get(String location, String type)
+													throws IOException {
+		setAccept(type);
+		return requestImpl(location, "GET");
+		//return requestImpl(location, "GET", type, null);
 	}
 	
 	/**
 	 * GET リクエストを json-stream 形式で行います
 	 */
-	public Response getByStream(String location) throws IOException {
-		return requestImpl(location, "GET", "", "application/json-stream", null);
-	}
-	
-	/**
-	 * GET リクエストを json-stream 形式で行います
-	 */
-	public Response getByStream(String location, String type) throws IOException {
-		return requestImpl(location, "GET", type, "application/json-stream", null);
+	public Response getByStream(String location)
+													throws IOException {
+		setAccept("application/json-stream");
+		return requestImpl(location, "GET");
+		//return requestImpl(location, "GET", "", "application/json-stream", null);
 	}
 	
 	/**
 	 * DELETE リクエストをします。
 	 */
 	public Response delete(String location) throws IOException {
-		return delete(location, "");
+		setAccept("");
+		return requestImpl(location, "DELETE");
+		//return requestImpl(location, "DELETE", "", null);
 	}
 	
 	/**
 	 * DELETE リクエストをします。
 	 */
-	public Response delete(String location, String type) throws IOException {
-		return requestImpl(location, "DELETE", type, null);
+	public Response delete(String location, String type)
+													throws IOException {
+		setAccept(type);
+		return requestImpl(location, "DELETE");
+		//return requestImpl(location, "DELETE", type, null);
 	}
 	
 	/**
 	 * PUT リクエストをします。
 	 */
-	public Response put(String resource, Jsonizable json)
-							throws IOException {
-		return put(resource, "", json);
+	public Response put(String location, Jsonizable json)
+													throws IOException {
+		setContentType("");
+		setAccept("");
+		return requestImpl(location, "PUT", json);
+		//return requestImpl(location, "PUT", "", json);
 	}
 	/**
 	 * PUT リクエストをします。
 	 */
-	public Response put(String resource, String body)
+	public Response put(String location, String body)
 							throws IOException {
-		return put(resource, "", body);
+		setContentType("");
+		setAccept("");
+		return requestImpl(location, "PUT", body);
+		//return requestImpl(location, "PUT", "", body);
 	}
 	/**
 	 * Content-Type を指定して PUT リクエストをします。
 	 */
-	public Response put(String resource, String type, Jsonizable json)
+	public Response put(String location, String type, Jsonizable json)
 							throws IOException {
-		return put(resource, type, json.toString());
+		setContentType(type);
+		setAccept(type);
+		return requestImpl(location, "PUT", json);
+		//return requestImpl(location, "PUT", type, json.toString());
 	}
 	/**
 	 * Content-Type を指定して PUT リクエストをします。
 	 */
-	public Response put(String resource, String type, String body)
+	public Response put(String location, String type, String body)
 							throws IOException {
-		return requestImpl(resource, "PUT", type, body);
+		setContentType(type);
+		setAccept(type);
+		return requestImpl(location, "PUT", body);
+		//return requestImpl(location, "PUT", type, body);
 	}
 	
 	/**
@@ -295,7 +308,10 @@ public class Rest {
 	 */
 	public Response post(String location, Jsonizable json)
 							throws IOException {
-		return post(location, "", json.toString());
+		setContentType("");
+		setAccept("");
+		return requestImpl(location, "POST", json);
+		//return requestImpl(location, "POST", "", json.toString());
 	}
 	
 	/**
@@ -303,7 +319,10 @@ public class Rest {
 	 */
 	public Response post(String location, String body)
 							throws IOException {
-		return post(location, "", body);
+		setContentType("");
+		setAccept("");
+		return requestImpl(location, "POST", body);
+		//return requestImpl(location, "POST", "", body);
 	}
 	
 	/**
@@ -311,7 +330,10 @@ public class Rest {
 	 */
 	public Response post(String location, String type, Jsonizable json)
 							throws IOException {
-		return post(location, type, json.toString());
+		setContentType(type);
+		setAccept(type);
+		return requestImpl(location, "POST", json);
+		//return requestImpl(location, "POST", type, json.toString());
 	}
 	
 	/**
@@ -319,55 +341,25 @@ public class Rest {
 	 */
 	public Response post(String location, String type, String body)
 							throws IOException {
-		return requestImpl(location, "POST", type, body);
+		setContentType(type);
+		setAccept(type);
+		return requestImpl(location, "POST", body);
+		//return requestImpl(location, "POST", type, body);
 	}
 	
 	/**
 	 * Httpリクエストの実処理を行います。
 	 */
-	private Response requestImpl(String location, String method,
-								String type, String body)
+	private Response request(String location, String method, String body)
 							throws IOException {
 		if (body == null || body.equals("")) {
-			return requestImpl(location, method, type, type, null);
+			return requestImpl(location, method);
 		}
-		return requestImpl(location, method, type, type, body.getBytes("UTF-8"));
+		return requestImpl(location, method, body.getBytes("UTF-8"));
 	}
 	
 	/**
-	 * 指定された文字列に + が含まれる場合、%2B に置換します。
-	 */
-	private static String convLocation(String target) {
-/*		try {
-			int i = target.indexOf('?');
-			if (i == -1) return target;
-			
-			StringBuilder sb = new StringBuilder();
-			sb.append(target.substring(0, i+1));
-			String[] kv = target.substring(i+1).split("&");
-			for (int j = 0; j < kv.length; j++) {
-				if (j > 0) sb.append('&');
-				String s = kv[j];
-				int ind = s.indexOf('=');
-				if (ind == -1) {
-					sb.append(s);
-					continue;
-				}
-				sb.append(s.substring(0, ind+1));
-				sb.append(URLEncoder.encode(s.substring(ind+1), "UTF-8"));
-			}
-			return sb.toString();
-		} catch (UnsupportedEncodingException uee) {
-			throw new InternalError("UTF-8 が利用できません");
-		}*/
-		return target.replace("+", "%2B");
-	}
-	
-	/**
-	 * Httpリクエストの実処理を行います。Cumulocity 固有のヘッダを付加します。
-	 * レスポンスコードが400台、500台のものはエラーと見なし、
-	 * com.ntt.tc.net.C8yRestException がスローされます。
-	 * ただし、404 Not Found は例外的に正常応答と見なします。
+	 * API#readModuleText 向けの API
 	 *
 	 * @param	location	リソースの場所 /platform 等
 	 * @param	method		GET/POST/PUT/DELETE
@@ -382,128 +374,50 @@ public class Rest {
 	 *						空文字列では、application/json が設定されます。
 	 * @param	body		body に設定するデータ
 	 */
-	protected synchronized Response requestImpl(String location, String method,
+	public Response request(String location, String method,
 								String contentType, String accept,
 								byte[] body) throws IOException {
-		URL url = null;
-		location = convLocation(location);
-		if (location.startsWith("http://") ||
-				location.startsWith("https://")) {
-			url = new URL(location);
-		} else {
-			url = new URL(urlStr + location);
-		}
-		con = (HttpURLConnection)url.openConnection();
-		
-		// 出力設定
-		boolean doOutput = (body != null && body.length > 0);
-		if (doOutput) con.setDoOutput(true);
-		
-		// メソッド
-		con.setRequestMethod(method);
-		
-		// Content-Type
-		if (!"GET".equals(method) && !"DELETE".equals(method) ) {
-			if ("".equals(contentType)) {
-				con.setRequestProperty("Content-Type", "application/json");
-			} else if (contentType.indexOf('/') == -1) {
-				con.setRequestProperty("Content-Type",
-						"application/vnd.com.nsn.cumulocity."+
-						contentType+"+json; charset=UTF-8; ver=0.9");
-			} else {
-				con.setRequestProperty("Content-Type", contentType);
-			}
-		}
-		// Accept
-		if ("".equals(accept)) {
-			con.setRequestProperty("Accept", "application/json");
-		} else if (accept.indexOf('/') == -1) {
-			con.setRequestProperty("Accept",
-						"application/vnd.com.nsn.cumulocity."+
-						accept+"+json; charset=UTF-8; ver=0.9");
-		} else {
-			con.setRequestProperty("Accept", accept);
-		}
-		// X-Cumulocity-Application-Key
-		if (appKey != null && !appKey.equals("")) {
-			//System.out.println("App Key call : " + appKey);
-			con.setRequestProperty("X-Cumulocity-Application-Key", appKey);
-		}
-		// X-Cumulocity-Processing-Mode
-		if (modeIsTransient) {
-			con.setRequestProperty("X-Cumulocity-Processing-Mode", "TRANSIENT");
-		}
-		
-		
-		// 基本認証
-		if (user != null && password != null) {
-			String authStr = Base64.encodeToString((tenant + user + ":" + password).getBytes());
-			con.setRequestProperty("Authorization", "Basic " + authStr);
-		}
-		
-		// 出力
-		if (doOutput) {
-			out = con.getOutputStream();
-			BufferedOutputStream bo = new BufferedOutputStream(out);
-			bo.write(body);
-			bo.flush();
-		}
-		
-		// 結果オブジェクトの生成
-		Response resp = new Response();
-		resp.code = con.getResponseCode();
-		
-		ByteArrayOutputStream baos =  new ByteArrayOutputStream();
-		try {
-			in = null;
-			if (resp.code < 400) {
-				// 400以降のエラーが返されると InputStream が取得できない
-				in = con.getInputStream(); // may throw IOException
-			} else {
-				// ErrorStream で取得する
-				in = con.getErrorStream(); // may null
-			}
-			if (in != null) { // ErrorStream は null となることがある
-				Reader r = new InputStreamReader(in, "UTF-8");
-				StringBuilder sb = new StringBuilder();
-				while (true) {
-					int c = r.read();
-					if (c == -1) break;
-					sb.append( (char)c );
-				}
-				r.close(); //bis.close();
-				try {
-					JsonType result = JsonType.parse(sb.toString());
-					resp.body = result;
-				} catch (JsonParseException jpe) {
-					// このエラーメッセージの先頭部分[]は、getBody() でJSON
-					// でない電文を取得するのに利用する場合があるため、
-					// フォーマット変更時は両方変更すること
-					//
-					// 暫定実装であり、Response.body を String または byte[]
-					// とするべき
-					try {
-						resp.body = new JsonValue("["+sb.length() + ":" +
-											sb+"] is not JSON: " + jpe);
-					} catch (Exception e) {
-						resp.body = new JsonValue("not JSON: " + jpe + e);
-					}
-				}
-				in.close();
-			}
-		} catch (IOException ioe) {
-			throw ioe;
-		}
-		resp.message = con.getResponseMessage();
-		//con.disconnect();		// 高速化に寄与する可能性があるためコメントアウト
-		
+		setContentType(contentType);
+		setAccept(accept);
+		return requestImpl(location, method, body);
+	}
+	
+	protected Response requestImpl(String location, String method)
+												throws IOException {
+		return requestImpl(location, method, (byte[])null);
+	}
+	
+	protected Response requestImpl(String location, String method,
+									Jsonizable json) throws IOException {
+		return requestImpl(location, method, json.toString());
+	}
+	
+	protected Response requestImpl(String location, String method,
+									String body) throws IOException {
+		return requestImpl(location, method, body.getBytes("UTF-8"));
+	}
+	
+	/**
+	 * Httpリクエストの実処理を行います。Cumulocity 固有のヘッダを付加します。
+	 * レスポンスコードが400台、500台のものはエラーと見なし、
+	 * com.ntt.tc.net.C8yRestException がスローされます。
+	 * ただし、404 Not Found は例外的に正常応答と見なします。
+	 *
+	 * @param	location	リソースの場所 /platform 等
+	 * @param	method		GET/POST/PUT/DELETE
+	 * @param	body		body に設定するデータ
+	 */
+	protected Response requestImpl(String location, String method, byte[] body)
+											throws IOException {
+		JsonRest.Response resp = r.request(location, method, body);
+		Response result = new Response(resp);
 		//
 		// レスポンスコードの処理(404 Not Found は正常応答)
 		//
-		if (resp.code >= 400 && resp.code != 404)
-			throw new C8yRestException(resp, location, method, contentType, accept);
+		if (resp.status >= 400 && resp.status != 404)
+			throw new C8yRestException(result, location, method, r.getHeader("Content-Type"), r.getHeader("Accept"));
 		
-		return resp;
+		return result;
 	}
 	
 	/**
@@ -557,7 +471,10 @@ public class Rest {
 		pw.println();
 		pw.flush();
 		
-		return requestImpl("/inventory/binaries", "POST", "multipart/form-data; boundary="+bry, "managedObject", out2.toByteArray());
+		setContentType("multipart/form-data; boundary="+bry);
+		setAccept("managedObject");
+		
+		return requestImpl("/inventory/binaries", "POST", out2.toByteArray());
 	}
 	
 	/**
@@ -593,36 +510,12 @@ public class Rest {
 		pw.print(CRLF);
 		pw.flush();
 		
-		return requestImpl(endPoint, "POST", "multipart/form-data; boundary="+bry, "", out2.toByteArray());
+		setContentType("multipart/form-data; boundary="+bry);
+		setAccept("");
+		return requestImpl(endPoint, "POST", out2.toByteArray());
 	}
 	
-	/**
-	 * 保持している HttpURLConnection の disconnect を呼び、
-	 * InputStream, OutputStream を close() します。
-	 * ですが、読み込み中のブロックはキャンセルされません。
-	 */
 	public void disconnect() {
-		try {
-			if (in != null) {
-				in.close();
-				in = null;
-			}
-			System.out.println("Rest#in closed");
-		} catch (IOException ioe) {
-			System.err.println("Rest#InputStream#close() failed " + ioe);
-		}
-		try {
-			if (out != null) {
-				out.close();
-				out = null;
-			}
-			System.out.println("Rest#out closed");
-		} catch (IOException ioe) {
-			System.err.println("Rest#InputStream#close() failed " + ioe);
-		}
-		if (con != null) {
-			con.disconnect(); // 最後にしてみた
-			con = null; // ガベージコレクト対象にする
-		}
+		r.disconnect();
 	}
 }

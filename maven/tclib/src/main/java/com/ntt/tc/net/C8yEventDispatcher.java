@@ -305,7 +305,7 @@ System.out.println("subscribe : id " + id);
 			
 			Rest.Response r = api.getRest().post("/cep/realtime", reqs);
 			//
-			System.out.println(r.code);
+			System.out.println(r.status);
 			System.out.println(r.message);
 			System.out.println(r.toString());
 			

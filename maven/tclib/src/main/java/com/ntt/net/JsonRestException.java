@@ -24,7 +24,7 @@ public class JsonRestException extends IOException {
  */
 	public JsonRestException(JsonRest.Response response, String location, String method) {
 		this("ep=" + location + " method=" + method +
-			" code=" + response.code +
+			" status=" + response.status +
 			" msg=" + response.message + " body=" + response.body);
 		this.response = response;
 		this.location = location;
