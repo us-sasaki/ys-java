@@ -194,7 +194,7 @@ public abstract class JsonType extends Number
 	 * サポートされます。
 	 *
 	 * @param	key		値を取得したいキー名
-	 * @return	取得される値(JsonType)
+	 * @return	取得される値(JsonType), 存在しない場合 null
 	 */
 	public JsonType get(String key) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、get(String) はサポートされません");

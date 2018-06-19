@@ -102,6 +102,7 @@ public class APIUtil {
 		
 		for (ManagedObject m : api.managedObjects(query)) {
 			String type = m.type;
+			if (type == null) type = "null";
 			Integer c = result.get(type);
 			if (c == null) c = 0;
 			result.put(type, c+1);
@@ -134,6 +135,7 @@ public class APIUtil {
 		
 		for (Measurement m : api.measurements(query)) {
 			String type = m.type;
+			if (type == null) type = "null";
 			Integer c = result.get(type);
 			if (c == null) c = 0;
 			result.put(type, c+1);
@@ -167,6 +169,7 @@ public class APIUtil {
 		
 		for (Event e : api.events(query)) {
 			String type = e.type;
+			if (type == null) type = "null";
 			Integer c = result.get(type);
 			if (c == null) c = 0;
 			result.put(type, c+1);
@@ -199,6 +202,7 @@ public class APIUtil {
 		
 		for (Alarm a : api.alarms(query)) {
 			String type = a.type;
+			if (type == null) type = "null";
 			Integer c = result.get(type);
 			if (c == null) c = 0;
 			result.put(type, c+1);
@@ -217,6 +221,11 @@ public class APIUtil {
 		return getAlarmTypes("pageSize=1000");
 	}
 	
+	/**
+	 * 指定されたモジュール名の CEP モジュールを undeploy 状態にします。
+	 *
+	 * @param		moduleName		CEP モジュール名
+	 */
 	public void undeployModuleForName(final String moduleName)
 							throws IOException {
 		List<Module> modules = new ArrayList<>();
@@ -233,6 +242,4 @@ public class APIUtil {
 							+ "was not found.");
 		api.updateModule(m.id, false);
 	}
-	
-	
 }
