@@ -1,7 +1,7 @@
 package abdom.data.json;
 
 import java.io.Reader;
-import java.io.PushbackReader;
+//import java.io.PushbackReader;
 import java.io.StringReader;
 import java.io.IOException;
 import java.util.Set;
@@ -652,7 +652,7 @@ public abstract class JsonType extends Number
 	 */
 	public static JsonType parse(String str) {
 		try {
-			return parse(new StringReader(str));
+			return parseValue(new PushbackReader(str)); //parse(new StringReader(str));
 		} catch (IOException e) {
 			throw new InternalError("StringReader で IOException が発生しました"+e);
 		}
@@ -661,14 +661,14 @@ public abstract class JsonType extends Number
 	/**
 	 * 指定された Reader から JSON value を１つ読み込みます。
 	 * Reader は JSON value 終了位置まで読み込まれ、close() されません。
-	 * Reader は内部的に PushbackReader として利用されます。
 	 * このメソッドは共有状態を持たずスレッドセーフです。
 	 *
 	 * @param	in	Json文字列を入力する Reader。
 	 * @return	生成された JsonType
 	 */
+	// * Reader は内部的に PushbackReader として利用されます。→されなくなった
 	public static JsonType parse(Reader in) throws IOException {
-		PushbackReader pr = new PushbackReader(in);
+		PushbackReader pr = new PushbackReader2(in);
 		return parseValue(pr);
 	}
 	
