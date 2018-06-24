@@ -135,6 +135,12 @@ class JData5Test {
 			}
 		}
 		
+		@Test void setでint値を小数値でも設定できる() {
+			JD1 j = new JD1();
+			j.set("d", new JsonValue(1.5));
+			assertEquals(1, j.d);
+		}
+		
 		@Test void fillで設定できる() {
 			JD1 j = new JD1();
 			j.fill("{\"b\":53}");
