@@ -20,7 +20,7 @@ import abdom.data.json.JsonValue;
  * </pre>
  * を実行すると、ManagedObject の (pretty)JSON 形式が得られます。
  */
-public abstract class C8yData extends JData {
+public class C8yData extends JData {
 	
 	/**
 	 * 指定されたオブジェクトをこのオブジェクトに値を一致させる

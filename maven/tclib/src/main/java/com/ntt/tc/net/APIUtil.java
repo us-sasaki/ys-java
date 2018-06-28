@@ -12,6 +12,7 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonValue;
 import abdom.data.json.object.Jsonizer;
 
+import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.alarms.*;
 import com.ntt.tc.data.auditing.*;
 import com.ntt.tc.data.binaries.*;
@@ -106,7 +107,7 @@ public class APIUtil {
 					String type, String extId, ManagedObject asDefault)
 								throws IOException {
 		if (asDefault.c8y_IsDevice == null)
-			asDefault.c8y_IsDevice = new JsonObject();
+			asDefault.c8y_IsDevice = new C8yData();
 		return createManagedObjectIfAbsent(type, extId, asDefault);
 	}
 	
