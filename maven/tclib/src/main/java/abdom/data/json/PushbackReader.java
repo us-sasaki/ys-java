@@ -67,4 +67,8 @@ class PushbackReader2 extends PushbackReader {
 		b = c;
 		pos--;
 	}
+	
+	@Override int bytesRead() {
+		return (b==-1?pos:pos-1);
+	}
 }
