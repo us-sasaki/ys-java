@@ -90,6 +90,46 @@ public class APIUtil {
 	}
 	
 	/**
+	 * 指定された外部IDで、マネージドオブジェクトが存在すればそれを返し、
+	 * なければ asDefault で指定されたマネージドオブジェクトを指定された
+	 * 外部IDで登録します。
+	 * asDefault に c8y_IsDevice 属性がない場合、自動的に付加します。
+	 *
+	 * @param		type		外部ID の type
+	 * @param		extId		外部ID
+	 * @param		asDefault	ない場合に初期値として登録する
+	 *							デバイス
+	 * @return		取得された、または生成されたマネージドオブジェクト
+	 */
+	public ManagedObject
+				createDeviceIfAbsent(
+					String type, String extId, ManagedObject asDefault)
+								throws IOException {
+		if (asDefault.c8y_IsDevice == null)
+			asDefault.c8y_IsDevice = new JsonObject();
+		return createManagedObjectIfAbsent(type, extId, asDefault);
+	}
+	
+	/**
+	 * 指定された外部IDで、マネージドオブジェクトが存在すればそれを返し、
+	 * なければ asDefault で指定されたマネージドオブジェクトを指定された
+	 * 外部IDで登録します。type は c8y_Serial 固定とします。
+	 * asDefault に c8y_IsDevice 属性がない場合、自動的に付加します。
+	 *
+	 * @param		extId		外部ID(type は c8y_Serial 固定)
+	 * @param		asDefault	ない場合に初期値として登録する
+	 *							デバイス
+	 * @return		取得された、または生成されたマネージドオブジェクト
+	 */
+	public ManagedObject
+				createDeviceIfAbsent(
+					String extId, ManagedObject asDefault)
+								throws IOException {
+		return createDeviceIfAbsent("c8ySerial", extId, asDefault);
+	}
+	
+	
+	/**
 	 * Managed Object の type 一覧を返却します。
 	 * 返却される map は type 値と、存在数です。
 	 * 数が多い場合、時間がかかることがあります。
