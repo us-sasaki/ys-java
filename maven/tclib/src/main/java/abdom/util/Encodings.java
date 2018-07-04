@@ -1,6 +1,7 @@
 package abdom.util;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import abdom.data.ByteArray;
@@ -48,6 +49,38 @@ public class Encodings {
 				return encoding;
 		}
 		return null;
+	}
+	
+	/**
+	 * 指定されたバイナリ列の日本語エンコーディングを自動判定し、Charset
+	 * として返却します。
+	 */
+	public static Charset charset(byte[] text) {
+		return Charset.forName(detect(text));
+	}
+	
+	/**
+	 * 指定されたバイナリ列の日本語エンコーディングを自動判定し、Charset
+	 * として返却します。
+	 *
+	 * @exception	RuntimeException	IOException が発生した
+	 */
+	public static Charset charset(String filename) {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			FileInputStream fis = new FileInputStream(filename);
+			byte[] buff = new byte[1024];
+			while (true) {
+				int s = fis.read(buff);
+				if (s == -1) break;
+				baos.write(buff, 0, s);
+			}
+			fis.close();
+			baos.close();
+			return charset(baos.toByteArray());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	/**

@@ -16,7 +16,6 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.Jsonizable;
 import abdom.data.json.JsonParseException;
 
-import com.ntt.net.BaseRest;
 import com.ntt.net.JsonRest;
 import com.ntt.tc.util.Base64; // till JDK1.7
 
