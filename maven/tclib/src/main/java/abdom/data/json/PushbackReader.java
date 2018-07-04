@@ -33,7 +33,7 @@ class PushbackReader {
 	}
 	
 	int bytesRead() {
-		return pos;
+		return pos-1;
 	}
 }
 
@@ -69,6 +69,6 @@ class PushbackReader2 extends PushbackReader {
 	}
 	
 	@Override int bytesRead() {
-		return (b==-1?pos:pos-1);
+		return (b==-1?pos-1:pos-2);
 	}
 }

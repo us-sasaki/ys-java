@@ -210,7 +210,8 @@ public class JsonArray extends JsonType {
 	 */
 	@Override
 	public JsonArray slice(int s, int e) {
-		Object[] a = array.toArray(new Object[0]);
+		//Object[] a = array.toArray(new Object[0]);
+		Object[] a = array.toArray();
 		return new JsonArray(Arrays.copyOfRange(a, s, e));
 	}
 	

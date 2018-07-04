@@ -107,6 +107,8 @@ public class JsonRest {
  */
 	/**
 	 * 指定された url を保持する Rest を作成します。
+	 * header には、Content-Type: application/json,
+	 * Accept: application/json が自動的に付加されます。
 	 */
 	public JsonRest(String urlStr) {
 		if (urlStr == null)
@@ -225,6 +227,8 @@ public class JsonRest {
 	/**
 	 * Httpリクエストの実処理を行います。
 	 * 400 以上のステータスコードであっても例外は発生しません。
+	 * GET や DELETE メソッドでは、header に Content-Type 指定があっても
+	 * 設定しません。
 	 *
 	 * @param	location	リソースの場所 /platform 等
 	 *						http:// https:// ではじまる場合、そのURLを使用します
