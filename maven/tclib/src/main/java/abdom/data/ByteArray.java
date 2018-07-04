@@ -324,16 +324,12 @@ public final class ByteArray {
 	 * 与えられたデータについて、奇数パリティを付加します。
 	 */
 	public static byte setOddParity(byte d) {
-		// Parity 付加
-		int parity = 0;
-		int bit = 1;
-		for (int j = 0; j < 8; j++) {
-			if ( (d & bit) != 0 ) parity++;
-			bit *= 2;
-		}
-		if ((parity % 2) == 0) d ^= 1;
+		byte b = d;
+		b ^= (b>>4);
+		b ^= (b>>2);
+		b ^= (b>>1);
 		
-		return d;
+		return ((b & 1)==0?(byte)(d ^ 1):d);
 	}
 	
 	/**
@@ -342,14 +338,12 @@ public final class ByteArray {
 	 */
 	public static byte[] setOddParity(byte[] d) {
 		for (int i = 0; i < d.length; i++) {
-			// Parity 付加
-			int parity = 0;
-			int bit = 1;
-			for (int j = 0; j < 8; j++) {
-				if ( (d[i] & bit) != 0 ) parity++;
-				bit *= 2;
-			}
-			if ((parity % 2) == 0) d[i] ^= 1;
+			byte b = d[i];
+			b ^= (b>>4);
+			b ^= (b>>2);
+			b ^= (b>>1);
+			
+			if ((b & 1)==0) d[i] ^= 1;
 		}
 		return d;
 	}
