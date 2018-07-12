@@ -12,16 +12,55 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>1.7</java.version>
+    <java.version>1.8</java.version>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <maven.compiler.source>${java.version}</maven.compiler.source>
   </properties>
 
   <dependencies>
+  	<!-- Junit 3 -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- Junit5 -->
+    <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-launcher</artifactId>
+        <version>1.0.1</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.0.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.0.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>4.12.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <version>1.0.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-runner</artifactId>
+      <version>1.0.1</version>
       <scope>test</scope>
     </dependency>
     
@@ -40,26 +79,95 @@
     </dependency>
     
     <!-- tclib を使う場合 -->
+    <!-- ■環境依存設定 lib/tclib-0.9.jar を使う ■ -->
     <dependency>
       <groupId>comiot</groupId>
       <artifactId>tclib</artifactId>
       <version>0.9</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/tclib-0.9.jar</systemPath>
+    </dependency>
+    
+    <!-- SNAKE Yaml -->
+    <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>1.19</version>
     </dependency>
     
   </dependencies>
   
-  <!-- exec:java を使う場合 -->
 
   <build>
     <plugins>
-        <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version>
-            <configuration>
-                <mainClass>■■main()のあるクラス■■</mainClass>
-            </configuration>
-        </plugin>
+      <!-- exec:java を使う場合 -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <configuration>
+          <mainClass>■■main()のあるクラス■■</mainClass>
+        </configuration>
+      </plugin>
+      
+      <!-- JUnit 5 を使う場合 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.19.1</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-surefire-provider</artifactId>
+            <version>1.0.1</version>
+          </dependency>
+          <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.0.1</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <!-- MANIFEST.MF を含める場合 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+          <manifestFile>${basedir}/src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+          <manifest>
+            <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+            <addDefaultImplementationEntries>false</addDefaultImplementationEntries>
+          </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+     
+      <!-- 依存する jar を含める場合 -->
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>lora83.ActilityRunner</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      
     </plugins>
   </build>
 
