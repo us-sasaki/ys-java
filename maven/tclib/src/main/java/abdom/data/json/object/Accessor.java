@@ -13,8 +13,10 @@ import abdom.data.json.JsonObject;
 
 /**
  * public フィールド、または public getter/setter メソッドで表される
- * オブジェクトのプロパティへの get / set メソッドを提供します。
- * フィールド、メソッドを統一的に扱うためのインターフェースです。
+ * オブジェクトのプロパティへの JsonType による get / set メソッドを
+ * 提供します。
+ * Java オブジェクトの各プロパティの参照、設定を JsonType で行えるよう、
+ * 相互の型変換規則をラップしています。
  * 単一オブジェクトでは、SimpleAccessor, 配列では ArrayAccessor を
  * インスタンス実体として利用します。
  *
