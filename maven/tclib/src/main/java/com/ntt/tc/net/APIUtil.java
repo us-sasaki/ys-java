@@ -126,7 +126,7 @@ public class APIUtil {
 				createDeviceIfAbsent(
 					String extId, ManagedObject asDefault)
 								throws IOException {
-		return createDeviceIfAbsent("c8ySerial", extId, asDefault);
+		return createDeviceIfAbsent("c8y_Serial", extId, asDefault);
 	}
 	
 	
