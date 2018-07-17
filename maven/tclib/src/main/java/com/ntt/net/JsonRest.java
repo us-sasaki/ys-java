@@ -37,6 +37,8 @@ public class JsonRest {
 	protected InputStream in;
 	protected OutputStream out;
 	
+	//private byte[] buffer = new byte[4096];
+	
 	/**
 	 * HTTP レスポンスを表す内部クラス
 	 */
@@ -289,8 +291,10 @@ public class JsonRest {
 				in = con.getErrorStream(); // may null
 			}
 			while (true) {
+				//int c = in.read(buffer); // なんか遅い
 				int c = in.read(); // byte[] buff を使った方が早い
 				if (c == -1) break;
+				//baos.write(buffer, 0, c);
 				baos.write(c);
 			}
 			in.close();
