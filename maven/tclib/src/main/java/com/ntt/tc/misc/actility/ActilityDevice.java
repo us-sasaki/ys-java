@@ -99,8 +99,8 @@ public class ActilityDevice {
 	 * @param		payloadHex		payloadHex 値
 	 * @return		結果を byte 列にしたもの
 	 */
-	public HttpResp post(String payload_hex) throws IOException {
-		byte[] body = makeXML(payload_hex).getBytes();
+	public HttpResp post(String payloadHex) throws IOException {
+		byte[] body = makeXML(payloadHex).getBytes();
 		Map<String, String> header = new HashMap<String, String>();
 		header.put("Content-Type", "application/xml");
 		return post(serverUrl+"?LrnDevEui="+devEui, header, body);

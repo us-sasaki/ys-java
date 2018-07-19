@@ -16,6 +16,7 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonValue;
 import abdom.data.json.object.Jsonizer;
 
+import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.alarms.*;
 import com.ntt.tc.data.auditing.*;
 import com.ntt.tc.data.binaries.*;
@@ -59,15 +60,37 @@ public class API {
 /*-------------
  * constructor
  */
+	/**
+	 * 指定された Rest オブジェクトを使ってアクセスするオブジェクトを作成します。
+	 *
+	 * @param	rest	接続に利用する Rest オブジェクト
+	 */
 	public API(Rest rest) {
 		this.rest = rest;
 		bootstrapRest = new Rest(rest.getLocation(), "management", new String(Base64.decodeFromString(BUSR)), new String(Base64.decodeFromString(BPSS)));
 	}
 	
+	/**
+	 * 指定された URL, tenant, user, password により接続する API オブジェクト
+	 * を生成します。
+	 *
+	 * @param	location	URL https://hogehoge.je1.thingscloud.ntt.com 等
+	 * @param	tenant		テナント (ヌル文字を指定すると URL のテナント
+	 * 						になります)
+	 * @param	user		ログインユーザー名
+	 * @param	pass		ログインパスワード
+	 */
 	public API(String location, String tenant, String user, String pass) {
 		this(new Rest(location, tenant, user, pass));
 	}
 	
+	/**
+	 * URL, tenant, user, pass を供給する辞書(Map)から API オブジェクトを
+	 * 生成します。
+	 * 
+	 * @param	account		Map で "url", "tenant", "user",
+	 *						"password" をキーとしてそれぞれの値を持つもの
+	 */
 	public API(Map<String, String> account) {
 		this(account.get("url"),
 				account.get("tenant"),
@@ -135,7 +158,7 @@ public class API {
 	 * になります。
 	 *
 	 * @param	req		新規デバイスリクエストのオブジェクト。id は必須です。
-	 * @return	結果オブジェクトで、元のオブジェクトの参照が返却されます
+	 * @return	結果を反映した、元のオブジェクトの参照が返却されます
 	 */
 	public NewDeviceRequest createNewDeviceRequest(NewDeviceRequest req)
 				throws IOException {
@@ -161,6 +184,7 @@ public class API {
 	 * デバイスクレデンシャルの承認ステータスを変更します。
 	 *
 	 * @param	updater		デバイスリクエストの更新オブジェクト
+	 * @return	結果を反映した新規オブジェクト
 	 */
 	public NewDeviceRequest updateNewDeviceRequest(NewDeviceRequest updater)
 					throws IOException {
@@ -267,7 +291,7 @@ public class API {
 	 * ExternalID の iterator を取得します。
 	 * <pre>
 	 * 使用例：
-	 * for (ExternalID id : api.externalIDs() {
+	 * for (ExternalID id : api.externalIDs("487931") {
 	 * 		( id に対する処理 )
 	 * }
 	 * </pre>
@@ -339,10 +363,11 @@ public class API {
 	 */
 	public void updateManagedObjectLocation(String id, double lat, double lng, double alt)
 				throws IOException {
-		JsonObject jo = new JsonObject();
-		jo.put("c8y_Position.lat", lat);
-		jo.put("c8y_Position.lng", lng);
-		jo.put("c8y_Position.alt", alt);
+		JsonObject pos = new JsonObject();
+		pos.put("lat", lat);
+		pos.put("lng", lng);
+		pos.put("alt", alt);
+		JsonObject jo = JsonType.o("c8y_Position", pos);
 		
 		Response resp = rest.put("/inventory/managedObjects/" + id,
 									"managedObject", jo);
@@ -365,7 +390,7 @@ public class API {
 	 * Collection API では、結果のアトミック性が保証されていないことに注意して
 	 * 下さい。
 	 *
-	 * @param	queryString	pageSize=5&currentPage=1 など
+	 * @param	queryString	pageSize=5&amp;currentPage=1 など
 	 * @return	取得された ManagedObjectCollection
 	 */
 	public ManagedObjectCollection readManagedObjectCollection(String queryString)
@@ -379,7 +404,7 @@ public class API {
 	 * ManagedObject の iterator を取得します。
 	 * <pre>
 	 * 使用例：
-	 * for (ManagedObject m : api.managedObjects("source=41117&pageSize=15")) {
+	 * for (ManagedObject m : api.managedObjects("source=41117&amp;pageSize=15")) {
 	 * 		( m に対する処理 )
 	 * }
 	 * </pre>
@@ -394,7 +419,7 @@ public class API {
 	 * query={query} クエリ条件を指定<br>
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
-	 *						 "dateFrom={from}&dateTo={to}&revert=true"
+	 *						 "dateFrom={from}&amp;dateTo={to}&amp;revert=true"
 	 */
 	public Iterable<ManagedObject> managedObjects(final String queryString) {
 		return ( new Iterable<ManagedObject>() {
@@ -458,7 +483,7 @@ public class API {
 	 * type : 指定された type の measurement を取得<br>
 	 * fragmentType : 指定された fragmentType を含む measurement を取得<br>
 	 *
-	 * @param	queryString	pageSize=5&currentPage=1 など
+	 * @param	queryString	pageSize=5&amp;currentPage=1 など
 	 * @return	取得された MeasurementCollection
 	 */
 	public MeasurementCollection readMeasurementCollection(String queryString)
@@ -478,7 +503,7 @@ public class API {
 	 * Measurement の iterator を取得します。
 	 * <pre>
 	 * 使用例：
-	 * for (Measurement m : api.measurements("source=41117&pageSize=15")) {
+	 * for (Measurement m : api.measurements("source=41117&amp;pageSize=15")) {
 	 * 		( m に対する処理 )
 	 * }
 	 * </pre>
@@ -487,7 +512,7 @@ public class API {
 	 * に変換され、元の例外は cause として設定されます。
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
-	 *						 "dateFrom={from}&dateTo={to}&revert=true"
+	 *						 "dateFrom={from}&amp;dateTo={to}&amp;revert=true"
 	 */
 	public Iterable<Measurement> measurements(final String queryString) {
 		return new Iterable<Measurement>() {
@@ -506,6 +531,57 @@ public class API {
 	 */
 	public Iterable<Measurement> measurements() throws IOException {
 		return measurements("");
+	}
+	
+	/**
+	 * 特定のデバイスから Measurement Series Collection を取得します。
+	 * 
+	 * @param	queryString	source, dateFrom, dateTo が必須, aggregationType
+	 *						として DAILY, HOURLY, MINUTELY が利用可能
+	 * @return	取得された MeasurementSeriesCollection (Max 5000件)
+	 */
+	public MeasurementSeriesCollection
+			readMeasurementSeriesCollection(String queryString)
+						throws IOException {
+		Response resp = rest.get("/measurement/measurements/series?"+queryString);
+//		String[] queries = queryString.split("&");
+		return Jsonizer.fromJson(resp, MeasurementSeriesCollection.class);
+	}
+	
+	/**
+	 * 特定のデバイスから Measurement Series Collection を取得します。
+	 * 
+	 * @param	source		デバイスID
+	 * @param	dateFrom	取得開始日時
+	 * @param	dateTo		取得終了日時
+	 * @return	取得された MeasurementSeriesCollection (Max 5000件)
+	 */
+	public MeasurementSeriesCollection
+			readMeasurementSeriesCollection(String source,
+											TC_Date dateFrom,
+											TC_Date dateTo)
+						throws IOException {
+		return readMeasurementSeriesCollection("source="+source
+					+"&dateFrom="+dateFrom.getValue()
+					+"&dateTo="+dateTo.getValue());
+	}
+	
+	public MeasurementSeriesCollection
+			readMeasurementSeriesCollection(String source,
+											TC_Date dateFrom,
+											TC_Date dateTo,
+											String aggregationType)
+						throws IOException {
+		if (!aggregationType.equals("DAILY")
+			&& !aggregationType.equals("HOURLY")
+			&& !aggregationType.equals("MINUTELY") )
+					throw new IllegalArgumentException("aggregationType は"
+							+ " DAILY / HOURLY / MINUTELY のいずれかを"
+							+ "指定してください: " + aggregationType);
+		return readMeasurementSeriesCollection("source="+source
+					+"&dateFrom="+dateFrom.getValue()
+					+"&dateTo="+dateTo.getValue()
+					+"&aggregationType="+aggregationType);
 	}
 	
 /*-----------
@@ -540,13 +616,13 @@ public class API {
 	 * <pre>
 	 * {
 	 *   type:"c8y_LocationUpdate",
-	 *   id:<<指定された source>>,
+	 *   id:{指定された source},
 	 *   text:"location changed event",
-	 *   c8y_Position:{lat:<<指定された lat>>,
-	 *                 lng:<<指定された lng>>,
-	 *                 alt:<<指定された alt>>,
-	 *                 trackingProtocol:<<指定されたもの>>,
-	 *                 reportReason:<<指定されたもの>>
+	 *   c8y_Position:{lat:{指定された lat},
+	 *                 lng:{指定された lng},
+	 *                 alt:{指定された alt},
+	 *                 trackingProtocol:{指定されたもの},
+	 *                 reportReason:{指定されたもの}
 	 *   }
 	 * }
 	 * </pre>
@@ -598,7 +674,7 @@ public class API {
 	 * Collection API では、結果のアトミック性が保証されていないことに注意して
 	 * 下さい。
 	 *
-	 * @param	queryString	pageSize=5&currentPage=1 など
+	 * @param	queryString	pageSize=5&amp;currentPage=1 など
 	 * @return	取得された EventCollection
 	 */
 	public EventCollection readEventCollection(String queryString)
@@ -612,7 +688,7 @@ public class API {
 	 * Event の iterator を取得します。
 	 * <pre>
 	 * 使用例：
-	 * for (Event e : api.events("source=41117&pageSize=15")) {
+	 * for (Event e : api.events("source=41117&amp;pageSize=15")) {
 	 * 		( e に対する処理 )
 	 * }
 	 * </pre>
@@ -626,7 +702,7 @@ public class API {
 	 * fragmentType : 指定された fragmentType を含む event を取得<br>
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
-	 *						 "dateFrom={from}&dateTo={to}&revert=true"
+	 *						 "dateFrom={from}&amp;dateTo={to}&amp;revert=true"
 	 */
 	public Iterable<Event> events(final String queryString) {
 		return new Iterable<Event>() {
@@ -676,7 +752,7 @@ public class API {
 	/**
 	 * アラームを送信する便利メソッドです。
 	 *
-	 * @param	sourceId	alarm を発生させた managed object の id
+	 * @param	source		alarm を発生させた managed object の id
 	 * @param	type		alarm の type
 	 * @param	text		alarm の説明文
 	 * @param	status		Alarm の status。
@@ -697,7 +773,7 @@ public class API {
 	 * Collection API では、結果のアトミック性が保証されていないことに注意して
 	 * 下さい。
 	 *
-	 * @param	queryString	pageSize=5&currentPage=1 など
+	 * @param	queryString	pageSize=5&amp;currentPage=1 など
 	 * @return	取得された AlarmCollection
 	 */
 	public AlarmCollection readAlarmCollection(String queryString)
@@ -711,7 +787,7 @@ public class API {
 	 * Alarm の iterator を取得します。
 	 * <pre>
 	 * 使用例：
-	 * for (Alarm a : api.alarms("source=41117&pageSize=15")) {
+	 * for (Alarm a : api.alarms("source=41117&amp;pageSize=15")) {
 	 * 		( a に対する処理 )
 	 * }
 	 * </pre>
@@ -724,7 +800,7 @@ public class API {
 	 * status : 指定された status の alarm を取得<br>
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
-	 *						 "dateFrom={from}&dateTo={to}&revert=true"
+	 *						 "dateFrom={from}&amp;dateTo={to}&amp;revert=true"
 	 */
 	public Iterable<Alarm> alarms(final String queryString) {
 		return new Iterable<Alarm>() {
@@ -809,7 +885,7 @@ public class API {
 	 * Collection API では、結果のアトミック性が保証されていないことに注意して
 	 * 下さい。
 	 *
-	 * @param	queryString	pageSize=5&currentPage=1 など
+	 * @param	queryString	pageSize=5&amp;currentPage=1 など
 	 * @return	取得された OperationCollection
 	 */
 	public OperationCollection readOperationCollection(String queryString)
@@ -823,7 +899,7 @@ public class API {
 	 * Operation の iterator を取得します。
 	 * <pre>
 	 * 使用例：
-	 * for (Operation o : api.operations("deviceId=41117&pageSize=15")) {
+	 * for (Operation o : api.operations("deviceId=41117&amp;pageSize=15")) {
 	 * 		( o に対する処理 )
 	 * }
 	 * </pre>
@@ -836,7 +912,7 @@ public class API {
 	 * status : 指定された status の operation を取得<br>
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
-	 *						 "dateFrom={from}&dateTo={to}&revert=true"
+	 *						 "dateFrom={from}&amp;dateTo={to}&amp;revert=true"
 	 */
 	public Iterable<Operation> operations(final String queryString) {
 		return new Iterable<Operation>() {
@@ -949,7 +1025,7 @@ public class API {
 	 * Collection API では、結果のアトミック性が保証されていないことに注意して
 	 * 下さい。
 	 *
-	 * @param	queryString	pageSize=5&currentPage=1 など
+	 * @param	queryString	pageSize=5&amp;currentPage=1 など
 	 * @return	取得された TenantUsageStatisticsCollection
 	 */
 	public TenantUsageStatisticsCollection
@@ -964,7 +1040,7 @@ public class API {
 	 * UsageStatistics の iterator を取得します。
 	 * <pre>
 	 * 使用例：
-	 * for (UsageStatistics u : api.usageStatistics("dateFrom=2017-08-01&dateTill=2017-09-05&pageSize=15")) {
+	 * for (UsageStatistics u : api.usageStatistics("dateFrom=2017-08-01&amp;dateTill=2017-09-05&amp;pageSize=15")) {
 	 * 		( u に対する処理 )
 	 * }
 	 * </pre>
@@ -997,7 +1073,7 @@ public class API {
 	 * テナント使用状況サマリを取得します。
 	 * 10分置き程度に更新される最新情報が取得可能です。
 	 *
-	 * @param	query	dateFrom, dateTill で期間を指定します。
+	 * @param	queryString	dateFrom, dateTill で期間を指定します。
 	 *					省略した場合、月初から現在までとなります。
 	 *					yyyy-MM-dd の形式で、dateTill を省略することもできます。
 	 */

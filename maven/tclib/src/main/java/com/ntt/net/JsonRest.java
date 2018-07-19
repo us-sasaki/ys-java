@@ -17,9 +17,8 @@ import static java.net.HttpURLConnection.*;
 /**
  * REST による要求を簡単に行うためのクラス。軽量化のため、外部ライブラリに
  * 非依存でつくる(java.net.HttpURLConnection ベース)
- * json-stream に対応するため、結果を JsonType.parse(Reader) で構築する。
  * レスポンスボディが JSON でない場合(cometd関連でhtmlを返す場合がある)、
- * エラー文字列を表す JsonValue レスポンスが返却されることに注意して下さい。
+ * toString() ではレスポンスがそのまま返されます。
  *
  * @version	7, December 2017
  * @author	Yusuke Sasaki
@@ -73,7 +72,7 @@ public class JsonRest {
 		 * がスローされます。
 		 *
 		 * @return		pretty JSON 形式
-		 * @throw		abdom.data.json.JsonParseException	body の JSON parse
+		 * @exception	abdom.data.json.JsonParseException	body の JSON parse
 		 *				に失敗した
 		 */
 		@Override
@@ -92,7 +91,7 @@ public class JsonRest {
 		 * あった場合、JsonParseExcception がスローされます。
 		 *
 		 * @return		pretty JSON 形式
-		 * @throw		abdom.data.json.JsonParseException	body の JSON parse
+		 * @exception	abdom.data.json.JsonParseException	body の JSON parse
 		 *				に失敗した
 		 */
 		@Override
@@ -138,6 +137,9 @@ public class JsonRest {
 	 * デフォルトで、"Content-Type"="application/json"
 	 * "Accept"="application/json" が指定されていますが上書き可能です。
 	 * value が null となる Header は出力されません。
+	 *
+	 * @param	key		header の key
+	 * @param	value	header の value
 	 */
 	public synchronized void putHeader(String key, String value) {
 		header.put(key, value);
@@ -160,6 +162,7 @@ public class JsonRest {
 	 *
 	 * @param	resource	GETするリソース
 	 * @return	Rest.Response オブジェクト
+	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response get(String location) throws IOException {
 		return request(location, "GET", null);
@@ -167,6 +170,9 @@ public class JsonRest {
 	
 	/**
 	 * DELETE リクエストをします。
+	 *
+	 * @param	location	URL
+	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response delete(String location) throws IOException {
 		return request(location, "DELETE", null);
@@ -174,6 +180,10 @@ public class JsonRest {
 	
 	/**
 	 * PUT リクエストをします。
+	 *
+	 * @param	location	URL
+	 * @param	json		body
+	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response put(String location, Jsonizable json)
 							throws IOException {
@@ -182,6 +192,10 @@ public class JsonRest {
 	
 	/**
 	 * PUT リクエストをします。
+	 *
+	 * @param	location	URL
+	 * @param	body		body
+	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response put(String location, String body)
 							throws IOException {
@@ -190,6 +204,10 @@ public class JsonRest {
 	
 	/**
 	 * PUT リクエストをします。
+	 *
+	 * @param	location	URL
+	 * @param	body		body
+	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response put(String location, byte[] body)
 							throws IOException {
@@ -198,6 +216,10 @@ public class JsonRest {
 	
 	/**
 	 * POST リクエストをします。
+	 *
+	 * @param	location	URL
+	 * @param	json		body
+	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response post(String location, Jsonizable json)
 							throws IOException {
@@ -208,6 +230,10 @@ public class JsonRest {
 	
 	/**
 	 * POST リクエストをします。
+	 *
+	 * @param	location	URL
+	 * @param	body		body
+	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response post(String location, String body)
 							throws IOException {
@@ -218,6 +244,10 @@ public class JsonRest {
 	
 	/**
 	 * POST リクエストをします。
+	 *
+	 * @param	location	URL
+	 * @param	body		body
+	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response post(String location, byte[] body)
 							throws IOException {
@@ -236,6 +266,8 @@ public class JsonRest {
 	 *						http:// https:// ではじまる場合、そのURLを使用します
 	 * @param	method		GET/POST/PUT/DELETE
 	 * @param	body		body に設定するデータ
+	 * @return	Response
+	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public synchronized Response request(String location, String method,
 								byte[] body) throws IOException {
@@ -341,6 +373,8 @@ public class JsonRest {
 	
 	/**
 	 * 指定された文字列に + が含まれる場合、%2B に置換します。
+	 *
+	 * @param	target	変換対象文字列
 	 */
 	protected static String convLocation(String target) {
 /*		try {

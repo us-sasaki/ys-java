@@ -107,10 +107,10 @@ public class TC_Date extends C8yValue {
 	/**
 	 * java.util.Date 値を取得します。
 	 *
-	 * @return	このオブジェクトの java.util.Date 値
+	 * @return	このオブジェクトの java.util.Date 値の clone
 	 */
 	public Date toDate() {
-		return date;
+		return (Date)date.clone();
 	}
 	
 	/**

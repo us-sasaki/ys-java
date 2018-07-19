@@ -8,7 +8,7 @@ import abdom.util.CsvReader;
 /**
  * CSVファイルをJsonArray に変換します。
  * 各カラムの型は、自動判定されます。
- * long > double > String の順に判定されます。
+ * long ＞ double ＞ String の順に判定されます。
  * 将来的に自動型判定対象を増やすことを想定し、インスタンスモデルとしています。
  *
  * @version		2017/8/29

@@ -37,7 +37,7 @@ public class Base64EncodeStream extends FilterOutputStream {
 	 * Constructs a Base64EncodeStream with appropriate blocks in a line.
 	 * 
 	 * @param	out	Output stream which is to be encoded with base64.
-	 * @param	block	block's number in a line.
+	 * @param	blocks	block's number in a line.
 	 */
 	public Base64EncodeStream(OutputStream out, int blocks) {
 		this(out);

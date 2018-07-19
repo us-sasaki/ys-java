@@ -129,7 +129,7 @@ public class Base64DecodeStream extends FilterInputStream {
     *             <code>-1</code> if there is no more data because the end of
     *             the stream has been reached.
     * @exception  IOException  if an I/O error occurs.
-    * @see        ntt.security.Base64DecodeStream#read()
+    * @see        #read()
 	*
 	*/
 	public int read(byte[] b, int off, int len) throws IOException {
