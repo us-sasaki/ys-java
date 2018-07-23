@@ -127,6 +127,7 @@ public class API {
 	 *
 	 * @param	id		新規デバイスリクエストのオブジェクト
 	 * @return	結果となる NewDeviceRequest オブジェクト(存在しない場合 null)
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public NewDeviceRequest readNewDeviceRequest(String id)
 				throws IOException {
@@ -159,6 +160,7 @@ public class API {
 	 *
 	 * @param	req		新規デバイスリクエストのオブジェクト。id は必須です。
 	 * @return	結果を反映した、元のオブジェクトの参照が返却されます
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public NewDeviceRequest createNewDeviceRequest(NewDeviceRequest req)
 				throws IOException {
@@ -174,6 +176,7 @@ public class API {
 	 * になります。
 	 *
 	 * @param	id		新規デバイスリクエストの id。
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void createNewDeviceRequest(String id) throws IOException {
 		Response resp = rest.post("/devicecontrol/newDeviceRequests",
@@ -185,6 +188,7 @@ public class API {
 	 *
 	 * @param	updater		デバイスリクエストの更新オブジェクト
 	 * @return	結果を反映した新規オブジェクト
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public NewDeviceRequest updateNewDeviceRequest(NewDeviceRequest updater)
 					throws IOException {
@@ -198,6 +202,7 @@ public class API {
 	 *
 	 * @param	id		デバイスリクエストの id
 	 * @param	status	ステータス(@see com.ntt.tc.data.DeviceNewRequest)
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void updateNewDeviceRequest(String id, String status)
 					throws IOException {
@@ -209,6 +214,7 @@ public class API {
 	 * デバイスクレデンシャルの承認ステータスを変更します。
 	 *
 	 * @param	id		削除対象のデバイスリクエストの id
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void deleteNewDeviceRequest(String id) throws IOException {
 		Response resp = rest.delete("/devicecontrol/newDeviceRequests/"+id,
@@ -223,6 +229,7 @@ public class API {
 	 * @return	更新されたデバイスクレデンシャルが返却されます。
 	 *			承認された場合、req.isValid() が true となります。
 	 *			承認されなかった場合は、値は変化しません。
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public DeviceCredentials createDeviceCredentials(DeviceCredentials req)
 				throws IOException {
@@ -243,6 +250,7 @@ public class API {
 	 * @param	type	external ID の type (c8y_Serial等)
 	 * @param	externalId	external ID の値
 	 * @return	Managed Object ID, 存在しない場合 null
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public String readIDByExternalID(String type, String externalId)
 				throws IOException {
@@ -258,6 +266,7 @@ public class API {
 	 * @param	id		追加対象の Managed Object ID
 	 * @param	type	外部ID(externalId)のtype
 	 * @param	externalId	外部IDの値
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void createExternalID(String id, String type, String externalId)
 				throws IOException {
@@ -270,6 +279,7 @@ public class API {
 	 *
 	 * @param	type	external ID の type (c8y_Serial等)
 	 * @param	externalId	external ID の値
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void deleteExternalID(String type, String externalId)
 				throws IOException {
@@ -280,8 +290,13 @@ public class API {
 	
 	/**
 	 * 外部IDコレクションを取得します。
+	 *
+	 * @param	globalId	グローバルID(デバイスID)
+	 * @return	取得された外部IDコレクション
+	 * @throws	java.io.IOException	REST異常
 	 */
-	public ExternalIDCollection readExternalIDCollection(String globalId) throws IOException {
+	public ExternalIDCollection readExternalIDCollection(String globalId)
+										throws IOException {
 		Response resp = rest.get("/identity/globalIds/"+globalId+"/externalIds");
 		return Jsonizer.fromJson(resp, ExternalIDCollection.class);
 	}
@@ -300,6 +315,7 @@ public class API {
 	 * に変換され、元の例外は cause として設定されます。<br>
 	 *
 	 * @param		globalId	Managed Object ID
+	 * @return		ExternalID の iterator
 	 */
 	public Iterable<ExternalID> externalIDs(String globalId) {
 		return ( new Iterable<ExternalID>() {
@@ -320,6 +336,7 @@ public class API {
 	 *
 	 * @param	mo		登録したい Managed Object
 	 * @return	登録後、更新された Managed Object
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public ManagedObject createManagedObject(ManagedObject mo)
 				throws IOException {
@@ -335,6 +352,7 @@ public class API {
 	 * @param	id		更新対象の Managed Object ID
 	 * @param	updater	Managed Object の変更(追加)内容
 	 * @return	登録後、更新された Managed Object(updater とは別インスタンス)
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public ManagedObject updateManagedObject(String id, ManagedObject updater)
 				throws IOException {
@@ -347,6 +365,7 @@ public class API {
 	 * 削除に失敗すると、IOException がスローされます。
 	 *
 	 * @param	id		削除対象の Managed Object ID
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void deleteManagedObject(String id) throws IOException {
 		Response resp = rest.delete("/inventory/managedObjects/" + id, "managedObject");
@@ -360,6 +379,7 @@ public class API {
 	 * @param	lat		緯度(latitude)
 	 * @param	lng		経度(longitude)
 	 * @param	alt		高度(altitude)
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void updateManagedObjectLocation(String id, double lat, double lng, double alt)
 				throws IOException {
@@ -378,6 +398,7 @@ public class API {
 	 *
 	 * @param	id		取得対象の Managed Object ID
 	 * @return	ManagedObject
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public ManagedObject readManagedObject(String id) throws IOException {
 		Response resp = rest.get("/inventory/managedObjects/"+id,
@@ -392,6 +413,7 @@ public class API {
 	 *
 	 * @param	queryString	pageSize=5&amp;currentPage=1 など
 	 * @return	取得された ManagedObjectCollection
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public ManagedObjectCollection readManagedObjectCollection(String queryString)
 						throws IOException {
@@ -420,6 +442,7 @@ public class API {
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
 	 *						 "dateFrom={from}&amp;dateTo={to}&amp;revert=true"
+	 * @return	ManagedObject の iterable
 	 */
 	public Iterable<ManagedObject> managedObjects(final String queryString) {
 		return ( new Iterable<ManagedObject>() {
@@ -435,8 +458,9 @@ public class API {
 	 * 全 ManagedObject を取得する便利メソッドです。
 	 *
 	 * @return		全 ManagedObject を取得する iterable
+	 * @return	ManagedObject の iterable
 	 */
-	public Iterable<ManagedObject> managedObjects() throws IOException {
+	public Iterable<ManagedObject> managedObjects() {
 		return managedObjects("");
 	}
 
@@ -448,6 +472,7 @@ public class API {
 	 *
 	 * @param	id		取得対象の Measurement ID
 	 * @return	Measurement
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Measurement readMeasurement(String id) throws IOException {
 		Response resp = rest.get("/measurement/measurements/"+id, "measurement");
@@ -458,6 +483,7 @@ public class API {
 	 * メジャーメントを送信します。
 	 *
 	 * @param	measurement		送信対象のメジャーメント
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void createMeasurement(Measurement measurement) throws IOException {
 		Response resp = rest.post("/measurement/measurements/", "measurement", measurement);
@@ -467,6 +493,7 @@ public class API {
 	 * 複数メジャーメントの一括送信を行います。
 	 *
 	 * @param	collection	送信対象のメジャーメントコレクション。
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void createMeasurementCollection(MeasurementCollection collection)
 						throws IOException {
@@ -485,6 +512,7 @@ public class API {
 	 *
 	 * @param	queryString	pageSize=5&amp;currentPage=1 など
 	 * @return	取得された MeasurementCollection
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public MeasurementCollection readMeasurementCollection(String queryString)
 						throws IOException {
@@ -513,6 +541,7 @@ public class API {
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
 	 *						 "dateFrom={from}&amp;dateTo={to}&amp;revert=true"
+	 * @return	Measurement の iterable
 	 */
 	public Iterable<Measurement> measurements(final String queryString) {
 		return new Iterable<Measurement>() {
@@ -529,7 +558,7 @@ public class API {
 	 *
 	 * @return		全 Measurement を取得する iterable
 	 */
-	public Iterable<Measurement> measurements() throws IOException {
+	public Iterable<Measurement> measurements() {
 		return measurements("");
 	}
 	
@@ -539,6 +568,7 @@ public class API {
 	 * @param	queryString	source, dateFrom, dateTo が必須, aggregationType
 	 *						として DAILY, HOURLY, MINUTELY が利用可能
 	 * @return	取得された MeasurementSeriesCollection (Max 5000件)
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public MeasurementSeriesCollection
 			readMeasurementSeriesCollection(String queryString)
@@ -555,6 +585,7 @@ public class API {
 	 * @param	dateFrom	取得開始日時
 	 * @param	dateTo		取得終了日時
 	 * @return	取得された MeasurementSeriesCollection (Max 5000件)
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public MeasurementSeriesCollection
 			readMeasurementSeriesCollection(String source,
@@ -592,6 +623,7 @@ public class API {
 	 *
 	 * @param	id		取得対象の Event ID
 	 * @return	Event
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Event readEvent(String id) throws IOException {
 		Response resp = rest.get("/event/events/"+id, "event");
@@ -603,6 +635,7 @@ public class API {
 	 *
 	 * @param	event		送信対象のイベント
 	 * @return	送信後、id などが付与された Event
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Event createEvent(Event event) throws IOException {
 		Response resp = rest.post("/event/events/", "event", event);
@@ -634,6 +667,7 @@ public class API {
 	 * @param		trackingProtocol	追跡プロトコル(TELIC など)
 	 * @param		reportReason		位置情報送信理由(Time Eventなど)
 	 * @return	送信後、id などが付与された Event
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Event createLocationUpdateEvent(
 						String source,
@@ -662,6 +696,7 @@ public class API {
 	 * @param		lng		経度(degree)
 	 * @param		alt		高度(m)
 	 * @return	送信後、id などが付与された Event
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Event createLocationUpdateEvent(
 						String source,
@@ -676,6 +711,7 @@ public class API {
 	 *
 	 * @param	queryString	pageSize=5&amp;currentPage=1 など
 	 * @return	取得された EventCollection
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public EventCollection readEventCollection(String queryString)
 						throws IOException {
@@ -703,6 +739,7 @@ public class API {
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
 	 *						 "dateFrom={from}&amp;dateTo={to}&amp;revert=true"
+	 * @return	Event の iterable
 	 */
 	public Iterable<Event> events(final String queryString) {
 		return new Iterable<Event>() {
@@ -719,7 +756,7 @@ public class API {
 	 *
 	 * @return		全 Event を取得する iterable
 	 */
-	public Iterable<Event> events() throws IOException {
+	public Iterable<Event> events() {
 		return events("");
 	}
 	
@@ -731,6 +768,7 @@ public class API {
 	 *
 	 * @param	id		取得対象の Alarm ID
 	 * @return	Alarm
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Alarm readAlarm(String id) throws IOException {
 		Response resp = rest.get("/alarm/alarms/"+id, "alarm");
@@ -742,6 +780,7 @@ public class API {
 	 *
 	 * @param		alarm	送信対象のアラーム
 	 * @return	送信後、id などが付与された Alarm
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Alarm createAlarm(Alarm alarm) throws IOException {
 		Response resp = rest.post("/alarm/alarms/", "alarm", alarm);
@@ -762,6 +801,7 @@ public class API {
 	 *						CRITICAL/MAJOR/MINOR/WARNING のいずれかである
 	 *						必要があります
 	 * @return	送信後、id などが付与された Alarm
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Alarm createAlarm(String source, String type, String text,
 					String status, String severity) throws IOException {
@@ -775,6 +815,7 @@ public class API {
 	 *
 	 * @param	queryString	pageSize=5&amp;currentPage=1 など
 	 * @return	取得された AlarmCollection
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public AlarmCollection readAlarmCollection(String queryString)
 						throws IOException {
@@ -801,6 +842,7 @@ public class API {
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
 	 *						 "dateFrom={from}&amp;dateTo={to}&amp;revert=true"
+	 * @return	Alarm の iterable
 	 */
 	public Iterable<Alarm> alarms(final String queryString) {
 		return new Iterable<Alarm>() {
@@ -817,7 +859,7 @@ public class API {
 	 *
 	 * @return		全 Alarm を取得する iterable
 	 */
-	public Iterable<Alarm> alarms() throws IOException {
+	public Iterable<Alarm> alarms() {
 		return alarms("");
 	}
 	
@@ -829,6 +871,7 @@ public class API {
 	 *
 	 * @param	id		取得対象の Operation ID
 	 * @return	Operation
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Operation readOperation(String id) throws IOException {
 		Response resp = rest.get("/devicecontrol/operations/"+id, "operation");
@@ -841,6 +884,7 @@ public class API {
 	 * @param	operation		送信対象のオペレーション
 	 * @return	送信後、id などが付与された Operation(渡された Operation が
 	 *			変更されたもの)
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Operation createOperation(Operation operation) throws IOException {
 		Response resp = rest.post("/devicecontrol/operations/", "operation", operation);
@@ -853,8 +897,10 @@ public class API {
 	 * オペレーションでは、updater を再利用することが少ないと想定されるため、
 	 * 結果は更新された updater インスタンスとして返却されます。
 	 *
+	 * @param	operationId	オペレーションID
 	 * @param	updater		送信対象のオペレーション(更新されます)
 	 * @return	送信後、結果更新された Operation
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Operation updateOperation(String operationId, Operation updater)
 						throws IOException {
@@ -866,8 +912,10 @@ public class API {
 	/**
 	 * オペレーションステータスを更新する便利メソッドです。
 	 *
+	 * @param	operationId	オペレーションID
 	 * @param	status		オペレーションステータス
 	 *						(SUCCESSFUL/FAILED/PENDING/EXECUTING)
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void updateOperationStatus(String operationId, String status)
 						throws IOException {
@@ -887,6 +935,7 @@ public class API {
 	 *
 	 * @param	queryString	pageSize=5&amp;currentPage=1 など
 	 * @return	取得された OperationCollection
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public OperationCollection readOperationCollection(String queryString)
 						throws IOException {
@@ -913,6 +962,7 @@ public class API {
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
 	 *						 "dateFrom={from}&amp;dateTo={to}&amp;revert=true"
+	 * @return	Opearation の iterable
 	 */
 	public Iterable<Operation> operations(final String queryString) {
 		return new Iterable<Operation>() {
@@ -929,7 +979,7 @@ public class API {
 	 *
 	 * @return		全 Operation を取得する iterable
 	 */
-	public Iterable<Operation> operations() throws IOException {
+	public Iterable<Operation> operations() {
 		return operations("");
 	}
 	
@@ -940,6 +990,8 @@ public class API {
 	 * テナントコレクションを GET します。
 	 *
 	 * @param		queryString		クエリ文字列
+	 * @return		取得された TenantCollection
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public TenantCollection readTenantCollection(String queryString)
 								throws IOException {
@@ -952,8 +1004,9 @@ public class API {
 	 * Iterable を取得します。
 	 *
 	 * @param	queryString	取得条件を指定します。
+	 * @return	Tenant の iterable
 	 */
-	public Iterable<Tenant> tenants(String queryString) throws IOException {
+	public Iterable<Tenant> tenants(String queryString) {
 		return new Iterable<Tenant>() {
 			public Iterator<Tenant> iterator() {
 				return new CollectionIterator<Tenant>(rest,
@@ -966,8 +1019,9 @@ public class API {
 	/**
 	 * テナントコレクション API を用いて、Java の for ループで利用できる
 	 * Iterable を取得します。
+	 * @return	Tenant の iterable
 	 */
-	public Iterable<Tenant> tenants() throws IOException {
+	public Iterable<Tenant> tenants() {
 		return tenants("");
 	}
 	
@@ -977,6 +1031,7 @@ public class API {
 	 * @param		tenant		新規作成するテナントの情報
 	 *							(作成結果によって上書きされます)
 	 * @return		登録結果によって更新された tenant
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Tenant createTenant(Tenant tenant) throws IOException {
 		Response resp = rest.post("/tenant/tenants", "tenant", tenant);
@@ -989,6 +1044,7 @@ public class API {
 	 *
 	 * @param		id		テナント id
 	 * @return		テナント情報
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Tenant readTenant(String id) throws IOException {
 		Response resp = rest.get("/tenant/tenants/"+id, "tenant");
@@ -1004,6 +1060,7 @@ public class API {
 	 * @param		id		テナント id
 	 * @param		updater	更新オブジェクト
 	 * @return		更新後の Tenant 情報
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Tenant updateTenant(String id, Tenant updater) throws IOException {
 		Response resp = rest.put("/tenant/tenants/"+id, "tenant", updater);
@@ -1014,6 +1071,7 @@ public class API {
 	 * 指定された id のテナント情報を削除します。
 	 *
 	 * @param		id		テナント id
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void deleteTenant(String id) throws IOException {
 		Response resp = rest.delete("/tenant/tenants/"+id, "tenant");
@@ -1027,6 +1085,7 @@ public class API {
 	 *
 	 * @param	queryString	pageSize=5&amp;currentPage=1 など
 	 * @return	取得された TenantUsageStatisticsCollection
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public TenantUsageStatisticsCollection
 			readTenantUsageStatisticsCollection(String queryString)
@@ -1049,6 +1108,7 @@ public class API {
 	 * に変換され、元の例外は cause として設定されます。
 	 *
 	 * @param	queryString	取得条件を指定します。
+	 * @return	UsageStatistics の iterable
 	 */
 	public Iterable<UsageStatistics> usageStatistics(final String queryString) {
 		return new Iterable<UsageStatistics>() {
@@ -1076,6 +1136,8 @@ public class API {
 	 * @param	queryString	dateFrom, dateTill で期間を指定します。
 	 *					省略した場合、月初から現在までとなります。
 	 *					yyyy-MM-dd の形式で、dateTill を省略することもできます。
+	 * @return	取得された UsageStatistics
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public UsageStatistics readTenantStatisticsSummary(String queryString)
 								throws IOException {
@@ -1087,6 +1149,8 @@ public class API {
 	 * テナント使用状況サマリを取得します。
 	 * 10分置き程度に更新される最新情報が取得可能です。
 	 *
+	 * @return	取得された UsageStatistics
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public UsageStatistics readTenantStatisticsSummary()
 								throws IOException {
@@ -1099,6 +1163,7 @@ public class API {
 	 * @param		option		登録対象のテナントオプション
 	 *							(成功時上書きされます)
 	 * @return		登録結果によって更新された option
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Option createOption(Option option) throws IOException {
 		Response resp = rest.post("/tenant/options/", "option", option);
@@ -1115,6 +1180,9 @@ public class API {
 	 * 		( o に対する処理 )
 	 * }
 	 * </pre>
+	 *
+	 * @param	queryString	クエリ文字列
+	 * @return	UsageStatistics の iterable
 	 */
 	public Iterable<Option> tenantOptions(final String queryString) {
 		return new Iterable<Option>() {
@@ -1141,6 +1209,7 @@ public class API {
 	 * @param	category	カテゴリ
 	 * @param	key			キー
 	 * @return	取得された Option
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Option readOption(String category, String key) throws IOException {
 		Response resp = rest.get("/tenant/options/"+category+"/"+key, "option");
@@ -1152,9 +1221,12 @@ public class API {
 	 *
 	 * @param	category	カテゴリ
 	 * @param	key			キー
+	 * @param	updater		変更部分を表すオブジェクト
 	 * @return	変更後の Option で、新しいインスタンスが返却されます。
+	 * @throws	java.io.IOException	REST異常
 	 */
-	public Option updateOption(String category, String key, Option updater) throws IOException {
+	public Option updateOption(String category, String key, Option updater)
+									throws IOException {
 		Response resp = rest.put("/tenant/options/"+category+"/"+key, "option", updater);
 		return Jsonizer.fromJson(resp, Option.class);
 	}
@@ -1168,6 +1240,7 @@ public class API {
 	 *
 	 * @param		queryString		queryとして指定する文字列
 	 * @return		UserCollection
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public UserCollection readUserCollection(String queryString)
 								throws IOException {
@@ -1182,6 +1255,7 @@ public class API {
 	 *
 	 * @param	user	生成するユーザー
 	 * @return	生成された結果を含むユーザー(引数オブジェクトが更新されます)
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public User createUser(User user) throws IOException {
 		Response resp = rest.post("/user/"+rest.getTenant()+"users", "user", user);
@@ -1194,6 +1268,7 @@ public class API {
 	 *
 	 * @param	id		ユーザーのid(ログイン時に使用する名前)
 	 * @return	取得されたユーザーオブジェクト
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public User readUser(String id) throws IOException {
 		Response resp = rest.get("/user/"+rest.getTenant()+"users/"+id, "user");
@@ -1205,6 +1280,7 @@ public class API {
 	 *
 	 * @param		name	ユーザ名
 	 * @return		User オブジェクト
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public User readUserByName(String name) throws IOException {
 		Response resp = rest.get("/user/"+rest.getTenant()+"userByName/"+name, "user");
@@ -1217,6 +1293,7 @@ public class API {
 	 * @param		id		ユーザID
 	 * @param		updater	更新内容を示す User オブジェクト
 	 * @return		更新後の User オブジェクト
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public User updateUser(String id, User updater) throws IOException {
 		Response resp = rest.put("/user/"+rest.getTenant()+"users/"+id, "user", updater);
@@ -1227,6 +1304,7 @@ public class API {
 	 * ユーザ情報を削除します。
 	 *
 	 * @param		id		ユーザID
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void deleteUser(String id) throws IOException {
 		Response resp = rest.delete("/user/"+rest.getTenant()+"users/"+id, "user");
@@ -1248,6 +1326,7 @@ public class API {
 	 * に変換され、元の例外は cause として設定されます。
 	 *
 	 * @param	queryString	取得条件を指定します。
+	 * @return	User の iterable
 	 */
 	public Iterable<User> users(final String queryString) {
 		return users(rest.getTenant(), queryString);
@@ -1258,6 +1337,7 @@ public class API {
 	 *
 	 * @param		tenant	テナント名
 	 * @param		queryString	pageSize 等の設定
+	 * @return	User の iterable
 	 */
 	public Iterable<User> users(final String tenant, final String queryString) {
 		return new Iterable<User>() {
@@ -1283,6 +1363,12 @@ public class API {
  */
 	/**
 	 * バイナリデータを送信します。
+	 *
+	 * @param	filename	ファイル名
+	 * @param	mimetype	MIME Type
+	 * @param	binary		送信バイナリデータ
+	 * @return	バイナリデータに対応する ManagedObject
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public ManagedObject createBinary(String filename,
 							String mimetype,
@@ -1311,6 +1397,7 @@ public class API {
 	 *
 	 * @param		id		モジュール id
 	 * @return		Module
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public Module readModule(String id) throws IOException {
 		// end point は文書に記載がなく、管理APの電文を見てわかった
@@ -1334,6 +1421,7 @@ public class API {
 	 *
 	 * @param		id		モジュール id
 	 * @return		スクリプト文字列
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public String readModuleText(String id) throws IOException {
 		// end point は文書に記載がなく、管理APの電文を見てわかった
@@ -1349,6 +1437,7 @@ public class API {
 	 * ModuleCollection を取得します。
 	 *
 	 * @return		登録されている CEP Module の Collection
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public ModuleCollection readModuleCollection() throws IOException {
 		Response resp = rest.get("/cep/modules", "cepModuleCollection");
@@ -1364,6 +1453,7 @@ public class API {
 	 *
 	 * @param		moduleName		モジュール名
 	 * @param		text			CEPステートメント
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void createModule(String moduleName, String text)
 					throws IOException {
@@ -1382,6 +1472,7 @@ public class API {
 	 *
 	 * @param		moduleName	モジュール名
 	 * @param		fileName	ファイルのpath
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void createModuleTextByFile(String moduleName,
 										String fileName) throws IOException {
@@ -1393,6 +1484,7 @@ public class API {
 	 *
 	 * @param		id			CEP のモジュール id
 	 * @param		deployed	デプロイ(true)、アンデプロイ(false)
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void updateModule(String id, boolean deployed)
 					throws IOException {
@@ -1409,7 +1501,9 @@ public class API {
 	 * 動作しています。
 	 *
 	 * @param		id			CEP のモジュール id
+	 * @param		moduleName	モジュール名
 	 * @param		text		スクリプト
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void updateModuleText(String id, String moduleName, String text)
 					throws IOException {
@@ -1427,6 +1521,7 @@ public class API {
 	 * @param		id			CEP のモジュール id
 	 * @param		moduleName	モジュール名
 	 * @param		fileName	ファイルのpath
+	 * @throws	java.io.IOException	REST異常
 	 */
 	public void updateModuleTextByFile(String id,
 										String moduleName,

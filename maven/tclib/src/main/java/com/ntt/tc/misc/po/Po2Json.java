@@ -20,6 +20,7 @@ public class Po2Json {
 	 *
 	 * @param	fname	読み込み対象のファイル名
 	 * @return	JsonArray に変換した結果
+	 * @throws	java.lang.Exception	ファイル異常など
 	 */
 	public static JsonArray read(String fname) throws Exception {
 		BufferedReader br = new BufferedReader(
@@ -78,6 +79,7 @@ public class Po2Json {
 	 *
 	 * @param	fname	出力するファイル名
 	 * @param	data	po 形式の JsonArray
+	 * @throws	java.io.IOException	ファイル書き込み異常
 	 */
 	public static void write(String fname, JsonType data) throws IOException {
 		PrintWriter p = new PrintWriter(
