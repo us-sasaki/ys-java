@@ -61,6 +61,7 @@ public class APIUtil {
 	 * @param		asDefault	ない場合に初期値として登録する
 	 *							マネージドオブジェクト
 	 * @return		取得された、または生成されたマネージドオブジェクト
+	 * @throws		java.io.IOException	REST異常
 	 */
 	public ManagedObject
 				createManagedObjectIfAbsent(
@@ -82,6 +83,7 @@ public class APIUtil {
 	 * @param		asDefault	ない場合に初期値として登録する
 	 *							マネージドオブジェクト
 	 * @return		取得された、または生成されたマネージドオブジェクト
+	 * @throws		java.io.IOException	REST異常
 	 */
 	public ManagedObject
 				createManagedObjectIfAbsent(
@@ -101,6 +103,7 @@ public class APIUtil {
 	 * @param		asDefault	ない場合に初期値として登録する
 	 *							デバイス
 	 * @return		取得された、または生成されたマネージドオブジェクト
+	 * @throws		java.io.IOException	REST異常
 	 */
 	public ManagedObject
 				createDeviceIfAbsent(
@@ -121,6 +124,7 @@ public class APIUtil {
 	 * @param		asDefault	ない場合に初期値として登録する
 	 *							デバイス
 	 * @return		取得された、または生成されたマネージドオブジェクト
+	 * @throws		java.io.IOException	REST異常
 	 */
 	public ManagedObject
 				createDeviceIfAbsent(
@@ -266,6 +270,7 @@ public class APIUtil {
 	 * 指定されたモジュール名の CEP モジュールを undeploy 状態にします。
 	 *
 	 * @param		moduleName		CEP モジュール名
+	 * @throws		java.io.IOException	REST異常
 	 */
 	public void undeployModuleForName(final String moduleName)
 							throws IOException {

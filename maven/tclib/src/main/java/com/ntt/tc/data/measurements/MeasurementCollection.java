@@ -77,6 +77,8 @@ public class MeasurementCollection extends C8yData {
  */
 	/**
 	 * JSON化のプロパティ定義(get)メソッドです。
+	 * 
+	 * @return	Measurement の配列
 	 */
 	public Measurement[] getMeasurements() {
 		if (measurementsCache == null)
@@ -86,6 +88,8 @@ public class MeasurementCollection extends C8yData {
 	
 	/**
 	 * JSON化のプロパティ定義(set)メソッドです。
+	 *
+	 * @param	measurements	設定する Measurement の配列
 	 */
 	public void setMeasurements(Measurement[] measurements) {
 		this.measurements.clear();
