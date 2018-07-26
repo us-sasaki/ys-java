@@ -103,7 +103,7 @@ public class ActilityDevice {
 		byte[] body = makeXML(payloadHex).getBytes();
 		Map<String, String> header = new HashMap<String, String>();
 		header.put("Content-Type", "application/xml");
-		return post(serverUrl+"?LrnDevEui="+devEui+"&LrnFPort=2&LrnInfos=TWA_100002293.3460.AS-1-18037232&AS_ID=neo-test&Time=2017-04-10T09:41:35.683%2B02:00&Token=096c26ef649bf653afefc6702f90b4641f78aeac1f6cab78d2872e2f57f287ae", header, body);
+		return post(serverUrl+"?" + makeURLParam(), header, body);
 	}
 	
 	/**
@@ -116,7 +116,7 @@ public class ActilityDevice {
 		byte[] body = xml.getBytes();
 		Map<String, String> header = new HashMap<String, String>();
 		header.put("Content-Type", "application/xml");
-		return post(serverUrl+"?LrnDevEui="+devEui, header, body);
+		return post(serverUrl+"?" + makeURLParam(), header, body);
 	}
 	
 	/**
@@ -228,5 +228,12 @@ public class ActilityDevice {
 		sb.append(devAddr); //14873546
 		sb.append("</DevAddr><AckRequested>1</AckRequested></DevEUI_uplink>");
 		return sb.toString();
+	}
+	
+	public String makeURLParam() {
+		return "LrnDevEui="+devEui+"&LrnFPort="+fport
+				+"&LrnInfos=TWA_100002293.3460.AS-1-18037232&AS_ID=neo-test&"
+				+ "Time=2017-04-10T09:41:35.683%2B02:00&"
+				+ "Token=096c26ef649bf653afefc6702f90b4641f78aeac1f6cab78d2872e2f57f287ae";
 	}
 }
