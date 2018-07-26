@@ -17,13 +17,13 @@ import com.ntt.tc.data.TC_Date;
  * @author		Yusuke Sasaki
  */
 public class ActilityDevice {
-	private String serverUrl;
+	protected String serverUrl;
 	
-	private String devEui;
-	private String devAddr;
-	private int fport;
-	private int fcntup;
-	private int fcntdn;
+	protected String devEui;
+	protected String devAddr;
+	protected int fport;
+	protected int fcntup;
+	protected int fcntdn;
 	
 /*--------------------
  * static inner class
@@ -98,7 +98,6 @@ public class ActilityDevice {
 	 *
 	 * @param		payloadHex		payloadHex 値
 	 * @return		結果を byte 列にしたもの
-	 * @throws		java.io.IOException	通信異常
 	 */
 	public HttpResp post(String payloadHex) throws IOException {
 		byte[] body = makeXML(payloadHex).getBytes();
@@ -112,7 +111,6 @@ public class ActilityDevice {
 	 *
 	 * @param		xml		xml 値
 	 * @return		結果を byte 列にしたもの
-	 * @throws		java.io.IOException	通信異常
 	 */
 	public HttpResp postXML(String xml) throws IOException {
 		byte[] body = xml.getBytes();
@@ -137,7 +135,6 @@ public class ActilityDevice {
 	 * @param		header		HTTP Header
 	 * @param		body		HTTP Body
 	 * @return		結果
-	 * @throws		java.io.IOException	通信異常
 	 */
 	public HttpResp post(String urlStr, Map<String, String> header, byte[] body)
 							throws IOException {
