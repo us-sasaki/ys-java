@@ -207,6 +207,14 @@ public final class Jsonizer {
 	public static JsonType toJson(Object instance) {
 		if (instance instanceof JValue && !(instance instanceof JData))
 			return ((JValue)instance).toJson();
+		if (instance instanceof Object[]) {
+			JsonArray result = new JsonArray();
+			Object[] array = (Object[])instance;
+			for (int i = 0; i < array.length; i++) {
+				result.push(toJson(array[i]));
+			}
+			return result;
+		}
 		
 		Map<String, Accessor> accessors = getAccessors(instance);
 		

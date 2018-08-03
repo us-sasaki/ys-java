@@ -234,8 +234,15 @@ public class MdLinkChecker {
 		
 		// a タグがあるか見る
 		for (String line : e.value) {
-			if (line.indexOf("< ") >= 0)
-				throw new RuntimeException("\"< \"を検出しました。path="+e.key+" line="+line);
+			if (line.indexOf("< ") >= 0) {
+				int indexTName = line.indexOf("< ");
+				indexTName += 2;
+				while( line.charAt(indexTName++)==' '
+						 && indexTName<=line.length() ) {}
+				if (line.charAt(--indexTName) == 'a'
+					|| line.charAt(--indexTName) == 'A')
+						throw new RuntimeException("\"< a\"を検出しました。path="+e.key+" line="+line);
+			}
 			int index = line.indexOf("<a ");
 			if (index == -1) index = line.indexOf("<A ");
 			if (index >= 0) {
