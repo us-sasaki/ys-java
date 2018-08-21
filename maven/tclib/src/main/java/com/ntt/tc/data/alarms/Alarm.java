@@ -1,5 +1,6 @@
 package com.ntt.tc.data.alarms;
 
+import com.ntt.tc.data.TC_Long;
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.inventory.ManagedObject;
@@ -121,12 +122,13 @@ public class Alarm extends C8yData {
 	
 	/**
 	 * The number of times this alarm has been sent.
+	 * update する場合、null を指定する必要があるため、TC_Long に変更
 	 * <pre>
 	 * Occurs : 1
 	 * PUT/POST : No
 	 * </pre>
 	 */
-	public long count;
+	public TC_Long count;
 	
 	/**
 	 * The first time that this alarm occurred (i.e., where "count" was 1).

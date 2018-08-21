@@ -7,10 +7,12 @@ import abdom.data.json.JsonObject;
  * UsageStatistics class
  * This source is machine-generated from c8y-markdown docs.
  * Number 型が一律 double に変換されているため、修正。(2017/11/2)
+ * tenantId を追加し、allTenantsSummary でも利用できるようにした。(2018/8/20)
  */
 public class UsageStatistics extends C8yData {
 	/**
 	 * Date of statistics.
+	 * allTenantsSummary では null となります。
 	 * <pre>
 	 * Occurs : 1
 	 * </pre>
@@ -64,5 +66,10 @@ public class UsageStatistics extends C8yData {
 	 * </pre>
 	 */
 	public String[] subscribedApplications;
+	
+	/**
+	 * allTenantsSummary でも本オブジェクトを利用するため追加。
+	 */
+	public String tenantId;
 	
 }

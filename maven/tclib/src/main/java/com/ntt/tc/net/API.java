@@ -809,6 +809,18 @@ public class API {
 	}
 	
 	/**
+	 * アラームを更新します
+	 *
+	 * @param	id		更新対象の Alarm ID
+	 * @param	updater	更新内容を含む Alarm
+	 * @return	更新された alarm で、新しいインスタンスが生成されます。
+	 */
+	public Alarm updateAlarm(String id, Alarm updater) throws IOException {
+		Response resp = rest.put("/alarm/alarms/"+id, "alarm", updater);
+		return Jsonizer.fromJson(resp, Alarm.class);
+	}
+	
+	/**
 	 * アラームコレクションを取得します。
 	 * Collection API では、結果のアトミック性が保証されていないことに注意して
 	 * 下さい。
@@ -1155,6 +1167,27 @@ public class API {
 	public UsageStatistics readTenantStatisticsSummary()
 								throws IOException {
 		return readTenantStatisticsSummary("");
+	}
+	
+	/**
+	 * 全テナントの使用状況サマリを取得します。
+	 *
+	 * @param	queryString		クエリ文字列 dateFrom, dateTo のみ利用可能
+	 * @return	テナントの使用状況(tenantId ごとにすべてのテナント分)
+	 */
+	public UsageStatistics[] readAllTenantsSummary(String queryString)
+								throws IOException {
+		Response resp = rest.get("/tenant/statistics/allTenantsSummary?"+queryString);
+		return Jsonizer.toArray(resp, new UsageStatistics[0]);
+	}
+	
+	/**
+	 * 全テナントの使用状況サマリを取得します。
+	 *
+	 * @return	テナントの使用状況(tenantId ごとにすべてのテナント分)
+	 */
+	public UsageStatistics[] readAllTenantsSummary() throws IOException {
+		return readAllTenantsSummary("");
 	}
 	
 	/**
