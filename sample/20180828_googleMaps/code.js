@@ -22,24 +22,35 @@ function initMap() {
   	coordWindow.setPosition(d.latLng);
   	coordWindow.open(map);
   });
+  
+  var polylines = new Array();
+  
   map.addListener('bounds_changed', function() {
+  	var n = polylines.length;
+	for (var i = 0; i < n; i++) {
+		polylines.shift().setMap(null);
+	}
+	
 	var bounds = map.getBounds();
 	var zoom = map.getZoom();
-	var z = Math.pow(2, zoom);
+	var z = 1 << zoom;
 	var ne = bounds.getNorthEast();
 	var sw = bounds.getSouthWest();
 	var worldNE = project(ne);
 	var worldSW = project(sw);
 	
-	// 縦線
+	var p0 = new google.maps.Point(0,0);
+	// 縦線(x, y) は tileCoordinate とする
 	var y0 = Math.floor(z*worldNE.y/TILE_SIZE);
-	var y1 = Math.floor(z*worldSW.y/TILE_SIZE)+z;
+	var y1 = Math.floor(z*worldSW.y/TILE_SIZE)+1;
 	
-	for (var x = Math.floor(z*worldNE.x/TILE_SIZE);
-			x < Math.floor(z*worldSW.x/TILE_SIZE) + z; x++) {
+	for (var x = Math.floor(z*worldSW.x/TILE_SIZE);
+			x < Math.floor(z*worldNE.x/TILE_SIZE) + 1; x++) {
 		// (x, y0)-(x, y1)
-		var latLng0 = projectinv(new google.maps.Point(x*TILE_SIZE/z, y0*TILE_SIZE/z));
-		var latLng1 = projectinv(new google.maps.Point(x*TILE_SIZE/z, y1*TILE_SIZE/z));
+		p0.x = x*TILE_SIZE/z; p0.y = y0*TILE_SIZE/z;
+		var latLng0 = projectinv(p0);
+		p0.x = x*TILE_SIZE/z; p0.y = y1*TILE_SIZE/z;
+		var latLng1 = projectinv(p0);
 		//
 		var coords = [
 			{lat: latLng0.lat(), lng: latLng0.lng()},
@@ -50,10 +61,39 @@ function initMap() {
 			path: coords,
 			geodesic: true,
 			strokeColor: '#FF0000',
-			strokeOpacity: 1.0,
+			strokeOpacity: 0.5,
 			strokeWeight: 1
 		});
 		polyline.setMap(map);
+		polylines.push(polyline);
+	}
+	
+	// 横線
+	var x0 = Math.floor(z*worldSW.x/TILE_SIZE);
+	var x1 = Math.floor(z*worldNE.x/TILE_SIZE)+1;
+	
+	for (var y = Math.floor(z*worldSW.y/TILE_SIZE);
+			y <= Math.floor(z*worldNE.y/TILE_SIZE); y++) {
+		// (x0, y)-(x1, y)
+		p0.x = x0*TILE_SIZE/x; p0.y = y*TILE_SIZE/z;
+		var latLng0 = projectinv(p0);
+		p0.x = x1*TILE_SIZE/x; p0.y = y*TILE_SIZE/z;
+		var latLng1 = projectinv(p0);
+		//
+		var coords = [
+			{lat: latLng0.lat(), lng: latLng0.lng()},
+			{lat: latLng1.lat(), lng: latLng1.lng()}
+		];
+		
+		var polyline = new google.maps.Polyline({
+			path: coords,
+			geodesic: true,
+			strokeColor: '#FF0000',
+			strokeOpacity: 0.5,
+			strokeWeight: 1
+		});
+		polyline.setMap(map);
+		polylines.push(polyline);
 	}
 	
   });
