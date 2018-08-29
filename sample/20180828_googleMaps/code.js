@@ -72,12 +72,14 @@ function initMap() {
 	var x0 = Math.floor(z*worldSW.x/TILE_SIZE);
 	var x1 = Math.floor(z*worldNE.x/TILE_SIZE)+1;
 	
-	for (var y = Math.floor(z*worldSW.y/TILE_SIZE);
-			y <= Math.floor(z*worldNE.y/TILE_SIZE); y++) {
+//	window.alert(" "+worldSW+"/"+worldNE);
+//	window.alert('y='+Math.floor(z*worldSW.y/TILE_SIZE)+' ye='+Math.floor(z*worldNE.y/TILE_SIZE));
+	for (var y = Math.floor(z*worldNE.y/TILE_SIZE);
+			y <= Math.floor(z*worldSW.y/TILE_SIZE); y++) {
 		// (x0, y)-(x1, y)
-		p0.x = x0*TILE_SIZE/x; p0.y = y*TILE_SIZE/z;
+		p0.x = x0*TILE_SIZE/z; p0.y = y*TILE_SIZE/z;
 		var latLng0 = projectinv(p0);
-		p0.x = x1*TILE_SIZE/x; p0.y = y*TILE_SIZE/z;
+		p0.x = x1*TILE_SIZE/z; p0.y = y*TILE_SIZE/z;
 		var latLng1 = projectinv(p0);
 		//
 		var coords = [
@@ -87,7 +89,7 @@ function initMap() {
 		
 		var polyline = new google.maps.Polyline({
 			path: coords,
-			geodesic: true,
+			geodesic: false,
 			strokeColor: '#FF0000',
 			strokeOpacity: 0.5,
 			strokeWeight: 1
