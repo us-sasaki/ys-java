@@ -83,7 +83,10 @@ public class Rest {
 			throw new IllegalArgumentException("user が指定されていません");
 		if (password == null)
 			throw new IllegalArgumentException("passuword が指定されていません");
-		this.tenant = tenant + "/";
+		if (tenant.endsWith("/")) // スラッシュ除去
+			tenant = tenant.substring(0, tenant.length()-1);
+		if (!tenant.equals("")) tenant = tenant + "/";
+		this.tenant = tenant;
 		this.user = user;
 		this.password = password;
 		setAuthentication();
