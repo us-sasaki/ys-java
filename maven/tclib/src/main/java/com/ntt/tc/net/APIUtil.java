@@ -295,6 +295,8 @@ public class APIUtil {
 	 * 登録は credential 要求によって取得されたデバイスクレデンシャルを
 	 * 用いて行われます。
 	 * デバイスオーナーは通常デバイス同様、デバイス自身になります。
+	 * 事前に該当する External ID でデバイスが存在した場合、上書きせず、
+	 * デバイスオーナーも変更されません。
 	 *
 	 * @param	deviceId	デバイス登録時に用いるデバイス ID
 	 * @param	type		設定する External ID の type
