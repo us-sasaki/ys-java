@@ -527,6 +527,22 @@ public class API {
 	}
 	
 	/**
+	 * 指定されたデバイスで最後に報告された Measurement を取得します。
+	 * query として "pageSize=1&dateFrom=1970-01-01&revert=true" を用います。
+	 *
+	 * @param		source	デバイスID
+	 * @return		最後に報告された Measurement (存在しない場合 null)
+	 */
+	public Measurement readLastMeasurement(String source) throws IOException {
+		Response resp = rest.getByStream("/measurement/measurements/?source="
+						+source+"&dateFrom=1970-01-01&revert=true&pageSize=1");
+		MeasurementCollection mc = Jsonizer.fromJson(resp, MeasurementCollection.class);
+		Measurement[] ms = mc.getMeasurements();
+		if (ms.length == 0) return null;
+		return ms[0];
+	}
+	
+	/**
 	 * メジャーメントコレクションAPIを用いて、Javaのforループで使える
 	 * Measurement の iterator を取得します。
 	 * <pre>
@@ -717,6 +733,21 @@ public class API {
 						throws IOException {
 		Response resp = rest.get("/event/events/?"+queryString);
 		return Jsonizer.fromJson(resp, EventCollection.class);
+	}
+	
+	/**
+	 * 指定されたデバイスで最後に報告された Event を取得します。
+	 * query として "pageSize=1&dateFrom=1970-01-01" を用います。
+	 *
+	 * @param		source	デバイスID
+	 * @return		最後に報告された Event (存在しない場合 null)
+	 */
+	public Event readLastEvent(String source) throws IOException {
+		Response resp = rest.get("/event/events/?source="
+						+source+"&dateFrom=1970-01-01&pageSize=1");
+		EventCollection ec = Jsonizer.fromJson(resp, EventCollection.class);
+		if (ec.events.length == 0) return null;
+		return ec.events[0];
 	}
 	
 	/**

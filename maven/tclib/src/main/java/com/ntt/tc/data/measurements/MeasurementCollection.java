@@ -78,7 +78,8 @@ public class MeasurementCollection extends C8yData {
 	/**
 	 * JSON化のプロパティ定義(get)メソッドです。
 	 * 
-	 * @return	Measurement の配列
+	 * @return	Measurement の配列。
+	 *			要素がない場合、大きさが 0 の配列(nullでない)が返却されます。
 	 */
 	public Measurement[] getMeasurements() {
 		if (measurementsCache == null)
