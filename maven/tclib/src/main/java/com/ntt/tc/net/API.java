@@ -1377,6 +1377,72 @@ public class API {
 	}
 	
 	/**
+	 * ユーザ情報にロールを追加します。
+	 *
+	 * @param		id		ユーザID(ログインID)
+	 * @param		role	ロール文字列(Roleクラスの定数値参照)
+	 * @see			com.ntt.tc.data.user.Role
+	 */
+	public void createRoleToUser(String id, String role) throws IOException {
+		if (!Role.ROLES.contains(role))
+			throw new IllegalArgumentException("Role 値が不正です : "
+						+ role + " /可能な値 : " + Role.ROLES);
+		RoleReference rr = new RoleReference();
+		rr.role = new Role();
+		rr.role.putExtra("self", rest.getLocation() + "/user/roles/" + role); // self を指定する
+		
+		Response resp = rest.post("/user/"+rest.getTenant()+"users/"+id+"/roles", "roleReference", rr);
+		
+	}
+	
+	/**
+	 * ユーザ情報のロールを削除します。
+	 *
+	 * @param		id		ユーザID(ログインID)
+	 * @param		role	ロール文字列(Roleクラスの定数値参照)
+	 * @see			com.ntt.tc.data.user.Role
+	 */
+	public void deleteRoleFromUser(String id, String role) throws IOException {
+		if (!Role.ROLES.contains(role))
+			throw new IllegalArgumentException("Role 値が不正です : "
+						+ role + " /可能な値 : " + Role.ROLES);
+		Response resp = rest.delete("/user/"+rest.getTenant()+"users/"+id+"/roles/"+role);
+	}
+	
+	/**
+	 * グループ(グローバルロール)にロールを追加します。
+	 *
+	 * @param		id		グループID(整数値)
+	 * @param		role	ロール文字列(Roleクラスの定数値参照)
+	 * @see			com.ntt.tc.data.user.Role
+	 */
+	public void createRoleToGroup(int id, String role) throws IOException {
+		if (!Role.ROLES.contains(role))
+			throw new IllegalArgumentException("Role 値が不正です : "
+						+ role + " /可能な値 : " + Role.ROLES);
+		RoleReference rr = new RoleReference();
+		rr.role = new Role();
+		rr.role.putExtra("self", rest.getLocation() + "/user/roles/" + role); // self を指定する
+		
+		Response resp = rest.post("/user/"+rest.getTenant()+"groups/"+id+"/roles", "roleReference", rr);
+		
+	}
+	
+	/**
+	 * グループ(グローバルロール)のロールを削除します。
+	 *
+	 * @param		id		グループID(整数値)
+	 * @param		role	ロール文字列(Roleクラスの定数値参照)
+	 * @see			com.ntt.tc.data.user.Role
+	 */
+	public void deleteRoleFromUser(int id, String role) throws IOException {
+		if (!Role.ROLES.contains(role))
+			throw new IllegalArgumentException("Role 値が不正です : "
+						+ role + " /可能な値 : " + Role.ROLES);
+		Response resp = rest.delete("/user/"+rest.getTenant()+"groups/"+id+"/roles/"+role);
+	}
+	
+	/**
 	 * ユーザーコレクションAPIを用いて、Javaのforループで使える
 	 * UserCollection の iterator を取得します。
 	 * <pre>

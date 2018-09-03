@@ -62,6 +62,10 @@ public class Rest {
 	/**
 	 * 指定された host, user, password を保持する Rest を作成します。
 	 * tenant は host に含まれているものとします。
+	 *
+	 * @param		urlStr		"https://tenant.domain.com" の形式
+	 * @param		user		ユーザ名
+	 * @param		password	パスワード
 	 */
 	public Rest(String urlStr, String user, String password) {
 		r = new JsonRest(urlStr);
@@ -75,6 +79,15 @@ public class Rest {
 		setAuthentication();
 	}
 	
+	/**
+	 * 指定された host, user, password を保持する Rest を作成します。
+	 * tenant は host に含まれているものとします。
+	 *
+	 * @param		urlStr		"https://tenant.domain.com" の形式
+	 * @param		tenant		テナント名
+	 * @param		user		ユーザ名
+	 * @param		password	パスワード
+	 */
 	public Rest(String urlStr, String tenant, String user, String password) {
 		r = new JsonRest(urlStr);
 		if (tenant == null)
@@ -113,6 +126,11 @@ public class Rest {
 /*------------------
  * instance methods
  */
+	/**
+	 * アクセス先の URL 文字列を取得します。
+	 *
+	 * @return		"https://tenant.domain.com" の形式の文字列
+	 */
 	public String getLocation() {
 		return r.getLocation();
 	}
@@ -174,6 +192,7 @@ public class Rest {
 	
 	/**
 	 * REST に含まれるテナントを取得します。
+	 * 設定された tenant 名、または URL のホスト名から取得されます。
 	 *
 	 * @return		テナント名(末尾に "/" がつきます)
 	 */
