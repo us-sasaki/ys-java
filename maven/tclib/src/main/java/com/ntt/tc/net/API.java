@@ -1381,7 +1381,7 @@ public class API {
 	 *
 	 * @param		id		ユーザID(ログインID)
 	 * @param		role	ロール文字列(Roleクラスの定数値参照)
-	 * @see			com.ntt.tc.data.user.Role
+	 * @see			com.ntt.tc.data.users.Role
 	 */
 	public void createRoleToUser(String id, String role) throws IOException {
 		if (!Role.ROLES.contains(role))
@@ -1400,7 +1400,7 @@ public class API {
 	 *
 	 * @param		id		ユーザID(ログインID)
 	 * @param		role	ロール文字列(Roleクラスの定数値参照)
-	 * @see			com.ntt.tc.data.user.Role
+	 * @see			com.ntt.tc.data.users.Role
 	 */
 	public void deleteRoleFromUser(String id, String role) throws IOException {
 		if (!Role.ROLES.contains(role))
@@ -1414,7 +1414,7 @@ public class API {
 	 *
 	 * @param		id		グループID(整数値)
 	 * @param		role	ロール文字列(Roleクラスの定数値参照)
-	 * @see			com.ntt.tc.data.user.Role
+	 * @see			com.ntt.tc.data.users.Role
 	 */
 	public void createRoleToGroup(int id, String role) throws IOException {
 		if (!Role.ROLES.contains(role))
@@ -1433,7 +1433,7 @@ public class API {
 	 *
 	 * @param		id		グループID(整数値)
 	 * @param		role	ロール文字列(Roleクラスの定数値参照)
-	 * @see			com.ntt.tc.data.user.Role
+	 * @see			com.ntt.tc.data.users.Role
 	 */
 	public void deleteRoleFromUser(int id, String role) throws IOException {
 		if (!Role.ROLES.contains(role))
