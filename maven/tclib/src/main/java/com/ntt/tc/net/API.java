@@ -1356,7 +1356,7 @@ public class API {
 	 *
 	 * @param		id		ユーザID
 	 * @param		updater	更新内容を示す User オブジェクト
-	 * @return		更新後の User オブジェクト
+	 * @return		更新後の新規 User オブジェクト
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public User updateUser(String id, User updater) throws IOException {
