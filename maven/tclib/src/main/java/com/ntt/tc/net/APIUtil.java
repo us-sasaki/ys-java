@@ -140,7 +140,8 @@ public class APIUtil {
 	 * 数が多い場合、時間がかかることがあります。
 	 *
 	 * @param		query	取得する ManagedObject に条件を追加します
-	 * @return		(type, count) からなる Map です。一般に null キーを含みます。
+	 * @return		(type, count) からなる Map です。null キーではキー値が
+	 *				"null" となります。
 	 */
 	public Map<String, Integer> getManagedObjectTypes(String query) {
 		Map<String, Integer> result = new TreeMap<String, Integer>();
@@ -160,10 +161,45 @@ public class APIUtil {
 	 * 返却される map は type 値と、存在数です。
 	 * 数が多い場合、時間がかかることがあります。
 	 *
-	 * @return		(type, count) からなる Map です。一般に null キーを含みます。
+	 * @return		(type, count) からなる Map です。null キーではキー値が
+	 *				"null" となります。
 	 */
 	public Map<String, Integer> getManagedObjectTypes() {
 		return getManagedObjectTypes("pageSize=1000");
+	}
+	
+	/**
+	 * Managed Object 全体に含まれるプロパティ(fragmentを含みます)の
+	 * 一覧を取得します。
+	 *
+	 * @param		取得する ManagedObject の検索キー
+	 * @return		(fragment, count) からなる Map です。null キーではキー値が
+	 *				"null" となります。
+	 */
+	public Map<String, Integer> getManagedObjectProperties(String query) {
+		Map<String, Integer> result = new TreeMap<String, Integer>();
+		
+		for (ManagedObject m : api.managedObjects(query)) {
+			JsonType j = m.toJson(); // JsonObject に変換
+			for (String key : j.keySet()) {
+				if (key == null) key = "null";
+				Integer c = result.get(key);
+				if (c == null) c = 0;
+				result.put(key, c+1);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * Managed Object 全体に含まれるプロパティ(fragmentを含みます)の
+	 * 一覧を取得します。
+	 *
+	 * @return		(fragment, count) からなる Map です。null キーではキー値が
+	 *				"null" となります。
+	 */
+	public Map<String, Integer> getManagedObjectProperties() {
+		return getManagedObjectProperties("pageSize=1000");
 	}
 	
 	/**
