@@ -261,6 +261,17 @@ public class API {
 	}
 	
 	/**
+	 * type c8y_Serial の外部IDから、Managed Object ID を検索します。
+	 *
+	 * @param	externalId	external ID の値
+	 * @return	Managed Object ID, 存在しない場合 null
+	 * @throws	java.io.IOException	REST異常
+	 */
+	public String readIDByExternalID(String externalId) throws IOException {
+		return readIDByExternalID("c8y_Serial", externalId);
+	}
+	
+	/**
 	 * 指定された Managed Object ID に指定された type で外部IDを追加します。
 	 *
 	 * @param	id		追加対象の Managed Object ID
