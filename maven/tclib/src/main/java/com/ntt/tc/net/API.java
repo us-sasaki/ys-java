@@ -373,7 +373,8 @@ public class API {
 	
 	/**
 	 * Managed Object を削除します。
-	 * 削除に失敗すると、IOException がスローされます。
+	 * 削除に失敗する(レスポンスコードが204(No Content)でない)と、
+	 * IOException がスローされます。
 	 *
 	 * @param	id		削除対象の Managed Object ID
 	 * @throws	java.io.IOException	REST異常
