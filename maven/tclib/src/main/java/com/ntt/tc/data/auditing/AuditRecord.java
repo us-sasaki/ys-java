@@ -2,7 +2,7 @@ package com.ntt.tc.data.auditing;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.TC_Date;
-import com.ntt.tc.data.inventory.ManagedObject;
+import com.ntt.tc.data.inventory.ID;
 import abdom.data.json.JsonObject;
 
 /**
@@ -72,7 +72,7 @@ public class AuditRecord extends C8yData {
 	 * PUT/POST : POST: Mandatory PUT: No
 	 * </pre>
 	 */
-	public ManagedObject source;
+	public ID source;
 	
 	/**
 	 * The user responsible for the audited action.

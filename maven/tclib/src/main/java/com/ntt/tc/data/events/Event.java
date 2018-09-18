@@ -2,6 +2,7 @@ package com.ntt.tc.data.events;
 
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.TC_Date;
+import com.ntt.tc.data.inventory.ID;
 import com.ntt.tc.data.inventory.ManagedObject;
 import abdom.data.json.JsonObject;
 
@@ -70,7 +71,7 @@ public class Event extends C8yData {
 	 * CREATE 時必須
 	 * </pre>
 	 */
-	public ManagedObject source;
+	public ID source;
 	
 	/**
 	 * Additional properties of the event.
@@ -100,12 +101,12 @@ public class Event extends C8yData {
 		this.time = new TC_Date();
 		this.type = type;
 		this.text = text;
-		this.source = new ManagedObject();
+		this.source = new ID();
 		if (mo.id == null)
 				throw new NullPointerException("指定された ManagedObject の id に null を指定することはできません:"+mo);
 		this.source.id = mo.id;
-		if (mo.name != null) this.source.name = mo.name;
-		if (mo.type != null) this.source.type = mo.type;
+		if (mo.name != null) this.source.set("name", mo.name);
+		if (mo.type != null) this.source.set("type", mo.type);
 	}
 	
 	/**
@@ -121,7 +122,7 @@ public class Event extends C8yData {
 		this.time = new TC_Date();
 		this.type = type;
 		this.text = text;
-		this.source = new ManagedObject();
+		this.source = new ID();
 		this.source.id = source;
 	}
 }

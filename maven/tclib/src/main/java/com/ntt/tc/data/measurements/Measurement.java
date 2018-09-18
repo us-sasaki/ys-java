@@ -6,6 +6,7 @@ import abdom.data.json.JsonValue;
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.C8yFormatException;
+import com.ntt.tc.data.inventory.ID;
 import com.ntt.tc.data.inventory.ManagedObject;
 import com.ntt.tc.data.sensor.C8y_Battery;
 import com.ntt.tc.data.sensor.C8y_AccelerationMeasurement;
@@ -74,7 +75,7 @@ public class Measurement extends C8yData {
 	 * PUT/POST : Mandatory
 	 * </pre>
 	 */
-	public ManagedObject source;
+	public ID source;
 	
 	/**
 	 * List of measurement fragments.
@@ -127,7 +128,7 @@ public class Measurement extends C8yData {
 	 */
 	public Measurement(String source, String type) {
 		super();
-		this.source = new ManagedObject();
+		this.source = new ID();
 		this.source.id = source;
 		time = new TC_Date();
 		this.type = type;

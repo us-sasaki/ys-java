@@ -555,6 +555,39 @@ public class API {
 	}
 	
 	/**
+	 * 指定された条件で MeasurementCollection を削除します。
+	 * 204 No content 以外のステータスコードが返却された場合、IOException
+	 * がスローされます。
+	 * このコマンドは、queryString の指定によって想定外の削除を引き起こす
+	 * 可能性があるため、利用時は最新の注意を払ってください。
+	 * accept として、measurement / measurementCollection いずれも
+	 * 受け付けますが、measurement を指定しています。
+	 *
+	 * @param	queryString		クエリ文字列(source=, dateFrom= 等)
+	 */
+	public void deleteMeasurementCollection(String queryString)
+						throws IOException {
+		if (queryString == null || queryString.equals(""))
+			throw new IllegalArgumentException("queryString の指定は必須です");
+		Response resp = rest.delete("/measurement/measurements/?" + queryString);
+		if (resp.status != 204)
+			throw new IOException("MeasurementCollection 削除失敗 : " + resp);
+	}
+	
+	/**
+	 * Measurement ID を指定して特定の Measurement を削除します。
+	 * 204 No Content 以外のステータスコードが返却された場合、IOException
+	 * がスローされます。
+	 *
+	 * @param	id		Measurement ID
+	 */
+	public void deleteMeasurement(String id) throws IOException {
+		Response resp = rest.delete("/measurement/measurements/"+id);
+		if (resp.status != 204)
+			throw new IOException("MeasurementCollection 削除失敗 : " + resp);
+	}
+	
+	/**
 	 * メジャーメントコレクションAPIを用いて、Javaのforループで使える
 	 * Measurement の iterator を取得します。
 	 * <pre>
@@ -760,6 +793,39 @@ public class API {
 		EventCollection ec = Jsonizer.fromJson(resp, EventCollection.class);
 		if (ec.events.length == 0) return null;
 		return ec.events[0];
+	}
+	
+	/**
+	 * 指定された条件で EventCollection を削除します。
+	 * 204 No content 以外のステータスコードが返却された場合、IOException
+	 * がスローされます。
+	 * このコマンドは、queryString の指定によって想定外の削除を引き起こす
+	 * 可能性があるため、利用時は最新の注意を払ってください。
+	 * accept として、event / measurementCollection いずれも
+	 * 受け付けますが、event を指定しています。
+	 *
+	 * @param	queryString		クエリ文字列(source=, dateFrom= 等)
+	 */
+	public void deleteEventCollection(String queryString)
+						throws IOException {
+		if (queryString == null || queryString.equals(""))
+			throw new IllegalArgumentException("queryString の指定は必須です");
+		Response resp = rest.delete("/event/events/?" + queryString);
+		if (resp.status != 204)
+			throw new IOException("EventCollection 削除失敗 : " + resp);
+	}
+	
+	/**
+	 * Event ID を指定して特定の Measurement を削除します。
+	 * 204 No Content 以外のステータスコードが返却された場合、IOException
+	 * がスローされます。
+	 *
+	 * @param	id		Measurement ID
+	 */
+	public void deleteEvent(String id) throws IOException {
+		Response resp = rest.delete("/event/events/"+id);
+		if (resp.status != 204)
+			throw new IOException("EventCollection 削除失敗 : " + resp);
 	}
 	
 	/**

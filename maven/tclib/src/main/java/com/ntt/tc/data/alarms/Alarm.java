@@ -3,6 +3,7 @@ package com.ntt.tc.data.alarms;
 import com.ntt.tc.data.TC_Long;
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.TC_Date;
+import com.ntt.tc.data.inventory.ID;
 import com.ntt.tc.data.inventory.ManagedObject;
 import com.ntt.tc.data.auditing.AuditRecordCollection;
 import abdom.data.json.JsonObject;
@@ -98,7 +99,7 @@ public class Alarm extends C8yData {
 	 * PUT/POST : POST: Mandatory PUT: No
 	 * </pre>
 	 */
-	public ManagedObject source;
+	public ID source;
 	
 	/**
 	 * The status of the alarm: ACTIVE, ACKNOWLEDGED or CLEARED. If status was
@@ -191,7 +192,7 @@ public class Alarm extends C8yData {
 		if (severity != CRITICAL && severity != MAJOR &&
 			severity != MINOR && severity != WARNING)
 				throw new IllegalArgumentException("Alarm の severity は CRITICAL/MAJOR/MINOR/WARNING のいずれかである必要があります。指定値:"+severity);
-		source = new ManagedObject();
+		source = new ID();
 		source.id = sourceId;
 		time = new TC_Date();
 		this.type = type;
