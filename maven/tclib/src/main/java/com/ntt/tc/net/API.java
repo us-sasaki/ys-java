@@ -1198,6 +1198,33 @@ public class API {
 		Response resp = rest.delete("/tenant/tenants/"+id, "tenant");
 	}
 	
+	/**
+	 * 子テナントに登録されているアプリケーションを登録します。
+	 *
+	 * @param		tenant		子テナントの id
+	 * @param		id			アプリケーション id
+	 */
+	public void createApplication(String tenant, String id) throws IOException {
+		JsonObject app = new JsonObject();
+		app.put("application", new JsonObject());
+		app.put("application.id", id);
+		
+		Response resp = rest.post("/tenant/tenants/"+ tenant
+							+ "/applications", "applicationReference", app);
+System.out.println("app created : " + resp);
+	}
+	
+	/**
+	 * 子テナントに登録されているアプリケーションを削除します。
+	 *
+	 * @param		tenant		子テナントの id
+	 * @param		id			アプリケーション id
+	 */
+	public void deleteApplication(String tenant, String id) throws IOException {
+		Response resp = rest.delete("/tenant/tenants/" + tenant
+							+ "/applications/"+id);
+		if (resp.status != 204) throw new IOException("application 削除失敗:"+resp);
+	}
 	
 	/**
 	 * テナント使用状況統計コレクションを取得します。

@@ -46,7 +46,7 @@ class CollectionIterator<T extends C8yData> implements Iterator<T> {
 	 * @param	fieldName	配列を格納しているフィールド名を指定します
 	 * @param	compType	Iterator で返す要素の型です(Measurement など)
 	 */
-	public CollectionIterator(Rest rest, String url, String fieldName, Class<T> compType) {
+	CollectionIterator(Rest rest, String url, String fieldName, Class<T> compType) {
 		// + -> %2B に変換
 		url = url.replace("+", "%2B");
 		this.rest = rest;
