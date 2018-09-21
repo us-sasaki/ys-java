@@ -1200,30 +1200,41 @@ public class API {
 	
 	/**
 	 * 子テナントに登録されているアプリケーションを登録します。
+	 * 指定された tenant や id のアプリケーションが存在しない場合、
+	 * C8yNoSuchObjectException がスローされます。
 	 *
 	 * @param		tenant		子テナントの id
 	 * @param		id			アプリケーション id
+	 * @throws		C8yNoSuchObjectException 指定された tenant または id の
+	 *				Application が存在しない
 	 */
 	public void createApplication(String tenant, String id) throws IOException {
 		JsonObject app = new JsonObject();
 		app.put("application", new JsonObject());
 		app.put("application.id", id);
 		
-		Response resp = rest.post("/tenant/tenants/"+ tenant
-							+ "/applications", "applicationReference", app);
-System.out.println("app created : " + resp);
+		String ep = "/tenant/tenants/"+tenant+"/applications/";
+		app.put("application.self", rest.getLocation()+ep+id);
+		
+		Response resp = rest.post(ep, "applicationReference", app);
+		if (resp.status == 404) throw new C8yNoSuchObjectException(resp);
 	}
 	
 	/**
 	 * 子テナントに登録されているアプリケーションを削除します。
+	 * 指定された tenant や id のアプリケーションが存在しない場合、
+	 * C8yNoSuchObjectException がスローされます。
 	 *
 	 * @param		tenant		子テナントの id
 	 * @param		id			アプリケーション id
+	 * @throws		C8yNoSuchObjectException 指定された tenant または id の
+	 *				Application が存在しない
 	 */
 	public void deleteApplication(String tenant, String id) throws IOException {
 		Response resp = rest.delete("/tenant/tenants/" + tenant
 							+ "/applications/"+id);
-		if (resp.status != 204) throw new IOException("application 削除失敗:"+resp);
+		if (resp.status == 404) throw new C8yNoSuchObjectException(resp);
+		if (resp.status != 204) throw new IOException("application 削除失敗:"+resp.status+resp);
 	}
 	
 	/**

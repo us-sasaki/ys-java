@@ -10,7 +10,7 @@ package com.ntt.tc.net;
  * @version		May 9, 2018
  * @author		Yusuke Sasaki
  */
-public class C8yNoSuchObjectException extends C8yRestRuntimeException {
+public class C8yNoSuchObjectException extends C8yRestException {
 	
 /*-------------
  * constructor
@@ -27,5 +27,7 @@ public class C8yNoSuchObjectException extends C8yRestRuntimeException {
 	public C8yNoSuchObjectException(Throwable cause) {
 		super(cause);
 	}
-	
+	public C8yNoSuchObjectException(Rest.Response resp) {
+		super(resp.toJson().get("error").getValue() + " / "+resp.toJson().get("message").getValue() + " / " + resp.toJson().get("info").getValue());
+	}
 }
