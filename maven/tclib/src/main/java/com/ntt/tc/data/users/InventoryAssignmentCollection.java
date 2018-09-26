@@ -5,7 +5,7 @@ import com.ntt.tc.data.C8yData;
 /**
  * InventoryAssignmentCollection class
  *
- * /user/<tenant>/users/<username>/roles/inventory
+ * /user/&lt;tenant&gt;/users/&lt;username&gt;/roles/inventory
  * でアクセスされる、ユーザに割り当てられるインベントリロールを保持するクラス
  * 非公開APIのため、RESTレスポンスから項目を抽出。
  *
