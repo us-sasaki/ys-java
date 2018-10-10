@@ -40,7 +40,7 @@ public class TCMeasurementTest extends TestCase{
 		m.put("c8y_TemperatureMeasurement","T",20,"C");
 		m.put("testFrag", "testMeas", 100, "testUnit");
 		assertEquals(m.toString(), "{\"c8y_TemperatureMeasurement\":{\"T\":{\"unit\":\"C\",\"value\":20.0}},\"testFrag\":{\"testMeas\":{\"unit\":\"testUnit\",\"value\":100.0}}}");
-		assertEquals(m.c8y_TemperatureMeasurement.T.value, 20d);
+		assertEquals(m.get("c8y_TemperatureMeasurement.T.value").doubleValue(), 20d);
 	}
 	
 	public void testMeasCol() {

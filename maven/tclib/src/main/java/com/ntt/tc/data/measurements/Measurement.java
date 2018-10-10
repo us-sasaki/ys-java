@@ -26,9 +26,8 @@ import com.ntt.tc.data.sensor.C8y_SignalStrength;
  * Measurement class
  * 単一の measurement.
  * POST /measurement/measurements の要求、応答にも利用される。
- * インスタンス変数として fragment は c8y docs に定義しているものを
- * pre-defined としているが、他の fragment を定義、利用する場合、
- * putExtra() により追加すること。
+ * fragment を定義、利用する場合、
+ * put(), putExtra() や set() により追加すること。
  */
 public class Measurement extends C8yData {
 	/**
