@@ -86,21 +86,6 @@ public class Measurement extends C8yData {
 	 */
 	//This field has omitted because of type and field = "*"
 	
-	// 以下 c8y 定義の fragment
-	public C8y_AccelerationMeasurement c8y_AccelerationMeasurement;
-	public C8y_CurrentMeasurement c8y_CurrentMeasurement;
-	public C8y_DistanceMeasurement c8y_DistanceMeasurement;
-	public C8y_HumidityMeasurement c8y_HumidityMeasurement;
-	public C8y_LightMeasurement c8y_LightMeasurement;
-	public C8y_MoistureMeasurement c8y_MoistureMeasurement;
-	public C8y_MotionMeasurement c8y_MotionMeasurement;
-	public C8y_SinglePhaseElectricityMeasurement c8y_SinglePhaseElectricityMeasurement;
-	public C8y_TemperatureMeasurement c8y_TemperatureMeasurement;
-	public C8y_ThreePhaseElectricityMeasurement c8y_ThreePhaseElectricityMeasurement;
-	public C8y_VoltageMeasurement c8y_VoltageMeasurement;
-	public C8y_SignalStrength c8y_SignalStrength;
-	public C8y_Battery c8y_Battery;
-	
 /*-------------
  * constructor
  */
