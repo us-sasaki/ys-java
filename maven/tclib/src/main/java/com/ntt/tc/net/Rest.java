@@ -233,6 +233,36 @@ public class Rest {
 	}
 	
 	/**
+	 * ヘッダを設定します。
+	 *
+	 * @param		key		ヘッダの key
+	 * @param		value	ヘッダの value
+	 */
+	public void putHeader(String key, String value) {
+		r.putHeader(key, value);
+	}
+	
+	/**
+	 * ヘッダを削除します。
+	 *
+	 * @param		key		ヘッダの key
+	 */
+	public void removeHeader(String key) {
+		r.removeHeader(key);
+	}
+	
+	/**
+	 * ヘッダ設定を示す Map オブジェクトを取得します。
+	 * このオブジェクトは内部的に利用されているヘッダ情報のため、
+	 * 値を変更した場合、本オブジェクトで設定するヘッダ情報が変更されます。
+	 *
+	 * @return		header の一覧(java.util.Map)
+	 */
+	public Map<String, String> getHeaders() {
+		return r.getHeaders();
+	}
+	
+	/**
 	 * GET リクエストをします。
 	 *
 	 * @param	location	GETするリソース

@@ -153,6 +153,10 @@ public class JsonRest {
 		return header.get(key);
 	}
 	
+	public synchronized Map<String, String> getHeaders() {
+		return header;
+	}
+	
 	//public void setHeader(Map<String, String> header) {
 	//	this.header = header;
 	//}

@@ -1801,4 +1801,11 @@ public class API {
 		return modules("");
 	}
 	
+/*---------------
+ * SmartREST API
+ */
+	public void createSmartRest(String xid, String text)
+						throws IOException {
+		Response resp = rest.post("/s/", text);
+	}
 }
