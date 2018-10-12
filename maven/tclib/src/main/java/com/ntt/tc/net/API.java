@@ -1802,10 +1802,40 @@ public class API {
 	}
 	
 /*---------------
- * SmartREST API
+ * SmartRest API
  */
-	public void createSmartRest(String xid, String text)
+	/**
+	 * SmartRest テンプレートを登録します.
+	 * 本 API では header を操作するため、他の API と排他制御する必要が
+	 * あることに注意して下さい。
+	 *
+	 * @param		xid		テンプレートの X-Id
+	 * @param		csv		登録するテンプレート本体(一行で指定して下さい)
+	 * @return		テンプレートの Managed Object ID
+	 */
+	public String createSmartRest(String xid, String csv)
 						throws IOException {
-		Response resp = rest.post("/s/", text);
+		if (!csv.startsWith("10,") && !csv.startsWith("11,"))
+			throw new IllegalArgumentException("csv の最初の要素は 10(request) または 11(response) である必要があります");
+		Response resp = null;
+		synchronized (this) { // 通常の API とも排他が必要→実装制約に
+			// X-Id は header ではなく、body に設定することも可能。
+			// 15,xid とすると、以降の csv 行の X-Id が xid となる
+			//
+			// header を追加
+			rest.putHeader("X-Id", xid);
+			
+			resp = rest.post("/s/", csv);
+			
+			// header を削除
+			rest.removeHeader("X-Id");
+		}
+		String result = resp.toString();
+		if (!result.startsWith("20"))
+			throw new C8yRestException("SmartREST template registration failed: " + result);
+		return result.substring(3);
 	}
+	
+	
+	
 }

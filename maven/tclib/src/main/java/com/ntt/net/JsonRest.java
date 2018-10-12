@@ -53,7 +53,7 @@ public class JsonRest {
 		
 		/**
 		 * 結果の body を String で取得します
-		 * JSON 解析を行わず、body の内容そのままを UTF-8 形式で出力します。
+		 * JSON 解析を行わず、body の内容そのままを UTF-8 形式で文字列化します。
 		 * このため、body が HTML などの JSON でない形式になる場合があります。
 		 * body が存在しない場合、文字列 "null" が返却されます。
 		 *
@@ -88,7 +88,7 @@ public class JsonRest {
 		/**
 		 * 結果の body を JsonType で取得します。
 		 * レスポンスは JsonType.parse を行っているため、エラー文字列等で
-		 * あった場合、JsonParseExcception がスローされます。
+		 * あった場合、abdom.data.json.JsonParseExcception がスローされます。
 		 *
 		 * @return		pretty JSON 形式
 		 * @exception	abdom.data.json.JsonParseException	body の JSON parse
