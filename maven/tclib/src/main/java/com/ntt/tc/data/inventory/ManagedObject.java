@@ -16,6 +16,21 @@ import com.ntt.tc.data.TC_Date;
  * (3) Sensor に記載される、inventory における representation。
  * 例：c8y_TemperatureSensor, c8y_HumiditySensor 等。<br>
  * 
+ * <pre>
+ * ManagedObject の判定の仕方(type)
+ *                        type=ActilityDeviceType
+ * デバイスグループ       type=c8y_DeviceGroup
+ * シミュレーター(設定)   type=c8y_DeviceSimulator
+ *                        type=c8y_MQTTDevice
+ *                        type=c8y_PrivateSmartRule
+ *                        type=c8y_SmartRule
+ *                        type=c8y_UserPreference
+ *                        type=text/csv や text/plain や image/svg+xml など
+ *
+ * ManagedObject の判定の仕方(fragment)...type ではわからない
+ * デバイス               c8y_IsDevice:{} がある
+ * SmartRESTテンプレート  com_cumulocity_model_smartrest_SmartRestTemplateがある
+ * </pre>
  */
 public class ManagedObject extends C8yData {
 	/**

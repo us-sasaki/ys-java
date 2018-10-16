@@ -237,7 +237,7 @@ public class SmartRestBuilder implements Cloneable {
 	 */
 	public void setStringHolder(String path) {
 		if (template == null) template = new JsonObject();
-		template.put(path, "\""+STRING+"\"");
+		template.put(path, "\""+STRING+"\""); // "" でくくるための特殊処理
 	}
 	
 	/**
@@ -356,7 +356,6 @@ public class SmartRestBuilder implements Cloneable {
 		}
 		
 		String tmpl = template.toString(); // JSON String
-System.out.println(tmpl);
 		for (int i = 0; i < tmpl.length(); i++) {
 			int min = tmpl.length();
 			String key = null;
