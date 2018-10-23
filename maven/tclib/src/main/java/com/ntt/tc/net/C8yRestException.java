@@ -24,15 +24,17 @@ public class C8yRestException extends IOException {
  * constructor
  */
 	public C8yRestException(Rest.Response response, String location, String method, String contentType, String accept) {
-		this("ep=" + location + " method=" + method + " type=" + contentType +
-			" accept=" + accept + " status=" + response.status +
-			" msg=" + response.message + " body=" + new String(response.body, StandardCharsets.UTF_8));
+		super(makeMessage(response, location, method, contentType, accept));
+		
 		this.response = response;
 		this.location = location;
 		this.method = method;
 		this.contentType = contentType;
 		this.accept = accept;
-		this.body = JsonType.parse(new String(response.body, StandardCharsets.UTF_8));
+		if (response.body != null && response.body.length > 0)
+			this.body = JsonType.parse(new String(response.body, StandardCharsets.UTF_8));
+		else
+			this.body = JsonType.NULL;
 	}
 	
 	public C8yRestException() {
@@ -51,6 +53,15 @@ public class C8yRestException extends IOException {
 /*------------------
  * instance methods
  */
+	private static String makeMessage(Rest.Response response, String location, String method, String contentType, String accept) {
+		String msg = "ep=" + location + " method=" + method + " type=" + contentType +" accept=" + accept;
+		if (response != null)
+			msg = msg + " status=" + response.status + " msg="
+						+ response.message + " body="
+						+ new String(response.body, StandardCharsets.UTF_8);
+		return msg;
+	}
+	
 	public Rest.Response getResponse() {
 		return response;
 	}

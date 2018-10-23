@@ -327,13 +327,14 @@ public class JsonRest {
 				in = con.getErrorStream(); // may null
 			}
 			while (true) {
+				if (in == null) break;
 				//int c = in.read(buffer); // なんか遅い
 				int c = in.read(); // byte[] buff を使った方が早い
 				if (c == -1) break;
 				//baos.write(buffer, 0, c);
 				baos.write(c);
 			}
-			in.close();
+			if (in != null) in.close();
 			baos.close();
 			
 			resp.body = baos.toByteArray();
