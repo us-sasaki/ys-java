@@ -12,6 +12,7 @@ y = tf.placeholder(name="y", dtype=tf.float32)
 
 square_error = tf.square(y - a*x - b)
 
+# square_error の式を最小化する
 rss = tf.reduce_sum(square_error)
 
 optimizer = tf.train.GradientDescentOptimizer(1.0e-5)
@@ -21,8 +22,10 @@ reader = tf.TextLineReader()
 
 file_queue = tf.train.string_input_producer(["dataset.csv"])
 
+# csv ファイルの各行を読む(key は行番号, value は文字列)
 key, value = reader.read(file_queue)
 
+# csv のカラムを col1, col2 に読み込む
 col1, col2 = tf.decode_csv(value, [[], []])
 
 data_x, data_y = tf.train.batch([col1, col2], 100)
