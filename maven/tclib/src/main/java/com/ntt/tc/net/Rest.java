@@ -27,6 +27,8 @@ import static java.net.HttpURLConnection.*;
  * json-stream に対応するため、結果を JsonType.parse(Reader) で構築する。
  * レスポンスボディが JSON でない場合(cometd関連でhtmlを返す場合がある)、
  * エラー文字列を表すレスポンスが返却されることに注意して下さい。
+ * このオブジェクトはスレッドセーフではありません。
+ * ヘッダ設定処理部分がマルチスレッド対応になっていません。
  *
  * @version	16, June 2018
  * @author	Yusuke Sasaki
