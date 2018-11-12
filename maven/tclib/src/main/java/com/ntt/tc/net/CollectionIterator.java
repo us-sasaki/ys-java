@@ -91,7 +91,6 @@ class CollectionIterator<T extends C8yData> implements Iterator<T> {
 		// 読み込み
 		currentPage++;
 		
-		
 		try {
 			String sep = "?";
 			if (url.indexOf('?') > -1) sep = "&";
