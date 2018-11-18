@@ -735,7 +735,7 @@ public abstract class JsonType extends Number
 		if (jt == null) {
 			if (c == -1) throw new JsonParseException("ストリームが終わりのため、value が読み込めません");
 			throw new JsonParseException("value の先頭文字が不正です : " +
-								(char)c + " / code=" + c + " / 位置="+pr.bytesRead());
+								(char)c + " / code=" + c + " / 位置="+pr.bytesRead()+" / 周辺="+pr.neighborhood());
 		}
 		return jt;
 	}
@@ -754,7 +754,7 @@ public abstract class JsonType extends Number
 				throw new JsonParseException("予期しない文字を検出しました:"+
 							(char)c+" 予期した文字:"+expected.charAt(i)+
 							" 予期した文字列:"+expected+
-							" 位置="+pr.bytesRead());
+							" 位置="+pr.bytesRead()+" / 周辺="+pr.neighborhood());
 		}
 	}
 	
@@ -792,7 +792,7 @@ public abstract class JsonType extends Number
 			}
 		} catch (NumberFormatException nfe) {
 			throw new JsonParseException("数値フォーマット異常: " + token +
-						" 位置="+pr.bytesRead());
+						" 位置="+pr.bytesRead()+" / 周辺="+pr.neighborhood());
 		}
 	}
 	
@@ -809,7 +809,9 @@ public abstract class JsonType extends Number
 			int c = pr.read();
 			if (c == -1) throw new JsonParseException("文字列の途中で予期しない終了を検知しました");
 			if (c == '\"') return result.toString();
-			if (c < 32) throw new JsonParseException("文字列の途中で改行などのコントロールコードを検知しました。code = " + c + " / 位置="+pr.bytesRead());
+			if (c < 32) throw new JsonParseException("文字列の途中で改行などのコントロールコードを検知しました。code = "
+				+ c + " / 位置="+pr.bytesRead()
+				+" / 周辺="+pr.neighborhood());
 			if (c == '\\') {
 				c = pr.read();
 				if (c == -1) throw new JsonParseException("\\ の次に予期しない終了を検知しました");
@@ -829,7 +831,7 @@ public abstract class JsonType extends Number
 						if (c >= '0' && c <= '9') u = 16*u + (c-'0');
 						else if (c >= 'A' && c <= 'F') u = 16*u + (c-'A') +10;
 						else if (c >= 'a' && c <= 'f') u = 16*u + (c-'a') +10;
-						else throw new JsonParseException("\\uの後の文字列が不正です : " + (char)c + " / 位置="+pr.bytesRead());
+						else throw new JsonParseException("\\uの後の文字列が不正です : " + (char)c + " / 位置="+pr.bytesRead()+" / 周辺="+pr.neighborhood());
 					}
 //					if (u == 0xfffd) // replacement character
 //						result.append("\\ufffd");
@@ -862,7 +864,7 @@ public abstract class JsonType extends Number
 			if (c == ']') {
 				return result;
 			}
-			if (c != ',') throw new JsonParseException("配列内に不正な文字を検出しました : " + (char)c + " / 位置="+pr.bytesRead());
+			if (c != ',') throw new JsonParseException("配列内に不正な文字を検出しました : " + (char)c + " / 位置="+pr.bytesRead()+" / 周辺="+pr.neighborhood());
 		}
 	}
 	
@@ -880,7 +882,8 @@ public abstract class JsonType extends Number
 		while (true) {
 			skipspaces(pr);
 			c = pr.read();
-			if (c != '\"') throw new JsonParseException("オブジェクト内の要素名が \" で始まっていません:"+(char)c+" / 位置="+pr.bytesRead());
+			if (c == -1) throw new JsonParseException("オブジェクトの要素名の後に予期しない終了を検知しました");
+			if (c != '\"') throw new JsonParseException("オブジェクト内の要素名が \" で始まっていません:"+(char)c+" / 位置="+pr.bytesRead()+" / 周辺="+pr.neighborhood());
 			String name = readString(pr);
 			// ここで name として入っていてはならない文字をチェック
 			// -> RFC 7159 によると、string とあり、なんでもOK
@@ -888,7 +891,7 @@ public abstract class JsonType extends Number
 			skipspaces(pr);
 			c = pr.read();
 			if (c == -1) throw new JsonParseException("オブジェクトの要素名の後に予期しない終了を検知しました");
-			if (c != ':') throw new JsonParseException("オブジェクトの要素名の後に予期しない文字を検知しました : "+(char)c+" / 位置="+pr.bytesRead());
+			if (c != ':') throw new JsonParseException("オブジェクトの要素名の後に予期しない文字を検知しました : "+(char)c+" / 位置="+pr.bytesRead()+" / 周辺="+pr.neighborhood());
 			skipspaces(pr);
 			JsonType jt = parseValue(pr);
 			result.add(name, jt);
@@ -897,7 +900,7 @@ public abstract class JsonType extends Number
 			if (c == -1) throw new JsonParseException("オブジェクトの終りの前に予期しない終了を検知しました");
 			if (c == ',') continue;
 			if (c == '}') return result;
-			throw new JsonParseException("オブジェクト内に不正な文字を検出しました : " + (char)c+" / 位置="+pr.bytesRead());
+			throw new JsonParseException("オブジェクト内に不正な文字を検出しました : " + (char)c+" / 位置="+pr.bytesRead()+" / 周辺="+pr.neighborhood());
 		}
 	}
 
