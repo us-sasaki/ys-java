@@ -475,6 +475,69 @@ public class API {
 	public Iterable<ManagedObject> managedObjects() {
 		return managedObjects("");
 	}
+	
+	/**
+	 * 子デバイスを ManagedObject に追加します。
+	 *
+	 * @param		id		親となる managedObject の id
+	 * @param		child	追加する子デバイス情報(self または id のみでもよい)
+	 */
+	public void createChildDevice(String id, ManagedObjectReference child)
+									throws IOException {
+		Response resp = rest.post("/inventory/managedObjects/"+id+"/childDevices", "managedObjectReference", child);
+		if (resp.status != 201)
+			throw new C8yRestException("child device 追加失敗"+resp.status+resp.message+"/"+resp);
+	}
+	
+	/**
+	 * 子デバイスを ManagedObject に追加します。
+	 *
+	 * @param		id		親となる managedObject の id
+	 * @param		childId	追加する子デバイス の id
+	 */
+	public void createChildDevice(String id, String childId)
+									throws IOException {
+		ManagedObjectReference mor = new ManagedObjectReference();
+		mor.managedObject = new ManagedObject();
+		mor.managedObject.id = childId;
+		createChildDevice(id, mor);
+	}
+	
+	/**
+	 * 子デバイスを ManagedObject から削除します。
+	 *
+	 * @param		id		親 managedObject の id
+	 * @param		child	削除対象の 子 managedObject Reference
+	 */
+	public void deleteChildDevice(String id, ManagedObjectReference child)
+									throws IOException {
+		String cid = child.managedObject.id; // may throw Nulpo
+		if (cid == null) {
+			cid = child.managedObject.self;
+			int i = cid.lastIndexOf("/");
+			if (i == -1) throw new NullPointerException("child device 削除では、id または self を含む ManagedObjectReference を指定して下さい:"+child);
+			cid = cid.substring(i+1);
+		}
+		
+		Response resp = rest.delete("/inventory/managedObjects/"+id+"/childDevices/"+cid);
+		if (resp.status != 204)
+			throw new C8yRestException("child device 削除失敗"+resp.status+resp.message+"/"+resp);
+	}
+	
+	/**
+	 * 子デバイスを ManagedObject から削除します。
+	 *
+	 * @param		id		親 managedObject の id
+	 * @param		childId	削除対象の 子 managedObject の id
+	 */
+	public void deleteChildDevice(String id, String childId)
+									throws IOException {
+		ManagedObjectReference mor = new ManagedObjectReference();
+		mor.managedObject = new ManagedObject();
+		mor.managedObject.id = childId;
+		
+		deleteChildDevice(id, mor);
+	}
 
 /*-----------------
  * Measurement API
