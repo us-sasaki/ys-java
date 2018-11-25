@@ -10,6 +10,3 @@ for plot in j:
 		print(plot.get('photoFile'))
 
 print(c)
-
-	
-	
