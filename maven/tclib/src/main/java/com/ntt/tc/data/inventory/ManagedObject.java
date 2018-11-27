@@ -59,6 +59,9 @@ public class ManagedObject extends C8yData {
 	 * Occurs : 0..1
 	 * PUT/POST : Optional
 	 * </pre>
+	 * デバイスグループの場合、"c8y_DeviceGroup"<br>
+	 * サブグループでは深さによらず "c8y_DeviceSubgroup"<br>
+	 * CEPメトリックを持つオブジェクト "c8y_CepAgent"<br>
 	 */
 	public String type;
 	
@@ -352,4 +355,20 @@ public class ManagedObject extends C8yData {
 	 * ManagementObject の要素としては Object * と表現されている。
 	 */
 	public C8y_Relay c8y_Relay;
+	
+/*
+ * 以降、新たに見つけたプロパティを記載
+ */
+	/**
+	 * SCADAウィジェットに利用する svg ファイルに付与されていた
+	 * 値は {}
+	 */
+	//public C8y_Global c8y_Global;
+	
+	/**
+	 * binaries で取得できるファイルを示すものと思われる
+	 * 値は ""
+	 */
+	//public C8y_IsBinary c8y_IsBinary;
+	
 }
