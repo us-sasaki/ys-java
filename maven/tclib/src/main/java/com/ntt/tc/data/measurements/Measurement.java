@@ -140,10 +140,10 @@ public class Measurement extends C8yData {
 		int c = fragment.indexOf('.');
 		if (c >= 0)
 			throw new C8yFormatException("fragment には . を含められません:"+fragment);
-		c = measurementName.indexOf('.');
+		c = series.indexOf('.');
 		if (c >= 0)
-			throw new C8yFormatException("measurementName には . を含められません:"+measurementName);
-		put(fragment+"."+measurementName, value, unit);
+			throw new C8yFormatException("series には . を含められません:"+series);
+		put(fragment+"."+series, value, unit);
 	}
 	
 	/**
