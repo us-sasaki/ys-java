@@ -9,6 +9,9 @@ import java.util.Arrays;
  * java.io.PushbackReader はここでは不要な synchronized を行うため、最適化。
  * また、読み込み位置を返却し、例外に情報を付加できるようにし、周辺の文字列を
  * 取得できるようにした。
+ *
+ * @author		Yusuke Sasaki
+ * @version		November 18, 2018
  */
 class PushbackReader {
 	static final int BUF_SIZE = 20;
@@ -156,7 +159,7 @@ class PushbackReader2 extends PushbackReader {
 	@Override String neighborhood() {
 		int firstIndex = bufpos + ( (b==-1)?1:2 );
 		
-		while ( buff[firstIndex++] == 0 && firstIndex < BUF_SIZE);
+		while ( firstIndex < BUF_SIZE-1 && buff[firstIndex] == 0) firstIndex++;
 		char[] first = Arrays.copyOfRange(buff, firstIndex, BUF_SIZE);
 		char[] second = Arrays.copyOfRange(buff, 0, bufpos);
 		
