@@ -155,7 +155,7 @@ public abstract class JsonType extends Number
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、doubleValue を持ちません");
 	}
 	
-	/**
+                                                                                                      	/**
 	 * boolean 値を取得します。
 	 * JsonValue の場合、
 	 * false となるのは、boolean の false となる場合か、null の場合に限られます。
