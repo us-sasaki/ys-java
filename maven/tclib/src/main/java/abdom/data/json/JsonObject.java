@@ -255,7 +255,12 @@ public class JsonObject extends JsonType {
 		if (!objElement) sb.append(indent);
 		sb.append('{');
 		boolean first = true;
-		boolean elm1 = (map.size() == 1); // 1要素のみの場合、簡略表示
+		boolean elm1 = false;
+		// 1要素かつ、配列/オブジェクトでない場合、簡略表示
+		if (map.size() == 1) {
+			int t = map.values().iterator().next().getType();
+			elm1 = (t != JsonType.TYPE_OBJECT && t != JsonType.TYPE_ARRAY );
+		}
 		for (String name : map.keySet() ) {
 			if (!first) sb.append(',');
 			else first = false;
