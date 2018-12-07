@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.text.SimpleDateFormat;
 import java.nio.charset.StandardCharsets;
 
+import com.ntt.tc.util.Base64; // till JDK1.7
+
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonValue;
 import abdom.data.json.Jsonizable;
@@ -118,6 +120,26 @@ public class JsonRest {
 		header = new HashMap<String, String>();
 		header.put("Content-Type", "application/json");
 		header.put("Accept", "application/json");
+	}
+	
+	public JsonRest(Map<String, String> map) {
+		String urlStr = map.get("host");
+		if (urlStr == null)
+			throw new IllegalArgumentException("host が設定されていません");
+		String user = map.get("user");
+		if (user == null)
+			throw new IllegalArgumentException("user が設定されていません");
+		String pass = map.get("pass");
+		if (pass == null)
+			throw new IllegalArgumentException("pass が設定されていません");
+		
+		this.urlStr = urlStr;
+		header = new HashMap<String, String>();
+		header.put("Content-Type", "application/json");
+		header.put("Accept", "application/json");
+		
+		String authStr = Base64.encodeToString((user + ":" + pass).getBytes());
+		header.put("Authorization", "Basic " + authStr);
 	}
 	
 /*------------------

@@ -1317,8 +1317,10 @@ public class API {
 	}
 	
 	/**
-	 * テナント使用状況統計コレクションAPIを用いて、Javaのforループで使える
-	 * UsageStatistics の iterator を取得します。
+	 * 自テナント使用状況統計コレクションAPIを用いて、Javaのforループで
+	 * 使える UsageStatistics の iterator を取得します。
+	 * この API では、自テナントの１日ごとの統計情報履歴を取得できます。
+	 * 毎日 15.00.00Z の時刻で登録されています。
 	 * <pre>
 	 * 使用例：
 	 * for (UsageStatistics u : api.usageStatistics("dateFrom=2017-08-01&amp;dateTill=2017-09-05&amp;pageSize=15")) {
@@ -1352,7 +1354,7 @@ public class API {
 	}
 	
 	/**
-	 * テナント使用状況サマリを取得します。
+	 * 自テナントの使用状況サマリを取得します。
 	 * 10分置き程度に更新される最新情報が取得可能です。
 	 *
 	 * @param	queryString	dateFrom, dateTill で期間を指定します。
@@ -1368,7 +1370,7 @@ public class API {
 	}
 	
 	/**
-	 * テナント使用状況サマリを取得します。
+	 * 自テナントの使用状況サマリを取得します。
 	 * 10分置き程度に更新される最新情報が取得可能です。
 	 *
 	 * @return	取得された UsageStatistics
@@ -1380,7 +1382,7 @@ public class API {
 	}
 	
 	/**
-	 * 全テナントの使用状況サマリを取得します。
+	 * 全サブテナントの使用状況サマリを取得します。
 	 *
 	 * @param	queryString		クエリ文字列 dateFrom, dateTo のみ利用可能
 	 * @return	テナントの使用状況(tenantId ごとにすべてのテナント分)
@@ -1392,7 +1394,7 @@ public class API {
 	}
 	
 	/**
-	 * 全テナントの使用状況サマリを取得します。
+	 * 全サブテナントの使用状況サマリを取得します。
 	 *
 	 * @return	テナントの使用状況(tenantId ごとにすべてのテナント分)
 	 */
