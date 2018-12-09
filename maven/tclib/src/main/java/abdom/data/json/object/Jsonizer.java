@@ -121,6 +121,24 @@ public final class Jsonizer {
 	}
 	
 	/**
+	 * Java オブジェクトのプロパティを、指定された JSON 文字列で設定します。
+	 * 指定されたオブジェクトが JValue の直接の子クラス(JData を継承しない)
+	 * の場合、JValue#fill を呼ぶ特例処理を行います。
+	 * JData の子クラスでは、値の設定を行い、フィールドがない場合、extra へ
+	 * の格納を行います。
+	 *
+	 * @param	instance	設定対象の Java オブジェクト
+	 * @param	json		設定値を持つ JSON 文字列
+	 * @return	設定値の中で、Java オブジェクトに対応するプロパティがなく
+	 *			設定しなかった項目。すべて設定された場合、null。
+	 *			ただし、instance が JValue 直接の子クラスの場合(JDataの
+	 *			子クラスでない場合)は、常に null。
+	 */
+	public static JsonObject fill(Object instance, String json) {
+		return fill(instance, JsonType.parse(json));
+	}
+	
+	/**
 	 * 指定された名称の単一フィールドを設定します。指定されたインスタンスが
 	 * JData であった場合、必要に応じて(存在しないフィールドは) extra に格納
 	 * します。
