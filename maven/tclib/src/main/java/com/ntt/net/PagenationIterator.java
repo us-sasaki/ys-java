@@ -16,7 +16,7 @@ import abdom.data.json.JsonObject;
  * @author		Yusuke Sasaki
  * @version		December 7, 2018
  */
-class PagenationIterator implements Iterator<JsonType> {
+public class PagenationIterator implements Iterator<JsonType> {
 	
 	protected static final int FETCH_SIZE = 100;
 	
