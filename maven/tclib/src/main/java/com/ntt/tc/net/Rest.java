@@ -534,38 +534,63 @@ public class Rest {
 	 * multipart/form-data を利用してファイルを送信します。
 	 * /cep/modules では 415 Unsupported Media Type が返却されます
 	 * 修正し、/bulkNewDeviceRequests では upload が成功しました。
+	 *
+	 * @param		endPoint	POST を行う end point
+	 * @param		filename	ファイル名
+	 * @param		data		出力するバイナリ情報
+	 * @return		response
 	 */
-	public synchronized Response postMultipart(String endPoint, String filename, byte[] data)
-									throws IOException {
+	public synchronized Response postMultipart(
+									String endPoint,
+									String filename,
+									byte[] data)
+										throws IOException {
+		return postMultipart(endPoint, filename, "text/plain", data);
+	}
+	
+	/**
+	 * multipart/form-data を利用してファイル(1つ)を送信します。
+	 *
+	 * @param		endPoint	POST を行う end point
+	 * @param		filename	ファイル名
+	 * @param		contentType	Content-Type に指定する値(text/plainなど)
+	 * @param		data		出力するバイナリ情報
+	 * @return		response
+	 */
+	public synchronized Response postMultipart(
+									String endPoint,
+									String filename,
+									String contentType,
+									byte[] data)
+										throws IOException {
 		// body を生成する
 		String bry = "----boundary----13243546"+(long)(Math.random() * 1000000000)+"5789554----";
-		
-		ByteArrayOutputStream out2 = new ByteArrayOutputStream();
-		
-		OutputStream out = new BufferedOutputStream(out2);
-		PrintWriter pw = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
-		
 		final String CRLF = "\r\n";
 		
-		// file part
-		pw.print("--"+bry+CRLF);
-		pw.print("Content-Disposition: form-data; name=\"file\"; filename=\""+filename+"\""+CRLF);
-		pw.print("Content-Type: text/plain"+CRLF);
-//		pw.print("Content-Transfer-Encoding: binary"+CRLF);
-		pw.print(CRLF);
-		pw.flush();
-		
-		// ファイル実体
-		out.write(data);
-		out.write(CRLF.getBytes());
-		out.flush();
-		pw.print("--"+bry+"--"+CRLF);
-		pw.print(CRLF);
-		pw.flush();
-		
-		setContentType("multipart/form-data; boundary="+bry);
-		setAccept("");
-		return requestImpl(endPoint, "POST", out2.toByteArray());
+		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+			PrintWriter pw = new PrintWriter(
+								new OutputStreamWriter(out, "UTF-8"))) {
+			
+			// file part
+			pw.print("--"+bry+CRLF);
+			pw.print("Content-Disposition: form-data; name=\"file\"; filename=\""
+						+filename+"\""+CRLF);
+			pw.print("Content-Type: "+contentType+CRLF);
+			pw.print(CRLF);
+			pw.flush();
+			
+			// ファイル実体
+			out.write(data);
+			out.write(CRLF.getBytes());
+			out.flush();
+			pw.print("--"+bry+"--"+CRLF);
+			pw.print(CRLF);
+			pw.flush();
+			
+			setContentType("multipart/form-data; boundary="+bry);
+			setAccept("");
+			return requestImpl(endPoint, "POST", out.toByteArray());
+		}
 	}
 	
 	public void disconnect() {

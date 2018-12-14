@@ -296,8 +296,7 @@ public class API {
 				throws IOException {
 		Response resp = rest.delete("/identity/externalIds/" + type +
 										"/" + externalId);
-		// 204 NO CONTENT となるはず
-	}
+		if (resp.status != 204) throw new IOException("externalId 削除失敗" + type + "/" + externalId + ":" + resp);	}
 	
 	/**
 	 * 外部IDコレクションを取得します。
@@ -892,6 +891,25 @@ public class API {
 	}
 	
 	/**
+	 * Event に対し、ファイルを添付します。
+	 * ファイル添付は、1 Event に 1 つまで可能です。
+	 *
+	 * @param		eventId		添付先の Event の id
+	 * @param		contentType	添付ファイルの Content-Type
+	 * @param		filename	ファイル名
+	 * @param		binary		添付対象のバイナリ
+	 */
+	public void createBinaryToEvent(String eventId, String contentType, String filename, byte[] binary)
+					throws IOException {
+		Response resp = rest.postMultipart("/event/events/"+eventId+"/binaries",
+								filename, contentType, binary);
+		if (resp.status == 404)
+			throw new IOException("添付対象イベント "+eventId+" がありません");
+		if (resp.status == 409)
+			throw new IOException("イベント"+eventId+"にはすでに添付ファイルがあります");
+	}
+	
+	/**
 	 * イベントコレクションAPIを用いて、Javaのforループで使える
 	 * Event の iterator を取得します。
 	 * <pre>
@@ -1383,6 +1401,7 @@ public class API {
 	
 	/**
 	 * 全サブテナントの使用状況サマリを取得します。
+	 * management テナントの場合、全テナントのサマリが取得できます。
 	 *
 	 * @param	queryString		クエリ文字列 dateFrom, dateTo のみ利用可能
 	 * @return	テナントの使用状況(tenantId ごとにすべてのテナント分)
@@ -1395,6 +1414,7 @@ public class API {
 	
 	/**
 	 * 全サブテナントの使用状況サマリを取得します。
+	 * management テナントの場合、全テナントのサマリが取得できます。
 	 *
 	 * @return	テナントの使用状況(tenantId ごとにすべてのテナント分)
 	 */
