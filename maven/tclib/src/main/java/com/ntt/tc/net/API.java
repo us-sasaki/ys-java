@@ -480,6 +480,7 @@ public class API {
 	 *
 	 * @param		id		親となる managedObject の id
 	 * @param		child	追加する子デバイス情報(self または id のみでもよい)
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void createChildDevice(String id, ManagedObjectReference child)
 									throws IOException {
@@ -493,6 +494,7 @@ public class API {
 	 *
 	 * @param		id		親となる managedObject の id
 	 * @param		childId	追加する子デバイス の id
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void createChildDevice(String id, String childId)
 									throws IOException {
@@ -507,6 +509,7 @@ public class API {
 	 *
 	 * @param		id		親 managedObject の id
 	 * @param		child	削除対象の 子 managedObject Reference
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void deleteChildDevice(String id, ManagedObjectReference child)
 									throws IOException {
@@ -528,6 +531,7 @@ public class API {
 	 *
 	 * @param		id		親 managedObject の id
 	 * @param		childId	削除対象の 子 managedObject の id
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void deleteChildDevice(String id, String childId)
 									throws IOException {
@@ -606,6 +610,7 @@ public class API {
 	 *
 	 * @param		source	デバイスID
 	 * @return		最後に報告された Measurement (存在しない場合 null)
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Measurement readLastMeasurement(String source) throws IOException {
 		Response resp = rest.getByStream("/measurement/measurements/?source="
@@ -626,6 +631,7 @@ public class API {
 	 * 受け付けますが、measurement を指定しています。
 	 *
 	 * @param	queryString		クエリ文字列(source=, dateFrom= 等)
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void deleteMeasurementCollection(String queryString)
 						throws IOException {
@@ -642,6 +648,7 @@ public class API {
 	 * がスローされます。
 	 *
 	 * @param	id		Measurement ID
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void deleteMeasurement(String id) throws IOException {
 		Response resp = rest.delete("/measurement/measurements/"+id);
@@ -848,6 +855,7 @@ public class API {
 	 *
 	 * @param		source	デバイスID
 	 * @return		最後に報告された Event (存在しない場合 null)
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Event readLastEvent(String source) throws IOException {
 		Response resp = rest.get("/event/events/?source="
@@ -867,6 +875,7 @@ public class API {
 	 * 受け付けますが、event を指定しています。
 	 *
 	 * @param	queryString		クエリ文字列(source=, dateFrom= 等)
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void deleteEventCollection(String queryString)
 						throws IOException {
@@ -883,6 +892,7 @@ public class API {
 	 * がスローされます。
 	 *
 	 * @param	id		Measurement ID
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void deleteEvent(String id) throws IOException {
 		Response resp = rest.delete("/event/events/"+id);
@@ -898,6 +908,7 @@ public class API {
 	 * @param		contentType	添付ファイルの Content-Type
 	 * @param		filename	ファイル名
 	 * @param		binary		添付対象のバイナリ
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void createBinaryToEvent(String eventId, String contentType, String filename, byte[] binary)
 					throws IOException {
@@ -1004,6 +1015,7 @@ public class API {
 	 * @param	id		更新対象の Alarm ID
 	 * @param	updater	更新内容を含む Alarm
 	 * @return	更新された alarm で、新しいインスタンスが生成されます。
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Alarm updateAlarm(String id, Alarm updater) throws IOException {
 		Response resp = rest.put("/alarm/alarms/"+id, "alarm", updater);
@@ -1288,6 +1300,7 @@ public class API {
 	 * @param		id			アプリケーション id
 	 * @throws		C8yNoSuchObjectException 指定された tenant または id の
 	 *				Application が存在しない
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void createApplication(String tenant, String id) throws IOException {
 		JsonObject app = new JsonObject();
@@ -1310,6 +1323,7 @@ public class API {
 	 * @param		id			アプリケーション id
 	 * @throws		C8yNoSuchObjectException 指定された tenant または id の
 	 *				Application が存在しない
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void deleteApplication(String tenant, String id) throws IOException {
 		Response resp = rest.delete("/tenant/tenants/" + tenant
@@ -1405,6 +1419,7 @@ public class API {
 	 *
 	 * @param	queryString		クエリ文字列 dateFrom, dateTo のみ利用可能
 	 * @return	テナントの使用状況(tenantId ごとにすべてのテナント分)
+	 * @throws		java.io.IOException REST異常
 	 */
 	public UsageStatistics[] readAllTenantsSummary(String queryString)
 								throws IOException {
@@ -1417,6 +1432,7 @@ public class API {
 	 * management テナントの場合、全テナントのサマリが取得できます。
 	 *
 	 * @return	テナントの使用状況(tenantId ごとにすべてのテナント分)
+	 * @throws		java.io.IOException REST異常
 	 */
 	public UsageStatistics[] readAllTenantsSummary() throws IOException {
 		return readAllTenantsSummary("");
@@ -1583,6 +1599,7 @@ public class API {
 	 * @param		id		ユーザID(ログインID)
 	 * @param		role	ロール文字列(Roleクラスの定数値参照)
 	 * @see			com.ntt.tc.data.users.Role
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void createRoleToUser(String id, String role) throws IOException {
 		if (!Role.ROLES.contains(role))
@@ -1602,6 +1619,7 @@ public class API {
 	 * @param		id		ユーザID(ログインID)
 	 * @param		role	ロール文字列(Roleクラスの定数値参照)
 	 * @see			com.ntt.tc.data.users.Role
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void deleteRoleFromUser(String id, String role) throws IOException {
 		if (!Role.ROLES.contains(role))
@@ -1616,6 +1634,7 @@ public class API {
 	 * @param		id		グループID(整数値)
 	 * @param		role	ロール文字列(Roleクラスの定数値参照)
 	 * @see			com.ntt.tc.data.users.Role
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void createRoleToGroup(int id, String role) throws IOException {
 		if (!Role.ROLES.contains(role))
@@ -1635,6 +1654,7 @@ public class API {
 	 * @param		id		グループID(整数値)
 	 * @param		role	ロール文字列(Roleクラスの定数値参照)
 	 * @see			com.ntt.tc.data.users.Role
+	 * @throws		java.io.IOException REST異常
 	 */
 	public void deleteRoleFromUser(int id, String role) throws IOException {
 		if (!Role.ROLES.contains(role))
@@ -1897,6 +1917,7 @@ public class API {
 	 * @param		xid		テンプレートの X-Id
 	 * @param		csv		登録するテンプレート本体(一行で指定して下さい)
 	 * @return		テンプレートの Managed Object ID
+	 * @throws		java.io.IOException REST異常
 	 */
 	public String createSmartRest(String xid, String csv)
 						throws IOException {

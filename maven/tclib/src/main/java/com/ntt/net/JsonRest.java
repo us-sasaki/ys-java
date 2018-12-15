@@ -167,26 +167,38 @@ public class JsonRest {
 		header.put(key, value);
 	}
 	
+	/**
+	 * ヘッダを削除します。
+	 *
+	 * @param		key		削除するヘッダのキー
+	 */
 	public synchronized void removeHeader(String key) {
 		header.remove(key);
 	}
 	
+	/**
+	 * ヘッダの値を取得します。
+	 *
+	 * @param		key		取得するヘッダのキー
+	 * @return		ヘッダの値
+	 */
 	public synchronized String getHeader(String key) {
 		return header.get(key);
 	}
 	
+	/**
+	 * ヘッダを格納する Map を取得します。
+	 *
+	 * @return		ヘッダを格納する Map
+	 */
 	public synchronized Map<String, String> getHeaders() {
 		return header;
 	}
 	
-	//public void setHeader(Map<String, String> header) {
-	//	this.header = header;
-	//}
-	
 	/**
 	 * GET リクエストをします。
 	 *
-	 * @param	resource	GETするリソース
+	 * @param	location	GETするリソース
 	 * @return	Rest.Response オブジェクト
 	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */

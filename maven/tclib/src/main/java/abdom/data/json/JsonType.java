@@ -568,9 +568,27 @@ public abstract class JsonType extends Number
 /*---------------
  * class methods
  */
-	/*
+	/**
+	 * JsonValue を得るための便利関数です。
+	 * JsonType クラスのみで JsonValue を扱う目的で設定されています。
+	 *
+	 * @param		value		Json 化する値
+	 * @return		value を JsonValue 化した値
+	 */
+	public static JsonValue v(String value) { return new JsonValue(value); }
+	public static JsonValue v(byte value) { return new JsonValue(value); }
+	public static JsonValue v(char value) { return new JsonValue(value); }
+	public static JsonValue v(short value) { return new JsonValue(value); }
+	public static JsonValue v(int value) { return new JsonValue(value); }
+	public static JsonValue v(long value) { return new JsonValue(value); }
+	public static JsonValue v(float value) { return new JsonValue(value); }
+	public static JsonValue v(double value) { return new JsonValue(value); }
+	public static JsonValue v(boolean value) { return new JsonValue(value); }
+	
+	/**
 	 * new JsonObject を得るための便利関数です。
-	 * 文字数(タイプ数)を減らす目的で設定されています。
+	 * JsonType クラスのみで JsonObject を扱うこと、
+	 * および文字数(タイプ数)を減らす目的で設定されています。
 	 * new JsonObject().add("name", "value") を
 	 * JsonType.o("name", "value") で取得できます。
 	 *
@@ -613,8 +631,9 @@ public abstract class JsonType extends Number
 	}
 	
 	/**
-	 * new JsonArray を得るための便利関数です。タイプ数を減らす目的で
-	 * 設定されています。
+	 * new JsonArray を得るための便利関数です。
+	 * JsonType クラスのみで JsonObject を扱うこと、
+	 * タイプ数を減らす目的で設定されています。
 	 * new JsonArray().push(5).push("hoe") または
 	 * new JsonArray().set(5, "hoe");
 	 * new JsonArray().splice(0,0,5,"hoe") を

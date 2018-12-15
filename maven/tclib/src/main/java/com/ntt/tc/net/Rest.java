@@ -278,6 +278,10 @@ public class Rest {
 	
 	/**
 	 * GET リクエストをします。
+	 *
+	 * @param		location	GET 対象の end point
+	 * @param		type		content type 値
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response get(String location, String type)
 													throws IOException {
@@ -288,6 +292,9 @@ public class Rest {
 	
 	/**
 	 * GET リクエストを json-stream 形式で行います
+	 *
+	 * @param		location	GET 対象の end point
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response getByStream(String location)
 													throws IOException {
@@ -298,6 +305,9 @@ public class Rest {
 	
 	/**
 	 * DELETE リクエストをします。
+	 *
+	 * @param		location	DELETE 対象の end point
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response delete(String location) throws IOException {
 		setAccept("");
@@ -307,6 +317,10 @@ public class Rest {
 	
 	/**
 	 * DELETE リクエストをします。
+	 *
+	 * @param		location	GET 対象の end point
+	 * @param		type		content type 値
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response delete(String location, String type)
 													throws IOException {
@@ -317,6 +331,10 @@ public class Rest {
 	
 	/**
 	 * PUT リクエストをします。
+	 *
+	 * @param		location	PUT 対象の end point
+	 * @param		json		PUT 対象の Json 値
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response put(String location, Jsonizable json)
 													throws IOException {
@@ -327,6 +345,10 @@ public class Rest {
 	}
 	/**
 	 * PUT リクエストをします。
+	 *
+	 * @param		location	PUT 対象の end point
+	 * @param		body		PUT 対象の文字列
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response put(String location, String body)
 							throws IOException {
@@ -337,6 +359,11 @@ public class Rest {
 	}
 	/**
 	 * Content-Type を指定して PUT リクエストをします。
+	 *
+	 * @param		location	PUT 対象の end point
+	 * @param		type		content type 値
+	 * @param		json		PUT 対象の Json 値
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response put(String location, String type, Jsonizable json)
 							throws IOException {
@@ -347,6 +374,11 @@ public class Rest {
 	}
 	/**
 	 * Content-Type を指定して PUT リクエストをします。
+	 *
+	 * @param		location	PUT 対象の end point
+	 * @param		type		content type 値
+	 * @param		body		PUT 対象の文字列
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response put(String location, String type, String body)
 							throws IOException {
@@ -358,6 +390,10 @@ public class Rest {
 	
 	/**
 	 * POST リクエストをします。
+	 *
+	 * @param		location	POST 対象の end point
+	 * @param		json		POST 対象の Json 値
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response post(String location, Jsonizable json)
 							throws IOException {
@@ -369,6 +405,10 @@ public class Rest {
 	
 	/**
 	 * POST リクエストをします。
+	 *
+	 * @param		location	POST 対象の end point
+	 * @param		body		POST 対象の文字列
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response post(String location, String body)
 							throws IOException {
@@ -380,6 +420,11 @@ public class Rest {
 	
 	/**
 	 * Content-Type を指定して POST リクエストをします。
+	 *
+	 * @param		location	POST 対象の end point
+	 * @param		type		content type 値
+	 * @param		json		POST 対象の Json 値
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response post(String location, String type, Jsonizable json)
 							throws IOException {
@@ -391,6 +436,11 @@ public class Rest {
 	
 	/**
 	 * Content-Type を指定して POST リクエストをします。
+	 *
+	 * @param		location	POST 対象の end point
+	 * @param		type		content type 値
+	 * @param		body		POST 対象の文字列
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response post(String location, String type, String body)
 							throws IOException {
@@ -402,6 +452,11 @@ public class Rest {
 	
 	/**
 	 * Httpリクエストの実処理を行います。
+	 *
+	 * @param		location	end point
+	 * @param		method		httpメソッド
+	 * @param		body		送信メッセージ(GET等では null)
+	 * @throws		java.io.IOException REST異常
 	 */
 	private Response request(String location, String method, String body)
 							throws IOException {
@@ -426,6 +481,7 @@ public class Rest {
 	 *						'/' を含む場合、フル指定と見なされます。
 	 *						空文字列では、application/json が設定されます。
 	 * @param	body		body に設定するデータ
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response request(String location, String method,
 								String contentType, String accept,
