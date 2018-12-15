@@ -65,6 +65,10 @@ jObject として、"key" のキーに数値 5 が格納された JSON オブジ
     jObject.put("key4", jsonArray); // jsonArray は JsonArray 型
     jObject.put("key5", jsonObject); // jsonObject は JsonObject 型
 
+JsonObject を利用した場合、jObject の生成は以下のように記述できます。
+
+    JsonType jObject = new JsonObject();
+    jObject.put("key", 5);
 </pre>
 <h2>文字列への変換</h3>
 <pre>
