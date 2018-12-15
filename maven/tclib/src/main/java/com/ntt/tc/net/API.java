@@ -606,7 +606,7 @@ public class API {
 	
 	/**
 	 * 指定されたデバイスで最後に報告された Measurement を取得します。
-	 * query として "pageSize=1&dateFrom=1970-01-01&revert=true" を用います。
+	 * query として "pageSize=1&amp;dateFrom=1970-01-01&amp;revert=true" を用います。
 	 *
 	 * @param		source	デバイスID
 	 * @return		最後に報告された Measurement (存在しない場合 null)
@@ -851,7 +851,7 @@ public class API {
 	
 	/**
 	 * 指定されたデバイスで最後に報告された Event を取得します。
-	 * query として "pageSize=1&dateFrom=1970-01-01" を用います。
+	 * query として "pageSize=1&amp;dateFrom=1970-01-01" を用います。
 	 *
 	 * @param		source	デバイスID
 	 * @return		最後に報告された Event (存在しない場合 null)

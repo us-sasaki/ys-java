@@ -120,6 +120,8 @@ public class Rest {
 	/**
 	 * https://management.iot-trialpack.com
 	 * に接続する、demouserアカウントでログインする新インスタンスを返却します。
+	 *
+	 * @return		demouser アカウントによるインスタンス
 	 */
 	public static Rest getDefaultC8YInstance() {
 		return new Rest("https://management.iot-trialpack.com", "demouser", "demouser");
@@ -212,6 +214,8 @@ public class Rest {
 	
 	/**
 	 * アプリケーションキーを設定します。
+	 *
+	 * @param		key		アプリケーションキー
 	 */
 	public void setApplicationKey(String key) {
 		if (key == null) {
@@ -269,6 +273,7 @@ public class Rest {
 	 *
 	 * @param	location	GETするリソース
 	 * @return	Rest.Response オブジェクト
+	 * @throws		java.io.IOException REST異常
 	 */
 	public Response get(String location) throws IOException {
 		setAccept("");
@@ -281,6 +286,7 @@ public class Rest {
 	 *
 	 * @param		location	GET 対象の end point
 	 * @param		type		content type 値
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	public Response get(String location, String type)
@@ -294,6 +300,7 @@ public class Rest {
 	 * GET リクエストを json-stream 形式で行います
 	 *
 	 * @param		location	GET 対象の end point
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	public Response getByStream(String location)
@@ -307,6 +314,7 @@ public class Rest {
 	 * DELETE リクエストをします。
 	 *
 	 * @param		location	DELETE 対象の end point
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	public Response delete(String location) throws IOException {
@@ -320,6 +328,7 @@ public class Rest {
 	 *
 	 * @param		location	GET 対象の end point
 	 * @param		type		content type 値
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	public Response delete(String location, String type)
@@ -334,6 +343,7 @@ public class Rest {
 	 *
 	 * @param		location	PUT 対象の end point
 	 * @param		json		PUT 対象の Json 値
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	public Response put(String location, Jsonizable json)
@@ -348,6 +358,7 @@ public class Rest {
 	 *
 	 * @param		location	PUT 対象の end point
 	 * @param		body		PUT 対象の文字列
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	public Response put(String location, String body)
@@ -363,6 +374,7 @@ public class Rest {
 	 * @param		location	PUT 対象の end point
 	 * @param		type		content type 値
 	 * @param		json		PUT 対象の Json 値
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	public Response put(String location, String type, Jsonizable json)
@@ -378,6 +390,7 @@ public class Rest {
 	 * @param		location	PUT 対象の end point
 	 * @param		type		content type 値
 	 * @param		body		PUT 対象の文字列
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	public Response put(String location, String type, String body)
@@ -393,6 +406,7 @@ public class Rest {
 	 *
 	 * @param		location	POST 対象の end point
 	 * @param		json		POST 対象の Json 値
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	public Response post(String location, Jsonizable json)
@@ -408,6 +422,7 @@ public class Rest {
 	 *
 	 * @param		location	POST 対象の end point
 	 * @param		body		POST 対象の文字列
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	public Response post(String location, String body)
@@ -424,6 +439,7 @@ public class Rest {
 	 * @param		location	POST 対象の end point
 	 * @param		type		content type 値
 	 * @param		json		POST 対象の Json 値
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	public Response post(String location, String type, Jsonizable json)
@@ -440,6 +456,7 @@ public class Rest {
 	 * @param		location	POST 対象の end point
 	 * @param		type		content type 値
 	 * @param		body		POST 対象の文字列
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	public Response post(String location, String type, String body)
@@ -456,6 +473,7 @@ public class Rest {
 	 * @param		location	end point
 	 * @param		method		httpメソッド
 	 * @param		body		送信メッセージ(GET等では null)
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	private Response request(String location, String method, String body)
@@ -481,6 +499,7 @@ public class Rest {
 	 *						'/' を含む場合、フル指定と見なされます。
 	 *						空文字列では、application/json が設定されます。
 	 * @param	body		body に設定するデータ
+	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
 	 */
 	public Response request(String location, String method,
@@ -515,6 +534,8 @@ public class Rest {
 	 * @param	location	リソースの場所 /platform 等
 	 * @param	method		GET/POST/PUT/DELETE
 	 * @param	body		body に設定するデータ
+	 * @return		Rest.Response オブジェクト
+	 * @throws		java.io.IOException REST異常
 	 */
 	protected Response requestImpl(String location, String method, byte[] body)
 											throws IOException {
@@ -536,6 +557,7 @@ public class Rest {
 	 * @param	mimetype	object パートの type に指定されるMIME-Type
 	 * @param	data		upload する binary データ
 	 * @return	http レスポンス
+	 * @throws		java.io.IOException REST異常
 	 */
 	public synchronized Response postBinary(String filename, String mimetype, byte[] data)
 							throws IOException {
@@ -594,7 +616,8 @@ public class Rest {
 	 * @param		endPoint	POST を行う end point
 	 * @param		filename	ファイル名
 	 * @param		data		出力するバイナリ情報
-	 * @return		response
+	 * @return		Rest.Response オブジェクト
+	 * @throws		java.io.IOException REST異常
 	 */
 	public synchronized Response postMultipart(
 									String endPoint,
@@ -611,7 +634,8 @@ public class Rest {
 	 * @param		filename	ファイル名
 	 * @param		contentType	Content-Type に指定する値(text/plainなど)
 	 * @param		data		出力するバイナリ情報
-	 * @return		response
+	 * @return		Rest.Response オブジェクト
+	 * @throws		java.io.IOException REST異常
 	 */
 	public synchronized Response postMultipart(
 									String endPoint,

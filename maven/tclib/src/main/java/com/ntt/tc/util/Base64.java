@@ -11,6 +11,9 @@ public class Base64 {
 	/**
 	 * base64 エンコーディングを行ないます。
 	 * 改行は、デフォルトの 20 blocks ( 40 letters ) ごとに挿入します。
+	 *
+	 * @param		target	エンコード対象のバイナリ
+	 * @return		エンコードされた文字列を表すバイナリ
 	 */
 	public static byte[] encode(byte[] target) {
 		try {
@@ -32,6 +35,9 @@ public class Base64 {
 	
 	/**
 	 * base64 デコーディングを行ないます。
+	 *
+	 * @param		target	デコード対象の文字列を表すバイナリ
+	 * @return		デコードされたバイナリ
 	 */
 	public static byte[] decode(byte[] target) {
 		try {
