@@ -169,6 +169,9 @@ public class Alarm extends C8yData {
 	
 	/**
 	 * 与えられた引数を保持するオブジェクトを生成します。
+	 *
+	 * @param	sourceId	Alarm を出力したデバイスの ID
+	 * @param	text		このアラームのテキスト
 	 */
 	@Deprecated
 	public Alarm(String sourceId, String text) {

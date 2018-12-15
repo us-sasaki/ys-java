@@ -37,7 +37,7 @@ public class ID extends C8yData {
 	 * ManagedObject を指定してオブジェクトを生成します。
 	 * Id 以外のフィールドは捨てられます。
 	 *
-	 * @param		id		本オブジェクトに設定する (ManagedObject)Id
+	 * @param		mo		本オブジェクトに設定する (ManagedObject)
 	 */
 	public ID(ManagedObject mo) {
 		this.id = mo.id;

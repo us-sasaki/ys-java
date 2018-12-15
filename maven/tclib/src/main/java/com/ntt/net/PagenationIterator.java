@@ -16,7 +16,7 @@ import abdom.data.json.JsonObject;
  * @author		Yusuke Sasaki
  * @version		December 7, 2018
  */
-public class PagenationIterator implements Iterator<JsonType> {
+class PagenationIterator implements Iterator<JsonType> {
 	
 	protected static final int FETCH_SIZE = 100;
 	
@@ -41,10 +41,12 @@ public class PagenationIterator implements Iterator<JsonType> {
 	 * %2B に変換されます。
 	 *
 	 * @param	rest	Rest オブジェクト
-	 * @param	url		API の endpoint。例 /measurement/measurements/ 
+	 * @param	url		API の endpoint。例 /measurement/measurements/
+	 * @param	pagePropertyName		現在のページ数を示すパラメータ名
+	 * @param	pageSizePropertyName	1ページあたりの情報数を示すパラメータ名
 	 * @param	fieldName	配列を格納しているフィールド名を指定します
 	 */
-	public PagenationIterator(JsonRest rest, String url, String pagePropertyName, String pageSizePropertyName, String fieldName) {
+	PagenationIterator(JsonRest rest, String url, String pagePropertyName, String pageSizePropertyName, String fieldName) {
 		// + -> %2B に変換
 		url = url.replace("+", "%2B");
 		this.rest = rest;

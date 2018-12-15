@@ -68,6 +68,8 @@ public class TC_Date extends C8yValue {
 	 * ミリ秒を与えてインスタンスを生成します。
 	 * これによって、このオブジェクトは、「エポック」(すなわち、1970 年 1 月
 	 * 1 日 00:00:00 GMT) である標準時からの指定されたミリ秒数を表します。
+	 *
+	 * @param	date	ミリ秒
 	 */
 	public TC_Date(long date) {
 		this.date = new Date(date);
@@ -127,6 +129,8 @@ public class TC_Date extends C8yValue {
 	/**
 	 * 1970 年 1 月 1 日 00:00:00 GMT からのミリ秒値でこのオブジェクトを
 	 * 設定します。
+	 *
+	 * @param		time		ミリ秒
 	 */
 	strictfp // JSON プロパティから除外
 	public void setTime(long time) {

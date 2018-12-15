@@ -172,7 +172,7 @@ public class APIUtil {
 	 * Managed Object 全体に含まれるプロパティ(fragmentを含みます)の
 	 * 一覧を取得します。
 	 *
-	 * @param		取得する ManagedObject の検索キー
+	 * @param		query	取得する ManagedObject の検索キー
 	 * @return		(fragment, count) からなる Map です。null キーではキー値が
 	 *				"null" となります。
 	 */
@@ -340,6 +340,7 @@ public class APIUtil {
 	 * @param	managedObject	登録するデバイス情報(成功時、更新されます)
 	 * @return	デバイスクレデンシャル。指定した managedObject も更新され、
 	 *			ID などが付与されます。
+	 * @throws		java.io.IOException	REST異常
 	 */
 	public DeviceCredentials registerDevice(
 					String deviceId,
