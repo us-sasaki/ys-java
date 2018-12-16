@@ -279,6 +279,8 @@ public final class ByteArray {
 	/**
 	 * 乱数ジェネレータを指定します。デフォルトでは java.util.Random なので、
 	 * 精度を要求する場合に使用します。
+	 *
+	 * @param	newRandom	乱数ジェネレータ
 	 */
 	public static void setRandom(Random newRandom) {
 		r = newRandom;
@@ -322,6 +324,9 @@ public final class ByteArray {
 	
 	/**
 	 * 与えられたデータについて、奇数パリティを付加します。
+	 *
+	 * @param	d		パリティ付加対象データ
+	 * @return	パリティ付加後のデータ
 	 */
 	public static byte setOddParity(byte d) {
 		byte b = d;
@@ -335,6 +340,9 @@ public final class ByteArray {
 	/**
 	 * 与えられたデータについて、奇数パリティを付加します。
 	 * 引数のデータは奇数パリティを付加したものにアップデートされます。
+	 *
+	 * @param	d		パリティ付加対象データ列
+	 * @return	パリティ付加後のデータ列
 	 */
 	public static byte[] setOddParity(byte[] d) {
 		for (int i = 0; i < d.length; i++) {

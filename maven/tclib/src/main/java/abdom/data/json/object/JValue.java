@@ -43,9 +43,6 @@ public abstract class JValue implements Jsonizable {
 	 * JsonType を構成し、fill(JsonType) を呼んでいます。
 	 *
 	 * @param	jsonString	値を保持する JSON 文字列
-	 * @return	value 値の中で、このオブジェクトにプロパティがなく、設定
-	 *			しなかった項目(extra)。ただし、この JValue が object 型でない
-	 *			場合、null。
 	 */
 	public void fill(String jsonString) {
 		fill(JsonType.parse(jsonString));

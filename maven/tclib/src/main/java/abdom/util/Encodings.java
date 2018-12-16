@@ -37,11 +37,14 @@ public class Encodings {
 	
 	/**
 	 * JIS がチェックできない。ENCODINGS の順序入れ替えと
-	 * JIS の場合の特例処理 0x4A(Terapad) -> 0x42(Java) の違いを
+	 * JIS の場合の特例処理 0x4A(Terapad) → 0x42(Java) の違いを
 	 * 吸収することでましになった。(「あい」の２文字のファイルで、
 	 * JIS/UTF-8/EUC/ShiftJIS を正しく判定した)
 	 * Terapad は 0x4A になるが、sakura では 0x42 だったので、
 	 * Terapad の変換がイレギュラーなのかもしれない。
+	 *
+	 * @param	text	文字列を表すバイナリ
+	 * @return	エンコーディング判定結果
 	 */
 	public static String detect(byte[] text) {
 		for (String encoding : ENCODINGS) {
@@ -54,6 +57,9 @@ public class Encodings {
 	/**
 	 * 指定されたバイナリ列の日本語エンコーディングを自動判定し、Charset
 	 * として返却します。
+	 *
+	 * @param	text	文字列を表すバイナリ
+	 * @return	エンコーディング判定結果
 	 */
 	public static Charset charset(byte[] text) {
 		return Charset.forName(detect(text));
@@ -63,6 +69,8 @@ public class Encodings {
 	 * 指定されたバイナリ列の日本語エンコーディングを自動判定し、Charset
 	 * として返却します。
 	 *
+	 * @param	filename	ファイル名
+	 * @return	エンコーディング判定結果
 	 * @exception	RuntimeException	IOException が発生した
 	 */
 	public static Charset charset(String filename) {
@@ -86,6 +94,9 @@ public class Encodings {
 	/**
 	 * JIS の場合、バイトコードが異なることがあるが、それを許容する
 	 * equals
+	 *
+	 * @param	a		比較元
+	 * @param	b		比較先
 	 */
 	private static boolean equalsJIS(byte[] a, byte[] b) {
 		if (a.length != b.length) return false;
@@ -100,6 +111,11 @@ public class Encodings {
 	/**
 	 * 指定されたエンコーディングで文字列化、getBytes() して変化
 	 * しないものを検索。変化するものは　文字化け　と見なす。
+	 * 
+	 * @param	text		対象文字列
+	 * @param	encoding	エンコード文字列(ISO-2022-JP/UTF-8/EUC-JP/
+	 *						Shift_JIS/Windows-31J/UTF-16/UTF-3)
+	 * @return	text が encoding のものである場合、true
 	 */
 	private static boolean checkEncoding(byte[] text, String encoding) {
 		try {
@@ -119,6 +135,12 @@ public class Encodings {
 	/**
 	 * 指定したディレクトリ以降の指定した拡張子のファイルを encoding で
 	 * 指定される文字エンコードに変換する。
+	 *
+	 * @param	dir			対象ディレクトリ
+	 * @param	ext			拡張子
+	 * @param	encoding	エンコード文字列(ISO-2022-JP/UTF-8/EUC-JP/
+	 *						Shift_JIS/Windows-31J/UTF-16/UTF-3)
+	 * @throws	java.io.IOException	IO例外
 	 */
 	public static void convert(String dir, String ext, String encoding) throws IOException {
 		File d = new File(dir);
@@ -139,6 +161,11 @@ public class Encodings {
 	/**
 	 * 指定された１ファイルを変換する。
 	 * 変換の必要がない(もともと指定されたエンコーディング)場合、何もしない。
+	 *
+	 * @param	f	対象 File
+	 * @param	encoding	エンコード文字列(ISO-2022-JP/UTF-8/EUC-JP/
+	 *						Shift_JIS/Windows-31J/UTF-16/UTF-3)
+	 * @throws	java.io.IOException	IO例外
 	 */
 	public static void convertFile(File f, String encoding) throws IOException {
 		System.out.println("Convert : " + f.getAbsolutePath());

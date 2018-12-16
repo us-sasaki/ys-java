@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Json形式における配列を表します。
- * 内部では配列を ArrayList<JsonType> で保持します。
+ * 内部では配列を ArrayList&lt;JsonType&gt; で保持します。
  * このクラスのオブジェクトはスレッドセーフではありません。
  */
 public class JsonArray extends JsonType {

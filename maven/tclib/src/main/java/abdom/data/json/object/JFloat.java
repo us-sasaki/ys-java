@@ -56,6 +56,8 @@ public class JFloat extends JValue {
 	/**
 	 * 値を取得します。
 	 * 値がない場合、Float.NaN が返却されます。
+	 *
+	 * @return	float値
 	 */
 	public float floatValue() {
 		if (value == null) return Float.NaN;

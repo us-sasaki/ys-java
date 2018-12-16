@@ -8,7 +8,8 @@ import java.util.function.BiFunction;
 /**
  * 基本的な統計量を求める。
  * T は統計量を求めたいdouble値を出力できるクラス。
- * 実際の値の出力は apply の第２引数(Function<T, Double>)で指定する。
+ * 実際の値の出力は apply の第２引数(Function&lt;T, Double&gt;)で指定する。
+ * @param	<T>		double 値を出力できるクラス
  */
 public class Stats<T> {
 	public boolean applied = false;
@@ -40,6 +41,7 @@ public class Stats<T> {
 	/**
 	 * 配列と、double値抽出関数を指定し、統計量を設定します。
 	 * 
+	 * @param	<T>		double 値を出力できるクラス
 	 * @param	data	double 値を出力できるクラスの配列
 	 * @param	f		Double 値の出力方法。null の場合その値は除外される。
 	 * @return	計算された統計量を持つ Stats オブジェクト
@@ -90,6 +92,7 @@ public class Stats<T> {
 	/**
 	 * List と、double値抽出関数を指定し、統計量を算出します。
 	 *
+	 * @param	<T>		double 値を出力できるクラス
 	 * @param	data	double 値を出力できるクラスのリスト
 	 * @param	f		Double 値の出力方法。null の場合、その値は除外される。
 	 * @return	計算された統計量を持つ Stats オブジェクト
@@ -141,11 +144,12 @@ public class Stats<T> {
 	 * List と、List の要素から添え字情報を用いて double を出力する場合の統計量。
 	 *<pre>
 	 * 例) T = java.awt.Point
-	 *     BiFunction = (pList, i) ->
+	 *     BiFunction = (pList, i) -&gt;
 	 *                    ( pList.get(i).x - pList.get( (i==0)?0:i-1 ).x )
 	 *     (1つ前の点との x 軸の差) に関する統計量を得る
 	 *</pre>
 	 *
+	 * @param	<T>		double 値を出力できるクラス
 	 * @param	data	double 値を出力できるクラスの Iterable
 	 * @param	f		Iterable から生成されるリストと添え字から Double を
 	 *					出力する関数
@@ -161,7 +165,7 @@ public class Stats<T> {
 	 * List と、List の要素から添え字情報を用いて double を出力する場合の統計量。
 	 *<pre>
 	 * 例) T = java.awt.Point
-	 *     BiFunction = (pList, i) ->
+	 *     BiFunction = (pList, i) -&gt;
 	 *                    ( pList.get(i).x - pList.get( (i==0)?0:i-1 ).x )
 	 *     (1つ前の点との x 軸の差) に関する統計量を得る
 	 *</pre>
@@ -227,6 +231,11 @@ public class Stats<T> {
 	
 	/**
 	 * 正規分布(1次元)の確率密度関数の微分
+	 *
+	 * @param	x		求めたい点
+	 * @param	mean	平均値(軸)
+	 * @param	dev		標準偏差
+	 * @return	正規分布の確率密度関数の微分値
 	 */
 	public static double dgaussian(double x, double mean, double dev) {
 		return -(x-mean)/dev/dev*gaussian(x, mean, dev);
@@ -246,6 +255,9 @@ public class Stats<T> {
 	
 	/**
 	 * 正規分布(1次元)の確率密度関数の微分
+	 *
+	 * @param	x		求めたい点
+	 * @return	正規分布の確率密度関数の微分値
 	 */
 	public double dgaussian(double x) {
 		return -(x-mean)/variance*gaussian(x);

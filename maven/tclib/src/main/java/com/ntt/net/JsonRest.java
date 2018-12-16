@@ -112,6 +112,8 @@ public class JsonRest {
 	 * 指定された url を保持する Rest を作成します。
 	 * header には、Content-Type: application/json,
 	 * Accept: application/json が自動的に付加されます。
+	 *
+	 * @param	urlStr		接続先の URL https://host.domain.com/api など
 	 */
 	public JsonRest(String urlStr) {
 		if (urlStr == null)
@@ -210,6 +212,7 @@ public class JsonRest {
 	 * DELETE リクエストをします。
 	 *
 	 * @param	location	URL
+	 * @return	Rest.Response オブジェクト
 	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response delete(String location) throws IOException {
@@ -221,6 +224,7 @@ public class JsonRest {
 	 *
 	 * @param	location	URL
 	 * @param	json		body
+	 * @return	Rest.Response オブジェクト
 	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response put(String location, Jsonizable json)
@@ -233,6 +237,7 @@ public class JsonRest {
 	 *
 	 * @param	location	URL
 	 * @param	body		body
+	 * @return	Rest.Response オブジェクト
 	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response put(String location, String body)
@@ -245,6 +250,7 @@ public class JsonRest {
 	 *
 	 * @param	location	URL
 	 * @param	body		body
+	 * @return	Rest.Response オブジェクト
 	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response put(String location, byte[] body)
@@ -257,6 +263,7 @@ public class JsonRest {
 	 *
 	 * @param	location	URL
 	 * @param	json		body
+	 * @return	Rest.Response オブジェクト
 	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response post(String location, Jsonizable json)
@@ -271,6 +278,7 @@ public class JsonRest {
 	 *
 	 * @param	location	URL
 	 * @param	body		body
+	 * @return	Rest.Response オブジェクト
 	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response post(String location, String body)
@@ -285,6 +293,7 @@ public class JsonRest {
 	 *
 	 * @param	location	URL
 	 * @param	body		body
+	 * @return	Rest.Response オブジェクト
 	 * @exception	java.io.IOException 通信異常、REST 異常など
 	 */
 	public Response post(String location, byte[] body)
@@ -414,6 +423,7 @@ public class JsonRest {
 	 * 指定された文字列に + が含まれる場合、%2B に置換します。
 	 *
 	 * @param	target	変換対象文字列
+	 * @return	%2B に置換された文字列
 	 */
 	protected static String convLocation(String target) {
 /*		try {

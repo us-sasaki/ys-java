@@ -57,6 +57,8 @@ public class JLong extends JValue {
 	/**
 	 * 値を取得します。
 	 * 値がない場合、Long.MIN_VALUE が返却されます。
+	 *
+	 * @return		long 値
 	 */
 	public long longValue() {
 		if (value == null) return Long.MIN_VALUE;

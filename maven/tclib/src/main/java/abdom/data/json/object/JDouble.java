@@ -56,6 +56,8 @@ public class JDouble extends JValue {
 	/**
 	 * 値を取得します。
 	 * 値がない場合、Double.NaN が返却されます。
+	 *
+	 * @return	double 値
 	 */
 	public double doubleValue() {
 		if (value == null) return Double.NaN;

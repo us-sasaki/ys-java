@@ -116,6 +116,10 @@ public class SimilarFilePicker {
 	/**
 	 * ２つのFileEntryの距離を測る。
 	 * ただし、 !FileEntry.isDirectory である必要がある。
+	 *
+	 * @param		a	測定対象起点
+	 * @param		b	測定対象終点
+	 * @return		距離
 	 */
 	public static int d(FileEntry a, FileEntry b) {
 		//

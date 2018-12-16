@@ -13,7 +13,7 @@ import abdom.util.CsvReader;
 
 /**
  * 複数ショットのディレクトリ内ファイルサイズ情報を格納します。
- * また、FileList や List<FileEntry> に関する便利な操作を行うメソッドを提供
+ * また、FileList や List&lt;FileEntry&gt; に関する便利な操作を行うメソッドを提供
  * します。
  *
  * @version		October 21, 2017
@@ -90,6 +90,7 @@ public class FileList {
 	 * 蓄積します。
 	 *
 	 * @param	fname	ファイル情報を格納した csv ファイル名
+	 * @throws	java.io.IOException IO例外
 	 */
 	public void addFile(String fname) throws IOException {
 		if (list == null) list = new ArrayList<FileEntry>();
@@ -194,6 +195,8 @@ public class FileList {
 	
 	/**
 	 * 指定したファイル名から日付部分を取り出し、long値の dateList に追加
+	 *
+	 * @param	filename	ファイル名
 	 */
 	private void addDateList(String filename) {
 		filename = filename(filename);
@@ -261,6 +264,8 @@ public class FileList {
 	 * このインスタンスが保持している list への参照を返却します。
 	 * 返却された list の FileEntry 内容を変更した場合、このインスタンスの list が
 	 * 変更されることに注意が必要です。
+	 *
+	 * @return	保持している FileEntry のリスト
 	 */
 	public List<FileEntry> getList() {
 		return list;
@@ -271,6 +276,9 @@ public class FileList {
 	 * list を返却します。
 	 * 返却された list の FileEntry 内容を変更した場合、このインスタンスの list が
 	 * 変更されることに注意が必要です。
+	 *
+	 * @param	level		ディレクトリ階層の深さ
+	 * @return	抽出された FileEntry からなるリスト
 	 */
 	public List<FileEntry> selectLevel(int level) {
 		if (list == null) throw new IllegalStateException("addFile によって値を格納してください");
@@ -287,6 +295,9 @@ public class FileList {
 	 * list を返却します。
 	 * 返却された list の FileEntry 内容を変更した場合、このインスタンスの list が
 	 * 変更されることに注意が必要です。
+	 *
+	 * @param	isFile		ファイルを抽出(true) / ディレクトリを抽出(false)
+	 * @return	抽出後のリスト
 	 */
 	public List<FileEntry> selectFile(boolean isFile) {
 		if (list == null) throw new IllegalStateException("addFile によって値を格納してください");
@@ -299,7 +310,7 @@ public class FileList {
 	}
 	
 	/**
-	 * 任意のルール(Predicate<FileEntry>)に従ってファイルを抽出する
+	 * 任意のルール(Predicate&lt;FileEntry&gt;)に従ってファイルを抽出する
 	 *
 	 * @param	fes		ファイル抽出ルール
 	 * @return	抽出された FileEntry の List (shallow copy)
@@ -311,6 +322,10 @@ public class FileList {
 	
 	/**
 	 * 任意のルールに従って、sublist を取得する。
+	 *
+	 * @param	src		FileEntry のリスト
+	 * @param	p		抽出ルール(FileEntry から boolean へのマップ)
+	 * @return	抽出後のリスト
 	 */
 	public static List<FileEntry> selectAs(List<FileEntry> src, java.util.function.Predicate<FileEntry> p) {
 		ArrayList<FileEntry> result = new ArrayList<FileEntry>();
@@ -378,6 +393,12 @@ public class FileList {
 	
 	/**
 	 * NVD3 line chart 用 JSON ファイル出力
+	 *
+	 * @param	dateList	日付リスト
+	 * @param	target		Line Chart のデータを格納したリスト
+	 * @param	depth		対象とするディレクトリ階層
+	 * @param	filename	出力ファイル名
+	 * @throws	java.io.IOException	IO例外
 	 */
 	public static void writeJsonFile(List<Long> dateList,
 							List<FileEntry> target, int depth,
@@ -399,6 +420,11 @@ public class FileList {
 	
 	/**
 	 * NVD3 Pie Chart 用 JSON ファイル出力
+	 *
+	 * @param	target		Pie Chart のデータを格納したリスト
+	 * @param	depth		対象とするディレクトリ階層
+	 * @param	filename	出力ファイル名
+	 * @throws	java.io.IOException	IO例外
 	 */
 	public static void writePieChartJsonFile(List<FileEntry> target, int depth,
 							String filename) throws IOException {
@@ -414,6 +440,9 @@ public class FileList {
 	/**
 	 * owner 文字列から名前をマッピングします。
 	 * 事前に ownerTable を上書きすると、そのテーブルが利用されます。
+	 *
+	 * @param	owner	名前マッピング元の文字列
+	 * @return	名前
 	 */
 	public String reveal(String owner) {
 		int codeIndex = owner.lastIndexOf("\\");
@@ -423,6 +452,10 @@ public class FileList {
 	
 	/**
 	 * JsonObject をファイルに出力する
+	 *
+	 * @param	obj			ファイル出力対象オブジェクト
+	 * @param	filename	出力ファイル名
+	 * @throws	java.io.IOException	IO例外
 	 */
 	public static void writeJsonType(JsonType obj, String filename) throws IOException {
 		FileOutputStream fos = new FileOutputStream(filename);
@@ -452,6 +485,10 @@ public class FileList {
 	/**
 	 * 指定されたディレクトリのファイルを読み込む
 	 * list20yyMMdd.csv のような形のファイルをすべて読み込む
+	 *
+	 * @param	path	ファイルパス
+	 * @return	FileList
+	 * @throws	java.io.IOException	IO例外
 	 */
 	public static FileList readFiles(String path) throws IOException {
 		File dir = new File(path);

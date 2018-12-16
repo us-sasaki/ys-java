@@ -32,7 +32,9 @@ public class PageIterable implements Iterable<JsonType> {
 	 * url に + (0x2B) が入っていた場合、自動的に %2B に変換されます。
 	 *
 	 * @param	rest	Rest オブジェクト
-	 * @param	url		API の endpoint。例 /measurement/measurements/ 
+	 * @param	url		API の endpoint。例 /measurement/measurements/
+	 * @param	pagePropertyName		現在のページ数を示すパラメータ名
+	 * @param	pageSizePropertyName	1ページあたりの情報数を示すパラメータ名
 	 * @param	fieldName	配列を格納しているフィールド名を指定します
 	 */
 	public PageIterable(JsonRest rest, String url, String pagePropertyName, String pageSizePropertyName, String fieldName) {

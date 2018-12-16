@@ -85,8 +85,8 @@ public class JDate extends JValue {
 	 * 指定が必要です。何も指定しない場合のフォーマットは ISO8601 の
 	 * SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX") です。
 	 *
-	 * @param		dateFormat		以降このスレッドで日付解析に利用する
-	 *								デフォルトの DateFormat オブジェクト
+	 * @param		df		以降このスレッドで日付解析に利用する
+	 *						デフォルトの DateFormat オブジェクト
 	 */
 	public static void setDefaultFormat(DateFormat df) {
 		defaultFormat.set(df);
@@ -111,6 +111,8 @@ public class JDate extends JValue {
 	/**
 	 * 1970 年 1 月 1 日 00:00:00 GMT からのミリ秒値でこのオブジェクトを
 	 * 設定します。
+	 *
+	 * @param	time	設定するミリ秒値
 	 */
 	strictfp // JSON プロパティから除外
 	public void setTime(long time) {

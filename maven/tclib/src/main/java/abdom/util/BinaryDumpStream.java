@@ -40,6 +40,8 @@ public class BinaryDumpStream extends FilterOutputStream {
 	 * 出力するオブジェクトを生成する.
 	 * 一行のバイト数はデフォルト値である 16 が設定される.
 	 * また、行番号出力は on, サイズ出力は off が設定される.
+	 *
+	 * @param	out		出力ストリーム
 	 */
 	public BinaryDumpStream(OutputStream out) {
 		super(out);
@@ -168,7 +170,7 @@ public class BinaryDumpStream extends FilterOutputStream {
 	/**
 	 * close後にサイズを表示するかどうかを指定する.
 	 *
-	 * @param	出力後にサイズ情報を負荷するときは true を指定する.
+	 * @param	b		出力後にサイズ情報を負荷するときは true を指定する.
 	 */
 	public void setSizing(boolean b) {
 		this.sizePrintIsActive = b;

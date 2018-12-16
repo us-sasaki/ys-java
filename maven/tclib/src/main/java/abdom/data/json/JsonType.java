@@ -552,6 +552,7 @@ public abstract class JsonType extends Number
 	 * @param	index	挿入するインデックス
 	 * @param	delete	削除する要素数
 	 * @param	toAdd	index の位置に挿入する複数要素
+	 * @return	変更後の this
 	 */
 	public JsonArray splice(int index, int delete, Object... toAdd) {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、splice できません");
@@ -559,7 +560,7 @@ public abstract class JsonType extends Number
 	/**
 	 * JsonObject としてのキー(keySet)を取得します。
 	 *
-	 * @return	キー集合(Set<String>)
+	 * @return	キー集合(Set&lt;String&gt;)
 	 */
 	public Set<String> keySet() {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、keySet を持ちません");
@@ -641,6 +642,7 @@ public abstract class JsonType extends Number
 	 * のように取得できます。
 	 *
 	 * @param		param	配列を構成する要素
+	 * @return		生成された JsonArray
 	 */
 	public static JsonArray a(Object... param) {
 		JsonArray result = new JsonArray();
@@ -684,6 +686,7 @@ public abstract class JsonType extends Number
 	 *
 	 * @param	in	Json文字列を入力する Reader。
 	 * @return	生成された JsonType
+	 * @throws	java.io.IOException IO例外
 	 */
 	// * Reader は内部的に PushbackReader として利用されます。→されなくなった
 	public static JsonType parse(Reader in) throws IOException {

@@ -32,6 +32,8 @@ public class CsvReader implements Closeable {
  */
 	/**
 	 * 渡された Reader は、最後まで読み込まれたとき close() されます。
+	 *
+	 * @param	in		読み込み対象 Reader
 	 */
 	public CsvReader(Reader in) {
 		if (in instanceof BufferedReader) this.in = (BufferedReader)in;
@@ -54,6 +56,7 @@ public class CsvReader implements Closeable {
 	 *			Reader はクローズされます。
 	 *			改行のみの行は、ヌル文字１つからなる String 配列が
 	 *			返却されます。
+	 * @throws	java.io.IOException	IO例外
 	 */
 	public String[] readRow() throws IOException {
 		// トークン分割
@@ -242,6 +245,9 @@ public class CsvReader implements Closeable {
 	 *     }
 	 * }
 	 * </pre>
+	 *
+	 * @param	fname		ファイル名
+	 * @return	iterable
 	 */
 	public static Iterable<String[]> rows(final String fname) {
 		return new Iterable<String[]>() {
@@ -264,6 +270,9 @@ public class CsvReader implements Closeable {
 	 *     }
 	 * }
 	 * </pre>
+	 *
+	 * @param	reader		Reader
+	 * @return	iterable
 	 */
 	public static Iterable<String[]> rows(final Reader reader) {
 		return new Iterable<String[]>() {
@@ -274,7 +283,11 @@ public class CsvReader implements Closeable {
 		};	}
 	
 	/**
-	 * CSV ファイルをすべて読み込み、List<String[]> 形式で返却します。
+	 * CSV ファイルをすべて読み込み、List&lt;String[]&gt; 形式で返却します。
+	 *
+	 * @param	filename	読み込み対象ファイル名
+	 * @return	CSVのカラム(String[])からなるリスト
+	 * @throws	java.io.IOException IO例外
 	 */
 	public static List<String[]> readAll(String filename) throws IOException {
 		List<String[]> result = new ArrayList<String[]>();
@@ -293,6 +306,7 @@ public class CsvReader implements Closeable {
 	 *
 	 * @param	filename	CSVファイル名
 	 * @return	CSV ファイル内容の JSON 変換
+	 * @throws	java.io.IOException IO例外
 	 */
 	public static JsonArray readAllasJson(String filename) throws IOException {
 		JsonArray ja = new JsonArray();

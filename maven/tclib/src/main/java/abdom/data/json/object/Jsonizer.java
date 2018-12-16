@@ -33,13 +33,13 @@ import abdom.data.json.Jsonizable;
  * <pre>
  * null 値については、次のように取り扱います。
  *       Java Object                    toJson()
- *  Object null;              ->   現れない
- *  JsonObject null;          ->   現れない
- *  JsonValue(null)           ->   null
+ *  Object null;              -&gt;   現れない
+ *  JsonObject null;          -&gt;   現れない
+ *  JsonValue(null)           -&gt;   null
  *
  *       　　JSON                    fill()
- *  現れない                  ->   設定しない
- *  null                      ->   Object null; を設定
+ *  現れない                  -&gt;   設定しない
+ *  null                      -&gt;   Object null; を設定
  *                                 JsonObject null; を設定
  *                                 JsonValue null; を設定
  * </pre>
@@ -325,7 +325,7 @@ public final class Jsonizer {
 	 *
 	 * @param	instance	JSON 文字列化する対象のインスタンス
 	 * @param	indent		インデント(複数のスペースやタブ)
-	 * @param	textwidth	object, array に関し、この文字数に収まる場合
+	 * @param	maxwidth	object, array に関し、この文字数に収まる場合
 	 *						複数行に分けない処理を行うための閾値。
 	 *						0 以下を指定すると、一行化を試みず、常に複数行化
 	 *						されます。(この方が高速)
@@ -540,7 +540,8 @@ public final class Jsonizer {
 	 * 以外の場合は、指定された配列の実行時の型と JsonArray のサイズを
 	 * 使って新しい配列が割り当てられます。 
 	 *
-	 * @param	source	値を保持している JsonType
+	 * @param	<T>		生成する配列要素のクラス
+	 * @param	json	値を保持している JsonType
 	 * @param	array	値を格納する配列(の型)
 	 * @return	JsonType の値が設定された JData の子クラスのインスタンスの配列
 	 */
@@ -576,6 +577,7 @@ public final class Jsonizer {
 	 * 以外の場合は、指定された配列の実行時の型と JSON arrayのサイズを
 	 * 使って新しい配列が割り当てられます。 
 	 *
+	 * @param	<T>		生成する配列要素のクラス
 	 * @param	source	値を保持している JsonType
 	 * @param	array	値を格納する配列(の型)
 	 * @return	JsonType の値が入れられた Java オブジェクトの配列
@@ -600,7 +602,8 @@ public final class Jsonizer {
 	 *   Pojo pj = Jsonizer.fromJson(jsonType, Pojo.class);
 	 * </pre>
 	 *
-	 * @param	source	パラメータを持つ JsonType 値
+	 * @param	<T>		生成するインスタンスのクラス
+	 * @param	json	パラメータを持つ JsonType 値
 	 * @param	clazz	生成するインスタンスの Class オブジェクト
 	 * @return	生成された Java オブジェクト
 	 */
@@ -631,6 +634,7 @@ public final class Jsonizer {
 	 *   Pojo pj = Jsonizer.fromJson(jsonString, Pojo.class);
 	 * </pre>
 	 *
+	 * @param	<T>		生成するインスタンスのクラス
 	 * @param	source	パラメータを持つ JsonType 値
 	 * @param	clazz	生成するインスタンスの Class オブジェクト
 	 * @return	生成された Java オブジェクト

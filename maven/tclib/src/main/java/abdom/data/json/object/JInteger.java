@@ -57,6 +57,8 @@ public class JInteger extends JValue {
 	/**
 	 * 値を取得します。
 	 * 値がない場合、Integer.MIN_VALUE が返却されます。
+	 *
+	 * @return	int 値
 	 */
 	public int intValue() {
 		if (value == null) return Integer.MIN_VALUE;

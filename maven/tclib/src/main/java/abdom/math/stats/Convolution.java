@@ -9,12 +9,13 @@ import java.util.function.ToDoubleBiFunction;
 /**
  * 点の集まりから確率密度関数を得る、などの目的で利用する畳込み和演算を提供
  * します。
- * T は Stats 同様 Double 値を出力できるオブジェクトで、通常 T[], List<T>
+ * T は Stats 同様 Double 値を出力できるオブジェクトで、通常 T[], List&lt;T&gt;
  * でオブジェクト列が指定されます。
  *
  *
  * @version		September 17th, 2017
  * @author		Yusuke Sasaki
+ * @param	<T>	double 値を抽出できるクラス
  */
 public class Convolution<T> {
 	protected T[] array;
