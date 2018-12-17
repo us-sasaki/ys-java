@@ -155,7 +155,7 @@ public abstract class JsonType extends Number
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、doubleValue を持ちません");
 	}
 	
-                                                                                                      	/**
+	/**
 	 * boolean 値を取得します。
 	 * JsonValue の場合、
 	 * false となるのは、boolean の false となる場合か、null の場合に限られます。
@@ -167,8 +167,6 @@ public abstract class JsonType extends Number
 	public boolean booleanValue() {
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、booleanValue を持ちません");
 	}
-
-	
 	
 /*------------------
  * instance methods
@@ -250,7 +248,7 @@ public abstract class JsonType extends Number
 	 * Number 型については TYPE_INT, TYPE_DOUBLE のいずれかに分類されますが、
 	 * Long.parseLong が成功する場合、TYPE_INT が返却されます。
 	 * (TYPE_INT が TYPE_DOUBLE に優先します)
-	 * 数値と認識できる文字列の場合 TYPE_STRING が返却されます。
+	 * 数値と認識できても文字列の場合 TYPE_STRING が返却されます。
 	 *
 	 * @return	型を示す定数
 	 * @see		#TYPE_VOID
