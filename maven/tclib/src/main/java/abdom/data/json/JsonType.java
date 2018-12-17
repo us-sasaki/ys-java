@@ -657,7 +657,7 @@ public abstract class JsonType extends Number
 			else if (t instanceof Float) result.push((Float)t);
 			else if (t instanceof Double) result.push((Double)t);
 			else if (t instanceof Boolean) result.push((Boolean)t);
-			else throw new ClassCastException(t.getClass() + " は JsonArray の要素に指定できません");
+			else throw new IllegalArgumentException(t.getClass() + " は JsonArray の要素に指定できません");
 		}
 		return result;
 	}
