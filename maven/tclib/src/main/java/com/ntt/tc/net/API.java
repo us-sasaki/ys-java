@@ -587,6 +587,8 @@ public class API {
 	 * dateFrom, dateTo : 指定された期間の measurement を取得<br>
 	 * type : 指定された type の measurement を取得<br>
 	 * fragmentType : 指定された fragmentType を含む measurement を取得<br>
+	 * valueFragmentType : c8y_Humidity など(v8.15 では利用できず)<br>
+	 * valueFragmentSeries raw など(v8.15 では利用できず)<br>
 	 *
 	 * @param	queryString	pageSize=5&amp;currentPage=1 など
 	 * @return	取得された MeasurementCollection
@@ -891,7 +893,7 @@ public class API {
 	 * 204 No Content 以外のステータスコードが返却された場合、IOException
 	 * がスローされます。
 	 *
-	 * @param	id		Measurement ID
+	 * @param	id		イベントID
 	 * @throws		java.io.IOException REST異常
 	 */
 	public void deleteEvent(String id) throws IOException {
@@ -901,23 +903,82 @@ public class API {
 	}
 	
 	/**
+	 * Event に添付されているバイナリを取得します。
+	 * 添付ファイルが存在しない場合、null が返却されます。
+	 *
+	 * @param	eventId		イベントID
+	 * @return	バイナリ(添付がない場合、null)
+	 * @throws		java.io.IOException REST異常
+	 */
+	public byte[] readBinaryOfEvent(String eventId) throws IOException {
+		Response resp = rest.get("/event/events/"+eventId+"/binaries");
+		if (resp.status == 404) return null;
+		return resp.body;
+	}
+	
+	/**
 	 * Event に対し、ファイルを添付します。
 	 * ファイル添付は、1 Event に 1 つまで可能です。
 	 *
 	 * @param		eventId		添付先の Event の id
 	 * @param		contentType	添付ファイルの Content-Type
 	 * @param		filename	ファイル名
-	 * @param		binary		添付対象のバイナリ
+	 * @param		binary		添付対象のバイナリ(50MByteまで)
 	 * @throws		java.io.IOException REST異常
 	 */
-	public void createBinaryToEvent(String eventId, String contentType, String filename, byte[] binary)
-					throws IOException {
+	public void createBinaryOfEvent(String eventId, String contentType,
+									String filename, byte[] binary)
+										throws IOException {
 		Response resp = rest.postMultipart("/event/events/"+eventId+"/binaries",
 								filename, contentType, binary);
 		if (resp.status == 404)
-			throw new IOException("添付対象イベント "+eventId+" がありません");
+			throw new C8yNoSuchObjectException("添付対象イベント "+eventId+" がありません");
 		if (resp.status == 409)
 			throw new IOException("イベント"+eventId+"にはすでに添付ファイルがあります");
+	}
+	
+	/**
+	 * Event に対し、添付ファイルを変更します。(multipartは不可なので修正要)
+	 * ファイル添付は、1 Event に 1 つまで可能です。
+	 * ファイル名は Event Id になります。
+	 *
+	 * @param		eventId		添付先の Event の id
+	 * @param		contentType	添付ファイルの Content-Type
+	 * @param		binary		添付対象のバイナリ(50MByteまで)
+	 * @throws		java.io.IOException REST異常
+	 */
+	public void updateBinaryOfEvent(String eventId, String contentType,
+									byte[] binary)
+										throws IOException {
+		rest.putHeader("Content-Length", String.valueOf(binary.length));
+		try {
+			Response resp = rest.request("/event/events/"
+									+eventId+"/binaries", "PUT",
+									contentType, "", binary);
+			if (resp.status == 404)
+				throw new C8yNoSuchObjectException("添付対象イベント "
+								+eventId+" がありません");
+			if (resp.status != 201)
+				throw new IOException("バイナリ更新失敗"
+								+resp.status+resp.message);
+		} catch (IOException e) {
+			rest.removeHeader("Content-Length");
+			throw e;
+		}
+	}
+	
+	/**
+	 * Event ID を指定して添付されているバイナリを削除します。
+	 * 204 No Content 以外のステータスコードが返却された場合、IOException
+	 * がスローされます。
+	 *
+	 * @param	eventId		Event ID
+	 * @throws	java.io.IOException REST異常
+	 */
+	public void deleteBinaryOfEvent(String eventId) throws IOException {
+		Response resp = rest.delete("/event/events/"+eventId+"/binaries");
+		if (resp.status != 204)
+			throw new IOException("Event の Binary 削除失敗 : " + resp);
 	}
 	
 	/**
@@ -1924,19 +1985,15 @@ public class API {
 		if (!csv.startsWith("10,") && !csv.startsWith("11,"))
 			throw new IllegalArgumentException("csv の最初の要素は 10(request) または 11(response) である必要があります");
 		Response resp = null;
-//		synchronized (this) { // 通常の API とも排他が必要→実装制約に
-			// X-Id は header ではなく、body に設定することも可能。
-			// 15,xid とすると、以降の csv 行の X-Id が xid となる
-			//
-			// header を追加
-//			rest.putHeader("X-Id", xid);
-			csv = "15," + xid + "\r\n" + csv;	// body 側に設定
-			
-			resp = rest.post("/s/", csv);
-			
-			// header を削除
-//			rest.removeHeader("X-Id");
-//		}
+		// X-Id は header ではなく、body に設定することも可能。
+		// 15,xid とすると、以降の csv 行の X-Id が xid となる
+		//
+		// header を追加
+		csv = "15," + xid + "\r\n" + csv;	// body 側に設定
+		
+		resp = rest.post("/s/", csv);
+		
+		// header を削除
 		String result = resp.toString();
 		if (!result.startsWith("20"))
 			throw new C8yRestException("SmartREST template registration failed: " + result);

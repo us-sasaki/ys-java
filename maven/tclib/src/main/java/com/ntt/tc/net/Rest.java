@@ -27,8 +27,10 @@ import static java.net.HttpURLConnection.*;
  * json-stream に対応するため、結果を JsonType.parse(Reader) で構築する。
  * レスポンスボディが JSON でない場合(cometd関連でhtmlを返す場合がある)、
  * エラー文字列を表すレスポンスが返却されることに注意して下さい。
- * このオブジェクトはスレッドセーフではありません。
+ * このオブジェクトはスレッドセーフではなく、シングルスレッドで利用されることを
+ * 想定しています。
  * ヘッダ設定処理部分がマルチスレッド対応になっていません。
+ * マルチスレッドで利用する場合、スレッドごとにインスタンスを生成して下さい。
  *
  * @version	16, June 2018
  * @author	Yusuke Sasaki
@@ -214,6 +216,7 @@ public class Rest {
 	
 	/**
 	 * アプリケーションキーを設定します。
+	 * 以降のアクセスで X-Cumulocity-Application-Key ヘッダーに設定されます。
 	 *
 	 * @param		key		アプリケーションキー
 	 */
@@ -227,6 +230,7 @@ public class Rest {
 	
 	/**
 	 * プロセッシングモードを設定します。
+	 * 以降のアクセスで X-Cumulocity-Processing-Mode ヘッダーに設定されます。
 	 *
 	 * @param	isTransient	TRANSIENTモード(DBに書き込まない)を利用するか
 	 */
@@ -628,7 +632,7 @@ public class Rest {
 	}
 	
 	/**
-	 * multipart/form-data を利用してファイル(1つ)を送信します。
+	 * multipart/form-data を利用してファイルを送信します。
 	 *
 	 * @param		endPoint	POST を行う end point
 	 * @param		filename	ファイル名
@@ -639,6 +643,27 @@ public class Rest {
 	 */
 	public synchronized Response postMultipart(
 									String endPoint,
+									String filename,
+									String contentType,
+									byte[] data)
+										throws IOException {
+		return requestMultipart(endPoint, "POST", filename, contentType, data);
+	}
+	
+	/**
+	 * multipart/form-data を利用してファイル(1つ)を送信します。
+	 *
+	 * @param		endPoint	request を行う end point
+	 * @param		method		httpメソッド(POSTなど)
+	 * @param		filename	ファイル名
+	 * @param		contentType	Content-Type に指定する値(text/plainなど)
+	 * @param		data		出力するバイナリ情報
+	 * @return		Rest.Response オブジェクト
+	 * @throws		java.io.IOException REST異常
+	 */
+	public synchronized Response requestMultipart(
+									String endPoint,
+									String method,
 									String filename,
 									String contentType,
 									byte[] data)
@@ -669,7 +694,7 @@ public class Rest {
 			
 			setContentType("multipart/form-data; boundary="+bry);
 			setAccept("");
-			return requestImpl(endPoint, "POST", out.toByteArray());
+			return requestImpl(endPoint, method, out.toByteArray());
 		}
 	}
 	
