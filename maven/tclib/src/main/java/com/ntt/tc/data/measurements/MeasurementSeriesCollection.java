@@ -82,12 +82,12 @@ public class MeasurementSeriesCollection extends C8yData {
 			boolean first = true;
 			for (int i = 0; i < series.length; i++) {
 				Series serie = series[i];
-				JsonType v = vs.get(i);
+				double v = vs.get(i).doubleValue();
 				if (first) {
 					result.type = serie.type;
 					first = false;
 				}
-				result.put(serie.type, serie.name, v.doubleValue(), serie.unit);
+				result.put(serie.type, serie.name, v, serie.unit);
 			}
 			return result;
 		}

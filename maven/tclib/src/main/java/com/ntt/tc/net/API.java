@@ -747,6 +747,20 @@ public class API {
 					+"&aggregationType="+aggregationType);
 	}
 	
+	public Iterable<Measurement> measurementsBySeries(String source,
+													TC_Date dateFrom,
+													TC_Date dateTo) {
+		try {
+			MeasurementSeriesCollection c = readMeasurementSeriesCollection(
+												source,
+												dateFrom,
+												dateTo);
+			return c.measurements();
+		} catch (IOException e) {
+			throw new C8yRestRuntimeException(e);
+		}
+	}
+	
 /*-----------
  * Event API
  */
