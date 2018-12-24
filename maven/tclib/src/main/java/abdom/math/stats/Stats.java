@@ -9,9 +9,8 @@ import java.util.function.BiFunction;
  * 基本的な統計量を求める。
  * T は統計量を求めたいdouble値を出力できるクラス。
  * 実際の値の出力は apply の第２引数(Function&lt;T, Double&gt;)で指定する。
- * @param	<T>		double 値を出力できるクラス
  */
-public class Stats<T> {
+public class Stats {
 	public boolean applied = false;
 	
 	/** 総和 */
@@ -46,8 +45,8 @@ public class Stats<T> {
 	 * @param	f		Double 値の出力方法。null の場合その値は除外される。
 	 * @return	計算された統計量を持つ Stats オブジェクト
 	 */
-	public static <T> Stats<T> value(T[] data, Function<T, Double> f) {
-		Stats<T> stats = new Stats<T>();
+	public static <T> Stats value(T[] data, Function<T, Double> f) {
+		Stats stats = new Stats();
 		stats.apply(data, f);
 		return stats;
 	}
@@ -58,7 +57,7 @@ public class Stats<T> {
 	 * @param	data	double 値を出力できるクラスの配列
 	 * @param	f		Double 値の出力方法。null の場合その値は除外される。
 	 */
-	public void apply(T[] data, Function<T, Double> f) {
+	public <T> void apply(T[] data, Function<T, Double> f) {
 		n = 0;
 		sum = 0d;
 		variance = 0d;
@@ -71,7 +70,7 @@ public class Stats<T> {
 				n++;
 				sum += d;
 				if (d > max) max = d;
-				else if (d < min) min = d;
+				if (d < min) min = d;
 			}
 		}
 		mean = sum / n;
@@ -97,8 +96,8 @@ public class Stats<T> {
 	 * @param	f		Double 値の出力方法。null の場合、その値は除外される。
 	 * @return	計算された統計量を持つ Stats オブジェクト
 	 */
-	public static <T> Stats<T> value(Iterable<T> data, Function<T, Double> f) {
-		Stats<T> stats = new Stats<T>();
+	public static <T> Stats value(Iterable<T> data, Function<T, Double> f) {
+		Stats stats = new Stats();
 		stats.apply(data, f);
 		return stats;
 	}
@@ -109,7 +108,7 @@ public class Stats<T> {
 	 * @param	data	double 値を出力できるクラスのリスト
 	 * @param	f		Double 値の出力方法。null の場合、その値は除外される。
 	 */
-	public void apply(Iterable<T> data, Function<T, Double> f) {
+	public <T> void apply(Iterable<T> data, Function<T, Double> f) {
 		n = 0;
 		sum = 0d;
 		variance = 0d;
@@ -122,7 +121,7 @@ public class Stats<T> {
 				n++;
 				sum += d;
 				if (d > max) max = d;
-				else if (d < min) min = d;
+				if (d < min) min = d;
 			}
 		}
 		mean = sum / n;
@@ -155,8 +154,8 @@ public class Stats<T> {
 	 *					出力する関数
 	 * @return	計算された Stats オブジェクト
 	 */
-	public static <T> Stats<T> value(Iterable<T> data, BiFunction<List<T>, Integer, Double> f) {
-		Stats<T> stats = new Stats<T>();
+	public static <T> Stats value(Iterable<T> data, BiFunction<List<T>, Integer, Double> f) {
+		Stats stats = new Stats();
 		stats.apply(data, f);
 		return stats;
 	}
@@ -174,7 +173,7 @@ public class Stats<T> {
 	 * @param	f		Iterable から生成されるリストと添え字から Double を
 	 *					出力する関数
 	 */
-	public void apply(Iterable<T> data, BiFunction<List<T>, Integer, Double> f) {
+	public <T> void apply(Iterable<T> data, BiFunction<List<T>, Integer, Double> f) {
 		n = 0;
 		sum = 0d;
 		variance = 0d;
@@ -195,7 +194,7 @@ public class Stats<T> {
 				n++;
 				sum += d;
 				if (d > max) max = d;
-				else if (d < min) min = d;
+				if (d < min) min = d;
 			}
 		}
 		mean = sum / n;

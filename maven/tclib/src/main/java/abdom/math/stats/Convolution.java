@@ -9,7 +9,7 @@ import java.util.function.ToDoubleBiFunction;
 /**
  * 点の集まりから確率密度関数を得る、などの目的で利用する畳込み和演算を提供
  * します。
- * T は Stats 同様 Double 値を出力できるオブジェクトで、通常 T[], List&lt;T&gt;
+ * T は Double 値を出力できるオブジェクトで、通常 T[], List&lt;T&gt;
  * でオブジェクト列が指定されます。
  *
  *
@@ -19,7 +19,7 @@ import java.util.function.ToDoubleBiFunction;
  */
 public class Convolution<T> {
 	protected T[] array;
-	public Stats<T> stats;
+	public Stats stats;
 	protected Function<T, Double> f;
 //	protected double s;
 	protected ToDoubleBiFunction<Double, Double> g;
@@ -97,7 +97,7 @@ public class Convolution<T> {
 			elm[i] = new Elm();
 			elm[i].e = i * i;
 		}
-		Stats<Elm> stats = Stats.value(elm, (e -> e.e));
+		Stats stats = Stats.value(elm, (e -> e.e));
 		System.out.println(stats);
 		
 		Convolution<Elm> c = new Convolution<Elm>(elm, stats.deviation, (e -> e.e));
