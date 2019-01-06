@@ -110,7 +110,11 @@ public final class Jsonizer {
 				if (extra == null) extra = new JsonObject();
 				extra.put(name, jobj.get(name));
 			} else {
-				a.set(instance, jobj.get(name));
+				try {
+					a.set(instance, jobj.get(name));
+				} catch (Exception e) {
+					throw new IllegalFieldTypeException("error occurred while setting field "+name+" .", e);
+				}
 			}
 		}
 		if (instance instanceof JData) {

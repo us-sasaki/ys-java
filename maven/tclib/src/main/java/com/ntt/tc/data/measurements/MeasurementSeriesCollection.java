@@ -10,6 +10,7 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonType;
 
 import com.ntt.tc.data.C8yData;
+import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.inventory.ID;
 import com.ntt.tc.data.inventory.ManagedObject;
 import com.ntt.tc.data.measurements.Measurement;
@@ -32,7 +33,7 @@ public class MeasurementSeriesCollection extends C8yData {
 	/**
 	 * 独自に追加
 	 */
-	public ManagedObject source;
+	public ID source;
 	
 /*-----------------
  * instace methods
@@ -63,31 +64,50 @@ public class MeasurementSeriesCollection extends C8yData {
  * inner class
  */
 	private class SeriesIterator implements Iterator<Measurement> {
-		private Iterator<String> key;
+		// key には . が含まれるため階層構造になってしまう
+		private Iterator<String> key1;
+		private JsonType value1; // JsonObject
+		private Iterator<String> key2;
+		private String time1;
+		private String time2;
 		
 		private SeriesIterator() {
-			key = values.keySet().iterator();
+			key1 = values.keySet().iterator();
 		}
 		
 		@Override
 		public boolean hasNext() {
-			return (key.hasNext());
+			return (key1.hasNext() || key2.hasNext());
 		}
 		
 		@Override
 		public Measurement next() {
 			Measurement result = new Measurement();
 			result.source = new ID(source.id);
-			JsonType vs = values.get(key.next());
+			
+			JsonType vs = null;
+			if (key2 == null || !key2.hasNext()) {
+				time1 = key1.next();
+				value1 = values.get(time1);
+				key2 = value1.keySet().iterator();
+			}
+			time2 = key2.next();
+			vs = value1.get(time2);
+			result.time = new TC_Date(time1+"."+time2);
 			boolean first = true;
 			for (int i = 0; i < series.length; i++) {
 				Series serie = series[i];
-				double v = vs.get(i).doubleValue();
-				if (first) {
-					result.type = serie.type;
-					first = false;
+				if (i >= vs.size()) continue; // array は少ないことがある
+				JsonType val = vs.get(i);
+				if (val.getType() != JsonType.TYPE_VOID) {
+					// JsonType.NULL になる場合がある
+					double v = val.get("max").doubleValue();
+					if (first) {
+						result.type = serie.type;
+						first = false;
+					}
+					result.put(serie.type, serie.name, v, serie.unit);
 				}
-				result.put(serie.type, serie.name, v, serie.unit);
 			}
 			return result;
 		}

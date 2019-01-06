@@ -40,6 +40,18 @@ public class Stats {
 	/**
 	 * 配列と、double値抽出関数を指定し、統計量を設定します。
 	 * 
+	 * @param	data	double 値の配列
+	 * @return	計算された統計量を持つ Stats オブジェクト
+	 */
+	public static Stats value(double[] data) {
+		Stats stats = new Stats();
+		stats.apply(data);
+		return stats;
+	}
+	
+	/**
+	 * 配列と、double値抽出関数を指定し、統計量を設定します。
+	 * 
 	 * @param	<T>		double 値を出力できるクラス
 	 * @param	data	double 値を出力できるクラスの配列
 	 * @param	f		Double 値の出力方法。null の場合その値は除外される。
@@ -100,6 +112,40 @@ public class Stats {
 		Stats stats = new Stats();
 		stats.apply(data, f);
 		return stats;
+	}
+	
+	/**
+	 * double配列を指定し、統計量を算出します。
+	 *
+	 * @param	data	double 値を出力できるクラスのリスト
+	 */
+	public void apply(double[] data) {
+		n = 0;
+		sum = 0d;
+		variance = 0d;
+		max = -Double.MAX_VALUE;
+		min = Double.MAX_VALUE;
+		
+		for (double d : data) {
+			if (!Double.isNaN(d)) { // d == NaN は除外する
+				n++;
+				sum += d;
+				if (d > max) max = d;
+				if (d < min) min = d;
+			}
+		}
+		mean = sum / n;
+		
+		for (double d : data) {
+			if (!Double.isNaN(d)) {
+				double a = d - mean;
+				variance += a*a;
+			}
+		}
+		variance = variance / n;
+		deviation = Math.sqrt(variance);
+		
+		applied = true;
 	}
 	
 	/**

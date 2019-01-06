@@ -19,8 +19,11 @@ import com.ntt.tc.data.TC_Date;
  * <pre>
  * ManagedObject の判定の仕方(type)
  *                        type=ActilityDeviceType
+ * Cepエージェント        type=c8y_CepAgent
  * デバイスグループ       type=c8y_DeviceGroup
  * シミュレーター(設定)   type=c8y_DeviceSimulator
+ * デバイスサブグループ   type=c8y_DeviceSubgroup
+ *                        type=c8y_ModbusDeviceType
  *                        type=c8y_MQTTDevice
  *                        type=c8y_PrivateSmartRule
  *                        type=c8y_SmartRule

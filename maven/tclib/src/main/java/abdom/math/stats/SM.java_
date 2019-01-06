@@ -1,0 +1,149 @@
+package abdom.math.stats;
+
+/**
+ * 統計で使用する実数要素の正方行列を表すクラスです。
+ * immutable です。
+ */
+public final class SM implements Cloneable {
+	// 第一添字が行番号、第二添え字が列番号
+	private double[][] e;
+	
+/*-------------
+ * constructor
+ */
+	private SM() {
+		// e は空
+	}
+	
+	public SM(int dimension) {
+		e = new double[dimension][dimension];
+	}
+	
+	public SM(double[][] value) {
+		int d = value.length;
+		for (int i = 0; i < d; i++) {
+			double[] r = value[i];
+			if (r.length != d)
+				throw new DimensionMismatchException("配列は正方型である必要があります");
+		}
+		e = new double[d][d];
+		
+		for (int i = 0; i < d; i++) {
+			System.arraycopy(value[i], 0, e[i], 0, d);
+		}
+	}
+	
+/*------------------
+ * instance methods
+ */
+	public int dimension() {
+		return e.length;
+	}
+	
+	public SM add(SM t) {
+		int d = e.length;
+		if (d != t.e.length)
+			throw new DimensionMismatchException();
+		SM result = new SM(d);
+		for (int i = 0; i < d; i++) {
+			for (int j = 0; j < d; j++) {
+				result[i][j] = e[i][j] + t.e[i][j];
+			}
+		}
+		return result;
+	}
+	
+	public SM sub(SM t) {
+		int d = e.length;
+		if (d != t.e.length)
+			throw new DimensionMismatchException();
+		SM result = new SM(d);
+		for (int i = 0; i < d; i++) {
+			for (int j = 0; j < d; j++) {
+				result[i][j] = e[i][j] - t.e[i][j];
+			}
+		}
+		return result;
+	}
+	
+	public SM mult(SM t) {
+		int d = e.length;
+		if (d != t.e.length)
+			throw new DimensionMismatchException();
+		SM result = new SM(d);
+		for (int i = 0; i < d; i++) {
+			for (int j = 0; j < d; j++) {
+				for (int k = 0; k < d; k++) {
+					result[i][j] += e[i][k] + t.e[k][j];
+				}
+			}
+		}
+		return result;
+	}
+	
+	public SM negate(SM t) {
+		SM result = new SM(t.length);
+		for (int i = 0; i < d; i++) {
+			for (int j = 0; j < d; j++) {
+				result[i][j] = - t.e[i][j];
+			}
+		}
+		return result;
+	}
+	
+	public SM inverse(SM t) {
+		int d = t.e.length;
+		SM result = E(d);
+		SM c = (SM)clone();
+		
+		// sweep out
+		for (int i = 0; i < d; i++) {
+			int j = 0; // 0 でない index
+//			while (c.e[j][i]) != 0
+		}
+		return null;
+	}
+	
+	public static SM zero(int dimension) {
+		return new SM(dimension);
+	}
+	
+	public static SM E(int dimension) {
+		SM result = new SM(dimension);
+		for (int i = 0; i < dimension; i++) {
+			result.e[i][i] = 1d;
+		}
+		return result;
+	}
+	
+/*-----------
+ * overrides
+ */
+	@Override
+	public SM clone() {
+		int d = e.length;
+		SM c = new SM(d);
+		for (int i = 0; i < d; i++) {
+			System.arraycopy(this.e[i], 0, c.e[i], 0, d);
+		}
+		return c;
+	}
+	
+	@Override
+	public String toString() {
+		int d = e.length;
+		String ls = System.lineSeparator();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < d; i++) {
+			sb.append('|');
+			for (int j = 0; j < d; j++) {
+				sb.append(e[j][i]);
+				if (j < d-1) sb.append('\t');
+			}
+			sb.append('|');
+			sb.append(ls);
+		}
+		return sb.toString();
+	}
+	
+}

@@ -24,8 +24,11 @@ public class C8y_Mobile extends C8yData {
 	/**
 	 * RSSI measurement
 	 * "unit":dBm
+	 * 文字列として value が与えられる場合があるため、extra に変更
+	 * (2018/12/25, O社のManagedObject で発見、多分NTC6200)
 	 */
-	public Value rssi;
+	//public Value rssi;
+	
 	public String ecn0;
 	public String rcsp;
 	public String mnc;

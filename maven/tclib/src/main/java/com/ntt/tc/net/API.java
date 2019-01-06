@@ -706,8 +706,15 @@ public class API {
 			readMeasurementSeriesCollection(String queryString)
 						throws IOException {
 		Response resp = rest.get("/measurement/measurements/series?"+queryString);
-//		String[] queries = queryString.split("&");
-		return Jsonizer.fromJson(resp, MeasurementSeriesCollection.class);
+		//String[] queries = queryString.split("&");
+		//String source = null;
+		//for (String query : queries) {
+		//	String[] kv = query.split("=");
+		//	if (kv[0].equals("source")) source = kv[1];
+		//}
+		MeasurementSeriesCollection result = 
+				Jsonizer.fromJson(resp, MeasurementSeriesCollection.class);
+		return result;
 	}
 	
 	/**
@@ -755,6 +762,8 @@ public class API {
 												source,
 												dateFrom,
 												dateTo);
+			c.source = new ID(source);
+//System.out.println(c.toString("  "));
 			return c.measurements();
 		} catch (IOException e) {
 			throw new C8yRestRuntimeException(e);
