@@ -1,8 +1,8 @@
 package abdom.math.stats;
 
 /**
- * 統計で使用する実数要素の正方行列を表すクラスです。
- * immutable です。
+ * 統計で使用する実数要素の正方行列(Square matrix)を表すクラスです。
+ * このクラスのオブジェクトは immutable です。
  */
 public final class SM implements Cloneable {
 	// 第一添字が行番号、第二添え字が列番号
