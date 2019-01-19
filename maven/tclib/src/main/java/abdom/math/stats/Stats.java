@@ -66,6 +66,7 @@ public class Stats {
 	/**
 	 * 配列と、double値抽出関数を指定し、統計量を設定します。
 	 * 
+	 * @param	<T>		double 値を出力できるクラス
 	 * @param	data	double 値を出力できるクラスの配列
 	 * @param	f		Double 値の出力方法。null の場合その値は除外される。
 	 */
@@ -151,6 +152,7 @@ public class Stats {
 	/**
 	 * List と、double値抽出関数を指定し、統計量を算出します。
 	 *
+	 * @param	<T>		double 値を出力できるクラス
 	 * @param	data	double 値を出力できるクラスのリスト
 	 * @param	f		Double 値の出力方法。null の場合、その値は除外される。
 	 */
@@ -215,6 +217,7 @@ public class Stats {
 	 *     (1つ前の点との x 軸の差) に関する統計量を得る
 	 *</pre>
 	 *
+	 * @param	<T>		double 値を出力できるクラス
 	 * @param	data	double 値を出力できるクラスの Iterable
 	 * @param	f		Iterable から生成されるリストと添え字から Double を
 	 *					出力する関数
