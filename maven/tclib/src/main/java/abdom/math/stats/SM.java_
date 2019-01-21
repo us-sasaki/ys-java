@@ -11,14 +11,30 @@ public final class SM implements Cloneable {
 /*-------------
  * constructor
  */
+	/**
+	 * 要素を持たないオブジェクトを生成します。
+	 * clone など内部利用を想定したコンストラクタです。
+	 */
 	private SM() {
 		// e は空
 	}
 	
+	/**
+	 * 指定された次元の、成分がすべて 0 の正方行列を生成します。
+	 *
+	 * @param		dimension		正方行列の次元
+	 */
 	public SM(int dimension) {
 		e = new double[dimension][dimension];
 	}
 	
+	/**
+	 * 指定された成分値を持つ正方行列を生成します。
+	 * 成分値は正方型である必要があります。
+	 * immutable とするため値はすべてコピーされます。
+	 *
+	 * @param		value		成分値
+	 */
 	public SM(double[][] value) {
 		int d = value.length;
 		for (int i = 0; i < d; i++) {
@@ -36,10 +52,21 @@ public final class SM implements Cloneable {
 /*------------------
  * instance methods
  */
+	/**
+	 * この行列の次元を取得します。
+	 *
+	 * @return		次元
+	 */
 	public int dimension() {
 		return e.length;
 	}
 	
+	/**
+	 * 与えられた行列との和を表す正方行列を新規生成します。
+	 *
+	 * @param		t		足す行列
+	 * @return		和
+	 */
 	public SM add(SM t) {
 		int d = e.length;
 		if (d != t.e.length)
@@ -53,6 +80,12 @@ public final class SM implements Cloneable {
 		return result;
 	}
 	
+	/**
+	 * 与えられた行列を引いた正方行列を新規生成します。
+	 *
+	 * @param		t		差を取る行列
+	 * @return		差
+	 */
 	public SM sub(SM t) {
 		int d = e.length;
 		if (d != t.e.length)
