@@ -1476,6 +1476,8 @@ public class API {
 	 * @param	queryString	dateFrom, dateTill で期間を指定します。
 	 *					省略した場合、月初から現在までとなります。
 	 *					yyyy-MM-dd の形式で、dateTill を省略することもできます。
+	 *					文書上、指定できるように書いてありますが、実際には
+	 *					効かないようです。(2019/1/18)
 	 * @return	取得された UsageStatistics
 	 * @throws	java.io.IOException	REST異常
 	 */
