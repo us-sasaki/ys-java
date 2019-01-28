@@ -18,7 +18,7 @@ public class Encodings {
 	
 	/**
 	 * 調査する文字エンコーディングリスト。
-	 * 先に現れたものが優先される。テストして、この結果になっているため
+	 * 先に現れたものが優先される。テストして、この順序になっているため
 	 * いじらないこと。
 	 * 特に、JIS ファイルは UTF-8 に誤認識される。(逆はならない)
 	 */
@@ -44,7 +44,7 @@ public class Encodings {
 	 * Terapad の変換がイレギュラーなのかもしれない。
 	 *
 	 * @param	text	文字列を表すバイナリ
-	 * @return	エンコーディング判定結果
+	 * @return	エンコーディング判定結果(判定できなかった場合 null)
 	 */
 	public static String detect(byte[] text) {
 		for (String encoding : ENCODINGS) {
@@ -59,10 +59,12 @@ public class Encodings {
 	 * として返却します。
 	 *
 	 * @param	text	文字列を表すバイナリ
-	 * @return	エンコーディング判定結果
+	 * @return	エンコーディング判定結果(判定できなかった場合 null)
 	 */
 	public static Charset charset(byte[] text) {
-		return Charset.forName(detect(text));
+		String encoding = detect(text);
+		if (encoding == null) return null;
+		return Charset.forName(encoding);
 	}
 	
 	/**
@@ -70,7 +72,7 @@ public class Encodings {
 	 * として返却します。
 	 *
 	 * @param	filename	ファイル名
-	 * @return	エンコーディング判定結果
+	 * @return	エンコーディング判定結果(判定できなかった場合 null)
 	 * @exception	RuntimeException	IOException が発生した
 	 */
 	public static Charset charset(String filename) {

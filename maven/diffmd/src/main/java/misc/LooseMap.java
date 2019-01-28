@@ -157,6 +157,9 @@ class LooseMap {
 	 * @return	翻訳の行番号(最大値、含む)
 	 */
 	int max(int dRow) {
+		// original の最初の行が空行の場合、-1 になることがあるので、
+		// 応急処置
+		if (dRow < 0) dRow = 0;
 		// こっちは一応　応急処置
 		if (dRow < map.size())
 			return map.get(dRow).max;
