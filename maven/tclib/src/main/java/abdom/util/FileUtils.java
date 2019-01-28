@@ -18,6 +18,8 @@ import abdom.util.Encodings;
 
 /**
  * ファイル処理に便利なクラスメソッドを提供します。
+ * 特定のディレクトリ配下にあるファイルすべてのリストやストリームの抽出、
+ * テキストファイルの全行に対する変換などのメソッドを含みます。
  *
  * @version		January 25, 2019
  * @author		Yusuke Sasaki
@@ -97,7 +99,7 @@ public final class FileUtils {
 	 * path 文字列に対し、指定されたフィルターで File の List を作成します。
 	 *
 	 * @param		path		リストを作成するルートディレクトリ
-	 * @param		regex		リストに加える条件(Path の文字列表現に対し、
+	 * @param		regex		抽出条件(Path の文字列表現に対し、
 	 *							この正規表現にマッチするものを加える)
 	 */
 	public static List<Path> listOfFiles(String path, String regex) {
@@ -110,7 +112,7 @@ public final class FileUtils {
 	 * path 文字列に対し、指定されたフィルターで File の List を作成します。
 	 *
 	 * @param		path		リストを作成するルートディレクトリ
-	 * @param		filter		FileList に加える条件(Path に対し、trueのものを
+	 * @param		filter		抽出条件(Path に対し、trueのものを
 	 *							加える)
 	 */
 	public static List<Path> listOfFiles(String path, Predicate<Path> filter) {
@@ -122,10 +124,23 @@ public final class FileUtils {
 		return list;
 	}
 	
+	/**
+	 * 指定されたディレクトリ配下にあるファイルの stream を作成します。
+	 *
+	 * @param		path		stream を作成するルートディレクトリ
+	 */
 	public static Stream<Path> streamOfFiles(String path) {
 		return listOfFiles(path).stream();
 	}
 	
+	/**
+	 * 指定されたディレクトリ配下にあるファイルの stream を作成します。
+	 * path 文字列に対し、指定されたフィルターで File の stream を作成します。
+	 *
+	 * @param		path		stream を作成するルートディレクトリ
+	 * @param		regex		抽出条件(Path の文字列表現に対し、
+	 *							この正規表現にマッチするものを加える)
+	 */
 	public static Stream<Path> streamOfFiles(String path, String regex) {
 		final Pattern pat = Pattern.compile(regex);
 		return streamOfFiles(path, (p) -> pat.matcher(p.toString()).matches());
@@ -134,8 +149,8 @@ public final class FileUtils {
 	/**
 	 * path 文字列に対し、指定されたフィルターで File の Stream を作成します。
 	 *
-	 * @param		path		リストを作成するルートディレクトリ
-	 * @param		filter		FileList に加える条件(Path に対し、trueのものを
+	 * @param		path		stream を作成するルートディレクトリ
+	 * @param		filter		抽出条件(Path に対し、trueのものを
 	 *							加える)
 	 */
 	public static Stream<Path> streamOfFiles(String path, Predicate<Path> filter) {
