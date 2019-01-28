@@ -70,7 +70,8 @@ public final class FileUtils {
 	 * @param		p		テキストファイルの Path
 	 * @param		regex	置換箇所を示す正規表現
 	 * @param		replacement	置換後の文字列
-	 * @exception	エンコード異常、ファイル読み書き異常
+	 * @exception	java.io.UncheckedIOException	エンコード異常、
+	 * 												ファイル読み書き異常
 	 */
 	public static void replace(Path p, String regex, String replacement) {
 		// regex をコンパイルしておく
@@ -84,6 +85,7 @@ public final class FileUtils {
 	 * 指定されたディレクトリ配下にあるファイルのリストを作成します。
 	 *
 	 * @param		path		リストを作成するルートディレクトリ
+	 * @return		Path の List
 	 */
 	public static List<Path> listOfFiles(String path) {
 		ArrayList<Path> list = new ArrayList<>();
@@ -101,6 +103,7 @@ public final class FileUtils {
 	 * @param		path		リストを作成するルートディレクトリ
 	 * @param		regex		抽出条件(Path の文字列表現に対し、
 	 *							この正規表現にマッチするものを加える)
+	 * @return		Path の List
 	 */
 	public static List<Path> listOfFiles(String path, String regex) {
 		final Pattern pat = Pattern.compile(regex);
@@ -114,6 +117,7 @@ public final class FileUtils {
 	 * @param		path		リストを作成するルートディレクトリ
 	 * @param		filter		抽出条件(Path に対し、trueのものを
 	 *							加える)
+	 * @return		Path の List
 	 */
 	public static List<Path> listOfFiles(String path, Predicate<Path> filter) {
 		ArrayList<Path> list = new ArrayList<>();
@@ -128,6 +132,7 @@ public final class FileUtils {
 	 * 指定されたディレクトリ配下にあるファイルの stream を作成します。
 	 *
 	 * @param		path		stream を作成するルートディレクトリ
+	 * @return		Path の Stream
 	 */
 	public static Stream<Path> streamOfFiles(String path) {
 		return listOfFiles(path).stream();
@@ -140,6 +145,7 @@ public final class FileUtils {
 	 * @param		path		stream を作成するルートディレクトリ
 	 * @param		regex		抽出条件(Path の文字列表現に対し、
 	 *							この正規表現にマッチするものを加える)
+	 * @return		Path の Stream
 	 */
 	public static Stream<Path> streamOfFiles(String path, String regex) {
 		final Pattern pat = Pattern.compile(regex);
@@ -152,6 +158,7 @@ public final class FileUtils {
 	 * @param		path		stream を作成するルートディレクトリ
 	 * @param		filter		抽出条件(Path に対し、trueのものを
 	 *							加える)
+	 * @return		Path の Stream
 	 */
 	public static Stream<Path> streamOfFiles(String path, Predicate<Path> filter) {
 		return listOfFiles(path, filter).stream();
