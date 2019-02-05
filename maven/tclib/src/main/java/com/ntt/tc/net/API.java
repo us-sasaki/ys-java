@@ -75,13 +75,28 @@ public class API {
 	 * を生成します。
 	 *
 	 * @param	location	URL https://hogehoge.je1.thingscloud.ntt.com 等
-	 * @param	tenant		テナント (ヌル文字を指定すると URL のテナント
-	 * 						になります)
+	 * @param	tenant		テナント (null または null文字を指定すると URL
+	 *						のテナントになります)
 	 * @param	user		ログインユーザー名
 	 * @param	pass		ログインパスワード
 	 */
 	public API(String location, String tenant, String user, String pass) {
-		this(new Rest(location, tenant, user, pass));
+		if (tenant == null) tenant = "";
+		this.rest = new Rest(location, tenant, user, pass);
+		bootstrapRest = new Rest(rest.getLocation(), "management", new String(Base64.decodeFromString(BUSR)), new String(Base64.decodeFromString(BPSS)));
+	}
+	
+	/**
+	 * 指定された URL, user, password により接続する API オブジェクト
+	 * を生成します。テナント名は URL から取得されます。
+	 *
+	 * @param	location	URL https://hogehoge.je1.thingscloud.ntt.com 等
+	 * @param	user		ログインユーザー名
+	 * @param	pass		ログインパスワード
+	 */
+	public API(String location, String user, String pass) {
+		this.rest = new Rest(location, user, pass);
+		bootstrapRest = new Rest(rest.getLocation(), "management", new String(Base64.decodeFromString(BUSR)), new String(Base64.decodeFromString(BPSS)));
 	}
 	
 	/**

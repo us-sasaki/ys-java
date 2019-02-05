@@ -143,7 +143,8 @@ public class ManagedObject extends C8yData {
 	 * inventory / ManagedObject では Object * 扱いで、
 	 * Device Management Library に記載されるフィールド。
 	 */
-	public C8y_SupportedOperation[] c8y_SupportedOperations;
+	//public C8y_SupportedOperation[] c8y_SupportedOperations;
+	// 2019/1/29 akidokodevhaccpformo に "[\"c8y_Configuration\"],[\"c8y_SoftwareList\"]" のような設定値があり、エラーとなったため、extra 化
 	
 	/**
 	 * Postman のテンプレートで見つけたもの。
@@ -162,7 +163,8 @@ public class ManagedObject extends C8yData {
 	 * Device Management Library に記載されるフィールド。
 	 * これを設定すると、デバイス管理で値が表示されるようになる。
 	 */
-	public C8y_Hardware c8y_Hardware;
+	//public C8y_Hardware c8y_Hardware;
+	// 2019/1/29 akidokodevhaccpformo に JsonValue 値があり、エラーとなったため、extra 化
 	
 	/**
 	 * c8y_Configuration permits a text-based configuration of the device.

@@ -74,16 +74,10 @@ public class DiffMdInTranslate2 extends DiffMdInTranslate {
 		return result;
 	}
 	
-	private void printChunk(Chunk c, List<String> buff) {
-		for (Object o : c.getLines()) {
-			buff.addAll(putFrame(o.toString()));
-		}
-	}
-	
 	/**
-	 * 与えられた行に枠(罫線)をつけ、必要なら複数行にして返却します
+	 * 与えられた行にコメント(//)をつけます
 	 */
-	private List<String> putFrame(String target) {
+	protected List<String> putFrame(String target) {
 		int maxWidth = 78;
 		List<String> result = new ArrayList<String>();
 		

@@ -6,9 +6,8 @@ import java.util.function.Function;
 import java.util.function.BiFunction;
 
 /**
- * 基本的な統計量を求める。
- * T は統計量を求めたいdouble値を出力できるクラス。
- * 実際の値の出力は apply の第２引数(Function&lt;T, Double&gt;)で指定する。
+ * 基本的な統計量を保持するクラスです。
+ * リストなどからオブジェクトの値を設定するメソッドを提供します。
  */
 public class Stats {
 	public boolean applied = false;

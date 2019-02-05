@@ -48,6 +48,14 @@ class LooseMap {
 	 * List の要素番号 : en の行番号
 	 * 要素の min : 対応する ja の行番号(最小値) (含む)
 	 * 要素の max : 対応する ja の行番号(最大値) (含む)
+	 *
+	 * en の行番号に対応する日本語がない場合、最大値は最小値より 1
+	 * 小さい値になる。
+	 * 例： en : 9 行目　と　ja : 9 行目　が対応
+	 * 　　 en :10 行目 には ja : なし　　の場合
+	 *   map.get(9) = [9,9]
+	 *   map.get(10)= [10,9]
+	 * 　のようになる。
 	 */
 	List<Row> map;
 	
@@ -92,17 +100,24 @@ class LooseMap {
 		map = new ArrayList<Row>();
 //domain.stream().forEach(System.out::println);
 //range.stream().forEach(System.out::println);
-		int ji = 0;
-		int ei = 0;
+		int ji = 0; // 現在処理中の行(ja)
+		int ei = 0; // 現在処理中の行(eng)
+		
 		// まず、書式抽出された原文、訳文の diff をとる
 		Patch patch = DiffUtils.diff(domain, range);
 		//
 		for (Delta delta : patch.getDeltas()) {
+			
+			// ja/eng それぞれの差分の先頭行
 			int jDeltaStart	= delta.getRevised().getPosition();
 			int eDeltaStart	= delta.getOriginal().getPosition();
-			// last() は要素数でなく、行番号
+			
+			// ja/eng それぞれの差分の最終行 / last() は要素数でなく、行番号
 			int jDeltaEnd	= delta.getRevised().last();
 			int eDeltaEnd	= delta.getOriginal().last();
+			// End = Start(1:1対応) や End = Start-1(対応部分なし)
+			// となる場合がある
+			
 //System.out.println("jΔ=["+jDeltaStart+","+jDeltaEnd+"]");
 //System.out.println("eΔ=["+eDeltaStart+","+eDeltaEnd+"]");
 //Chunk jc = delta.getRevised();
@@ -112,7 +127,7 @@ class LooseMap {
 //System.out.println("----------eΔ--------");
 //ec.getLines().stream().forEach(System.out::println);
 			
-			// 完全一致部分を登録
+			// 完全一致部分を登録(eDeltaStart までは完全一致)
 			for (; ei < eDeltaStart; ei++) {
 				// j側は1行分入る
 				map.add(new Row(ji, ji));
@@ -125,11 +140,20 @@ class LooseMap {
 			}
 			ji = jDeltaEnd + 1; // j側、次の行に移動する
 		}
-		// 最後の完全一致部分
+		// Delta にならない最後の完全一致部分
 		for (; ei < domain.size(); ei++) {
 			map.add(new Row(ji, ji));
 			ji++;
 		}
+		// ji のみ残る場合があるので、map の最後を書き換え
+		// この処理がなく、bugだった
+		map.get( map.size()-1 ).max = range.size()-1;
+		
+//System.out.println("---完成した map---");
+//int index = 0;
+//for (Row r : map) {
+//	System.out.println("en-old "+(index++)+" -- ja-old["+r.min+"-"+r.max+"]");
+//}
 	}
 	
 /*-----------------
@@ -164,5 +188,14 @@ class LooseMap {
 		if (dRow < map.size())
 			return map.get(dRow).max;
 		return map.get(map.size()-1).max;
+	}
+	
+	/**
+	 * domain のサイズ(en-old の行数)を返します。
+	 *
+	 * @return	domain のサイズ
+	 */
+	int domainSize() {
+		return map.size();
 	}
 }

@@ -69,7 +69,7 @@ public class DiffMd {
 	
 	private Map<String, Triplet> triplets;
 	
-	private PrintWriter report;
+	public PrintWriter report;
 	private String reportFilename;
 	
 	private String[] except;
@@ -157,7 +157,7 @@ public class DiffMd {
 		// ファイルレベルの有無に関する警告を出す
 		warnUnmatch();
 		
-		//
+		// 各 diff ファイルを生成する
 		makeDiffFiles();
 		
 		report.close();
@@ -165,6 +165,8 @@ public class DiffMd {
 	
 	/**
 	 * 指定されたディレクトリから、Triplet を抽出する
+	 * 同時に読み込んだファイル、除外するディレクトリ/ファイルをレポートに
+	 * 出力する。
 	 */
 	private void listDirectories() throws IOException {
 		report.println("■ファイル読み込み");
@@ -180,10 +182,28 @@ public class DiffMd {
 		report.println();
 	}
 	
+	/**
+	 * 指定されたディレクトリ以下にあるディレクトリ/mdファイルを Triplet
+	 * に格納する。
+	 * Triplet は、en-old en-new ja-old の 3 ファイルの組で、過不足チェックに
+	 * 使用される。
+	 * ただし、除外対象に含まれるディレクトリ、ファイルは除外する。
+	 *
+	 * @param		dir			Triplet 作成対象ディレクトリ
+	 * @param		index		en-old(0), en-new(1), ja-old(2)
+	 */
 	private void listDirectory(File dir, int index) throws IOException {
 		listDirectoryImpl(dir, "", index);
 	}
 	
+	/**
+	 * 指定された root ディレクトリ以下の path のディレクトリ/ファイルを
+	 * Triplet に格納する。
+	 *
+	 * @param		root		ルートディレクトリ(変わらない)
+	 * @param		path		ルート以下のファイルパス
+	 * @param		index		en-old(0), en-new(1), ja-old(2)
+	 */
 	private void listDirectoryImpl(File root, String path, int index)
 						throws IOException {
 		File f = new File(root, path);
@@ -223,6 +243,9 @@ public class DiffMd {
 		}
 	}
 	
+	/**
+	 * Triplet への格納処理
+	 */
 	private void putTriplets(File root, String path, int index) {
 		Triplet t = triplets.get(path);
 		if (t == null) t = new Triplet();
@@ -306,33 +329,43 @@ public class DiffMd {
 		report.println();
 	}
 	
+	/**
+	 * Triplet に登録されていて、不足していないファイルについて、
+	 * 翻訳用 md ファイルを生成します。
+	 *
+	 * @exception		java.io.IOException		IO異常
+	 */
 	private void makeDiffFiles() throws IOException {
 		report.println("■更新ファイル作成(カッコ内の数値は変更された行の割合(%))");
 		report.println();
 		
+		// カウントする
 		int notChanged = 0;
 		int muchChanged = 0;
 		int changed = 0;
 		
 		for (String key : triplets.keySet()) {
 			Triplet t = triplets.get(key);
+			// ディレクトリや不足のあるものは除外
 			if (key.endsWith("/") || !t.isFilled()) continue;
 			
 			Path p0 = t.f[0].toPath();
 			Path p1 = t.f[1].toPath();
 			Path p2 = t.f[2].toPath();
-			Path newPath = new File(newTranslatedDir, key).toPath();
+			Path newPath = new File(newTranslatedDir, key).toPath(); //格納先
 			
 	        List<String> o = readLines(p0);
     	    List<String> n = readLines(p1);
         	List<String> oj = readLines(p2);
 			
-			// テキストフォーマットを決める instance
+			// md の差分抽出を行い、翻訳 suggestion データを生成、
+			// テキストにフォーマットする instance
 			DiffMdInTranslate dmit = new DiffMdInTranslate2(o, n, oj);
 			List<String> text = dmit.toText();
 			
 			Files.write(newPath, text, StandardCharsets.UTF_8 );
 			
+			// 差分を dmit.getDiffRate() から取得し、レポート出力
 			double rate = dmit.getDiffRate();
 			int r = (int)(rate * 100d);
 			if (rate > 0 && r == 0) r++;

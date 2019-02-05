@@ -85,10 +85,11 @@ public class Rest {
 	
 	/**
 	 * 指定された host, user, password を保持する Rest を作成します。
-	 * tenant は host に含まれているものとします。
+	 * tenant は指定されたものを設定します。
 	 *
 	 * @param		urlStr		"https://tenant.domain.com" の形式
-	 * @param		tenant		テナント名
+	 * @param		tenant		テナント名(例:tenant) / で終わっている場合、
+	 *							除去されます。
 	 * @param		user		ユーザ名
 	 * @param		password	パスワード
 	 */
