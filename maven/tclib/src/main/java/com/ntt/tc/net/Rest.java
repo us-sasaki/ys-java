@@ -143,6 +143,24 @@ public class Rest {
 	}
 	
 	/**
+	 * このオブジェクトに設定されたユーザーを取得します。
+	 *
+	 * @return		ユーザー
+	 */
+	public String getUser() {
+		return user;
+	}
+	
+	/**
+	 * このオブジェクトに設定されたパスワードを取得します。
+	 *
+	 * @return		パスワード
+	 */
+	public String getPassword() {
+		return password;
+	}
+	
+	/**
 	 * Authentication ヘッダを指定します。
 	 */
 	private void setAuthentication() {
