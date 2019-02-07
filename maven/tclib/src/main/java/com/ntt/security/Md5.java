@@ -52,6 +52,9 @@ public class Md5 {
  */
 	/**
 	 * インスタンスを作らずにハッシュ計算する. 便利な関数.
+	 *
+	 * @param		d		ハッシュ計算対象のデータ
+	 * @return		ハッシュ値
 	 */
 	public static byte[] hash(byte[] d) {
 		Md5 instance = new Md5();
