@@ -1,21 +1,12 @@
 package com.ntt.tc.data.identity;
 
-import com.ntt.tc.data.C8yData;
-import com.ntt.tc.data.identity.ExternalID;
+import com.ntt.tc.data.Collection;
 
 /**
  * ExternalIDCollection class
  * This source is machine-generated from c8y-markdown docs.
  */
-public class ExternalIDCollection extends C8yData {
-	/**
-	 * Link to this resource.
-	 * <pre>
-	 * Occurs : 1
-	 * </pre>
-	 */
-	public String self;
-	
+public class ExternalIDCollection extends Collection {
 	/**
 	 * List of external IDs, see below.
 	 * <pre>
@@ -23,21 +14,4 @@ public class ExternalIDCollection extends C8yData {
 	 * </pre>
 	 */
 	public ExternalID[] externalIds;
-	
-	/**
-	 * Link to a potential previous page of external IDs.
-	 * <pre>
-	 * Occurs : 0..1
-	 * </pre>
-	 */
-	public String prev;
-	
-	/**
-	 * Link to a potential next page of external IDs.
-	 * <pre>
-	 * Occurs : 0..1
-	 * </pre>
-	 */
-	public String next;
-	
 }

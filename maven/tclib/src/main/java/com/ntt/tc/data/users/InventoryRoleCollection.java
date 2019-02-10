@@ -1,7 +1,6 @@
 package com.ntt.tc.data.users;
 
-import com.ntt.tc.data.C8yData;
-import com.ntt.tc.data.rest.PagingStatistics;
+import com.ntt.tc.data.Collection;
 
 /**
  * InventoryRole class
@@ -12,16 +11,7 @@ import com.ntt.tc.data.rest.PagingStatistics;
  * @version		September 4, 2018
  * @author		Yusuke Sasaki
  */
-public class InventoryRoleCollection extends C8yData {
-	
-	/**
-	 * Link to this Resource
-	 * <pre>
-	 * Occurs : 1
-	 * </pre>
-	 */
-	public String self;
-	
+public class InventoryRoleCollection extends Collection {
 	/**
 	 * Inventory Role のリスト
 	 * <pre>
@@ -29,30 +19,5 @@ public class InventoryRoleCollection extends C8yData {
 	 * </pre>
 	 */
 	public InventoryRole[] roles;
-	
-	/**
-	 * Information about the paging statistics
-	 * <pre>
-	 * Occurs : 1
-	 * </pre>
-	 */
-	public PagingStatistics statistics;
-	
-	/**
-	 * Link to a possible previous page with additional roles
-	 * <pre>
-	 * Occurs : 0..1
-	 * </pre>
-	 */
-	public String prev;
-	
-	/**
-	 * Link to a possible next page with additional roles
-	 * <pre>
-	 * Occurs : 0..1
-	 * </pre>
-	 */
-	public String next;
-	
 	
 }

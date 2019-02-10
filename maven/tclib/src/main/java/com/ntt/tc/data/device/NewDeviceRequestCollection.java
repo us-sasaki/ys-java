@@ -1,21 +1,12 @@
 package com.ntt.tc.data.device;
 
-import com.ntt.tc.data.C8yData;
-import com.ntt.tc.data.rest.PagingStatistics;
+import com.ntt.tc.data.Collection;
 
 /**
  * NewDeviceRequestCollection class
  * This source is machine-generated from c8y-markdown docs.
  */
-public class NewDeviceRequestCollection extends C8yData {
-	/**
-	 * Link to this resource.
-	 * <pre>
-	 * Occurs : 1
-	 * </pre>
-	 */
-	public String self;
-	
+public class NewDeviceRequestCollection extends Collection {
 	/**
 	 * List of new device requests, see below.
 	 * <pre>
@@ -23,29 +14,4 @@ public class NewDeviceRequestCollection extends C8yData {
 	 * </pre>
 	 */
 	public NewDeviceRequest[] newDeviceRequests;
-	
-	/**
-	 * Information about paging statistics.
-	 * <pre>
-	 * Occurs : 1
-	 * </pre>
-	 */
-	public PagingStatistics statistics;
-	
-	/**
-	 * Link to a potential previous page of operations.
-	 * <pre>
-	 * Occurs : 0..1
-	 * </pre>
-	 */
-	public String prev;
-	
-	/**
-	 * Link to a potential next page of operations.
-	 * <pre>
-	 * Occurs : 0..1
-	 * </pre>
-	 */
-	public String next;
-	
 }
