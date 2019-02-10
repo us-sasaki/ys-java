@@ -1340,6 +1340,9 @@ public class API {
 	
 	/**
 	 * テナントを新規作成します。
+	 * パラメータ指定に不備があると、Json parse エラーが出ます(紛らわしい)。
+	 * すでにある id を指定すると、C8yRestException e で
+	 * e.getBody().get("error") の値が "tenants/Duplicate" になります。
 	 *
 	 * @param		tenant		新規作成するテナントの情報
 	 *							(作成結果によって上書きされます)

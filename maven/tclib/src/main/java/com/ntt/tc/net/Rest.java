@@ -562,6 +562,7 @@ public class Rest {
 	 */
 	protected Response requestImpl(String location, String method, byte[] body)
 											throws IOException {
+//System.out.println(com.ntt.data.ByteArray.toDumpList(body));
 		JsonRest.Response resp = r.request(location, method, body);
 		Response result = new Response(resp);
 		//

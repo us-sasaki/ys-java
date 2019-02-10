@@ -59,12 +59,13 @@ public class Tenant extends C8yData {
 	
 	/**
 	 * Can this tenant create its own tenants.
+	 * create 時に指定すると、エラーが発生するためカット
 	 * <pre>
 	 * Occurs : 1
-	 * Visibility : Private
+	 * Visibility : Public (Private in docs)
 	 * </pre>
 	 */
-	public boolean allowCreateTenants;
+	//public boolean allowCreateTenants;
 	
 	/**
 	 * Storage quota per device the user has.
@@ -82,7 +83,7 @@ public class Tenant extends C8yData {
 	 * Visibility : Private
 	 * </pre>
 	 */
-	public String adminPassword;
+	public String adminPass; // adminPassword in docs
 	
 	/**
 	 * Enable password reset
@@ -175,14 +176,31 @@ public class Tenant extends C8yData {
 	public Tenant() {
 	}
 	
+	/**
+	 * 新規テナント生成に必要な最低限のパラメータを指定して Tenant オブジェクト
+	 * を生成します。
+	 * company は id が指定され、sendPasswordResetEmail = false、
+	 * storageLimitPerDevice は 0 となります。
+	 *
+	 * @param		id			テナントid
+	 * @param		domain		ドメイン(tenant.domain.com の形式)
+	 * @param		adminName	管理者のログインID
+	 * @param		adminPass	管理者のログインパスワード
+	 * @param		adminEmail	管理者のメールアドレス
+	 */
 	public Tenant(String id,
 					String domain,
 					String adminName,
-					String adminPass) {
-		this.id				= id;
-		this.domain			= domain;
-		this.adminName		= adminName;
-		this.adminPassword	= adminPass;
+					String adminPass,
+					String adminEmail) {
+		this.id			= id;
+		this.domain		= domain;
+		this.adminName	= adminName;
+		this.adminPass	= adminPass;
+		this.adminEmail	= adminEmail;
+		company					= id;
+		sendPasswordResetEmail	= false;
+		storageLimitPerDevice	= 0;
 	}
 	
 }

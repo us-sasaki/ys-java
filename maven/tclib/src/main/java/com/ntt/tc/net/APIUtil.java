@@ -133,6 +133,33 @@ public class APIUtil {
 		return createDeviceIfAbsent("c8y_Serial", extId, asDefault);
 	}
 	
+	/**
+	 * External ID を指定して ManagedObject を取得します。
+	 *
+	 * @param		type		extId の type
+	 * @param		extId		extId
+	 * @return		ManagedObject (存在しない場合 null)
+	 * @throws		java.io.IOException		REST異常
+	 */
+	public ManagedObject readManagedObjectForExtId(String type, String extId)
+								throws IOException {
+		String moid = api.readIDByExternalID(type, extId);
+		if (moid == null) return null;
+		return api.readManagedObject(moid);
+	}
+	
+	/**
+	 * External ID を指定して ManagedObject を取得します。
+	 * type は c8y_Serial 固定です。
+	 *
+	 * @param		extId		extId
+	 * @return		ManagedObject (存在しない場合 null)
+	 * @throws		java.io.IOException		REST異常
+	 */
+	public ManagedObject readManagedObjectForExtId(String extId)
+								throws IOException {
+		return readManagedObjectForExtId("c8y_Serial", extId);
+	}
 	
 	/**
 	 * Managed Object の type 一覧を返却します。
