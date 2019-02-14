@@ -9,7 +9,7 @@ import java.io.*;
  * その行の改行は含まれます。
  * 現在、文字列を示す " で // 等がくくられていても、コメントと見なされます。
  *
- * @version		a-release		14, August 2001 / 19, Oct 2016
+ * @version		a-release		14, August 2001
  * @author		Yusuke Sasaki
  */
 public class CommentCutInputStream extends FilterInputStream {

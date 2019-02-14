@@ -41,7 +41,7 @@ public class BinaryDumpStream extends FilterOutputStream {
 	 * 一行のバイト数はデフォルト値である 16 が設定される.
 	 * また、行番号出力は on, サイズ出力は off が設定される.
 	 *
-	 * @param	out		出力ストリーム
+	 * @param		out		出力ストリーム
 	 */
 	public BinaryDumpStream(OutputStream out) {
 		super(out);
