@@ -285,6 +285,16 @@ public class ByteArray {
 		r = newRandom;
 	}
 	
+	/**
+	 * 指定されたサイズの乱数byte列を生成します。
+	 * setRandom() で乱数ジェネレータを指定していた場合、そのインスタンスが
+	 * 利用されます。
+	 * デフォルトの乱数ジェネレータは new java.util.Random() です。
+	 *
+	 * @param		minSize		サイズの最小値(含む)
+	 * @param		maxSize		サイズの最小値(含まない)
+	 * @return		乱数列
+	 */
 	public static byte[] randomData(int minSize, int maxSize) {
 		int i = (int)((r.nextDouble() * (double)(maxSize - minSize)) + minSize);
 		

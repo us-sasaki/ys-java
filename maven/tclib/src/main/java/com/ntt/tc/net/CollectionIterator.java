@@ -105,6 +105,7 @@ class CollectionIterator<T extends C8yData> implements Iterator<T> {
 			} else {
 				resp = rest.get(ep);
 			}
+			// Collection は JsonType として取得する
 			JsonType jt = resp.toJson().get(fieldName);
 			if (jt == null)
 				throw new C8yRestRuntimeException(
@@ -120,6 +121,7 @@ class CollectionIterator<T extends C8yData> implements Iterator<T> {
 			}
 			cursor = 0;
 		} catch (IOException ioe) {
+			// チェックされない例外に変換
 			throw new C8yRestRuntimeException(ioe);
 		}
 	}
