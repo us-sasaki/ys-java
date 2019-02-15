@@ -424,11 +424,16 @@ public class API {
 	 *
 	 * @param	id		取得対象の Managed Object ID
 	 * @return	ManagedObject
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public ManagedObject readManagedObject(String id) throws IOException {
 		Response resp = rest.get("/inventory/managedObjects/"+id,
 									"managedObject");
+		if (resp.status == 404)
+			throw new C8yNoSuchObjectException("指定された id "+id
+						+" の ManagedObject は存在しません");
 		return Jsonizer.fromJson(resp, ManagedObject.class);
 	}
 	
@@ -565,10 +570,15 @@ public class API {
 	 *
 	 * @param	id		取得対象の Measurement ID
 	 * @return	Measurement
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public Measurement readMeasurement(String id) throws IOException {
 		Response resp = rest.get("/measurement/measurements/"+id, "measurement");
+		if (resp.status == 404)
+			throw new C8yNoSuchObjectException("指定された id "+id
+						+" の measurement は存在しません");
 		return Jsonizer.fromJson(resp, Measurement.class);
 	}
 	
@@ -793,10 +803,15 @@ public class API {
 	 *
 	 * @param	id		取得対象の Event ID
 	 * @return	Event
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public Event readEvent(String id) throws IOException {
 		Response resp = rest.get("/event/events/"+id, "event");
+		if (resp.status == 404)
+			throw new C8yNoSuchObjectException("指定された id "+id
+							+" の event は存在しません");
 		return Jsonizer.fromJson(resp, Event.class);
 	}
 	
@@ -962,6 +977,8 @@ public class API {
 	 * @param		contentType	添付ファイルの Content-Type
 	 * @param		filename	ファイル名
 	 * @param		binary		添付対象のバイナリ(50MByteまで)
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
 	 * @throws		java.io.IOException REST異常
 	 */
 	public void createBinaryOfEvent(String eventId, String contentType,
@@ -970,9 +987,11 @@ public class API {
 		Response resp = rest.postMultipart("/event/events/"+eventId+"/binaries",
 								filename, contentType, binary);
 		if (resp.status == 404)
-			throw new C8yNoSuchObjectException("添付対象イベント "+eventId+" がありません");
+			throw new C8yNoSuchObjectException("添付対象イベント "+eventId
+							+" がありません");
 		if (resp.status == 409)
-			throw new IOException("イベント"+eventId+"にはすでに添付ファイルがあります");
+			throw new IOException("イベント"+eventId
+							+"にはすでに添付ファイルがあります");
 	}
 	
 	/**
@@ -983,6 +1002,8 @@ public class API {
 	 * @param		eventId		添付先の Event の id
 	 * @param		contentType	添付ファイルの Content-Type
 	 * @param		binary		添付対象のバイナリ(50MByteまで)
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
 	 * @throws		java.io.IOException REST異常
 	 */
 	public void updateBinaryOfEvent(String eventId, String contentType,
@@ -1068,10 +1089,15 @@ public class API {
 	 *
 	 * @param	id		取得対象の Alarm ID
 	 * @return	Alarm
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public Alarm readAlarm(String id) throws IOException {
 		Response resp = rest.get("/alarm/alarms/"+id, "alarm");
+		if (resp.status == 404)
+			throw new C8yNoSuchObjectException("指定された id "+id
+					+"の Alarm は存在しません");
 		return Jsonizer.fromJson(resp, Alarm.class);
 	}
 	
@@ -1184,10 +1210,15 @@ public class API {
 	 *
 	 * @param	id		取得対象の Operation ID
 	 * @return	Operation
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public Operation readOperation(String id) throws IOException {
 		Response resp = rest.get("/devicecontrol/operations/"+id, "operation");
+		if (resp.status == 404)
+			throw new C8yNoSuchObjectException("指定された id "+id
+						+" の Operation は存在しません");
 		return Jsonizer.fromJson(resp, Operation.class);
 	}
 	
@@ -1404,6 +1435,8 @@ public class API {
 	 * @param		id			アプリケーション id
 	 * @throws		C8yNoSuchObjectException 指定された tenant または id の
 	 *				Application が存在しない
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
 	 * @throws		java.io.IOException REST異常
 	 */
 	public void createApplication(String tenant, String id) throws IOException {
@@ -1427,6 +1460,8 @@ public class API {
 	 * @param		id			アプリケーション id
 	 * @throws		C8yNoSuchObjectException 指定された tenant または id の
 	 *				Application が存在しない
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
 	 * @throws		java.io.IOException REST異常
 	 */
 	public void deleteApplication(String tenant, String id) throws IOException {
@@ -1655,10 +1690,15 @@ public class API {
 	 *
 	 * @param	id		ユーザーのid(ログイン時に使用する名前)
 	 * @return	取得されたユーザーオブジェクト
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public User readUser(String id) throws IOException {
 		Response resp = rest.get("/user/"+rest.getTenant()+"users/"+id, "user");
+		if (resp.status == 404)
+			throw new C8yNoSuchObjectException("指定された id "+id
+						+" の user は存在しません");
 		return Jsonizer.fromJson(resp, User.class);
 	}
 	
@@ -1667,10 +1707,15 @@ public class API {
 	 *
 	 * @param		name	ユーザ名
 	 * @return		User オブジェクト
+	 * @throws	C8yNoSuchObjectException	指定されたnameのオブジェクトが
+	 *										存在しない
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public User readUserByName(String name) throws IOException {
 		Response resp = rest.get("/user/"+rest.getTenant()+"userByName/"+name, "user");
+		if (resp.status == 404)
+			throw new C8yNoSuchObjectException("指定された name "+name
+						+" の user は存在しません");
 		return Jsonizer.fromJson(resp, User.class);
 	}
 	
@@ -1854,6 +1899,8 @@ public class API {
 	 *
 	 * @param		id		モジュール id
 	 * @return		Module
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public Module readModule(String id) throws IOException {
@@ -1878,6 +1925,8 @@ public class API {
 	 *
 	 * @param		id		モジュール id
 	 * @return		スクリプト文字列
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public String readModuleText(String id) throws IOException {
