@@ -1360,6 +1360,8 @@ public class API {
 	 *
 	 * @param		id		テナント id
 	 * @return		テナント情報
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public Tenant readTenant(String id) throws IOException {
