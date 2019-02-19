@@ -6,18 +6,23 @@ import java.util.Iterator;
 import abdom.data.json.JsonType;
 import abdom.data.json.object.Jsonizer;
 
+import com.ntt.tc.data.inventory.ManagedObject;
+import com.ntt.tc.data.inventory.ManagedObjectCollection;
 import com.ntt.tc.data.services.SmartRule;
 import com.ntt.tc.data.services.Simulator;
 
 import static com.ntt.tc.net.Rest.Response;
 
 /**
- * Things Cloud の ui 向けの非公開API(/service/) にアクセスする
- * クラスです。v9.16 上で動作確認を行いますが、将来仕様変更される可能性が
+ * Things Cloud の ui 向けの非公開API(/service/) へのアクセス、および
+ * ui と密接に関連するデータ(データポイントライブラリなど)を操作するクラスです。
+ * v9.16 上で動作確認を行いますが、非公開のため、将来仕様変更される可能性が
  * あります。
+ * このクラスでは、非公開 API に関連した便利メソッドも提供します。
  *
  * @author		Yusuke Sasaki
  * @version		February 8, 2019
+ * @see			com.ntt.tc.data.services
  */
 public class ServiceAPI {
 	protected API api;
@@ -91,7 +96,8 @@ public class ServiceAPI {
 	 */
 	public SmartRule updateSmartRule(SmartRule updater)
 									throws IOException {
-		Response resp = rest.put("/service/smartrule/smartrules/"+updater.id, updater);
+		Response resp = rest.put("/service/smartrule/smartrules/"+updater.id
+									,updater);
 		return Jsonizer.fromJson(resp, SmartRule.class);
 	}
 	
@@ -106,6 +112,20 @@ public class ServiceAPI {
 		Response resp = rest.delete("/service/smartrule/smartrules/"+id);
 	}
 	
+/*------------------
+ * Smart rule utils
+ */
+	/**
+	 * 登録されているすべての Smart Rule を削除します。
+	 *
+	 * @throws		java.io.IOException		REST異常
+	 */
+	public void deleteAllSmartRules() throws IOException {
+		for (SmartRule s : smartRules()) {
+			deleteSmartRule(s.id);
+		}
+	}
+	
 /*---------------
  * simulator API
  */
@@ -117,7 +137,8 @@ public class ServiceAPI {
 	 */
 	public Simulator[] simulators() {
 		try {
-			return Jsonizer.toArray(rest.get("/service/device-simulator/simulators"), new Simulator[0]);
+			Response resp = rest.get("/service/device-simulator/simulators");
+			return Jsonizer.toArray(resp, new Simulator[0]);
 		} catch (IOException ioe) {
 			throw new C8yRestRuntimeException(ioe);
 		}
@@ -173,5 +194,34 @@ public class ServiceAPI {
 	 */
 	public void deleteSimulator(String id) throws IOException {
 		Response resp = rest.delete("/service/device-simulator/simulators/"+id);
+	}
+	
+/*-------------------
+ * KPI related utils
+ */
+	/**
+	 * Kpi が存在するかテストします。内部では、fragmentType=c8y_Kpi となる
+	 * managed object があるかどうかを判定しています。
+	 *
+	 * @return		Kpi が存在する場合、true
+	 * @throws		java.io.IOException		REST異常
+	 */
+	public boolean KpiExists() throws IOException {
+		ManagedObjectCollection moc
+				= api.readManagedObjectCollection("fragmentType=c8y_Kpi");
+		return (moc.managedObjects.length != 0);
+	}
+	
+	/**
+	 * 登録されているすべての KPI (データポイントライブラリ) を削除します。
+	 * 内部では、fragmentType=c8y_Kpi となる
+	 * managed object を削除しています。
+	 *
+	 * @throws		java.io.IOException		REST異常
+	 */
+	public void deleteAllKpis() throws IOException {
+		for (ManagedObject kpi : api.managedObjects("fragmentType=c8y_Kpi")) {
+			api.deleteManagedObject(kpi.id);
+		}
 	}
 }
