@@ -72,7 +72,6 @@ public class ServiceAPI {
 	}
 	
 	/**
-	 * 動作未確認
 	 * 指定された SmartRule を新規作成します。
 	 *
 	 * @param		smartRule		登録する SmartRule
@@ -102,7 +101,6 @@ public class ServiceAPI {
 	}
 	
 	/**
-	 * 動作未確認
 	 * 指定された SmartRule を削除します。
 	 *
 	 * @param		id			更新する SmartRule の id

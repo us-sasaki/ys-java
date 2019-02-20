@@ -330,12 +330,14 @@ public class APIUtil {
 	}
 	
 	/**
-	 * 指定されたモジュール名の CEP モジュールを undeploy 状態にします。
+	 * 指定されたモジュール名の CEP モジュールを取得します。
 	 *
 	 * @param		moduleName		CEP モジュール名
+	 * @return		取得されたモジュール
+	 * @throws		C8yNoSuchObjectException	モジュールが見つからない場合
 	 * @throws		java.io.IOException	REST異常
 	 */
-	public void undeployModuleForName(final String moduleName)
+	public Module readModuleForName(final String moduleName)
 							throws IOException {
 		List<Module> modules = new ArrayList<>();
 		api.modules().iterator().forEachRemaining(modules::add);
@@ -347,9 +349,21 @@ public class APIUtil {
 							return b; // 最初に見つかったものとする
 						});
 		if (m == null)
-				throw new IllegalArgumentException("Module " + moduleName
+				throw new C8yNoSuchObjectException("Module " + moduleName
 							+ "was not found.");
-		api.updateModule(m.id, false);
+		return m;
+	}
+	
+	/**
+	 * 指定されたモジュール名の CEP モジュールを undeploy 状態にします。
+	 *
+	 * @param		moduleName		CEP モジュール名
+	 * @throws		C8yNoSuchObjectException	モジュールが見つからない場合
+	 * @throws		java.io.IOException	REST異常
+	 */
+	public void undeployModuleForName(final String moduleName)
+							throws IOException {
+		api.updateModule(readModuleForName(moduleName).id, false);
 	}
 	
 	/**

@@ -1980,7 +1980,7 @@ public class API {
 	 * @param		fileName	ファイルのpath
 	 * @throws	java.io.IOException	REST異常
 	 */
-	public void createModuleTextByFile(String moduleName,
+	public void createModuleByFile(String moduleName,
 										String fileName) throws IOException {
 		createModule(moduleName, Files.readAllLines(Paths.get(fileName), UTF8));
 	}

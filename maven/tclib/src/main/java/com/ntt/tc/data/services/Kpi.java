@@ -36,9 +36,10 @@ public final class Kpi {
 	 * @param		min			y 軸で表示される最小値
 	 * @param		max			y 軸で表示される最大値
 	 * @param		yellowRangeMin	MINOR alarm の対象となる黄色レンジの最小値
-	 * @param		yellowRangeMin	MINOR alarm の対象となる黄色レンジの最大値
+	 * @param		yellowRangeMax	MINOR alarm の対象となる黄色レンジの最大値
 	 * @param		redRangeMin		CRITICAL alarm となる赤色レンジの最小値
 	 * @param		redRangeMax		CRITICAL alarm となる赤色レンジの最大値
+	 * @return		Kpi を表す ManagedObject
 	 */
 	public static ManagedObject of(String label,
 									String fragment, String series,
