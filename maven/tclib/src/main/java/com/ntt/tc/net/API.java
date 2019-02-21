@@ -1273,6 +1273,25 @@ public class API {
 	}
 	
 	/**
+	 * オペレーションを削除します。
+	 *
+	 * @param	query	クエリ文字列
+	 * @throws	java.io.IOException	REST異常
+	 */
+	public void deleteOperationCollection(String query) throws IOException {
+		Response resp = rest.delete("/devicecontrol/operations/?"+query);
+	}
+	
+	/**
+	 * オペレーションを削除します。
+	 *
+	 * @throws	java.io.IOException	REST異常
+	 */
+	public void deleteOperationCollection() throws IOException {
+		deleteOperationCollection("");
+	}
+	
+	/**
 	 * オペレーションコレクションを取得します。
 	 * Collection API では、結果のアトミック性が保証されていないことに注意して
 	 * 下さい。
