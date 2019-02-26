@@ -2,8 +2,19 @@ package abdom.math.stats;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.Collections;
 import java.util.function.Function;
 import java.util.function.BiFunction;
+
+import java.util.function.Supplier;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+
+import java.util.stream.Collector;
+
+import static java.util.stream.Collector.Characteristics;
+
 
 /**
  * 基本的な統計量を保持するクラスです。
@@ -59,7 +70,7 @@ public class Stats {
 	 * @param	f		Double 値の出力方法。null の場合その値は除外される。
 	 * @return	計算された統計量を持つ Stats オブジェクト
 	 */
-	public static <T> Stats value(T[] data, Function<T, Double> f) {
+	public static <T> Stats value(T[] data, Function<? super T, Double> f) {
 		Stats stats = new Stats();
 		stats.apply(data, f);
 		return stats;
@@ -72,7 +83,7 @@ public class Stats {
 	 * @param	data	double 値を出力できるクラスの配列
 	 * @param	f		Double 値の出力方法。null の場合その値は除外される。
 	 */
-	public <T> void apply(T[] data, Function<T, Double> f) {
+	public <T> void apply(T[] data, Function<? super T, Double> f) {
 		n = 0;
 		sum = 0d;
 		variance = 0d;
@@ -111,7 +122,7 @@ public class Stats {
 	 * @param	f		Double 値の出力方法。null の場合、その値は除外される。
 	 * @return	計算された統計量を持つ Stats オブジェクト
 	 */
-	public static <T> Stats value(Iterable<T> data, Function<T, Double> f) {
+	public static <T> Stats value(Iterable<T> data, Function<? super T, Double> f) {
 		Stats stats = new Stats();
 		stats.apply(data, f);
 		return stats;
@@ -158,7 +169,7 @@ public class Stats {
 	 * @param	data	double 値を出力できるクラスのリスト
 	 * @param	f		Double 値の出力方法。null の場合、その値は除外される。
 	 */
-	public <T> void apply(Iterable<T> data, Function<T, Double> f) {
+	public <T> void apply(Iterable<T> data, Function<? super T, Double> f) {
 		n = 0;
 		sum = 0d;
 		variance = 0d;
@@ -204,7 +215,7 @@ public class Stats {
 	 *					出力する関数
 	 * @return	計算された Stats オブジェクト
 	 */
-	public static <T> Stats value(Iterable<T> data, BiFunction<List<T>, Integer, Double> f) {
+	public static <T> Stats value(Iterable<T> data, BiFunction<List<? super T>, Integer, Double> f) {
 		Stats stats = new Stats();
 		stats.apply(data, f);
 		return stats;
@@ -224,7 +235,7 @@ public class Stats {
 	 * @param	f		Iterable から生成されるリストと添え字から Double を
 	 *					出力する関数
 	 */
-	public <T> void apply(Iterable<T> data, BiFunction<List<T>, Integer, Double> f) {
+	public <T> void apply(Iterable<T> data, BiFunction<List<? super T>, Integer, Double> f) {
 		n = 0;
 		sum = 0d;
 		variance = 0d;
@@ -313,12 +324,75 @@ public class Stats {
 		return -(x-mean)/variance*gaussian(x);
 	}
 	
+	private static final Set<Characteristics> CH_NOID = Collections.emptySet();
+	
 	/**
 	 * ストリームの終端操作で利用できる collector を返却します。
+	 *
+	 * @param		<T>		double 値を出力できる型
+	 * @param		f		T から double を取得する関数
+	 * @return		Stats への collector
 	 */
-//	public Collector<Double, List<Double>, Stats> collector() {
-//	}
+	@SuppressWarnings("unchecked")
+	public static <T> Collector<T, ?, Stats>
+						collector(Function<? super T, Double> f) {
 	
+		return new CollectorImpl<T, List<T>, Stats>(
+						(Supplier<List<T>>) ArrayList::new,
+						List::add,
+						(l, r) -> {	l.addAll(r); return l;	},
+						(d) -> Stats.value(d, f),
+						CH_NOID);
+	}
+	
+/*--------------------
+ * inner static class
+ */
+	private static class CollectorImpl<T, A, R> implements Collector {
+		private final Supplier<A> supplier;
+		private final BiConsumer<A, T> accumulator;
+		private final BinaryOperator<A> combiner;
+		private final Function<A, R> finisher;
+		private final Set<Characteristics> characteristics;
+
+		CollectorImpl(Supplier<A> supplier,
+					  BiConsumer<A, T> accumulator,
+					  BinaryOperator<A> combiner,
+					  Function<A,R> finisher,
+					  Set<Characteristics> characteristics) {
+			this.supplier = supplier;
+			this.accumulator = accumulator;
+			this.combiner = combiner;
+			this.finisher = finisher;
+			this.characteristics = characteristics;
+		}
+
+
+		@Override
+		public BiConsumer<A, T> accumulator() {
+			return accumulator;
+		}
+
+		@Override
+		public Supplier<A> supplier() {
+			return supplier;
+		}
+
+		@Override
+		public BinaryOperator<A> combiner() {
+			return combiner;
+		}
+
+		@Override
+		public Function<A, R> finisher() {
+			return finisher;
+		}
+
+		@Override
+		public Set<Characteristics> characteristics() {
+			return characteristics;
+		}
+	}
 	
 /*-----------
  * overrides
