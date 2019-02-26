@@ -8,6 +8,9 @@ import java.util.function.BiFunction;
 /**
  * 基本的な統計量を保持するクラスです。
  * リストなどからオブジェクトの値を設定するメソッドを提供します。
+ * このクラスでは double 値の列を入力とし、その基本統計量を算出、保持します。
+ * double 値の入力にソースとなるクラスを指定できますが、null を返却するものは
+ * 対象外とします。
  */
 public class Stats {
 	public boolean applied = false;
@@ -18,7 +21,7 @@ public class Stats {
 	/** 平均 */
 	public double mean;
 	
-	/** 要素数(applyの第２引数がnullを返すものは含まない) */
+	/** 要素数 */
 	public int n;
 	
 	/** 分散 */
@@ -309,6 +312,13 @@ public class Stats {
 	public double dgaussian(double x) {
 		return -(x-mean)/variance*gaussian(x);
 	}
+	
+	/**
+	 * ストリームの終端操作で利用できる collector を返却します。
+	 */
+//	public Collector<Double, List<Double>, Stats> collector() {
+//	}
+	
 	
 /*-----------
  * overrides

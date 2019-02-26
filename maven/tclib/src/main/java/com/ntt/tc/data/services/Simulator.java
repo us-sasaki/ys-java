@@ -18,7 +18,11 @@ public class Simulator extends C8yData {
 	public String id;
 	public int instances;
 	public String name;
-	public String state; // PAUSED
+	
+	/**
+	 * PAUSED または RUNNING の値を取ります
+	 */
+	public String state; // PAUSED / RUNNING
 	
 	// 他に以下がある(温度シミュレーター)
 	//JsonObject supportedOperations
