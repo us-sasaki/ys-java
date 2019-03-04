@@ -115,9 +115,9 @@ class JsonValueTest {
 			}
 			
 			@Test void コントロールコードエスケープ() {
-				JsonValue esc = new JsonValue("\r\n\t\"\'\\");
-				assertEquals("\"\\r\\n\\t\\\"\\\'\\\\\"", esc.toString());
-				assertEquals("\r\n\t\"\'\\", esc.getValue());
+				JsonValue esc = new JsonValue("\r\n\t\"/\\");
+				assertEquals("\"\\r\\n\\t\\\"\\/\\\\\"", esc.toString());
+				assertEquals("\r\n\t\"/\\", esc.getValue());
 			}
 			
 			@Test void 数値化() {
