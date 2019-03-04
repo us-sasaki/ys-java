@@ -18,6 +18,8 @@ public class Triple<K, V1, V2> {
 	public V1 value1;
 	public V2 value2;
 	
+	public Triple() {
+	}
 	public Triple(K key, V1 value1, V2 value2) {
 		this.key = key;
 		this.value1 = value1;
