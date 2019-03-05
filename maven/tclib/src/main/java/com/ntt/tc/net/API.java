@@ -2055,6 +2055,21 @@ public class API {
 	}
 	
 	/**
+	 * 指定された id の Module を削除します。
+	 * 存在しない場合、C8yNoSuchObjectException がスローされます。
+	 *
+	 * @param		id		モジュール id
+	 * @throws	java.io.IOException	REST異常
+	 */
+	public void deleteModule(String id) throws IOException {
+		Response resp = rest.delete("/cep/modules/"+id, "cepModule");
+		
+		if (resp.status == 404)
+			throw new C8yNoSuchObjectException("指定された id("+
+						id+")のモジュールは存在しません:"+resp);
+	}
+	
+	/**
 	 * モジュールコレクションAPIを用いて、Javaのforループで使える
 	 * Module の iterator を取得します。
 	 *
