@@ -366,8 +366,7 @@ public class Stats {
 			this.finisher = finisher;
 			this.characteristics = characteristics;
 		}
-
-
+		
 		@Override
 		public BiConsumer<A, T> accumulator() {
 			return accumulator;
