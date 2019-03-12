@@ -4,13 +4,14 @@ import abdom.data.json.JsonObject;
 
 import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.C8yData;
+import com.ntt.tc.data.C8yUtils;
 import com.ntt.tc.data.inventory.ManagedObject;
 
 /**
  * Kpi class.
  * データポイントを表す Managed Object。
  * KPI は通常の inventory POST で登録されるため、API.createManagedObject
- * を利用できるよう ManagedObject の子クラスとしています。
+ * を利用できるよう ManagedObject のインスタンスを生成します。
  *
  * このクラスは KPI のファクトリメソッドを提供します。
  *
@@ -51,19 +52,9 @@ public final class Kpi {
 									double yellowRangeMax,
 									double redRangeMin,
 									double redRangeMax) {
-		if (!color.startsWith("#"))
-			throw new IllegalArgumentException("color format #xxxxxx: "+color);
-		if (color.length() != 7)
-			throw new IllegalArgumentException("color format #xxxxxx: "+color);
-		try {
-			Integer.parseInt(color.substring(1), 16);
-		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("color format #xxxxxx: "+color);
-		}
-		if (fragment.contains("."))
-			throw new IllegalArgumentException("fragment に . は含められません");
-		if (series.contains("."))
-			throw new IllegalArgumentException("series に . は含められません");
+		C8yUtils.checkRGBColor(color);
+		C8yUtils.checkMeasurementFragment(fragment);
+		C8yUtils.checkMeasurementSeries(series);
 		
 		ManagedObject result = new ManagedObject();
 		result.set("c8y_Global", new JsonObject());

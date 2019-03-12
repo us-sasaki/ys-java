@@ -6,6 +6,7 @@ import abdom.data.json.JsonValue;
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.C8yFormatException;
+import com.ntt.tc.data.C8yUtils;
 import com.ntt.tc.data.inventory.ID;
 import com.ntt.tc.data.inventory.ManagedObject;
 import com.ntt.tc.data.sensor.C8y_Battery;
@@ -137,12 +138,8 @@ public class Measurement extends C8yData {
 	 */
 	public void put(String fragment, String series,
 					double value, String unit) {
-		int c = fragment.indexOf('.');
-		if (c >= 0)
-			throw new C8yFormatException("fragment には . を含められません:"+fragment);
-		c = series.indexOf('.');
-		if (c >= 0)
-			throw new C8yFormatException("series には . を含められません:"+series);
+		C8yUtils.checkMeasurementFragment(fragment);
+		C8yUtils.checkMeasurementSeries(series);
 		put(fragment+"."+series, value, unit);
 	}
 	

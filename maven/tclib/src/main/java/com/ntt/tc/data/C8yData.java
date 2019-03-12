@@ -19,6 +19,8 @@ import abdom.data.json.JsonValue;
  * System.out.println(new ManagedObject().toString("  "));
  * </pre>
  * を実行すると、ManagedObject の (pretty)JSON 形式が得られます。
+ * また、このクラスは特定のデータ項目に関するstatic チェックメソッドを
+ * 提供します。
  */
 public class C8yData extends JData {
 	
