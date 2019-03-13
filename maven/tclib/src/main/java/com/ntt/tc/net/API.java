@@ -695,6 +695,16 @@ public class API {
 	 *
 	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
 	 * に変換され、元の例外は cause として設定されます。
+	 * query として利用可能なキーは以下の通りです。
+	 * <ul>
+	 * <li>dateFrom=</li>
+	 * <li>dateTo=</li>
+	 * <li>type=</li>
+	 * <li>valueFragmentType=</li>
+	 * <li>valueFragmentSeries=</li>
+	 * <li>source=</li>
+	 * <li>(deprecated)fragmentType=</li>
+	 * </ul>
 	 *
 	 * @param	queryString	取得条件を指定します。例："source={id}",
 	 *						 "dateFrom={from}&amp;dateTo={to}&amp;revert=true"
@@ -1163,6 +1173,24 @@ public class API {
 	}
 	
 	/**
+	 * 指定された条件で AlarmCollection を削除します。
+	 * 204 No content 以外のステータスコードが返却された場合、IOException
+	 * がスローされます。
+	 * このコマンドは、queryString の指定によって想定外の削除を引き起こす
+	 * 可能性があるため、利用時は最新の注意を払ってください。
+	 *
+	 * @param	queryString		クエリ文字列(source=, dateFrom= 等)
+	 * @throws		java.io.IOException REST異常
+	 */
+	public void deleteAlarmCollection(String queryString)
+						throws IOException {
+		if (queryString == null)
+			throw new IllegalArgumentException("queryString の指定は必須です");
+		Response resp = rest.delete("/alarm/alarms/?" + queryString);
+		if (resp.status != 204)
+			throw new IOException("AlarmCollection 削除失敗 : " + resp);
+	}
+		/**
 	 * アラームコレクションAPIを用いて、Javaのforループで使える
 	 * Alarm の iterator を取得します。
 	 * <pre>

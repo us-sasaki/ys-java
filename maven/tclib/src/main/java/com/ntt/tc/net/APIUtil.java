@@ -331,6 +331,7 @@ public class APIUtil {
 	
 	/**
 	 * 指定されたモジュール名の CEP モジュールを取得します。
+	 * 内部ではモジュールを全て読み込み、名称が合致するものを取得しています。
 	 *
 	 * @param		moduleName		CEP モジュール名
 	 * @return		取得されたモジュール
