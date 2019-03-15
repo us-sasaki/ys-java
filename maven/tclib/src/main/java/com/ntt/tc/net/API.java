@@ -2006,18 +2006,20 @@ public class API {
 	 *
 	 * @param		moduleName		モジュール名
 	 * @param		text			CEPステートメント
+	 * @return		生成された module の情報
 	 * @throws	java.io.IOException	REST異常
 	 */
-	public void createModule(String moduleName, String text)
+	public Module createModule(String moduleName, String text)
 					throws IOException {
 		byte[] toPost = ("module "+moduleName+";\n"+text).getBytes("UTF-8");
 		
 		Response resp = rest.postMultipart("/cep/modules", "cepmodule", toPost);
+		return Jsonizer.fromJson(resp, Module.class);
 	}
 	
-	public void createModule(String moduleName, List<String> lines)
+	public Module createModule(String moduleName, List<String> lines)
 					throws IOException {
-		createModule(moduleName, lines.stream().collect(Collectors.joining("\n")));
+		return createModule(moduleName, lines.stream().collect(Collectors.joining("\n")));
 	}
 	
 	/**
@@ -2025,11 +2027,12 @@ public class API {
 	 *
 	 * @param		moduleName	モジュール名
 	 * @param		fileName	ファイルのpath
+	 * @return		生成された module の情報
 	 * @throws	java.io.IOException	REST異常
 	 */
-	public void createModuleByFile(String moduleName,
+	public Module createModuleByFile(String moduleName,
 										String fileName) throws IOException {
-		createModule(moduleName, Files.readAllLines(Paths.get(fileName), UTF8));
+		return createModule(moduleName, Files.readAllLines(Paths.get(fileName), UTF8));
 	}
 	
 	/**
