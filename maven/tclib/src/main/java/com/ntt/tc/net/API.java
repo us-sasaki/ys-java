@@ -1969,6 +1969,7 @@ public class API {
 	 *  "message":"Not found module file for id 6 : Could not find entity CepModule by ID 6!"
 	 * }
 	 * </pre>
+	 * 一行目に module {module name}; が挿入されることに注意して下さい。
 	 *
 	 * @param		id		モジュール id
 	 * @return		スクリプト文字列
