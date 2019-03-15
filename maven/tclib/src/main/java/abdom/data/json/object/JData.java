@@ -9,11 +9,12 @@ import abdom.data.json.JsonValue;
 import abdom.data.json.Jsonizable;
 
 /**
- * JSON オブジェクトを Java オブジェクトによって模倣します。
- * このクラスを継承することで、より JSON オブジェクトと互換性のある Java
- * オブジェクトを作成できます。
- * すなわち、Java オブジェクトとして定義されていない未知のフィールドも
- * 格納し、JSON 化させることができます。
+ * JsonType との相互変換機能を Java オブジェクトに付加する抽象クラスです。
+ * このクラスを継承することで、JsonType 値を元にインスタンス変数を設定したり、
+ * 逆に Java オブジェクトのインスタンス変数を JsonType や JSON に変換可能に
+ * なります。
+ * また、Java オブジェクトとして定義されていない未知のフィールドも取り扱う
+ * ことができます。
  * この目的で、暗黙のフィールドとして _extra (JsonObject型) を持っており
  * fill() の際に未定義のフィールド値はすべてここに格納されます。
  * また、toJson() では _extra フィールドは存在する(not null)場合のみJSON

@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Json形式における型一般(var)を表します。また、ストリーム、文字列からの parse 
- * メソッドを提供します。
- * 利便性のため、キャストせずに利用するアクセスメソッドを定義しています。
+ * Json形式で表現されるデータ構造を表す抽象クラスです。
+ * また、ストリーム、文字列からの static parse メソッドを提供します。
+ * 利便性のため、各データ構造に関するメソッドをキャストせずに利用するアクセス
+ * メソッドを定義しています。
  * これらのメソッドの JsonType でのデフォルトの実装は ClassCastException 
  * のスローであり、継承した各クラスで可能なオペレーションを実装します。
  * 利用できないオペレーションでは、ClassCastException が発生します。
@@ -671,7 +672,7 @@ public abstract class JsonType extends Number
 	 */
 	public static JsonType parse(String str) {
 		try {
-			return parseValue(new PushbackReader(str)); //parse(new StringReader(str));
+			return parseValue(new PushbackReader(str));
 		} catch (IOException e) {
 			throw new InternalError("PushbackReader(str) で IOException が発生しました"+e);
 		}
