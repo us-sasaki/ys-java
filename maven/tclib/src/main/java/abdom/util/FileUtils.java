@@ -34,7 +34,7 @@ public final class FileUtils {
  */
 	/**
 	 * 指定された Path で示されるテキストファイルの各行に指定された
-	 * 作用(UnaryOperator)を施します。
+	 * 作用(UnaryOperator)を施し、上書きします。
 	 * Charset は自動判定されます。バイナリファイルの場合など、Charset が
 	 * 判定できない場合、UncheckedIOException がスローされます。
 	 *
@@ -64,7 +64,7 @@ public final class FileUtils {
 	}
 	
 	/**
-	 * 指定された Path で示されるテキストファイルの文字列を置換します。
+	 * 指定された Path で示されるテキストファイルの文字列を置換し、上書きします。
 	 * Charset は自動判定されます。
 	 *
 	 * @param		p		テキストファイルの Path

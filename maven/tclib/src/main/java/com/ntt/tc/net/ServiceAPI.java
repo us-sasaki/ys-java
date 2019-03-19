@@ -2,6 +2,9 @@ package com.ntt.tc.net;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.object.Jsonizer;
@@ -44,7 +47,7 @@ public class ServiceAPI {
  * smart rule API
  */
 	/**
-	 * SmartRule のリスト(配列)を取得します。smartRules は Collection API
+	 * Global SmartRule のリスト(配列)を取得します。smartRules は Collection API
 	 * と異なる返却値(pageがない)となっているため。
 	 *
 	 * @return		SmartRule の配列
@@ -60,6 +63,42 @@ public class ServiceAPI {
 	}
 	
 	/**
+	 * 指定した device と関連する Private SmartRule の配列を取得します。
+	 * smartRules は Collection APIと異なる返却値(pageがない)となっているため。
+	 *
+	 * @param		devieId		デバイス ID
+	 * @return		SmartRule の配列
+	 */
+	public SmartRule[] privateSmartRules(String deviceId) {
+		try {
+			Response resp = rest.get("/service/smartrule/managedObjects/"+deviceId+"/smartrules");
+			JsonType jt = resp.toJson();
+			// Private Smart Rule では、c8y_Context fragment がつく。
+			// 値は {"context":"device","id":"10319"} の形式。
+			return Jsonizer.toArray(jt.get("rules"), new SmartRule[0]);
+		} catch (IOException ioe) {
+			throw new C8yRestRuntimeException(ioe);
+		}
+	}
+	
+	/**
+	 * 全ての private SmartRule を検索し、List として返却します。
+	 * ManagedObject を横断的に検索するため、時間がかかります。
+	 *
+	 * @return		SmartRule の List
+	 */
+	public List<SmartRule> privateSmartRules() {
+		List<SmartRule> result = new ArrayList<>();
+		for (ManagedObject mo : api.managedObjects("query%3dhas(childAdditions)")) {
+			JsonType refs = mo.get("childAdditions.references");
+			if (refs == null) continue;
+			if (refs.size() == 0) continue;
+			result.addAll(Arrays.asList(privateSmartRules(mo.id)));
+		}
+		return result;
+	}
+	
+	/**
 	 * 指定された id の SmartRule を取得します。
 	 *
 	 * @param		id		SmartRule id
@@ -72,7 +111,8 @@ public class ServiceAPI {
 	}
 	
 	/**
-	 * 指定された SmartRule を新規作成します。
+	 * 指定された SmartRule を新規作成しますが、
+	 * Global では確認済み、Private では未確認。
 	 *
 	 * @param		smartRule		登録する SmartRule
 	 * @return		登録され、id が付与された SmartRule(引数のオブジェクト)
@@ -86,8 +126,9 @@ public class ServiceAPI {
 	}
 	
 	/**
-	 * 動作未確認
-	 * 指定された SmartRule を更新します。
+	 * 動作未確認(Private でできることを確認すること)
+	 * 指定された SmartRule(Global/Private) を更新します。
+	 * たたき方は ui と同様。(id や他のパラメータも指定している)
 	 *
 	 * @param		updater		更新する SmartRule
 	 * @return		更新された新規 SmartRule
