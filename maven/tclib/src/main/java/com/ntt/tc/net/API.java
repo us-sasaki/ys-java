@@ -146,13 +146,13 @@ public class API {
 	 */
 	public NewDeviceRequest readNewDeviceRequest(String id)
 				throws IOException {
-		// 存在しない場合、500 Server Error が出ることに対する対処
 		try {
 			Response resp = rest.get("/devicecontrol/newDeviceRequests/"+id,
 									"newDeviceRequest");
 			if (resp.status == 404) return null;
 			return Jsonizer.fromJson(resp, NewDeviceRequest.class);
 		} catch (C8yRestException c8ye) {
+			// 存在しない場合、500 Server Error が出ることに対する対処
 			Response resp = c8ye.getResponse();
 			if (resp.status == 500 &&
 				resp.toJson().get("message").getValue().
@@ -162,9 +162,8 @@ public class API {
 				//Could not find entity NewDeviceRequest by ID {id}!
 				return null;
 			}
-			System.out.println("readNewDeviceRequest() c8y error message : " +
-								resp.toJson().get("message"));
-			throw c8ye;
+			throw new C8yRestException("readNewDeviceRequest() error message : "
+							+resp.toJson().get("message"), c8ye);
 		}
 	}
 	
@@ -381,7 +380,8 @@ public class API {
 	 */
 	public ManagedObject updateManagedObject(String id, ManagedObject updater)
 				throws IOException {
-		Response resp = rest.put("/inventory/managedObjects/"+id, "managedObject", updater);
+		Response resp = rest.put("/inventory/managedObjects/"+id,
+									"managedObject", updater);
 		return Jsonizer.fromJson(resp, ManagedObject.class);
 	}
 	
@@ -394,8 +394,10 @@ public class API {
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public void deleteManagedObject(String id) throws IOException {
-		Response resp = rest.delete("/inventory/managedObjects/" + id, "managedObject");
-		if (resp.status != 204) throw new IOException("managed object 削除失敗" + id + ":" + resp);
+		Response resp = rest.delete("/inventory/managedObjects/" + id,
+									"managedObject");
+		if (resp.status != 204)
+			throw new IOException("managed object 削除失敗" + id + ":" + resp);
 	}
 	
 	/**
@@ -476,13 +478,9 @@ public class API {
 	 * @return	ManagedObject の iterable
 	 */
 	public Iterable<ManagedObject> managedObjects(final String queryString) {
-		return ( new Iterable<ManagedObject>() {
-			public Iterator<ManagedObject> iterator() {
-				return new CollectionIterator<ManagedObject>(rest,
+		return ( () -> new CollectionIterator<ManagedObject>(rest,
 								"/inventory/managedObjects/?"+queryString,
-								"managedObjects", ManagedObject.class);
-			}
-		} );
+								"managedObjects", ManagedObject.class) );
 	}
 	
 	/**
@@ -504,9 +502,11 @@ public class API {
 	 */
 	public void createChildDevice(String id, ManagedObjectReference child)
 									throws IOException {
-		Response resp = rest.post("/inventory/managedObjects/"+id+"/childDevices", "managedObjectReference", child);
+		Response resp = rest.post("/inventory/managedObjects/"+id
+							+"/childDevices", "managedObjectReference", child);
 		if (resp.status != 201)
-			throw new C8yRestException("child device 追加失敗"+resp.status+resp.message+"/"+resp);
+			throw new C8yRestException("child device 追加失敗"
+							+resp.status+resp.message+"/"+resp);
 	}
 	
 	/**
@@ -537,13 +537,16 @@ public class API {
 		if (cid == null) {
 			cid = child.managedObject.self;
 			int i = cid.lastIndexOf("/");
-			if (i == -1) throw new NullPointerException("child device 削除では、id または self を含む ManagedObjectReference を指定して下さい:"+child);
+			if (i == -1)
+				throw new NullPointerException("child device 削除では、id または self を含む ManagedObjectReference を指定して下さい:"+child);
 			cid = cid.substring(i+1);
 		}
 		
-		Response resp = rest.delete("/inventory/managedObjects/"+id+"/childDevices/"+cid);
+		Response resp = rest.delete("/inventory/managedObjects/"+id
+										+"/childDevices/"+cid);
 		if (resp.status != 204)
-			throw new C8yRestException("child device 削除失敗"+resp.status+resp.message+"/"+resp);
+			throw new C8yRestException("child device 削除失敗"
+										+resp.status+resp.message+"/"+resp);
 	}
 	
 	/**
@@ -575,7 +578,8 @@ public class API {
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public Measurement readMeasurement(String id) throws IOException {
-		Response resp = rest.get("/measurement/measurements/"+id, "measurement");
+		Response resp = rest.get("/measurement/measurements/"+id,
+								"measurement");
 		if (resp.status == 404)
 			throw new C8yNoSuchObjectException("指定された id "+id
 						+" の measurement は存在しません");
@@ -583,13 +587,19 @@ public class API {
 	}
 	
 	/**
-	 * メジャーメントを送信します。
+	 * メジャーメントを送信します。メジャーメントは update できず id 
+	 * の取得必要性が少ないこと、頻度が高いため、NWオーバーヘッドを
+	 * 減らす目的で Measurement をリターンしません。
+	 * 内部的にも http ヘッダに Accept を設定しません。
 	 *
 	 * @param	measurement		送信対象のメジャーメント
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public void createMeasurement(Measurement measurement) throws IOException {
-		Response resp = rest.post("/measurement/measurements/", "measurement", measurement);
+		Response resp = rest.request("/measurement/measurements/", "POST",
+									"measurement", null, measurement);
+//		Response resp = rest.post("/measurement/measurements/",
+//								"measurement", measurement);
 	}
 	
 	/**
@@ -600,7 +610,8 @@ public class API {
 	 */
 	public void createMeasurementCollection(MeasurementCollection collection)
 						throws IOException {
-		Response resp = rest.post("/measurement/measurements/", "measurementCollection", collection);
+		Response resp = rest.post("/measurement/measurements/",
+								"measurementCollection", collection);
 	}
 	
 	/**
@@ -621,19 +632,15 @@ public class API {
 	 */
 	public MeasurementCollection readMeasurementCollection(String queryString)
 						throws IOException {
-//		Response resp = rest.get("/measurement/measurements/?"+queryString);
-//		return Jsonizer.fromJson(resp, MeasurementCollection.class);
-//	}
-	
-//	public MeasurementCollection readMeasurementCollectionByStream(String queryString)
-//						throws IOException {
-		Response resp = rest.getByStream("/measurement/measurements/?"+queryString);
+		Response resp = rest.getByStream("/measurement/measurements/?"
+											+queryString);
 		return Jsonizer.fromJson(resp, MeasurementCollection.class);
 	}
 	
 	/**
 	 * 指定されたデバイスで最後に報告された Measurement を取得します。
-	 * query として "pageSize=1&amp;dateFrom=1970-01-01&amp;revert=true" を用います。
+	 * query として "pageSize=1&amp;dateFrom=1970-01-01&amp;revert=true"
+	 * を用います。
 	 *
 	 * @param		source	デバイスID
 	 * @return		最後に報告された Measurement (存在しない場合 null)
@@ -642,7 +649,8 @@ public class API {
 	public Measurement readLastMeasurement(String source) throws IOException {
 		Response resp = rest.getByStream("/measurement/measurements/?source="
 						+source+"&dateFrom=1970-01-01&revert=true&pageSize=1");
-		MeasurementCollection mc = Jsonizer.fromJson(resp, MeasurementCollection.class);
+		MeasurementCollection mc = Jsonizer.fromJson(resp,
+										MeasurementCollection.class);
 		Measurement[] ms = mc.getMeasurements();
 		if (ms.length == 0) return null;
 		return ms[0];
@@ -657,14 +665,15 @@ public class API {
 	 * accept として、measurement / measurementCollection いずれも
 	 * 受け付けますが、measurement を指定しています。
 	 *
-	 * @param	queryString		クエリ文字列(source=, dateFrom= 等)
+	 * @param		queryString		クエリ文字列(source=, dateFrom= 等)
 	 * @throws		java.io.IOException REST異常
 	 */
 	public void deleteMeasurementCollection(String queryString)
 						throws IOException {
 		if (queryString == null || queryString.equals(""))
 			throw new IllegalArgumentException("queryString の指定は必須です");
-		Response resp = rest.delete("/measurement/measurements/?" + queryString);
+		Response resp = rest.delete("/measurement/measurements/?"
+								+ queryString);
 		if (resp.status != 204)
 			throw new IOException("MeasurementCollection 削除失敗 : " + resp);
 	}
@@ -711,13 +720,9 @@ public class API {
 	 * @return	Measurement の iterable
 	 */
 	public Iterable<Measurement> measurements(final String queryString) {
-		return new Iterable<Measurement>() {
-			public Iterator<Measurement> iterator() {
-				return new CollectionIterator<Measurement>(rest,
+		return ( () -> new CollectionIterator<Measurement>(rest,
 							"/measurement/measurements/?"+queryString,
-							"measurements", Measurement.class);
-			}
-		};
+							"measurements", Measurement.class) );
 	}
 	
 	/**
@@ -740,13 +745,8 @@ public class API {
 	public MeasurementSeriesCollection
 			readMeasurementSeriesCollection(String queryString)
 						throws IOException {
-		Response resp = rest.get("/measurement/measurements/series?"+queryString);
-		//String[] queries = queryString.split("&");
-		//String source = null;
-		//for (String query : queries) {
-		//	String[] kv = query.split("=");
-		//	if (kv[0].equals("source")) source = kv[1];
-		//}
+		Response resp = rest.get("/measurement/measurements/series?"
+								+queryString);
 		MeasurementSeriesCollection result = 
 				Jsonizer.fromJson(resp, MeasurementSeriesCollection.class);
 		return result;
@@ -771,6 +771,16 @@ public class API {
 					+"&dateTo="+dateTo.getValue());
 	}
 	
+	/**
+	 * 特定のデバイスから Measurement Series Collection を取得します。
+	 * 
+	 * @param	source		デバイスID
+	 * @param	dateFrom	取得開始日時
+	 * @param	dateTo		取得終了日時
+	 * @param	aggregationType	集約方法(DAILY/HOURLY/MINUTELY
+	 * @return	取得された MeasurementSeriesCollection (Max 5000件)
+	 * @throws	java.io.IOException	REST異常
+	 */
 	public MeasurementSeriesCollection
 			readMeasurementSeriesCollection(String source,
 											TC_Date dateFrom,
@@ -789,6 +799,17 @@ public class API {
 					+"&aggregationType="+aggregationType);
 	}
 	
+	/**
+	 * source, dateFrom, dateTo を指定し、MeasurementSeriesCollection
+	 * を用いた Measurement 取得を行います。
+	 * MeasurementSeriesCollection は MeasurementCollection に比較して
+	 * サイズが小さいため、NW負荷を減らせることが期待されます。
+	 *
+	 * @param		source		デバイス
+	 * @param		dateFrom	開始時刻
+	 * @param		dateTo		終了時刻
+	 * @return		Measurement の Iterable
+	 */
 	public Iterable<Measurement> measurementsBySeries(String source,
 													TC_Date dateFrom,
 													TC_Date dateTo) {
@@ -798,7 +819,6 @@ public class API {
 												dateFrom,
 												dateTo);
 			c.source = new ID(source);
-//System.out.println(c.toString("  "));
 			return c.measurements();
 		} catch (IOException e) {
 			throw new C8yRestRuntimeException(e);
@@ -1073,13 +1093,9 @@ public class API {
 	 * @return	Event の iterable
 	 */
 	public Iterable<Event> events(final String queryString) {
-		return new Iterable<Event>() {
-			public Iterator<Event> iterator() {
-				return new CollectionIterator<Event>(rest,
+		return ( () -> new CollectionIterator<Event>(rest,
 							"/event/events/?"+queryString,
-							"events", Event.class);
-			}
-		};
+							"events", Event.class) );
 	}
 	
 	/**
@@ -1115,7 +1131,7 @@ public class API {
 	 * アラームを送信します。
 	 *
 	 * @param		alarm	送信対象のアラーム
-	 * @return	送信後、id などが付与された Alarm
+	 * @return	送信後、id などが付与された Alarm(alarm で指定したオブジェクト)
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public Alarm createAlarm(Alarm alarm) throws IOException {
@@ -1212,13 +1228,9 @@ public class API {
 	 * @return	Alarm の iterable
 	 */
 	public Iterable<Alarm> alarms(final String queryString) {
-		return new Iterable<Alarm>() {
-			public Iterator<Alarm> iterator() {
-				return new CollectionIterator<Alarm>(rest,
+		return ( () -> new CollectionIterator<Alarm>(rest,
 								"/alarm/alarms/?"+queryString,
-								"alarms", Alarm.class);
-			}
-		};
+								"alarms", Alarm.class) );
 	}
 	
 	/**
@@ -1266,19 +1278,16 @@ public class API {
 	
 	/**
 	 * オペレーションを更新します。
-	 * オペレーションでは、updater を再利用することが少ないと想定されるため、
-	 * 結果は更新された updater インスタンスとして返却されます。
 	 *
 	 * @param	operationId	オペレーションID
 	 * @param	updater		送信対象のオペレーション(更新されます)
-	 * @return	送信後、結果更新された Operation
+	 * @return	更新後の Operation(新しいインスタンス)
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public Operation updateOperation(String operationId, Operation updater)
 						throws IOException {
 		Response resp = rest.put("/devicecontrol/operations/"+operationId, "operation", updater);
-		updater.fill(resp);
-		return updater;
+		return Jsonizer.fromJson(resp, Operation.class);
 	}
 	
 	/**
@@ -1356,13 +1365,9 @@ public class API {
 	 * @return	Opearation の iterable
 	 */
 	public Iterable<Operation> operations(final String queryString) {
-		return new Iterable<Operation>() {
-			public Iterator<Operation> iterator() {
-				return new CollectionIterator<Operation>(rest,
+		return ( () -> new CollectionIterator<Operation>(rest,
 								"/devicecontrol/operations/?"+queryString,
-								"operations", Operation.class);
-			}
-		};
+								"operations", Operation.class) );
 	}
 	
 	/**
@@ -1398,13 +1403,9 @@ public class API {
 	 * @return	Tenant の iterable
 	 */
 	public Iterable<Tenant> tenants(String queryString) {
-		return new Iterable<Tenant>() {
-			public Iterator<Tenant> iterator() {
-				return new CollectionIterator<Tenant>(rest,
+		return ( () -> new CollectionIterator<Tenant>(rest,
 								"/tenant/tenants/?"+queryString,
-								"tenants", Tenant.class);
-			}
-		};
+								"tenants", Tenant.class) );
 	}
 	
 	/**
@@ -1455,7 +1456,7 @@ public class API {
 	 *
 	 * @param		id		テナント id
 	 * @param		updater	更新オブジェクト
-	 * @return		更新後の Tenant 情報
+	 * @return		更新後の Tenant 情報(新しいインスタンス)
 	 * @throws	java.io.IOException	REST異常
 	 */
 	public Tenant updateTenant(String id, Tenant updater) throws IOException {
@@ -1515,7 +1516,8 @@ public class API {
 		Response resp = rest.delete("/tenant/tenants/" + tenant
 							+ "/applications/"+id);
 		if (resp.status == 404) throw new C8yNoSuchObjectException(resp);
-		if (resp.status != 204) throw new IOException("application 削除失敗:"+resp.status+resp);
+		if (resp.status != 204)
+			throw new IOException("application 削除失敗:"+resp.status+resp);
 	}
 	
 	/**
@@ -1553,13 +1555,9 @@ public class API {
 	 * @return	UsageStatistics の iterable
 	 */
 	public Iterable<UsageStatistics> usageStatistics(final String queryString) {
-		return new Iterable<UsageStatistics>() {
-			public Iterator<UsageStatistics> iterator() {
-				return new CollectionIterator<UsageStatistics>(
+		return ( () -> new CollectionIterator<UsageStatistics>(
 							rest, "/tenant/statistics/?"+queryString,
-							"usageStatistics", UsageStatistics.class);
-			}
-		};
+							"usageStatistics", UsageStatistics.class) );
 	}
 	
 	/**
@@ -1654,13 +1652,9 @@ public class API {
 	 * @return	UsageStatistics の iterable
 	 */
 	public Iterable<Option> tenantOptions(final String queryString) {
-		return new Iterable<Option>() {
-			public Iterator<Option> iterator() {
-				return new CollectionIterator<Option>(
+		return ( () -> new CollectionIterator<Option>(
 							rest, "/tenant/options/?"+queryString,
-							"options", Option.class);
-			}
-		};
+							"options", Option.class) );
 	}
 	
 	/**
@@ -1889,13 +1883,9 @@ public class API {
 	 * @return	User の iterable
 	 */
 	public Iterable<User> users(final String tenant, final String queryString) {
-		return new Iterable<User>() {
-			public Iterator<User> iterator() {
-				return new CollectionIterator<User>(
+		return ( () -> new CollectionIterator<User>(
 							rest, "/user/"+tenant+"users/?"+queryString,
-							"users", User.class);
-			}
-		};
+							"users", User.class) );
 	}
 	
 	/**
@@ -1979,7 +1969,9 @@ public class API {
 	 */
 	public String readModuleText(String id) throws IOException {
 		// end point は文書に記載がなく、管理APの電文を見てわかった
-		Response resp = rest.request("/cep/modules/"+id+"?text", "GET", "cepModule", "text/plain", null); // text/plain 指定のため impl を使う
+		Response resp = rest.request("/cep/modules/"+id+"?text", "GET",
+							"cepModule", "text/plain",
+							(byte[])null); // text/plain 指定のため impl を使う
 		if (resp.status == 404)
 			throw new C8yNoSuchObjectException("指定された id("+
 						id+")のモジュールは存在しません:"+resp);
@@ -2060,16 +2052,27 @@ public class API {
 	 * @param		id			CEP のモジュール id
 	 * @param		moduleName	モジュール名
 	 * @param		text		スクリプト
-	 * @throws	java.io.IOException	REST異常
+	 * @throws		java.io.IOException	REST異常
 	 */
 	public void updateModuleText(String id, String moduleName, String text)
 					throws IOException {
 		Response resp = rest.request("/cep/modules/"+id, "PUT", "text/plain", "", ("module "+moduleName+";\n"+text).getBytes("UTF-8")); // text/plain 指定のため impl を使う
 	}
 	
-	public void updateModuleText(String id, String moduleName, List<String> lines)
+	/**
+	 * CEP モジュールのスクリプトを変更します。
+	 * スクリプト内の改行は LF を利用します。
+	 *
+	 * @param		id			CEP のモジュール id
+	 * @param		moduleName	モジュール名
+	 * @param		lines		スクリプト(行の List)
+	 * @throws		java.io.IOException	REST異常
+	 */
+	public void updateModuleText(String id, String moduleName,
+								List<String> lines)
 					throws IOException {
-		updateModuleText(id, moduleName, lines.stream().collect(Collectors.joining("\n")));
+		updateModuleText(id, moduleName,
+					lines.stream().collect(Collectors.joining("\n")));
 	}
 	
 	/**
@@ -2109,13 +2112,9 @@ public class API {
 	 * @return		登録されている module の itarable
 	 */
 	public Iterable<Module> modules(final String queryString) {
-		return new Iterable<Module>() {
-			public Iterator<Module> iterator() {
-				return new CollectionIterator<Module>(
+		return ( () -> new CollectionIterator<Module>(
 							rest, "/cep/modules?"+queryString,
-							"modules", Module.class);
-			}
-		};
+							"modules", Module.class) );
 	}
 	
 	/**
@@ -2159,7 +2158,5 @@ public class API {
 			throw new C8yRestException("SmartREST template registration failed: " + result);
 		return result.substring(3);
 	}
-	
-	
 	
 }

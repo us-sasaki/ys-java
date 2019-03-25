@@ -19,9 +19,12 @@ import static com.ntt.tc.net.Rest.Response;
 /**
  * Things Cloud の ui 向けの非公開API(/service/) へのアクセス、および
  * ui と密接に関連するデータ(データポイントライブラリなど)を操作するクラスです。
- * v9.16 上で動作確認を行いますが、非公開のため、将来仕様変更される可能性が
- * あります。
+ * v9.16 上で動作確認を行いますが、非公開APIのため、将来の仕様変更により、
+ * 期待されない動作をする可能性があります。
  * このクラスでは、非公開 API に関連した便利メソッドも提供します。
+ * 動作確認バージョンの記載をしていますが、今後のリリースで必ずメンテナンス
+ * されるとは限りません。シビアな要件で利用する場合にはテストするか、別の実装
+ * を行ってください。
  *
  * @author		Yusuke Sasaki
  * @version		February 8, 2019
@@ -49,6 +52,7 @@ public class ServiceAPI {
 	/**
 	 * Global SmartRule のリスト(配列)を取得します。smartRules は Collection API
 	 * と異なる返却値(pageがない)となっているため。
+	 * 動作確認バージョン：8.15, 9.12, 9.16
 	 *
 	 * @return		SmartRule の配列
 	 */
@@ -65,6 +69,7 @@ public class ServiceAPI {
 	/**
 	 * 指定した device と関連する Private SmartRule の配列を取得します。
 	 * smartRules は Collection APIと異なる返却値(pageがない)となっているため。
+	 * 動作確認バージョン：8.15, 9.12, 9.16
 	 *
 	 * @param		devieId		デバイス ID
 	 * @return		SmartRule の配列
@@ -84,6 +89,7 @@ public class ServiceAPI {
 	/**
 	 * 全ての private SmartRule を検索し、List として返却します。
 	 * ManagedObject を横断的に検索するため、時間がかかります。
+	 * 動作確認バージョン：9.16
 	 *
 	 * @return		SmartRule の List
 	 */
@@ -100,6 +106,7 @@ public class ServiceAPI {
 	
 	/**
 	 * 指定された id の SmartRule を取得します。
+	 * 動作確認バージョン：8.15, 9.12, 9.16
 	 *
 	 * @param		id		SmartRule id
 	 * @return		SmartRule
@@ -126,9 +133,9 @@ public class ServiceAPI {
 	}
 	
 	/**
-	 * 動作未確認(Private でできることを確認すること)
 	 * 指定された SmartRule(Global/Private) を更新します。
 	 * たたき方は ui と同様。(id や他のパラメータも指定している)
+	 * 動作確認バージョン：8.15, 9.12, 9.16
 	 *
 	 * @param		updater		更新する SmartRule
 	 * @return		更新された新規 SmartRule
@@ -143,6 +150,7 @@ public class ServiceAPI {
 	
 	/**
 	 * 指定された SmartRule を削除します。
+	 * 動作確認バージョン：8.15, 9.12, 9.16
 	 *
 	 * @param		id			更新する SmartRule の id
 	 * @throws		java.io.IOException REST異常
@@ -171,6 +179,7 @@ public class ServiceAPI {
 	/**
 	 * Simulator のリスト(配列)を取得します。simulator は Collection API
 	 * と異なる返却値(object の array)となっているため。
+	 * 動作確認バージョン：8.15, 9.16
 	 *
 	 * @return		Simulator の配列
 	 */
@@ -185,6 +194,7 @@ public class ServiceAPI {
 	
 	/**
 	 * 指定された id の Simulator を取得します。
+	 * 動作確認バージョン：8.15, 9.16
 	 *
 	 * @param		id		Simulator id
 	 * @return		Simulator
@@ -241,6 +251,7 @@ public class ServiceAPI {
 	/**
 	 * Kpi が存在するかテストします。内部では、fragmentType=c8y_Kpi となる
 	 * managed object があるかどうかを判定しています。
+	 * 動作確認バージョン：8.15, 9.16
 	 *
 	 * @return		Kpi が存在する場合、true
 	 * @throws		java.io.IOException		REST異常
@@ -255,6 +266,7 @@ public class ServiceAPI {
 	 * 登録されているすべての KPI (データポイントライブラリ) を削除します。
 	 * 内部では、fragmentType=c8y_Kpi となる
 	 * managed object を削除しています。
+	 * 動作確認バージョン：8.15, 9.16
 	 *
 	 * @throws		java.io.IOException		REST異常
 	 */

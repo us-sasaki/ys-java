@@ -179,10 +179,14 @@ public class Rest {
 	 * 空文字列の場合、application/json を指定します。
 	 *
 	 * @param		contentType		Content-Type に指定する文字列
+	 *								"" の場合、application/json が指定されます
+	 *								null の場合、ヘッダを削除します。
 	 */
 	private void setContentType(String contentType) {
 		// Content-Type
-		if ("".equals(contentType)) {
+		if (contentType == null) {
+			r.removeHeader("Content-Type");
+		} else if ("".equals(contentType)) {
 			r.putHeader("Content-Type", "application/json");
 		} else if (contentType.indexOf('/') == -1) {
 			r.putHeader("Content-Type",
@@ -201,10 +205,13 @@ public class Rest {
 	 * 空文字列の場合、application/json を指定します。
 	 *
 	 * @param		accept		Accept に指定する文字列
+	 *							"" の場合、application/json が指定されます
+	 *							null の場合、ヘッダを削除します。
 	 */
 	private void setAccept(String accept) {
-		// Accept
-		if ("".equals(accept)) {
+		if (accept == null) {
+			r.removeHeader("Accept");
+		} else if ("".equals(accept)) {
 			r.putHeader("Accept", "application/json");
 		} else if (accept.indexOf('/') == -1) {
 			r.putHeader("Accept",
@@ -460,7 +467,7 @@ public class Rest {
 	 * Content-Type を指定して POST リクエストをします。
 	 *
 	 * @param		location	POST 対象の end point
-	 * @param		type		content type 値
+	 * @param		type		content type / ACCEPT 値
 	 * @param		json		POST 対象の Json 値
 	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
@@ -477,7 +484,7 @@ public class Rest {
 	 * Content-Type を指定して POST リクエストをします。
 	 *
 	 * @param		location	POST 対象の end point
-	 * @param		type		content type 値
+	 * @param		type		content type / ACCEPT 値
 	 * @param		body		POST 対象の文字列
 	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
@@ -507,6 +514,22 @@ public class Rest {
 		return requestImpl(location, method, body.getBytes("UTF-8"));
 	}
 	
+	public Response request(String location, String method,
+								String contentType, String accept,
+								Jsonizable json) throws IOException {
+		setContentType(contentType);
+		setAccept(accept);
+		return requestImpl(location, method, json);
+	}
+	
+	public Response request(String location, String method,
+								String contentType, String accept,
+								String body) throws IOException {
+		setContentType(contentType);
+		setAccept(accept);
+		return requestImpl(location, method, body);
+	}
+	
 	/**
 	 * API#readModuleText 向けの API
 	 *
@@ -521,6 +544,7 @@ public class Rest {
 	 *						または application/json-stream 等フル指定)
 	 *						'/' を含む場合、フル指定と見なされます。
 	 *						空文字列では、application/json が設定されます。
+	 *						null では、Accept ヘッダをつけません。
 	 * @param	body		body に設定するデータ
 	 * @return		Rest.Response オブジェクト
 	 * @throws		java.io.IOException REST異常
