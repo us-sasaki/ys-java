@@ -16,10 +16,26 @@ public class Pair<K, V> {
 	public K key;
 	public V value;
 	
+/*-------------
+ * constructor
+ */
 	public Pair() {
 	}
 	public Pair(K key, V value) {
 		this.key = key;
 		this.value = value;
+	}
+	
+/*------------------
+ * instance methods
+ */
+	@Override
+	public String toString() {
+		return "["+key+","+value+"]";
+	}
+	
+	@Override
+	public int hashCode() {
+		return key.hashCode() ^ value.hashCode();
 	}
 }

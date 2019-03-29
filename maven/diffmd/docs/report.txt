@@ -1,4 +1,4 @@
-DiffMd レポート (Tue Feb 26 10:30:49 JST 2019)
+DiffMd レポート (Wed Mar 27 11:07:53 JST 2019)
 
 ■対象ディレクトリ
 
@@ -209,7 +209,6 @@ zapier.html.md
 　独自文書　　　：docs\2_ja-old\report\postdata_bulk.html.md
 　独自文書　　　：docs\2_ja-old\report\postdata_script.html.md
 　独自文書　　　：docs\2_ja-old\report\scada_widget.html.md
-　削除が必要　　：docs\2_ja-old\users-guide\LoRa.html.md
 　新規訳文が必要：docs\1_en-new\users-guide\enterprise-edition.html.md
 　新規訳文が必要：docs\1_en-new\users-guide\optional-services.html.md
 　新規訳文が必要：docs\1_en-new\users-guide\sigfox.html.md
@@ -221,8 +220,8 @@ zapier.html.md
 　　新規訳文が必要：9
 　　コンフリクト　：0
 　　削除済み　　　：1
-　　削除が必要　　：11
-　　　　　　　合計：42
+　　削除が必要　　：10
+　　　　　　　合計：41
 
 ■更新ファイル作成(カッコ内の数値は変更された行の割合(%))
 
@@ -259,6 +258,7 @@ zapier.html.md
 　差大(21%)：/rest/hello-rest.html.md
 　差大(25%)：/rest/introduction.html.md
 　修正(14%)：/rest/smartrest.html.md
+　差大(52%)：/users-guide/LoRa.html.md
 　差大(70%)：/users-guide/administration.html.md
 　差大(66%)：/users-guide/cloud-fieldbus.html.md
 　差大(51%)：/users-guide/cockpit.html.md
@@ -274,6 +274,6 @@ zapier.html.md
 
 　サマリ
 　　変更なし　　　：1
-　　差大　　　　　：22
+　　差大　　　　　：23
 　　修正　　　　　：22
-　　　　　　　合計：45
+　　　　　　　合計：46

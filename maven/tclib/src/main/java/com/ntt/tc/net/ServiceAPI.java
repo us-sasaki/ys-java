@@ -45,7 +45,7 @@ public class ServiceAPI {
 /*------------------
  * instance methods
  */
- 
+
 /*----------------
  * smart rule API
  */
@@ -71,7 +71,7 @@ public class ServiceAPI {
 	 * smartRules は Collection APIと異なる返却値(pageがない)となっているため。
 	 * 動作確認バージョン：8.15, 9.12, 9.16
 	 *
-	 * @param		devieId		デバイス ID
+	 * @param		deviceId		デバイス ID
 	 * @return		SmartRule の配列
 	 */
 	public SmartRule[] privateSmartRules(String deviceId) {
