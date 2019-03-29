@@ -38,4 +38,15 @@ public class Pair<K, V> {
 	public int hashCode() {
 		return key.hashCode() ^ value.hashCode();
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Pair)) return false;
+		Pair<?,?> p = (Pair<?,?>)obj;
+		
+		return ( (key == null && p.key == null)
+				||(key != null && key.equals(p.key)) )
+			&& ( (value == null && p.value == null)
+				||(value != null && value.equals(p.value)) );
+	}
 }
