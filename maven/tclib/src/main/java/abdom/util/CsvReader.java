@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.io.BufferedReader;
 import java.io.Reader;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.io.FileReader;
 import java.util.List;
 import java.util.ArrayList;
@@ -181,7 +182,7 @@ public class CsvReader implements Closeable {
 			try {
 				csvRowIterator(new FileReader(fname));
 			} catch (java.io.IOException ioe) {
-				throw new IllegalArgumentException("指定されたファイル" +
+				throw new UncheckedIOException("指定されたファイル" +
 							fname + "は存在しません", ioe);
 			}
 		}
@@ -199,7 +200,7 @@ public class CsvReader implements Closeable {
 					close();
 				} catch (IOException ignored) {
 				}
-				throw new IllegalArgumentException("指定されたReader" + reader + "の読み込み中にエラーが発生しました", ioe);
+				throw new UncheckedIOException("指定されたReader" + reader + "の読み込み中にエラーが発生しました", ioe);
 			}
 		}
 		
@@ -218,7 +219,7 @@ public class CsvReader implements Closeable {
 					close();
 				} catch (IOException ignored) {
 				}
-				throw new IllegalArgumentException("指定されたReader" + reader + "の読み込み中にエラーが発生しました", ioe);
+				throw new UncheckedIOException("指定されたReader" + reader + "の読み込み中にエラーが発生しました", ioe);
 			}
 			return ret;
 		}
@@ -235,7 +236,7 @@ public class CsvReader implements Closeable {
  */
 	/**
 	 * Iterator として CSV ファイルを扱うための便利メソッドです。
-	 * IOException は IllegalArgumentException に変換されます。
+	 * IOException は UncheckedIOException に変換されます。
 	 * <pre>
 	 * 使用例
 	 * for (String[] row : CsvReader.rows("file.csv") {
@@ -250,17 +251,12 @@ public class CsvReader implements Closeable {
 	 * @return	iterable
 	 */
 	public static Iterable<String[]> rows(final String fname) {
-		return new Iterable<String[]>() {
-			public Iterator<String[]> iterator() {
-				return new CsvRowIterator(fname);
-			}
-		
-		};
+		return () -> new CsvRowIterator(fname);
 	}
 	
 	/**
 	 * Iterator として Reader を扱うための便利メソッドです。
-	 * IOException は IllegalArgumentException に変換されます。
+	 * IOException は UncheckedIOException に変換されます。
 	 * <pre>
 	 * 使用例
 	 * for (String[] row : CsvReader.rows(some_reader) {
@@ -275,12 +271,8 @@ public class CsvReader implements Closeable {
 	 * @return	iterable
 	 */
 	public static Iterable<String[]> rows(final Reader reader) {
-		return new Iterable<String[]>() {
-			public Iterator<String[]> iterator() {
-				return new CsvRowIterator(reader);
-			}
-		
-		};	}
+		return () -> new CsvRowIterator(reader);
+	}
 	
 	/**
 	 * CSV ファイルをすべて読み込み、List&lt;String[]&gt; 形式で返却します。
