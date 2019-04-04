@@ -586,14 +586,21 @@ public class Rest {
 	 */
 	protected Response requestImpl(String location, String method, byte[] body)
 											throws IOException {
-//System.out.println(com.ntt.data.ByteArray.toDumpList(body));
+//System.out.println(abdom.data.ByteArray.toDumpList(body));
 		JsonRest.Response resp = r.request(location, method, body);
 		Response result = new Response(resp);
+//System.out.println(result);
+//System.out.println(result.status);
 		//
 		// レスポンスコードの処理(404 Not Found は正常応答)
 		//
-		if (resp.status >= 400 && resp.status != 404)
+		if (resp.status >= 400 && resp.status != 404) {
+//System.out.println(abdom.data.ByteArray.toDumpList(resp.body));
+//System.out.println(resp.message);
+//System.out.println(resp.toString());
 			throw new C8yRestException(result, location, method, r.getHeader("Content-Type"), r.getHeader("Accept"));
+			
+		}
 		
 		return result;
 	}

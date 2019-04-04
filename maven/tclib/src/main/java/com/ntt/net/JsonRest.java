@@ -342,7 +342,10 @@ public class JsonRest {
 							("GET".equals(method) || "DELETE".equals(method)))
 								continue;
 				String value = header.get(key);
-				if (value != null) con.setRequestProperty(key, header.get(key));
+				if (value != null) {
+					con.setRequestProperty(key, header.get(key));
+//System.out.println("header "+key + "="+header.get(key));
+				}
 			}
 		}
 		
