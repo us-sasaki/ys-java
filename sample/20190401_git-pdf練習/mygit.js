@@ -38,16 +38,23 @@ class GitUtils {
 	 */
 	static lastModifiedFiles() {
 		const commitId = GitUtils.lastCommitedIds()[0];
-		const modified = execSync('git ls-tree --name-only -r '+commitId);
+//		const modified = execSync("git log -1 --pretty=format:'' "+commitId);
+		const modified = execSync("git log -1 --name-only --pretty= "+commitId);
 		return modified.toString().split('/\r\n|\r|\n/');
 	}
+	
+//	static lastModifiedFiles() {
+//		const commitId = GitUtils.lastCommitedIds()[0];
+//		const modified = execSync('git ls-tree --name-only -r '+commitId);
+//		return modified.toString().split('/\r\n|\r|\n/');
+//	}
 	
 	/**
 	 * 
 	 */
 	static managedFiles() {
 		const commitId = GitUtils.lastCommitedIds()[0];
-		const managed = execSync('git ls-tree --full-name -r '+commitId);
+		const managed = execSync('git ls-tree --name-only -r '+commitId);
 		return managed.toString().split('/\r\n|\r|\n/');
 	}
 	
