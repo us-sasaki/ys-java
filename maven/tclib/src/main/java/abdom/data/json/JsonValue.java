@@ -49,7 +49,8 @@ public final class JsonValue extends JsonType {
  */
 	private static String escapeControlCodes(String value) {
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < value.length(); i++) {
+		int len = value.length();
+		for (int i = 0; i < len; i++) {
 			char c = value.charAt(i);
 			switch (c) {
 			case '\b':	sb.append("\\b");	break;
@@ -85,10 +86,11 @@ public final class JsonValue extends JsonType {
 		
 		// unescape
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < value.length(); i++) {
+		int len = value.length();
+		for (int i = 0; i < len; i++) {
 			char c = value.charAt(i);
 			if (c == '\\') {
-				if (i++ == value.length()) break; // illegal but exit
+				if (i++ == len) break; // illegal but exit
 				c = value.charAt(i);
 				switch (c) {
 				case 'b':	sb.append('\b');	break;
@@ -100,7 +102,7 @@ public final class JsonValue extends JsonType {
 				case '\"':	sb.append('\"');	break;
 				case '\\':	sb.append('\\');	break;
 				case 'u':
-					if (i+4 > value.length()) throw new InternalError();
+					if (i+4 > len) throw new InternalError();
 					String hex = value.substring(i+1, i+5);
 					i += 5;
 					char u = (char)Integer.parseInt(hex, 16);

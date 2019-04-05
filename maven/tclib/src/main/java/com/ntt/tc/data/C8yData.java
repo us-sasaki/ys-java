@@ -51,9 +51,7 @@ public class C8yData extends JData {
 		
 		// キーをマージした map を生成
 		Set<String> merged = new HashSet<String>(a.keySet());
-		for (String toAdd : b.keySet() ) {
-			merged.add(toAdd);
-		}
+		merged.addAll(b.keySet());
 		for (String field : merged) {
 			JsonType ja = a.get(field);
 			JsonType jb = b.get(field);

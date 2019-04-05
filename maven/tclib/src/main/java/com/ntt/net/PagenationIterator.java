@@ -1,6 +1,7 @@
 package com.ntt.net;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -46,7 +47,8 @@ class PagenationIterator implements Iterator<JsonType> {
 	 * @param	pageSizePropertyName	1ページあたりの情報数を示すパラメータ名
 	 * @param	fieldName	配列を格納しているフィールド名を指定します
 	 */
-	PagenationIterator(JsonRest rest, String url, String pagePropertyName, String pageSizePropertyName, String fieldName) {
+	PagenationIterator(JsonRest rest, String url, String pagePropertyName,
+						String pageSizePropertyName, String fieldName) {
 		// + -> %2B に変換
 		url = url.replace("+", "%2B");
 		this.rest = rest;
@@ -111,7 +113,7 @@ class PagenationIterator implements Iterator<JsonType> {
 			}
 			cursor = 0;
 		} catch (IOException ioe) {
-			throw new RuntimeException(ioe);
+			throw new UncheckedIOException(ioe);
 		}
 	}
 	
