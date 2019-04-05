@@ -565,6 +565,17 @@ public abstract class JsonType extends Number
 		throw new ClassCastException("この JsonType は " + getClass() + " のため、keySet を持ちません");
 	}
 	
+	/**
+	 * JsonArray として、JsonType の配列に変換します。
+	 * 要素はこのオブジェクトの要素の shallow copy のため、変更した場合
+	 * このオブジェクトの要素も変更されます。
+	 *
+	 * @return		この JsonArray が持つ要素の Java 配列化
+	 */
+	public JsonType[] toArray() {
+		throw new ClassCastException("この JsonType は " + getClass() + " のため、toArray() できません");
+	}
+	
 /*---------------
  * class methods
  */

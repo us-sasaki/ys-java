@@ -329,6 +329,11 @@ public class JsonArray extends JsonType {
 	}
 	
 	@Override
+	public JsonType[] toArray() {
+		return array.toArray(new JsonType[array.size()]);
+	}
+	
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append('[');

@@ -590,7 +590,7 @@ public class API {
 	 * メジャーメントを送信します。メジャーメントは update できず id 
 	 * の取得必要性が少ないこと、頻度が高いため、NWオーバーヘッドを
 	 * 減らす目的で Measurement をリターンしません。
-	 * 内部的には http ヘッダに Accept * / * を設定し、空のレスポンスを
+	 * 内部的には http ヘッダに Accept *_/* を設定し、空のレスポンスを
 	 * 得ています。 (Header 自体を削除すると本APIでは406エラーとなるため)
 	 *
 	 * @param	measurement		送信対象のメジャーメント
@@ -599,8 +599,6 @@ public class API {
 	public void createMeasurement(Measurement measurement) throws IOException {
 		Response resp = rest.request("/measurement/measurements/", "POST",
 									"measurement", "*/*", measurement);
-//		Response resp = rest.post("/measurement/measurements/",
-//								"measurement", measurement);
 	}
 	
 	/**
