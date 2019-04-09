@@ -1,5 +1,14 @@
 package abdom.data.json.object;
-
+//
+// Refactoring ネタ：
+// Accessor はキーごとに割り振られるため、type によってインスタンスを
+// わける設計とした方がシンプルかつ高性能になる
+// 現在の型を if で分岐している部分が不要になる
+// IntAccessor や JsonTypeAccessor、ObjectAccessor など
+// それぞれ ArrayAccessor もあるためクラス数は増える
+// Property は現状のままで OK
+//
+//
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

@@ -12,6 +12,8 @@ import com.ntt.tc.data.inventory.ID;
  * 基本は ManagedObject だが、ManagedObject は大きいので継承しないこととする。
  * パラメータ値はすべて推測。
  * 本クラスは、各 SmartRule を生成するためのファクトリメソッドを提供します。
+ * type として c8y_SmartRule が設定されますが、update する場合 null を設定
+ * して下さい。
  *
  * @version		February 8, 2019
  * @author		Yusuke Sasaki
@@ -120,7 +122,7 @@ public class SmartRule extends C8yData {
 			throw new IllegalArgumentException("fragment に . は含められません");
 		if (series.contains("."))
 			throw new IllegalArgumentException("series に . は含められません");
-				SmartRule s = new SmartRule();
+		SmartRule s = new SmartRule();
 		s.set("config.alarmText", alarmText);
 		s.set("config.alarmType", alarmType);
 		s.set("config.fragment", fragment);
@@ -134,6 +136,47 @@ public class SmartRule extends C8yData {
 		s.ruleTemplateName = "explicitThresholdSmartRule";
 		return s;
 	}
-		
+	
+	/**
+	 * 指定される type の alarm を受信したとき、メールを送信する enabled な
+	 * SmartRule オブジェクトを生成します。
+	 * 利用実績はありません。
+	 *
+	 * @param		name		SmartRule 名
+	 * @param		alarmType	alarm の type(カンマ区切りで複数指定可能)
+	 * @param		to			メール宛先
+	 * @param		cc			メールのcc(null で省略可能)
+	 * @param		bcc			メールのbcc(null で省略可能)
+	 * @param		replyTo		メールの返信先(null で省略可能)
+	 * @param		subject		メール件名
+	 * @param		text		メール本文 #{source.name} #{severity}
+	 * 							#{text} などの alarm オブジェクト内容を参照可能
+	 * @param		enabledSources 対象とするデバイスのIDの列
+	 * @return		生成された SmartRule オブジェクト
+	 */
+	public static SmartRule ofAlarmSendEmail(
+								String name,
+								String alarmType,
+								String to,
+								String cc,
+								String bcc,
+								String replyTo,
+								String subject,
+								String text,
+								String... enabledSources) {
+		SmartRule s = new SmartRule();
+		s.set("config.alarmType", alarmType);
+		s.set("config.to", to);
+		if (cc != null) s.set("config.cc", cc);
+		if (bcc != null) s.set("config.bcc", bcc);
+		if (replyTo != null) s.set("config.replyTo", replyTo);
+		s.set("config.subject", subject);
+		s.set("config.text", text);
+		s.enabled = true;
+		s.enabledSources = enabledSources;
+		s.name = name;
+		s.ruleTemplateName = "onAlarmSendEmail";
+		return s;
+	}
 	
 }
