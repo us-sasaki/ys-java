@@ -32,6 +32,11 @@ class GitUtils {
 	
 	/**
 	 * 最後の commit で変更されたファイルの一覧を取得します。
+	 * git デフォルトではパスの中で日本語が \(8進数) のようなコードに
+	 * エンコードされる。この形式では、prefix() と互換性がない。
+	 * これを回避するために、 .git/config の[core]エントリに次を加える。
+	 * quotepath = false
+	 * これで日本語がエンコードされなくなる。
 	 *
 	 * @return	{Array}	ファイルパス(git root からの相対パス)の配列
 	 * 
@@ -39,7 +44,7 @@ class GitUtils {
 	static lastModifiedFiles() {
 		const commitId = GitUtils.lastCommitedIds()[0];
 		const modified = execSync("git log -1 --name-only --pretty= "+commitId);
-		return modified.toString().split('/\r\n|\r|\n/');
+		return modified.toString().split(/\r\n|\r|\n/);
 	}
 	
 	/**
@@ -50,7 +55,7 @@ class GitUtils {
 	static managedFiles() {
 		const commitId = GitUtils.lastCommitedIds()[0];
 		const managed = execSync('git ls-tree --name-only -r '+commitId);
-		return managed.toString().split('/\r\n|\r|\n/');
+		return managed.toString().split(/\r\n|\r|\n/);
 	}
 	
 	/**
@@ -66,8 +71,10 @@ class GitUtils {
 	 */
 	static prefix(path) {
 		const prefix = execSync('git rev-parse --show-prefix');
-		if (path === void 0) return prefix;
-		return prefix + path;
+		let pref = prefix.toString(); // buffer 型 -> string
+		pref = pref.substring(0, pref.length-1); // 最後に改行(\n)がある
+		if (path === void 0) return pref;
+		return pref + path;
 	}
 	
 	/**
@@ -85,7 +92,7 @@ class GitUtils {
 	}
 	
 	static modifiedFiles() {
-		const managed = GitUtils.managedFiles().map(GitUtils.prefix);
+		const managed = GitUtils.managedFiles().map(p => GitUtils.prefix(p));
 		const lastModified = GitUtils.lastModifiedFiles();
 		
 		// managed にあって、lastModified にもあるものが答え
@@ -100,6 +107,8 @@ class GitUtils {
 		const pref = GitUtils.prefix();
 		return lastModified.filter(path => !path.startsWith(pref));
 	}
+	
+	
 	
 //		const modified = execSync("git log -1 --pretty=format:'' "+commitId);
 

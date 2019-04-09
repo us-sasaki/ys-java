@@ -3,9 +3,9 @@ const path = require('path');
 const mygit = require('./mygit.js').gitUtils;
 
 /**
- * gitlab Webhook ‚Æ‚µ‚ÄŽg—p‚·‚é microservice ‚Ìì¬ƒeƒXƒg—p
- * push ‚³‚ê‚½ƒtƒ@ƒCƒ‹‚Æ“¯‚¶ƒfƒBƒŒƒNƒgƒŠ‚É 'createdPdf' ƒfƒBƒŒƒNƒgƒŠ‚ª‚ ‚é
- * ê‡Apdf ƒtƒ@ƒCƒ‹‚ð¶¬‚·‚é
+ * gitlab Webhook ã¨ã—ã¦ä½¿ç”¨ã™ã‚‹ microservice ã®ä½œæˆãƒ†ã‚¹ãƒˆç”¨
+ * push ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã¨åŒã˜ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã« 'createdPdf' ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒã‚ã‚‹
+ * å ´åˆã€pdf ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç”Ÿæˆã™ã‚‹
  */
 const pushedFiles = ['./git/a.txt', './git/b.txt', './git/notExists.txt'];
 
@@ -23,12 +23,14 @@ pushedFiles.map( text => { let p = path.parse(text); p.path = text; return p; } 
 			.forEach( obj => {console.log(obj);} );
 
 const log = (line => console.log(line));
+
 log("---- commit id");
 mygit.lastCommitedIds().forEach(log);
 log("---- last modified files");
 mygit.lastModifiedFiles().forEach(log);
 log("---- managed files");
 mygit.managedFiles().forEach(log);
+log("---- prefix = "+mygit.prefix());
 log("---- deleted files");
 mygit.deletedFiles().forEach(log);
 log("---- modified files");
