@@ -33,30 +33,81 @@ class GitUtils {
 	/**
 	 * 最後の commit で変更されたファイルの一覧を取得します。
 	 *
-	 * @return	{Array}	ファイルパスの配列
+	 * @return	{Array}	ファイルパス(git root からの相対パス)の配列
 	 * 
 	 */
 	static lastModifiedFiles() {
 		const commitId = GitUtils.lastCommitedIds()[0];
-//		const modified = execSync("git log -1 --pretty=format:'' "+commitId);
 		const modified = execSync("git log -1 --name-only --pretty= "+commitId);
 		return modified.toString().split('/\r\n|\r|\n/');
 	}
 	
-//	static lastModifiedFiles() {
-//		const commitId = GitUtils.lastCommitedIds()[0];
-//		const modified = execSync('git ls-tree --name-only -r '+commitId);
-//		return modified.toString().split('/\r\n|\r|\n/');
-//	}
-	
 	/**
-	 * 
+	 * このディレクトリ配下の git 管理されているファイルを取得します。
+	 *
+	 * @return	{Array}	ファイルパス(相対パス)の配列
 	 */
 	static managedFiles() {
 		const commitId = GitUtils.lastCommitedIds()[0];
 		const managed = execSync('git ls-tree --name-only -r '+commitId);
 		return managed.toString().split('/\r\n|\r|\n/');
 	}
+	
+	/**
+	 * git root から、このディレクトリまでの相対パスを返します。
+	 * lastModifiedFiles は git root からの相対パスで
+	 * managedFiles はこのディレクトリからの相対パスのため、git root
+	 * に合わせるのにこの関数を利用できます。
+	 *
+	 * @param	{String}	path	相対パス
+	 * @return	{String}	path が指定されていた場合、git root からの相対
+	 *						パス、指定されていない場合、このディレクトリへの
+	 *						相対パス
+	 */
+	static prefix(path) {
+		const prefix = execSync('git rev-parse --show-prefix');
+		if (path === void 0) return prefix;
+		return prefix + path;
+	}
+	
+	/**
+	 * 現在のディレクトリ以下のファイルで、直近のコミットで削除された
+	 * ファイルの相対パスを返却します。
+	 */
+	static deletedFiles() {
+		const managed = GitUtils.managedFiles().map(GitUtils.prefix);
+		const lastModified = GitUtils.lastModifiedFiles();
+		
+		// lastModified にあって、managed になく、prefix ではじまるものが答え
+		const pref = GitUtils.prefix();
+		return lastModified.filter(path => path.startsWith(pref))
+							.filter(path => !managed.includes(path));
+	}
+	
+	static modifiedFiles() {
+		const managed = GitUtils.managedFiles().map(GitUtils.prefix);
+		const lastModified = GitUtils.lastModifiedFiles();
+		
+		// managed にあって、lastModified にもあるものが答え
+		return managed.filter(path => lastModified.includes(path));
+	}
+	
+	static otherFiles() {
+		const managed = GitUtils.managedFiles().map(GitUtils.prefix);
+		const lastModified = GitUtils.lastModifiedFiles();
+		
+		// lastModified の中にあって、prefix ではじまらないもの
+		const pref = GitUtils.prefix();
+		return lastModified.filter(path => !path.startsWith(pref));
+	}
+	
+//		const modified = execSync("git log -1 --pretty=format:'' "+commitId);
+
+//	static lastModifiedFiles() {
+//		const commitId = GitUtils.lastCommitedIds()[0];
+//		const modified = execSync('git ls-tree --name-only -r '+commitId);
+//		return modified.toString().split('/\r\n|\r|\n/');
+//	}
 	
 	// 変更された(削除された場合を含む)ファイル一覧が出る
 	//   git ls-tree --name-only -r {commit-id}
@@ -73,6 +124,7 @@ class GitUtils {
 	// 過去指定した履歴数分の commit id を取得する
 	//   git log -{履歴数} --pretty=%H
 	//   新しいもの～古いものと並ぶ
+	
 }
 
 /*---------
