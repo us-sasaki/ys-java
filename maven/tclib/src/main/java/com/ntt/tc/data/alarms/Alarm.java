@@ -138,7 +138,7 @@ public class Alarm extends C8yData {
 	 * PUT/POST : No
 	 * </pre>
 	 */
-	public TC_Date firstOccurenceTime;
+	public TC_Date firstOccurrenceTime;
 	
 	/**
 	 * History of modifications tracing property changes.

@@ -1,8 +1,10 @@
 const fs = require('fs');
+const path = require('path');
 const execSync = require('child_process').execSync;
 
 /**
- * git サービスを扱うのに便利な static 関数を定義する
+ * git で pdf を自動作成するのに便利な関数を定義する。
+ * git コマンドを扱うのに便利な static 関数
  * 利用するときは、カレントディレクトリが git ディレクトリである必要がある。
  *
  * @author		Yusuke Sasaki
@@ -44,7 +46,9 @@ class GitUtils {
 	static lastModifiedFiles() {
 		const commitId = GitUtils.lastCommitedIds()[0];
 		const modified = execSync("git log -1 --name-only --pretty= "+commitId);
-		return modified.toString().split(/\r\n|\r|\n/);
+		const result = modified.toString().split(/\r\n|\r|\n/);
+		result.pop();
+		return result;
 	}
 	
 	/**
@@ -55,7 +59,9 @@ class GitUtils {
 	static managedFiles() {
 		const commitId = GitUtils.lastCommitedIds()[0];
 		const managed = execSync('git ls-tree --name-only -r '+commitId);
-		return managed.toString().split(/\r\n|\r|\n/);
+		const result = managed.toString().split(/\r\n|\r|\n/);
+		result.pop();
+		return result;
 	}
 	
 	/**
@@ -92,12 +98,21 @@ class GitUtils {
 	}
 	
 	static modifiedFiles() {
-		const managed = GitUtils.managedFiles().map(p => GitUtils.prefix(p));
+		const managed = GitUtils.managedFiles().map(GitUtils.prefix);
 		const lastModified = GitUtils.lastModifiedFiles();
 		
 		// managed にあって、lastModified にもあるものが答え
 		return managed.filter(path => lastModified.includes(path));
 	}
+	
+	static unchangedFiles() {
+		const managed = GitUtils.managedFiles().map(GitUtils.prefix);
+		const lastModified = GitUtils.lastModifiedFiles();
+		
+		// managed にあって、lastModified にないもの
+		return managed.filter(path => !lastModified.includes(path));
+	}
+	
 	
 	static otherFiles() {
 		const managed = GitUtils.managedFiles().map(GitUtils.prefix);
@@ -108,7 +123,52 @@ class GitUtils {
 		return lastModified.filter(path => !path.startsWith(pref));
 	}
 	
+	/**
+	 * 指定されたディレクトリに createdPdfs という名称のディレクトリが
+	 * 存在するかをチェックします。
+	 *
+	 * @param	{String}	p (無指定の場合 . )
+	 * @return	{boolean} createdPdfs ディレクトリがある場合 true
+	 */
+	static checkDirectoryHasCreatedPdfs(p) {
+		if (p === void 0) p = '.';
+		const files = fs.readdirSync(p);
+		if (!files.includes('createdPdfs')) return false;
+		return fs.statSync(path.join(p, 'createdPdfs')).isDirectory();
+	}
 	
+	/**
+	 * 指定されたディレクトリに *.css のファイルが含まれるかをチェックします。
+	 *
+	 * @param	{String}	path (無指定の場合 . )
+	 * @return	{boolean} *.css ファイルがある場合 true
+	 */
+	static checkCSSExists(p) {
+		if (p === void 0) p = '.';
+		const files = fs.readdirSync(p)
+							.filter(f => f.endsWith('.css'))
+							.filter(f => fs.statSync(path.join(p,f)).isFile());
+		return files.length > 0;
+	}
+	
+	/**
+	 * 変更対象のファイルが次の条件を満たすとき pdf を自動作成する
+	 * (1) 同じディレクトリに createdPdfs ディレクトリが存在する
+	 * (2) 同じディレクトリに *.css ファイルを含む
+	 * (3) ファイル名が *.md となっている
+	 */
+	static createPdf() {
+		console.log(GitUtils.checkDirectoryHasCreatedPdfs());
+		console.log(GitUtils.checkCSSExists());
+		if (!GitUtils.checkDirectoryHasCreatedPdfs()) return;
+		if (!GitUtils.checkCSSExists()) return;
+		
+		const targetFiles = GitUtils.modifiedFiles()
+								.filter(p => p.endsWith('.md'));
+		targetFiles.forEach(p => {
+					const result = execSync('markdown-pdf '+p);
+				});
+	}
 	
 //		const modified = execSync("git log -1 --pretty=format:'' "+commitId);
 
