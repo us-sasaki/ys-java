@@ -17,7 +17,7 @@ import abdom.data.json.object.JValue;
  * @version		November 19, 2016
  * @author		Yusuke Sasaki
  */
-public class TC_Date extends C8yValue {
+public class TC_Date extends C8yValue implements Comparable<TC_Date> {
 	/**
 	 * スレッドごとに SimpleDateFormat インスタンスを分ける必要があるため、
 	 * ThreadLocal 利用。
@@ -168,4 +168,14 @@ public class TC_Date extends C8yValue {
 		return dateCache;
 	}
 	
+	/**
+	 * もうひとつの TC_Date と大小比較します。
+	 *
+	 * @param		another		比較対象の TC_Date
+	 * @return		比較結果
+	 */
+	@Override
+	public int compareTo(TC_Date another) {
+		return this.date.compareTo(another.date);
+	}
 }

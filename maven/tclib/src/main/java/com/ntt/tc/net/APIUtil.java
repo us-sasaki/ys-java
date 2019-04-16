@@ -13,6 +13,7 @@ import abdom.data.json.JsonValue;
 import abdom.data.json.object.Jsonizer;
 
 import com.ntt.tc.data.C8yData;
+import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.alarms.*;
 import com.ntt.tc.data.auditing.*;
 import com.ntt.tc.data.binaries.*;
@@ -425,5 +426,34 @@ public class APIUtil {
 		managedObject.fill(dbmo);
 		
 		return cred;
+	}
+	
+	/**
+	 * alarm のリストを取得し、firstOccurrenceTime(ない場合 time) から
+	 * creationTime までの時間を算出します。
+	 * CEP 遅延でよく利用するため、API に組み込みました。
+	 * CEP で alarm を作成してから実際に mongo に書き込まれるまでの時間を
+	 * 計測する目的で利用できます。
+	 *
+	 * @param		from		開始時間
+	 * @param		to			終了時間
+	 * @param		param		type や source 指定など、追加の指定
+	 *							null/"" を指定すると追加指定を設定しません
+	 * @return		firstOccurrenceTime(or time), creationTime の TreeMap
+	 */
+	public TreeMap<Long, Long> getAlarmCreationElapsed(TC_Date from, TC_Date to, String param) {
+		TreeMap<Long, Long> result = new TreeMap<>();
+		
+		if (param == null) param = "";
+		if (!param.equals("") && !param.startsWith("&"))
+			param = "&" + param;
+		
+		for (Alarm alarm : api.alarms("dateFrom="+from.getValue()+"&dateTo="+to.getValue()+param)) {
+			TC_Date creationTime = alarm.creationTime;
+			TC_Date time = alarm.firstOccurrenceTime;
+			if (time == null) time = alarm.time;
+			result.put(time.getTime(), creationTime.getTime());
+		}
+		return result;
 	}
 }
