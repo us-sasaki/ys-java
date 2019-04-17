@@ -1,11 +1,14 @@
 package abdom.math.stats;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.Collections;
 import java.util.function.Function;
 import java.util.function.BiFunction;
+import java.util.function.UnaryOperator;
+import java.util.Spliterators;
 
 import java.util.function.Supplier;
 import java.util.function.BiConsumer;
@@ -84,7 +87,8 @@ public class Stats {
 	 * @param	f		Double 値の出力方法。null の場合その値は除外される。
 	 */
 	public <T> void apply(T[] data, Function<? super T, Double> f) {
-		n = 0;
+		apply(Arrays.asList(data), f);
+/*		n = 0;
 		sum = 0d;
 		variance = 0d;
 		max = -Double.MAX_VALUE;
@@ -92,27 +96,27 @@ public class Stats {
 		
 		for (int i = 0; i < data.length; i++) {
 			Double d = f.apply(data[i]);
-			if (d != null) { // d == null は除外する
-				n++;
-				sum += d;
-				if (d > max) max = d;
-				if (d < min) min = d;
-			}
+			if (d == null) continue;
+			if (Double.isNaN(d) || Double.isInfinite(d)) continue;
+			n++;
+			sum += d;
+			if (d > max) max = d;
+			if (d < min) min = d;
 		}
 		mean = sum / n;
 		
 		for (int i = 0; i < data.length; i++) {
 			Double d = f.apply(data[i]);
-			if (d != null) {
-				double a = d - mean;
-				variance += a*a;
-			}
+			if (d == null) continue;
+			if (Double.isNaN(d) || Double.isInfinite(d)) continue;
+			double a = d - mean;
+			variance += a*a;
 		}
 		variance = variance / n;
 		deviation = Math.sqrt(variance);
 		
 		applied = true;
-	}
+*/	}
 	
 	/**
 	 * List と、double値抽出関数を指定し、統計量を算出します。
@@ -134,33 +138,33 @@ public class Stats {
 	 * @param	data	double 値を出力できるクラスのリスト
 	 */
 	public void apply(double[] data) {
-		n = 0;
+		apply( () -> Spliterators.iterator(Arrays.spliterator(data)),
+				UnaryOperator.identity());
+/*		n = 0;
 		sum = 0d;
 		variance = 0d;
 		max = -Double.MAX_VALUE;
 		min = Double.MAX_VALUE;
 		
 		for (double d : data) {
-			if (!Double.isNaN(d)) { // d == NaN は除外する
-				n++;
-				sum += d;
-				if (d > max) max = d;
-				if (d < min) min = d;
-			}
+			if (Double.isNaN(d) || Double.isInfinite(d)) continue;
+			n++;
+			sum += d;
+			if (d > max) max = d;
+			if (d < min) min = d;
 		}
 		mean = sum / n;
 		
 		for (double d : data) {
-			if (!Double.isNaN(d)) {
-				double a = d - mean;
-				variance += a*a;
-			}
+			if (Double.isNaN(d) || Double.isInfinite(d)) continue;
+			double a = d - mean;
+			variance += a*a;
 		}
 		variance = variance / n;
 		deviation = Math.sqrt(variance);
 		
 		applied = true;
-	}
+*/	}
 	
 	/**
 	 * List と、double値抽出関数を指定し、統計量を算出します。
@@ -178,21 +182,21 @@ public class Stats {
 		
 		for (T datum: data) {
 			Double d = f.apply(datum);
-			if (d != null) { // d == null は除外する
-				n++;
-				sum += d;
-				if (d > max) max = d;
-				if (d < min) min = d;
-			}
+			if (d == null) continue;
+			if (Double.isNaN(d) || Double.isInfinite(d)) continue;
+			n++;
+			sum += d;
+			if (d > max) max = d;
+			if (d < min) min = d;
 		}
 		mean = sum / n;
 		
 		for (T datum : data) {
 			Double d = f.apply(datum);
-			if (d != null) {
-				double a = d - mean;
-				variance += a*a;
-			}
+			if (d == null) continue;
+			if (Double.isNaN(d) || Double.isInfinite(d)) continue;
+			double a = d - mean;
+			variance += a*a;
 		}
 		variance = variance / n;
 		deviation = Math.sqrt(variance);
@@ -252,22 +256,22 @@ public class Stats {
 		int i = 0;
 		for (T datum : data) {
 			Double d = f.apply(list, i++);
-			if (d != null) { // d == null は除外する
-				n++;
-				sum += d;
-				if (d > max) max = d;
-				if (d < min) min = d;
-			}
+			if (d == null) continue;
+			if (Double.isNaN(d) || Double.isInfinite(d)) continue;
+			n++;
+			sum += d;
+			if (d > max) max = d;
+			if (d < min) min = d;
 		}
 		mean = sum / n;
 		
 		i = 0;
 		for (T datum : data) {
 			Double d = f.apply(list, i++);
-			if (d != null) {
-				double a = d - mean;
-				variance += a*a;
-			}
+			if (d == null) continue;
+			if (Double.isNaN(d) || Double.isInfinite(d)) continue;
+			double a = d - mean;
+			variance += a*a;
 		}
 		variance = variance / n;
 		deviation = Math.sqrt(variance);
@@ -403,11 +407,11 @@ public class Stats {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("(n="+n+";");
-		sb.append("mean="+mean+";");
-		sb.append("var.="+variance+";");
-		sb.append("dev.="+deviation+";");
-		sb.append("max="+max+";");
+		sb.append("Stats(n="+n+",");
+		sb.append("mean="+mean+",");
+		sb.append("var.="+variance+",");
+		sb.append("dev.="+deviation+",");
+		sb.append("max="+max+",");
 		sb.append("min="+min+")");
 		
 		return sb.toString();
