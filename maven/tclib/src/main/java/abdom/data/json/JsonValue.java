@@ -58,7 +58,7 @@ public final class JsonValue extends JsonType {
 			case '\n':	sb.append("\\n");	break;
 			case '\r':	sb.append("\\r");	break;
 			case '\f':	sb.append("\\f");	break;
-			case '/':	sb.append("\\/");	break;
+//			case '/':	sb.append("\\/");	break;
 			case '\"':	sb.append("\\\"");	break;
 			case '\\':	sb.append("\\\\");	break;
 //			case '\ufffd': sb.append("\\ufffd"); break;
@@ -98,7 +98,7 @@ public final class JsonValue extends JsonType {
 				case 'n':	sb.append('\n');	break;
 				case 'r':	sb.append('\r');	break;
 				case 'f':	sb.append('\f');	break;
-				case '/':	sb.append('/');	break;
+				case '/':	sb.append('/');		break;
 				case '\"':	sb.append('\"');	break;
 				case '\\':	sb.append('\\');	break;
 				case 'u':
