@@ -219,7 +219,8 @@ public class Stats {
 	 *					出力する関数
 	 * @return	計算された Stats オブジェクト
 	 */
-	public static <T> Stats value(Iterable<T> data, BiFunction<List<? super T>, Integer, Double> f) {
+	public static <T> Stats value(Iterable<T> data,
+							BiFunction<List<T>, Integer, Double> f) {
 		Stats stats = new Stats();
 		stats.apply(data, f);
 		return stats;
@@ -239,7 +240,8 @@ public class Stats {
 	 * @param	f		Iterable から生成されるリストと添え字から Double を
 	 *					出力する関数
 	 */
-	public <T> void apply(Iterable<T> data, BiFunction<List<? super T>, Integer, Double> f) {
+	public <T> void apply(Iterable<T> data,
+							BiFunction<List<T>, Integer, Double> f) {
 		n = 0;
 		sum = 0d;
 		variance = 0d;

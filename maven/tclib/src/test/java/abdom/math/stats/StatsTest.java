@@ -16,53 +16,74 @@ class StatsTest {
 	static class DoubleSupplyObj {
 		double theValue;
 	}
+	
+	static double[] testValues;
+	static DoubleSupplyObj[] testObjs;
+	static final int N = 5;
+	static final double MEAN;
+	static final double MAX;
+	static final double MIN;
+	static final double VARIANCE;
+	static final double DEVIATION;
+	
+	static {
+		testValues = new double[N];
+		double sum = 0d;
+		double min = Double.MAX_VALUE;
+		double max = -Double.MAX_VALUE;
+		for (int i = 0; i < testValues.length; i++) {
+			testValues[i] = (double)(i*i);
+			if (min > testValues[i]) min = testValues[i];
+			if (max < testValues[i]) max = testValues[i];
+			sum += testValues[i];
+		}
+		MIN = min;
+		MAX = max;
+		MEAN = sum / N;
+		double v = 0d;
+		for (int i = 0; i < testValues.length; i++) {
+			v += (testValues[i]-MEAN)*(testValues[i]-MEAN);
+		}
+		VARIANCE = v / N;
+		DEVIATION = Math.sqrt(VARIANCE);
+		testObjs = new DoubleSupplyObj[testValues.length];
+		for (int i = 0; i < testObjs.length; i++) {
+			testObjs[i] = new DoubleSupplyObj();
+			testObjs[i].theValue = testValues[i];
+		}
+	}
+	
+	static void checkStats(Stats s) {
+		assertEquals(N, s.n);
+		assertEquals(MEAN, s.mean);
+		assertEquals(MAX, s.max);
+		assertEquals(MIN, s.min);
+		assertEquals(VARIANCE, s.variance);
+		assertEquals(DEVIATION, s.deviation);
+	}
+	
 	@Nested
 	class statsの各計算 {
-		double[] d1;
-		DoubleSupplyObj[] d2;
-		
-		@BeforeEach void init() {
-			d1 = new double[]{0d, 1d, 2d};
-			d2 = new DoubleSupplyObj[3];
-			for (int i = 0; i < 3; i++) {
-				d2[i] = new DoubleSupplyObj();
-				d2[i].theValue = (double)i;
-			}
-		}
 		
 		@Test void double配列に適用できる() {
-			Stats s = Stats.value(d1);
-			assertEquals(3, s.n);
-			double mean = 3d/3;
-			assertEquals(mean, s.mean);
-			assertEquals(2d, s.max);
-			assertEquals(0d, s.min);
-			assertEquals( ((0d-mean)*(0d-mean)+(1d-mean)*(1d-mean)+(2d-mean)*(2d-mean))/3d, s.variance);
+			Stats s = Stats.value(testValues);
+			checkStats(s);
 		}
 		
 		@Test void Double保持Obj配列に適用できる() {
-			Stats s = Stats.value(d2, v -> v.theValue);
-			assertEquals(3, s.n);
-			double mean = 3d/3;
-			assertEquals(mean, s.mean);
-			assertEquals(2d, s.max);
-			assertEquals(0d, s.min);
-			assertEquals( ((0d-mean)*(0d-mean)+(1d-mean)*(1d-mean)+(2d-mean)*(2d-mean))/3d, s.variance);
+			Stats s = Stats.value(testObjs, v -> v.theValue);
+			checkStats(s);
 		}
 		
 		@Test void Double保持ObjIterableに適用できる() {
-			Stats s = Stats.value(Arrays.asList(d2), v -> v.theValue);
-			assertEquals(3, s.n);
-			double mean = 3d/3;
-			assertEquals(mean, s.mean);
-			assertEquals(2d, s.max);
-			assertEquals(0d, s.min);
-			assertEquals( ((0d-mean)*(0d-mean)+(1d-mean)*(1d-mean)+(2d-mean)*(2d-mean))/3d, s.variance);
+			Stats s = Stats.value(Arrays.asList(testObjs), v -> v.theValue);
+			checkStats(s);
 		}
 		
-//		@Test void Double出力２変数関数に適用できる() {
-//			Stats s = Stats.value(Arrays.asList(d2), (l, index) -> l.get(index).theValue );
-//			System.out.println(s);
-//		}
+		@Test void Double出力２変数関数に適用できる() {
+			Stats s = Stats.value(Arrays.asList(testObjs),
+									(l, index) -> l.get(index).theValue );
+			checkStats(s);
+		}
 	}
 }
