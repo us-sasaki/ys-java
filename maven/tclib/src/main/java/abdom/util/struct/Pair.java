@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
  * 想定している。
  *
  * <pre>
- * public class Profile extends Pair<String, Integer> {
+ * public class Profile extends Pair&lt;String, Integer&gt; {
  *     public Profile() { }
  *     public Profile(String name, Integer age) {
  *         super(name, age, weight);
@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
  * </pre>
  * のように定義を簡略化することができます。もちろん、
  * <pre>
- * Pair<String, Integer) profile = new Triple<>("name", 29);
+ * Pair&lt;String, Integer&gt; profile = new Pair&lt;&gt;("name", 29);
  * </pre>
  * のように新しいクラスを定義せず使うこともできます。
  *
@@ -56,7 +56,9 @@ public class Pair<K, V> {
 	 * Collection に重複する key があった場合、IllegalStateException が
 	 * スローされます。
 	 *
-	 * @param		collection
+	 * @param		<K>		key の型
+	 * @param		<V>		value の型
+	 * @param		collection	Collection
 	 * @return		Pair の key, value に基づき生成された LinkedHashMap
 	 * @throws		IllegalStateException	key の重複があった場合
 	 */
@@ -76,9 +78,11 @@ public class Pair<K, V> {
 	 * LinkedHashList のインスタンスが返却され、順序は map.keySet によります。
 	 * 要素は shallow copy です。
 	 *
-	 * @param	<K, V>	Pair の要素の型
-	 * @param	map		データソースとなる Map
-	 * @return	Map<K, V> の key, value の値を持つ Pair の LinkedHashSet
+	 * @param		<K>		key の型
+	 * @param		<V>		value の型
+	 * @param		map		データソースとなる Map
+	 * @return		Map&lt;K, V&gt; の key, value の値を持つ Pair の
+	 *				LinkedHashSet
 	 */
 	public static <K,V> LinkedHashSet<Pair<K, V>> fromMap(Map<K, V> map) {
 		LinkedHashSet<Pair<K, V>> result = new LinkedHashSet<>();

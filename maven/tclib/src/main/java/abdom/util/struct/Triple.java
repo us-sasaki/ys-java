@@ -6,7 +6,7 @@ package abdom.util.struct;
  * 単に 3 要素を持つクラスをまとめ、List などの要素として利用することを
  * 想定している。
  * <pre>
- * public class Profile extends Triple<String, Integer, Double> {
+ * public class Profile extends Triple&lt;String, Integer, Double&gt; {
  *     public Profile() { }
  *     public Profile(String name, Integer age, Double weight) {
  *         super(name, age, weight);
@@ -15,7 +15,7 @@ package abdom.util.struct;
  * </pre>
  * のように定義を簡略化することができます。もちろん、
  * <pre>
- * Triple<String, Integer, Double) profile = new Triple<>("name", 29, 63.2);
+ * Triple&lt;String, Integer, Double&gt; profile = new Triple&lt;&gt;("name", 29, 63.2);
  * </pre>
  * のように新しいクラスを定義せず使うこともできます。
  *
