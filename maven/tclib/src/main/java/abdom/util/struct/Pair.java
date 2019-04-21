@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
  * public class Profile extends Pair&lt;String, Integer&gt; {
  *     public Profile() { }
  *     public Profile(String name, Integer age) {
- *         super(name, age, weight);
+ *         super(name, age);
  *     }
  * }
  * </pre>
