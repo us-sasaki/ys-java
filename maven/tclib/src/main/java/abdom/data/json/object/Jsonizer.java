@@ -222,6 +222,7 @@ public final class Jsonizer {
 	 * JValue の子クラスでは、JValue#toJson が呼ばれます。
 	 * JData の子クラスでは、extra を無視することに注意して下さい。
 	 * extra を含ませたい場合は JData#toJson を使用して下さい。
+	 * java 配列を指定することもできます。
 	 *
 	 * @param	instance	JsonType に変換する Java オブジェクト
 	 * @return	変換された JsonType
