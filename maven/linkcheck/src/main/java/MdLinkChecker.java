@@ -239,8 +239,8 @@ public class MdLinkChecker {
 				indexTName += 2;
 				while( line.charAt(indexTName++)==' '
 						 && indexTName<=line.length() ) {}
-				if (line.charAt(--indexTName) == 'a'
-					|| line.charAt(--indexTName) == 'A')
+				if (line.charAt(indexTName-1) == 'a'
+					|| line.charAt(indexTName-1) == 'A')
 						throw new RuntimeException("\"< a\"を検出しました。path="+e.key+" line="+line);
 			}
 			int index = line.indexOf("<a ");
@@ -250,7 +250,13 @@ public class MdLinkChecker {
 				int ind2 = line.indexOf("name", index);
 				if (ind2 == -1) ind2 = line.indexOf("id=", index);
 				if (ind2 > -1) {
+					// <a name or <a id= の後
+					// " を待つ
 					ind2 = line.indexOf("\"", ind2);
+					if (ind2 == -1) {
+						System.out.println("<a name/id の後に \" がありませんpath="+e.key+" line="+line);
+						continue;
+					}
 					int ei = line.indexOf("\"", ind2+1);
 					String res = line.substring(ind2+1, ei);
 					resources.add(htmlPath + "#" + res);
