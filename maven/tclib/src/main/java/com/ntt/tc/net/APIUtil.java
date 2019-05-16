@@ -433,7 +433,8 @@ public class APIUtil {
 	 * creationTime までの時間を算出します。
 	 * CEP 遅延でよく利用するため、API に組み込みました。
 	 * CEP で alarm を作成してから実際に mongo に書き込まれるまでの時間を
-	 * 計測する目的で利用できます。
+	 * 計測する目的で利用できます。alarm.time が current_timestamp() で設定
+	 * されていることを確認して下さい。
 	 *
 	 * @param		from		開始時間
 	 * @param		to			終了時間
@@ -455,5 +456,21 @@ public class APIUtil {
 			result.put(time.getTime(), creationTime.getTime());
 		}
 		return result;
+	}
+	
+	/**
+	 * alarm のリストを取得し、firstOccurrenceTime(ない場合 time) から
+	 * creationTime までの時間を算出します。
+	 * CEP 遅延でよく利用するため、API に組み込みました。
+	 * CEP で alarm を作成してから実際に mongo に書き込まれるまでの時間を
+	 * 計測する目的で利用できます。alarm.time が current_timestamp() で設定
+	 * されていることを確認して下さい。
+	 *
+	 * @param		from		開始時間
+	 * @param		to			終了時間
+	 * @return		firstOccurrenceTime(or time), creationTime の TreeMap
+	 */
+	public TreeMap<Long, Long> getAlarmCreationElapsed(TC_Date from, TC_Date to) {
+		return getAlarmCreationElapsed(from, to, null);
 	}
 }
