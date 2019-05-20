@@ -93,6 +93,21 @@ public class APIUtil {
 		return createManagedObjectIfAbsent("c8y_Serial", extId, asDefault);
 	}
 	
+	public boolean deleteManagedObjectByExternalID(String type,
+									String extId) throws IOException {
+		String moid = api.readIDByExternalID(type, extId);
+		if (moid != null) {
+			api.deleteManagedObject(moid);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean deleteManagedObjectByExternalID(String extId)
+												throws IOException {
+		return deleteManagedObjectByExternalID("c8y_Serial", extId);
+	}
+	
 	/**
 	 * 指定された外部IDで、マネージドオブジェクトが存在すればそれを返し、
 	 * なければ asDefault で指定されたマネージドオブジェクトを指定された
