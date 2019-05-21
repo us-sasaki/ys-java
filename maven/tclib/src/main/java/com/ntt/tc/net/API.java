@@ -67,7 +67,10 @@ public class API {
 	 */
 	public API(Rest rest) {
 		this.rest = rest;
-		bootstrapRest = new Rest(rest.getLocation(), "management", new String(Base64.decodeFromString(BUSR)), new String(Base64.decodeFromString(BPSS)));
+		bootstrapRest = new Rest(rest.getLocation(),
+								"management",
+								new String(Base64.decodeFromString(BUSR)),
+								new String(Base64.decodeFromString(BPSS)));
 	}
 	
 	/**
@@ -83,7 +86,10 @@ public class API {
 	public API(String location, String tenant, String user, String pass) {
 		if (tenant == null) tenant = "";
 		this.rest = new Rest(location, tenant, user, pass);
-		bootstrapRest = new Rest(rest.getLocation(), "management", new String(Base64.decodeFromString(BUSR)), new String(Base64.decodeFromString(BPSS)));
+		bootstrapRest = new Rest(rest.getLocation(),
+								"management",
+								new String(Base64.decodeFromString(BUSR)),
+								new String(Base64.decodeFromString(BPSS)));
 	}
 	
 	/**

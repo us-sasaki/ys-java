@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.Map;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonArray;
@@ -35,6 +37,11 @@ import static com.ntt.tc.net.Rest.Response;
 /**
  * Things Cloud の Rest API でよく使う一連の処理をまとめた便利クラスです。
  * 判断ロジックを含む複数の API コールをまとめることを意図しています。
+ * API / APIUtil / ServiceAPI の使い分けの基本的な考えとして、
+ * API は c8y API のそのままのラッパーおよび Iterable 生成、
+ * APIUtil は c8y API を利用した便利な/よく使う処理、
+ * ServiceAPI は非公開 c8y API を利用した処理(Simulator/SmartRule 等)
+ * としています。
  *
  * @author		Yusuke Sasaki
  * @version		December 14, 2017
@@ -51,6 +58,10 @@ public class APIUtil {
 	
 /*------------------
  * instance methods
+ */
+
+/*--------------------
+ * managedObject 関連
  */
 	/**
 	 * 指定された外部IDで、マネージドオブジェクトが存在すればそれを返し、
@@ -93,6 +104,14 @@ public class APIUtil {
 		return createManagedObjectIfAbsent("c8y_Serial", extId, asDefault);
 	}
 	
+	/**
+	 * 外部IDによる ManagedObject の削除を行います。
+	 * 
+	 * @param		type		External ID の type
+	 * @param		extId		External ID 値
+	 * @return		external ID が見つかり削除を実行したら true
+	 * @throws		java.io.IOException REST異常
+	 */
 	public boolean deleteManagedObjectByExternalID(String type,
 									String extId) throws IOException {
 		String moid = api.readIDByExternalID(type, extId);
@@ -103,6 +122,14 @@ public class APIUtil {
 		return false;
 	}
 	
+	/**
+	 * 外部IDによる ManagedObject の削除を行います。
+	 * type として暗黙的に c8y_Serial を指定します。
+	 * 
+	 * @param		extId		External ID 値
+	 * @return		external ID が見つかり削除を実行したら true
+	 * @throws		java.io.IOException REST異常
+	 */
 	public boolean deleteManagedObjectByExternalID(String extId)
 												throws IOException {
 		return deleteManagedObjectByExternalID("c8y_Serial", extId);
@@ -177,6 +204,162 @@ public class APIUtil {
 		return readManagedObjectForExtId("c8y_Serial", extId);
 	}
 	
+/*--------------
+ * modules 関連
+ */
+	/**
+	 * 指定されたモジュール名の CEP モジュールを取得します。
+	 * 内部ではモジュールを全て読み込み、名称が合致するものを取得しています。
+	 *
+	 * @param		moduleName		CEP モジュール名
+	 * @return		取得されたモジュール
+	 * @throws		C8yNoSuchObjectException	モジュールが見つからない場合
+	 * @throws		java.io.IOException	REST異常
+	 */
+	public Module readModuleForName(final String moduleName)
+							throws IOException {
+		List<Module> modules = new ArrayList<>();
+		api.modules().iterator().forEachRemaining(modules::add);
+		
+		Module m = modules.stream().
+						filter( a -> a.name.equals(moduleName) ).
+						reduce(null, (a, b) -> {
+							if (a != null) return a;
+							return b; // 最初に見つかったものとする
+						});
+		if (m == null)
+				throw new C8yNoSuchObjectException("Module " + moduleName
+							+ "was not found.");
+		return m;
+	}
+	
+	/**
+	 * 指定されたモジュール名の CEP モジュールを undeploy 状態にします。
+	 *
+	 * @param		moduleName		CEP モジュール名
+	 * @throws		C8yNoSuchObjectException	モジュールが見つからない場合
+	 * @throws		java.io.IOException	REST異常
+	 */
+	public void undeployModuleForName(final String moduleName)
+							throws IOException {
+		api.updateModule(readModuleForName(moduleName).id, false);
+	}
+	
+/*-------------------
+ * Device credential
+ */
+	/**
+	 * デバイスをシミュレートして初期登録を行います。
+	 * 指定された ManagedObject を指定されたデバイス名で登録します。
+	 * 登録は credential 要求によって取得されたデバイスクレデンシャルを
+	 * 用いて行われます。
+	 * デバイスオーナーは通常デバイス同様、デバイス自身になります。
+	 * 事前に該当する External ID でデバイスが存在した場合、上書きせず、
+	 * デバイスオーナーも変更されません。(修正予定)
+	 *
+	 * @param	deviceId	デバイス登録時に用いるデバイス ID
+	 * @param	type		設定する External ID の type
+	 * @param	extId		設定する External ID
+	 * @param	managedObject	登録するデバイス情報(成功時、更新されます)
+	 * @return	デバイスクレデンシャル。指定した managedObject も更新され、
+	 *			ID などが付与されます。
+	 * @throws		java.io.IOException	REST異常
+	 */
+	public DeviceCredentials registerDevice(
+					String deviceId,
+					String type,
+					String extId,
+					ManagedObject managedObject) throws IOException {
+		// 新規デバイスリクエストの作成
+		NewDeviceRequest req = new NewDeviceRequest();
+		req.id = deviceId;
+		NewDeviceRequest ndr = api.createNewDeviceRequest(req);
+		
+		// クレデンシャル要求
+		DeviceCredentials cred = new DeviceCredentials();
+		cred.id = deviceId;
+		cred = api.createDeviceCredentials(cred);
+		if (cred.isValid())
+			throw new C8yRestException("承認前にクレデンシャルが取得されました:"+cred);
+		
+		// 承認する
+		NewDeviceRequest r = api.readNewDeviceRequest(deviceId);
+		if (r.getStatus().equals(NewDeviceRequest.PENDING_ACCEPTANCE)) {
+			api.updateNewDeviceRequest(deviceId, NewDeviceRequest.ACCEPTED);
+		} else {
+			throw new C8yRestException("デバイスリクエストのステータスが異常です:"+r);
+		}
+		
+		// クレデンシャル取得
+		cred = api.createDeviceCredentials(cred);
+		if (!cred.isValid())
+			throw new C8yRestException("承認してもクレデンシャルが付与されませんでした:"+cred);
+		
+		// 取得されたクレデンシャルを用いて
+		// ManagedObject を登録(managedObject は更新される)
+		// location, tenant は現在のものを流用
+		Rest rest = api.getRest();
+		API devapi = new API(rest.getLocation(), rest.getTenant(),
+							cred.username, cred.password);
+		APIUtil devutil = new APIUtil(devapi);
+		ManagedObject dbmo = devutil.createDeviceIfAbsent(type, extId, managedObject);
+		managedObject.fill(dbmo);
+		
+		return cred;
+	}
+	
+/*------------
+ * Alarm 関連
+ */
+	/**
+	 * alarm のリストを取得し、firstOccurrenceTime(ない場合 time) から
+	 * creationTime までの時間を算出します。
+	 * CEP 遅延でよく利用するため、API に組み込みました。
+	 * CEP で alarm を作成してから実際に mongo に書き込まれるまでの時間を
+	 * 計測する目的で利用できます。alarm.time が current_timestamp() で設定
+	 * されていることを確認して下さい。
+	 *
+	 * @param		from		開始時間
+	 * @param		to			終了時間
+	 * @param		param		type や source 指定など、追加の指定
+	 *							null/"" を指定すると追加指定を設定しません
+	 * @return		firstOccurrenceTime(or time), creationTime の TreeMap
+	 */
+	public TreeMap<Long, Long> getAlarmCreationElapsed(TC_Date from, TC_Date to, String param) {
+		TreeMap<Long, Long> result = new TreeMap<>();
+		
+		if (param == null) param = "";
+		if (!param.equals("") && !param.startsWith("&"))
+			param = "&" + param;
+		
+		for (Alarm alarm : api.alarms("dateFrom="+from.getValue()+"&dateTo="+to.getValue()+param)) {
+			TC_Date creationTime = alarm.creationTime;
+			TC_Date time = alarm.firstOccurrenceTime;
+			if (time == null) time = alarm.time;
+			result.put(time.getTime(), creationTime.getTime());
+		}
+		return result;
+	}
+	
+	/**
+	 * alarm のリストを取得し、firstOccurrenceTime(ない場合 time) から
+	 * creationTime までの時間を算出します。
+	 * CEP 遅延でよく利用するため、API に組み込みました。
+	 * CEP で alarm を作成してから実際に mongo に書き込まれるまでの時間を
+	 * 計測する目的で利用できます。alarm.time が current_timestamp() で設定
+	 * されていることを確認して下さい。
+	 *
+	 * @param		from		開始時間
+	 * @param		to			終了時間
+	 * @return		firstOccurrenceTime(or time), creationTime の TreeMap
+	 */
+	public TreeMap<Long, Long> getAlarmCreationElapsed(TC_Date from, TC_Date to) {
+		return getAlarmCreationElapsed(from, to, null);
+	}
+	
+/*------------------
+ * Map 取得メソッド
+ */
 	/**
 	 * Managed Object の type 一覧を返却します。
 	 * 返却される map は type 値と、存在数です。
@@ -345,147 +528,99 @@ public class APIUtil {
 		return getAlarmTypes("pageSize=1000");
 	}
 	
+/*---------------------
+ * Stream 生成メソッド
+ */
 	/**
-	 * 指定されたモジュール名の CEP モジュールを取得します。
-	 * 内部ではモジュールを全て読み込み、名称が合致するものを取得しています。
+	 * ManagedObject のストリームを取得します。
+	 * API#managedObjects を利用した直列ストリームで最適化は行われていません。
 	 *
-	 * @param		moduleName		CEP モジュール名
-	 * @return		取得されたモジュール
-	 * @throws		C8yNoSuchObjectException	モジュールが見つからない場合
-	 * @throws		java.io.IOException	REST異常
+	 * @param		query		取得する managedObject のクエリ
+	 * @return		managedObject のストリーム
 	 */
-	public Module readModuleForName(final String moduleName)
-							throws IOException {
-		List<Module> modules = new ArrayList<>();
-		api.modules().iterator().forEachRemaining(modules::add);
-		
-		Module m = modules.stream().
-						filter( a -> a.name.equals(moduleName) ).
-						reduce(null, (a, b) -> {
-							if (a != null) return a;
-							return b; // 最初に見つかったものとする
-						});
-		if (m == null)
-				throw new C8yNoSuchObjectException("Module " + moduleName
-							+ "was not found.");
-		return m;
+	public Stream<ManagedObject> managedObjectStream(String query) {
+		Iterable<ManagedObject> i = api.managedObjects(query);
+		return StreamSupport.stream(i.spliterator(), false);
 	}
 	
 	/**
-	 * 指定されたモジュール名の CEP モジュールを undeploy 状態にします。
+	 * ManagedObject のストリームを取得します。
+	 * API#managedObjects を利用した直列ストリームで最適化は行われていません。
 	 *
-	 * @param		moduleName		CEP モジュール名
-	 * @throws		C8yNoSuchObjectException	モジュールが見つからない場合
-	 * @throws		java.io.IOException	REST異常
+	 * @return		managedObject のストリーム
 	 */
-	public void undeployModuleForName(final String moduleName)
-							throws IOException {
-		api.updateModule(readModuleForName(moduleName).id, false);
+	public Stream<ManagedObject> managedObjectStream() {
+		Iterable<ManagedObject> i = api.managedObjects();
+		return StreamSupport.stream(i.spliterator(), false);
 	}
 	
 	/**
-	 * デバイスをシミュレートして初期登録を行います。
-	 * 指定された ManagedObject を指定されたデバイス名で登録します。
-	 * 登録は credential 要求によって取得されたデバイスクレデンシャルを
-	 * 用いて行われます。
-	 * デバイスオーナーは通常デバイス同様、デバイス自身になります。
-	 * 事前に該当する External ID でデバイスが存在した場合、上書きせず、
-	 * デバイスオーナーも変更されません。(修正予定)
+	 * Measurement のストリームを取得します。
+	 * API#measurements を利用した直列ストリームで最適化は行われていません。
 	 *
-	 * @param	deviceId	デバイス登録時に用いるデバイス ID
-	 * @param	type		設定する External ID の type
-	 * @param	extId		設定する External ID
-	 * @param	managedObject	登録するデバイス情報(成功時、更新されます)
-	 * @return	デバイスクレデンシャル。指定した managedObject も更新され、
-	 *			ID などが付与されます。
-	 * @throws		java.io.IOException	REST異常
+	 * @param		query		取得する measurement のクエリ
+	 * @return		measurement のストリーム
 	 */
-	public DeviceCredentials registerDevice(
-					String deviceId,
-					String type,
-					String extId,
-					ManagedObject managedObject) throws IOException {
-		// 新規デバイスリクエストの作成
-		NewDeviceRequest req = new NewDeviceRequest();
-		req.id = deviceId;
-		NewDeviceRequest ndr = api.createNewDeviceRequest(req);
-		
-		// クレデンシャル要求
-		DeviceCredentials cred = new DeviceCredentials();
-		cred.id = deviceId;
-		cred = api.createDeviceCredentials(cred);
-		if (cred.isValid())
-			throw new C8yRestException("承認前にクレデンシャルが取得されました:"+cred);
-		
-		// 承認する
-		NewDeviceRequest r = api.readNewDeviceRequest(deviceId);
-		if (r.getStatus().equals(NewDeviceRequest.PENDING_ACCEPTANCE)) {
-			api.updateNewDeviceRequest(deviceId, NewDeviceRequest.ACCEPTED);
-		} else {
-			throw new C8yRestException("デバイスリクエストのステータスが異常です:"+r);
-		}
-		
-		// クレデンシャル取得
-		cred = api.createDeviceCredentials(cred);
-		if (!cred.isValid())
-			throw new C8yRestException("承認してもクレデンシャルが付与されませんでした:"+cred);
-		
-		// 取得されたクレデンシャルを用いて
-		// ManagedObject を登録(managedObject は更新される)
-		// location, tenant は現在のものを流用
-		Rest rest = api.getRest();
-		API devapi = new API(rest.getLocation(), rest.getTenant(),
-							cred.username, cred.password);
-		APIUtil devutil = new APIUtil(devapi);
-		ManagedObject dbmo = devutil.createDeviceIfAbsent(type, extId, managedObject);
-		managedObject.fill(dbmo);
-		
-		return cred;
+	public Stream<Measurement> measurementStream(String query) {
+		Iterable<Measurement> i = api.measurements(query);
+		return StreamSupport.stream(i.spliterator(), false);
 	}
 	
 	/**
-	 * alarm のリストを取得し、firstOccurrenceTime(ない場合 time) から
-	 * creationTime までの時間を算出します。
-	 * CEP 遅延でよく利用するため、API に組み込みました。
-	 * CEP で alarm を作成してから実際に mongo に書き込まれるまでの時間を
-	 * 計測する目的で利用できます。alarm.time が current_timestamp() で設定
-	 * されていることを確認して下さい。
+	 * Measurement のストリームを取得します。
+	 * API#measurements を利用した直列ストリームで最適化は行われていません。
 	 *
-	 * @param		from		開始時間
-	 * @param		to			終了時間
-	 * @param		param		type や source 指定など、追加の指定
-	 *							null/"" を指定すると追加指定を設定しません
-	 * @return		firstOccurrenceTime(or time), creationTime の TreeMap
+	 * @return		measurement のストリーム
 	 */
-	public TreeMap<Long, Long> getAlarmCreationElapsed(TC_Date from, TC_Date to, String param) {
-		TreeMap<Long, Long> result = new TreeMap<>();
-		
-		if (param == null) param = "";
-		if (!param.equals("") && !param.startsWith("&"))
-			param = "&" + param;
-		
-		for (Alarm alarm : api.alarms("dateFrom="+from.getValue()+"&dateTo="+to.getValue()+param)) {
-			TC_Date creationTime = alarm.creationTime;
-			TC_Date time = alarm.firstOccurrenceTime;
-			if (time == null) time = alarm.time;
-			result.put(time.getTime(), creationTime.getTime());
-		}
-		return result;
+	public Stream<Measurement> measurementStream() {
+		Iterable<Measurement> i = api.measurements();
+		return StreamSupport.stream(i.spliterator(), false);
 	}
 	
 	/**
-	 * alarm のリストを取得し、firstOccurrenceTime(ない場合 time) から
-	 * creationTime までの時間を算出します。
-	 * CEP 遅延でよく利用するため、API に組み込みました。
-	 * CEP で alarm を作成してから実際に mongo に書き込まれるまでの時間を
-	 * 計測する目的で利用できます。alarm.time が current_timestamp() で設定
-	 * されていることを確認して下さい。
+	 * Event のストリームを取得します。
+	 * API#events を利用した直列ストリームで最適化は行われていません。
 	 *
-	 * @param		from		開始時間
-	 * @param		to			終了時間
-	 * @return		firstOccurrenceTime(or time), creationTime の TreeMap
+	 * @param		query		取得する event のクエリ
+	 * @return		event のストリーム
 	 */
-	public TreeMap<Long, Long> getAlarmCreationElapsed(TC_Date from, TC_Date to) {
-		return getAlarmCreationElapsed(from, to, null);
+	public Stream<Event> eventStream(String query) {
+		Iterable<Event> i = api.events(query);
+		return StreamSupport.stream(i.spliterator(), false);
 	}
+	
+	/**
+	 * Event のストリームを取得します。
+	 * API#events を利用した直列ストリームで最適化は行われていません。
+	 *
+	 * @return		event のストリーム
+	 */
+	public Stream<Event> eventStream() {
+		Iterable<Event> i = api.events();
+		return StreamSupport.stream(i.spliterator(), false);
+	}
+	
+	/**
+	 * Alarm のストリームを取得します。
+	 * API#events を利用した直列ストリームで最適化は行われていません。
+	 *
+	 * @param		query		取得する event のクエリ
+	 * @return		event のストリーム
+	 */
+	public Stream<Alarm> alarmStream(String query) {
+		Iterable<Alarm> i = api.alarms(query);
+		return StreamSupport.stream(i.spliterator(), false);
+	}
+	
+	/**
+	 * Alarm のストリームを取得します。
+	 * API#events を利用した直列ストリームで最適化は行われていません。
+	 *
+	 * @return		event のストリーム
+	 */
+	public Stream<Alarm> alarmStream() {
+		Iterable<Alarm> i = api.alarms();
+		return StreamSupport.stream(i.spliterator(), false);
+	}
+	
 }

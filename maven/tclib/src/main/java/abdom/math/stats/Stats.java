@@ -88,35 +88,7 @@ public class Stats {
 	 */
 	public <T> void apply(T[] data, Function<? super T, Double> f) {
 		apply(Arrays.asList(data), f);
-/*		n = 0;
-		sum = 0d;
-		variance = 0d;
-		max = -Double.MAX_VALUE;
-		min = Double.MAX_VALUE;
-		
-		for (int i = 0; i < data.length; i++) {
-			Double d = f.apply(data[i]);
-			if (d == null) continue;
-			if (Double.isNaN(d) || Double.isInfinite(d)) continue;
-			n++;
-			sum += d;
-			if (d > max) max = d;
-			if (d < min) min = d;
-		}
-		mean = sum / n;
-		
-		for (int i = 0; i < data.length; i++) {
-			Double d = f.apply(data[i]);
-			if (d == null) continue;
-			if (Double.isNaN(d) || Double.isInfinite(d)) continue;
-			double a = d - mean;
-			variance += a*a;
-		}
-		variance = variance / n;
-		deviation = Math.sqrt(variance);
-		
-		applied = true;
-*/	}
+	}
 	
 	/**
 	 * List と、double値抽出関数を指定し、統計量を算出します。
@@ -140,31 +112,7 @@ public class Stats {
 	public void apply(double[] data) {
 		apply( () -> Spliterators.iterator(Arrays.spliterator(data)),
 				UnaryOperator.identity());
-/*		n = 0;
-		sum = 0d;
-		variance = 0d;
-		max = -Double.MAX_VALUE;
-		min = Double.MAX_VALUE;
-		
-		for (double d : data) {
-			if (Double.isNaN(d) || Double.isInfinite(d)) continue;
-			n++;
-			sum += d;
-			if (d > max) max = d;
-			if (d < min) min = d;
-		}
-		mean = sum / n;
-		
-		for (double d : data) {
-			if (Double.isNaN(d) || Double.isInfinite(d)) continue;
-			double a = d - mean;
-			variance += a*a;
-		}
-		variance = variance / n;
-		deviation = Math.sqrt(variance);
-		
-		applied = true;
-*/	}
+	}
 	
 	/**
 	 * List と、double値抽出関数を指定し、統計量を算出します。
