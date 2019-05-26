@@ -299,7 +299,7 @@ public class Rest {
 	}
 	
 	/**
-	 * GET リクエストをします。
+	 * GET リクエストをします。Accept として application/json が設定されます。
 	 *
 	 * @param	location	GETするリソース
 	 * @return	Rest.Response オブジェクト
@@ -341,7 +341,7 @@ public class Rest {
 	}
 	
 	/**
-	 * DELETE リクエストをします。
+	 * DELETE リクエストをします。Accept として application/json が設定されます。
 	 *
 	 * @param		location	DELETE 対象の end point
 	 * @return		Rest.Response オブジェクト
@@ -369,7 +369,7 @@ public class Rest {
 	}
 	
 	/**
-	 * PUT リクエストをします。
+	 * PUT リクエストをします。Accept として application/json が設定されます。
 	 *
 	 * @param		location	PUT 対象の end point
 	 * @param		json		PUT 対象の Json 値
@@ -384,7 +384,7 @@ public class Rest {
 		//return requestImpl(location, "PUT", "", json);
 	}
 	/**
-	 * PUT リクエストをします。
+	 * PUT リクエストをします。Accept として application/json が設定されます。
 	 *
 	 * @param		location	PUT 対象の end point
 	 * @param		body		PUT 対象の文字列
@@ -432,7 +432,7 @@ public class Rest {
 	}
 	
 	/**
-	 * POST リクエストをします。
+	 * POST リクエストをします。Accept として application/json が設定されます。
 	 *
 	 * @param		location	POST 対象の end point
 	 * @param		json		POST 対象の Json 値
