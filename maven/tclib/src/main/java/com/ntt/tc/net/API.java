@@ -140,6 +140,18 @@ public class API {
 		return bootstrapRest;
 	}
 	
+/*------------------
+ * Subtenant's Rest
+ */
+	/**
+	 * サポートユーザーログインによるサブテナント API のイテレーターを取得
+	 * します。
+	 * この API が management テナントのサポートユーザーである必要があります。
+	 */
+	public Iterable<API> subtenantAPIs() {
+		return (() -> new SubtenantAPIIterator(this));
+	}
+	
 /*------------
  * Device API
  */
@@ -1900,6 +1912,142 @@ public class API {
 	 */
 	public Iterable<User> users() {
 		return users("");
+	}
+	
+/*-----------
+ * Audit API
+ */
+	/**
+	 * ID から AuditRecord を取得します。
+	 *
+	 * @param	id		取得対象の AuditRecord ID
+	 * @return	AuditRecord
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
+	 * @throws	java.io.IOException	REST異常
+	 */
+	public AuditRecord readAudit(String id) throws IOException {
+		Response resp = rest.get("/audit/auditRecords/"+id, "auditRecord");
+		if (resp.status == 404)
+			throw new C8yNoSuchObjectException("指定された id "+id
+					+"の AuditRecord は存在しません");
+		return Jsonizer.fromJson(resp, AuditRecord.class);
+	}
+	
+	/**
+	 * AuditRecord を送信します。
+	 *
+	 * @param		audit	送信対象のアラーム
+	 * @return	送信後、id などが付与された AuditRecord(引数と同一オブジェクト)
+	 * @throws	java.io.IOException	REST異常
+	 */
+	public AuditRecord createAudit(AuditRecord audit) throws IOException {
+		Response resp = rest.post("/audit/auditRecords/", "auditRecord", audit);
+		audit.fill(resp);
+		return audit;
+	}
+	
+	/**
+	 * Audit を送信する便利メソッドです。
+	 *
+	 * @param	source		audit を発生させた managed object の id
+	 * @param	type		audit の type
+	 * @param	text		audit の説明文
+	 * @param	status		Alarm の status。
+	 *						ACTIVE/ACKNOWLEDGED/CLEARED のいずれかである
+	 *						必要があります
+	 * @param	severity	Alarm の severity。
+	 *						CRITICAL/MAJOR/MINOR/WARNING のいずれかである
+	 *						必要があります
+	 * @return	送信後、id などが付与された Alarm
+	 * @throws	java.io.IOException	REST異常
+	 */
+//	public AuditRecord createAudit(String source, String type, String text,
+//					String status, String severity) throws IOException {
+//		return createAudit(new AuditRecord(source, type, text, status, severity));
+//	}
+	
+	/**
+	 * Audit を更新します
+	 *
+	 * @param	id		更新対象の AuditRecord ID
+	 * @param	updater	更新内容を含む AuditRecord
+	 * @return	更新された audit で、新しいインスタンスが生成されます。
+	 * @throws		java.io.IOException REST異常
+	 */
+	public AuditRecord updateAudit(String id, AuditRecord updater)
+												throws IOException {
+		Response resp = rest.put("/audit/auditRecords/"+id, "auditRecord", updater);
+		return Jsonizer.fromJson(resp, AuditRecord.class);
+	}
+	
+	/**
+	 * AuditRecord コレクションを取得します。
+	 * Collection API では、結果のアトミック性が保証されていないことに注意して
+	 * 下さい。
+	 *
+	 * @param	queryString	pageSize=5&amp;currentPage=1 など
+	 * @return	取得された AuditRecordCollection
+	 * @throws	java.io.IOException	REST異常
+	 */
+	public AuditRecordCollection readAuditCollection(String queryString)
+						throws IOException {
+		Response resp = rest.get("/audit/auditRecords/?"+queryString);
+		return Jsonizer.fromJson(resp, AuditRecordCollection.class);
+	}
+	
+	/**
+	 * 指定された条件で AuditRecordCollection を削除します。
+	 * 204 No content 以外のステータスコードが返却された場合、IOException
+	 * がスローされます。
+	 * このコマンドは、queryString の指定によって想定外の削除を引き起こす
+	 * 可能性があるため、利用時は最新の注意を払ってください。
+	 *
+	 * @param	queryString		クエリ文字列(source=, dateFrom= 等)
+	 * @throws		java.io.IOException REST異常
+	 */
+	public void deleteAuditCollection(String queryString)
+						throws IOException {
+		if (queryString == null)
+			throw new IllegalArgumentException("queryString の指定は必須です");
+		Response resp = rest.delete("/audit/auditRecords/?" + queryString);
+		if (resp.status != 204)
+			throw new IOException("AuditRecordCollection 削除失敗 : " + resp);
+	}
+	/**
+	 * AuditRecordコレクションAPIを用いて、Javaのforループで使える
+	 * AuditRecord の iterator を取得します。
+	 * <pre>
+	 * 使用例：
+	 * for (AuditRecord a : api.audits("source=41117&amp;pageSize=15")) {
+	 * 		( a に対する処理 )
+	 * }
+	 * </pre>
+	 *
+	 * API 操作時に IOException が発生した場合、C8yRestRuntimeException
+	 * に変換され、元の例外は cause として設定されます。
+	 * <br>利用可能な検索条件は以下の通りです。<br>
+	 * source : 指定された source の audit を取得<br>
+	 * dateFrom, dateTo : 指定された期間の alarm を取得<br>
+	 * status : 指定された status の audit を取得<br>
+	 *
+	 * @param	queryString	取得条件を指定します。例："source={id}",
+	 *						 "dateFrom={from}&amp;dateTo={to}&amp;revert=true"
+	 * @return	AuditRecord の iterable
+	 */
+	public Iterable<AuditRecord> audits(final String queryString) {
+		return ( () -> new CollectionIterator<AuditRecord>(rest,
+								"/audit/auditRecords/?"+queryString,
+								"auditRecords", AuditRecord.class) );
+	}
+	
+	/**
+	 * 全 AuditRecord を取得する便利メソッドです。
+	 *
+	 * @return		全 AuditRecord を取得する iterable
+	 */
+	public Iterable<AuditRecord> audits() {
+		return audits("");
 	}
 	
 /*------------
