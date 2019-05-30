@@ -380,7 +380,10 @@ public class JsonRest {
 				//baos.write(buffer, 0, c);
 				baos.write(c);
 			}
-			if (in != null) in.close();
+			if (in != null)
+				try { in.close(); } catch (IOException ignored) { }
+			if (out != null)
+				try { out.close(); } catch (IOException ignored) { }
 			baos.close();
 			
 			resp.body = baos.toByteArray();
