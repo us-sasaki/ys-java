@@ -7,7 +7,7 @@ import abdom.data.json.JsonObject;
 
 /**
  * AuditRecord class
- * Set changes を JsonObject changes に変更。
+ * Set changes を C8yData[] changes に変更。
  */
 public class AuditRecord extends C8yData {
 	/**
@@ -113,12 +113,15 @@ public class AuditRecord extends C8yData {
 	/**
 	 * An optional collection of objects describing the changes that were
 	 * carried out.
+	 * activity により、含まない場合がある。
+	 * Alarm updated では attribute, newValue, previousValue, type プロパティを
+	 * 持つ。
 	 * <pre>
 	 * Occurs : 0..1
 	 * PUT/POST : No
 	 * </pre>
 	 */
-	public JsonObject changes; // 間違っているかも
+	public C8yData[] changes;
 	
 	/**
 	 * Additional properties of the audit record.
