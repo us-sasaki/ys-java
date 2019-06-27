@@ -1656,6 +1656,20 @@ public class API {
 	}
 	
 	/**
+	 * このテナントのテナントオプションを削除します。
+	 * この API はリファレンスには明記されていません。
+	 *
+	 * @param		category		カテゴリ
+	 * @param		key				キー
+	 * @throws	java.io.IOException	REST異常(204以外)
+	 */
+	public void deleteOption(String category, String key) throws IOException {
+		Response resp = rest.delete("/tenant/options/"+category+"/"+key);
+		if (resp.status != 204) // No Content
+			throw new IOException("delete tenant option failed. "+resp.message);
+	}
+	
+	/**
 	 * テナントオプションAPIを用いて、Javaのforループで使える
 	 * Option の iterator を取得します。
 	 * <pre>

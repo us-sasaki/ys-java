@@ -5,12 +5,37 @@
 このパッケージは、Things Cloud REST API を利用するのに便利な Java API を提供しています。Things Cloud 内のデータは、com.ntt.tc.data 以下のパッケージにあるクラスによって表されます。<br>
 
 <ul>
-<li>API...createMeasurement, updateManagedObject, createLocationUpdateEvent のような API を Java メソッドとして提供します。また、テナントに格納されているデータを for で取得するメソッドを含みます。</li>
-<li>APIUtil...複数の REST API を組み合わせた、外部IDを指定して ManagedObject があれば作り、なければ生成するような便利メソッドを提供します。</li>
+<li>API...createMeasurement, updateManagedObject, createLocationUpdateEvent のような REST-API の Java ラッパーです。また、テナントに格納されているデータを for で取得するメソッド(measurements(), events(), ...)を含みます。</li>
+<li>APIUtil...複数の REST API を組み合わせた処理、よく利用する処理を提供します。例えば、外部IDを指定して ManagedObject があれば作り、なければ生成するような便利メソッドを提供します。</li>
+<li>ServiceAPI...通常の REST-API として提供されていない、非公開の API へのアクセスを提供します。仕様が保証されておらず、実装後に仕様が変わる可能性があることに注意が必要です。例えば、Smart Rule, Device Simulator の機能が含まれています。</li>
+<li>APIMisc...REST-API を用いた頻出コード片をまとめたものです。実装内容を理解して利用して下さい。</li>
 <li>Rest...RESTアクセスを提供します。</li>
 </ul>
 
-Things Cloud への REST API へのアクセスに外部パッケージを用いておらず、java 環境によらない軽量な利用が可能です。<br>
+Things Cloud への REST API へのアクセスに外部パッケージを用いておらず、java 環境によらない軽量な利用が可能です。<br/>
+
+APIUtil では、Measurement 等のオブジェクトをストリームとして取得する関数を用意しています。ちょっとした調査で便利に使えます。<br/>
+
+利用例...Event 4000個をとり、type 値の種類を表示させるコード<br/>
+
+<pre>
+import java.util.*;
+import java.util.stream.*;
+	:
+	:
+		API api = new API(.....);
+		APIUtil util = new APIUtil(api);
+		
+		Map<String, List<Event>>
+			map = util.eventStream()
+					.limit(4000)
+					.collect(Collectors.groupingBy( m -> m.type ));
+		
+		map.keySet().stream().forEach( System.out::println );
+	:
+</pre>
+
+
 
 </BODY>
 </HTML>

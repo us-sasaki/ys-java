@@ -361,6 +361,14 @@ public class ManagedObject extends C8yData {
 	 */
 	public C8y_Relay c8y_Relay;
 	
+	
+	/**
+	 * デバイスの可用性をはかるための応答時間。
+	 * この時間以内に通信がないと使用不可と見なされる。
+	 * 負の値を設定すると、メンテナンス中になる。
+	 */
+	public C8y_RequiredAvailability c8y_RequiredAvailability;
+	
 /*
  * 以降、新たに見つけたプロパティを記載
  */

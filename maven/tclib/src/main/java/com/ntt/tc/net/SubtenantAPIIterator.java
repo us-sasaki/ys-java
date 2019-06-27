@@ -9,6 +9,7 @@ import com.ntt.tc.data.tenants.Tenant;
 /**
  * Management テナントの Rest オブジェクトから、
  * Suspend でないサブテナントの API を取得する Iterator です。
+ * 全テナントに対する処理を記述するのに便利な Iterator です。
  *
  * @author		Yusuke Sasaki
  * @version		May 27, 2019
