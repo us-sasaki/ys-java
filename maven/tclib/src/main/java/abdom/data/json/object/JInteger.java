@@ -115,12 +115,12 @@ public class JInteger extends JValue {
 		
 		case JsonType.TYPE_DOUBLE:
 			this.value = j.intValue();
-			cachedValue = (JsonValue)j; // j is immutable.
+			cachedValue = null;
 			break;
 		
 		case JsonType.TYPE_INT:
 			this.value = j.intValue();
-			cachedValue = null;
+			cachedValue = (JsonValue)j; // j is immutable.
 			break;
 		
 		default:

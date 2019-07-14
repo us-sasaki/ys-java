@@ -114,12 +114,12 @@ public class JDouble extends JValue {
 		
 		case JsonType.TYPE_DOUBLE:
 			this.value = j.doubleValue();
-			cachedValue = (JsonValue)j; // j is immutable.
+			cachedValue = (JsonValue)j; // j is immutable and double itself.
 			break;
 		
 		case JsonType.TYPE_INT:
 			this.value = j.doubleValue();
-			cachedValue = null;
+			cachedValue = (JsonValue)j; // j is immutable and considered as double
 			break;
 		
 		default:
