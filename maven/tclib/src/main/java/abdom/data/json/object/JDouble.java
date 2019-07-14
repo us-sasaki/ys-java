@@ -37,16 +37,13 @@ public class JDouble extends JValue {
 	/**
 	 * 指定値を持つ JDouble を生成します。
 	 * Double 値として認識できる( = Double.parseDouble() が成功する)場合
-	 * その値となり、それ以外の場合、値のない JDouble が生成されます。
+	 * その値となり、それ以外の場合、NumberFormatException がスローされます。
 	 *
 	 * @param	v		初期値
 	 */
 	public JDouble(String v) {
 		if (!"".equals(v)) {
-			try {
-				value = Double.parseDouble(v);
-			} catch (NumberFormatException nfe) {
-			}
+			value = Double.parseDouble(v);
 		}
 	}
 	
@@ -119,7 +116,7 @@ public class JDouble extends JValue {
 		
 		case JsonType.TYPE_INT:
 			this.value = j.doubleValue();
-			cachedValue = (JsonValue)j; // j is immutable and considered as double
+			cachedValue = null;
 			break;
 		
 		default:
