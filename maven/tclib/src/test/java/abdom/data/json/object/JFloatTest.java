@@ -10,43 +10,43 @@ import org.junit.jupiter.api.Test;
 import abdom.data.json.*;
 
 /**
- * JInteger テスト。JUnit5
+ * JFloat テスト。
  */
-class JInteger5Test {
+class JFloatTest {
 	@Nested
 	class コンストラクタ {
 		@Nested
 		class 値がない場合 {
 			@Test void NULL値が生成される() {
-				JInteger j = new JInteger();
+				JFloat j = new JFloat();
 				assertEquals(JsonType.NULL, j.toJson());
 			}
-			@Test void intValueはMIN_VALUE() {
-				JInteger j = new JInteger();
-				assertEquals(Integer.MIN_VALUE, j.intValue());
+			@Test void floatValueはNan() {
+				JFloat j = new JFloat();
+				assertEquals(Float.NaN, j.floatValue());
 			}
 		}
 		@Nested
-		class int値の場合 {
+		class float値の場合 {
 			@Test void 指定値となる() {
-				JInteger j2 = new JInteger(0);
-				assertEquals(0, j2.intValue());
-				assertEquals("0", j2.toString());
+				JFloat j2 = new JFloat(0f);
+				assertEquals(0f, j2.floatValue());
+				assertEquals("0.0", j2.toString());
 			}
 		}
 		@Nested
 		class 文字列値の場合 {
 			@Test void 数値と認識できる場合その値となる() {
-				JInteger j3 = new JInteger("1");
-				assertEquals(1, j3.intValue());
-				assertEquals("1", j3.toString());
+				JFloat j3 = new JFloat("1");
+				assertEquals(1f, j3.floatValue());
+				assertEquals(1f, j3.toJson().floatValue());
 			}
 			@Test void 数値でない文字列はNumberFormatExceptionとなる() {
 				assertThrows(NumberFormatException.class,
-								() -> new JInteger("x"));
+								() -> new JFloat("x"));
 			}
 			@Test void 空文字列はTYPE_VOIDとなる() {
-				JInteger j5 = new JInteger("");
+				JFloat j5 = new JFloat("");
 				assertEquals(JsonType.TYPE_VOID, j5.toJson().getType());
 			}
 		}
@@ -54,12 +54,12 @@ class JInteger5Test {
 	@Nested
 	class fillメソッド {
 		@Test void fillできる() {
-			JInteger j = new JInteger();
+			JFloat j = new JFloat();
 			j.fill("2");
-			assertEquals("2", j.toString());
+			assertEquals("2.0", j.toString());
 		}
 		@Test void nullでfillすると初期化される() {
-			JInteger j = new JInteger(5);
+			JFloat j = new JFloat(5);
 			j.fill(JsonType.NULL);
 			assertEquals("null", j.toString());
 		}
@@ -67,48 +67,35 @@ class JInteger5Test {
 	
 	@Nested
 	class toStringメソッド {
-		@Test void 整数でfillできる() {
-			JInteger j5 = new JInteger();
+		@Test void 整数でfillしてもdouble表現となる() {
+			JFloat j5 = new JFloat();
 			j5.fill(new JsonValue(-1));
-			assertEquals("-1", j5.toString());
+			assertEquals("-1.0", j5.toString());
 		}
 	}
 	
 	@Nested
 	class cache挙動 {
-		@Test void double値ではcacheされない() {
-			JsonValue d = new JsonValue(5d);
-			assertEquals(JsonType.TYPE_DOUBLE, d.getType());
-			
-			JInteger j1 = new JInteger();
-			j1.fill(d);
-			JsonType cached = j1.toJson();
-			
-			assertNotSame(d, cached);
-		}
-		
-		@Test void int値ではcacheされる() {
+		@Test void 整数値ではcacheされない() {
 			JsonValue integer = new JsonValue(5);
 			assertEquals(JsonType.TYPE_INT, integer.getType());
 			
-			JInteger j1 = new JInteger();
+			JFloat j1 = new JFloat();
 			j1.fill(integer);
 			JsonType cached = j1.toJson();
 			
-			assertSame(integer, cached);
+			assertNotSame(integer, cached);
 		}
 		
-		@Test void long値ではcacheされない() {
-			JsonValue integer = new JsonValue(Long.MAX_VALUE);
-			assertEquals(JsonType.TYPE_INT, integer.getType());
+		@Test void float値ではcacheされない() {
+			JsonValue integer = new JsonValue(5f);
+			assertEquals(JsonType.TYPE_DOUBLE, integer.getType());
 			
-			JInteger j1 = new JInteger();
+			JFloat j1 = new JFloat();
 			j1.fill(integer);
 			JsonType cached = j1.toJson();
 			
 			assertNotSame(integer, cached);
 		}
 	}
-	
 }
-			
