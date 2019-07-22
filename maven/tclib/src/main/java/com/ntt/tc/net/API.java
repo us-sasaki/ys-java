@@ -723,8 +723,8 @@ public class API {
 	 * に変換され、元の例外は cause として設定されます。
 	 * query として利用可能なキーは以下の通りです。
 	 * <ul>
-	 * <li>dateFrom=</li>
-	 * <li>dateTo=</li>
+	 * <li>dateFrom= (含む)</li>
+	 * <li>dateTo= (含まない)</li>
 	 * <li>type=</li>
 	 * <li>valueFragmentType=</li>
 	 * <li>valueFragmentSeries=</li>

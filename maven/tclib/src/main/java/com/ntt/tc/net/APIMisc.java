@@ -67,14 +67,15 @@ public class APIMisc {
 	 * が設定されます。
 	 *
 	 * @param		source		source
+	 * @return		送信した Measurement
 	 * @throws		java.io.IOException		REST異常
 	 */
-	public void createTemperatureMeasurement(String source)
+	public Measurement createTemperatureMeasurement(String source)
 											throws IOException {
 		Measurement m = new Measurement(source, "c8y_Temperature");
 		double t = Math.random() * 50 - 10;
 		m.put("c8y_Temperature.T", t, "C");
-		api.createMeasurement(m);
+		return m;
 	}
 	
 	/**
@@ -87,11 +88,12 @@ public class APIMisc {
 	 * が設定されます。
 	 * 
 	 * @param		source		source
+	 * @return		生成された Event
 	 * @throws		java.io.IOException		REST異常
 	 */
-	public void createTestEvent(String source)
+	public Event createTestEvent(String source)
 											throws IOException {
 		Event e = new Event(source, "nttcom_TestEvent", "Test Event");
-		api.createEvent(e);
+		return api.createEvent(e);
 	}
 }
