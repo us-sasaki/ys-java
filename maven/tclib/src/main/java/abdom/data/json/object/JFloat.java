@@ -37,16 +37,13 @@ public class JFloat extends JValue {
 	/**
 	 * 指定値を持つ JDouble を生成します。
 	 * Double 値として認識できる( = Float.parseFloat() が成功する)場合
-	 * その値となり、それ以外の場合、値のない JDouble が生成されます。
+	 * その値となり、それ以外の場合、NumberFormatException がスローされます。
 	 *
 	 * @param	v		初期値
 	 */
 	public JFloat(String v) {
 		if (!"".equals(v)) {
-			try {
-				value = Float.parseFloat(v);
-			} catch (NumberFormatException nfe) {
-			}
+			value = Float.parseFloat(v);
 		}
 	}
 	
@@ -114,7 +111,7 @@ public class JFloat extends JValue {
 		
 		case JsonType.TYPE_DOUBLE:
 			this.value = j.floatValue();
-			cachedValue = (JsonValue)j; // j is immutable.
+			cachedValue = null;
 			break;
 		
 		case JsonType.TYPE_INT:

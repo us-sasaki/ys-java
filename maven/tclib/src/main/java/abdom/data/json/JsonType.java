@@ -643,7 +643,7 @@ public abstract class JsonType extends Number
 	
 	/**
 	 * new JsonArray を得るための便利関数です。
-	 * JsonType クラスのみで JsonObject を扱うこと、
+	 * JsonType クラスのみで JsonArray を扱うこと、
 	 * タイプ数を減らす目的で設定されています。
 	 * new JsonArray().push(5).push("hoe") または
 	 * new JsonArray().set(5, "hoe");
@@ -850,7 +850,7 @@ public abstract class JsonType extends Number
 				switch (c) {
 				case '\"':	result.append('\"'); continue;
 				case '\\':	result.append('\\'); continue;
-				//case '/':	result.append('/'); continue;
+				case '/':	result.append('/'); continue;
 				case 'b':	result.append('\b'); continue;
 				case 'f':	result.append('\f'); continue;
 				case 'n':	result.append('\n'); continue;

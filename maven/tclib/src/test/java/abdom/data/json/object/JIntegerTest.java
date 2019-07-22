@@ -10,43 +10,43 @@ import org.junit.jupiter.api.Test;
 import abdom.data.json.*;
 
 /**
- * JDouble テスト。
+ * JInteger テスト。JUnit5
  */
-class JDoubleTest {
+class JIntegerTest {
 	@Nested
 	class コンストラクタ {
 		@Nested
 		class 値がない場合 {
 			@Test void NULL値が生成される() {
-				JDouble j = new JDouble();
+				JInteger j = new JInteger();
 				assertEquals(JsonType.NULL, j.toJson());
 			}
-			@Test void doubleValueはNan() {
-				JDouble j = new JDouble();
-				assertEquals(Double.NaN, j.doubleValue());
+			@Test void intValueはMIN_VALUE() {
+				JInteger j = new JInteger();
+				assertEquals(Integer.MIN_VALUE, j.intValue());
 			}
 		}
 		@Nested
-		class double値の場合 {
+		class int値の場合 {
 			@Test void 指定値となる() {
-				JDouble j2 = new JDouble(0d);
-				assertEquals(0d, j2.doubleValue());
-				assertEquals("0.0", j2.toString());
+				JInteger j2 = new JInteger(0);
+				assertEquals(0, j2.intValue());
+				assertEquals("0", j2.toString());
 			}
 		}
 		@Nested
 		class 文字列値の場合 {
 			@Test void 数値と認識できる場合その値となる() {
-				JDouble j3 = new JDouble("1");
-				assertEquals(1d, j3.doubleValue());
-				assertEquals(1d, j3.toJson().doubleValue());
+				JInteger j3 = new JInteger("1");
+				assertEquals(1, j3.intValue());
+				assertEquals("1", j3.toString());
 			}
 			@Test void 数値でない文字列はNumberFormatExceptionとなる() {
 				assertThrows(NumberFormatException.class,
-								() -> new JDouble("x"));
+								() -> new JInteger("x"));
 			}
 			@Test void 空文字列はTYPE_VOIDとなる() {
-				JDouble j5 = new JDouble("");
+				JInteger j5 = new JInteger("");
 				assertEquals(JsonType.TYPE_VOID, j5.toJson().getType());
 			}
 		}
@@ -54,12 +54,12 @@ class JDoubleTest {
 	@Nested
 	class fillメソッド {
 		@Test void fillできる() {
-			JDouble j = new JDouble();
+			JInteger j = new JInteger();
 			j.fill("2");
-			assertEquals("2.0", j.toString());
+			assertEquals("2", j.toString());
 		}
 		@Test void nullでfillすると初期化される() {
-			JDouble j = new JDouble(5);
+			JInteger j = new JInteger(5);
 			j.fill(JsonType.NULL);
 			assertEquals("null", j.toString());
 		}
@@ -67,35 +67,48 @@ class JDoubleTest {
 	
 	@Nested
 	class toStringメソッド {
-		@Test void 整数でfillしてもdouble表現となる() {
-			JDouble j5 = new JDouble();
+		@Test void 整数でfillできる() {
+			JInteger j5 = new JInteger();
 			j5.fill(new JsonValue(-1));
-			assertEquals("-1.0", j5.toString());
+			assertEquals("-1", j5.toString());
 		}
 	}
 	
 	@Nested
 	class cache挙動 {
-		@Test void 整数値ではcacheされない() {
+		@Test void double値ではcacheされない() {
+			JsonValue d = new JsonValue(5d);
+			assertEquals(JsonType.TYPE_DOUBLE, d.getType());
+			
+			JInteger j1 = new JInteger();
+			j1.fill(d);
+			JsonType cached = j1.toJson();
+			
+			assertNotSame(d, cached);
+		}
+		
+		@Test void int値ではcacheされる() {
 			JsonValue integer = new JsonValue(5);
 			assertEquals(JsonType.TYPE_INT, integer.getType());
 			
-			JDouble j1 = new JDouble();
-			j1.fill(integer);
-			JsonType cached = j1.toJson();
-			
-			assertNotSame(integer, cached);
-		}
-		
-		@Test void double値ではcacheされる() {
-			JsonValue integer = new JsonValue(5d);
-			assertEquals(JsonType.TYPE_DOUBLE, integer.getType());
-			
-			JDouble j1 = new JDouble();
+			JInteger j1 = new JInteger();
 			j1.fill(integer);
 			JsonType cached = j1.toJson();
 			
 			assertSame(integer, cached);
 		}
+		
+		@Test void long値ではcacheされない() {
+			JsonValue integer = new JsonValue(Long.MAX_VALUE);
+			assertEquals(JsonType.TYPE_INT, integer.getType());
+			
+			JInteger j1 = new JInteger();
+			j1.fill(integer);
+			JsonType cached = j1.toJson();
+			
+			assertNotSame(integer, cached);
+		}
 	}
+	
 }
+			

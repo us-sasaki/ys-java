@@ -38,16 +38,13 @@ public class JInteger extends JValue {
 	/**
 	 * 指定値を持つ JInteger を生成します。
 	 * Integer 値として認識できる( = Integer.parseInt() が成功する)場合
-	 * その値となり、それ以外の場合、値のない JInteger が生成されます。
+	 * その値となり、それ以外の場合、NumberFormatException がスローされます。
 	 *
 	 * @param	v		初期値
 	 */
 	public JInteger(String v) {
 		if (!"".equals(v)) {
-			try {
-				value = Integer.parseInt(v);
-			} catch (NumberFormatException nfe) {
-			}
+			value = Integer.parseInt(v);
 		}
 	}
 	
@@ -115,12 +112,16 @@ public class JInteger extends JValue {
 		
 		case JsonType.TYPE_DOUBLE:
 			this.value = j.intValue();
-			cachedValue = (JsonValue)j; // j is immutable.
+			cachedValue = null;
 			break;
 		
 		case JsonType.TYPE_INT:
 			this.value = j.intValue();
-			cachedValue = null;
+			if (this.value == j.longValue()) {
+				cachedValue = (JsonValue)j; // j is immutable.
+			} else {
+				cachedValue = null;
+			}
 			break;
 		
 		default:

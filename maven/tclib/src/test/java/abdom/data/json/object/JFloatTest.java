@@ -10,43 +10,43 @@ import org.junit.jupiter.api.Test;
 import abdom.data.json.*;
 
 /**
- * JDouble テスト。
+ * JFloat テスト。
  */
-class JDoubleTest {
+class JFloatTest {
 	@Nested
 	class コンストラクタ {
 		@Nested
 		class 値がない場合 {
 			@Test void NULL値が生成される() {
-				JDouble j = new JDouble();
+				JFloat j = new JFloat();
 				assertEquals(JsonType.NULL, j.toJson());
 			}
-			@Test void doubleValueはNan() {
-				JDouble j = new JDouble();
-				assertEquals(Double.NaN, j.doubleValue());
+			@Test void floatValueはNan() {
+				JFloat j = new JFloat();
+				assertEquals(Float.NaN, j.floatValue());
 			}
 		}
 		@Nested
-		class double値の場合 {
+		class float値の場合 {
 			@Test void 指定値となる() {
-				JDouble j2 = new JDouble(0d);
-				assertEquals(0d, j2.doubleValue());
+				JFloat j2 = new JFloat(0f);
+				assertEquals(0f, j2.floatValue());
 				assertEquals("0.0", j2.toString());
 			}
 		}
 		@Nested
 		class 文字列値の場合 {
 			@Test void 数値と認識できる場合その値となる() {
-				JDouble j3 = new JDouble("1");
-				assertEquals(1d, j3.doubleValue());
-				assertEquals(1d, j3.toJson().doubleValue());
+				JFloat j3 = new JFloat("1");
+				assertEquals(1f, j3.floatValue());
+				assertEquals(1f, j3.toJson().floatValue());
 			}
 			@Test void 数値でない文字列はNumberFormatExceptionとなる() {
 				assertThrows(NumberFormatException.class,
-								() -> new JDouble("x"));
+								() -> new JFloat("x"));
 			}
 			@Test void 空文字列はTYPE_VOIDとなる() {
-				JDouble j5 = new JDouble("");
+				JFloat j5 = new JFloat("");
 				assertEquals(JsonType.TYPE_VOID, j5.toJson().getType());
 			}
 		}
@@ -54,12 +54,12 @@ class JDoubleTest {
 	@Nested
 	class fillメソッド {
 		@Test void fillできる() {
-			JDouble j = new JDouble();
+			JFloat j = new JFloat();
 			j.fill("2");
 			assertEquals("2.0", j.toString());
 		}
 		@Test void nullでfillすると初期化される() {
-			JDouble j = new JDouble(5);
+			JFloat j = new JFloat(5);
 			j.fill(JsonType.NULL);
 			assertEquals("null", j.toString());
 		}
@@ -68,7 +68,7 @@ class JDoubleTest {
 	@Nested
 	class toStringメソッド {
 		@Test void 整数でfillしてもdouble表現となる() {
-			JDouble j5 = new JDouble();
+			JFloat j5 = new JFloat();
 			j5.fill(new JsonValue(-1));
 			assertEquals("-1.0", j5.toString());
 		}
@@ -80,22 +80,22 @@ class JDoubleTest {
 			JsonValue integer = new JsonValue(5);
 			assertEquals(JsonType.TYPE_INT, integer.getType());
 			
-			JDouble j1 = new JDouble();
+			JFloat j1 = new JFloat();
 			j1.fill(integer);
 			JsonType cached = j1.toJson();
 			
 			assertNotSame(integer, cached);
 		}
 		
-		@Test void double値ではcacheされる() {
-			JsonValue integer = new JsonValue(5d);
+		@Test void float値ではcacheされない() {
+			JsonValue integer = new JsonValue(5f);
 			assertEquals(JsonType.TYPE_DOUBLE, integer.getType());
 			
-			JDouble j1 = new JDouble();
+			JFloat j1 = new JFloat();
 			j1.fill(integer);
 			JsonType cached = j1.toJson();
 			
-			assertSame(integer, cached);
+			assertNotSame(integer, cached);
 		}
 	}
 }

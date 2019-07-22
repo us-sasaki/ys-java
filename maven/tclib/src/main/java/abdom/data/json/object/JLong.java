@@ -115,12 +115,12 @@ public class JLong extends JValue {
 		
 		case JsonType.TYPE_DOUBLE:
 			this.value = j.longValue();
-			cachedValue = (JsonValue)j; // j is immutable.
+			cachedValue = null; // j is immutable but not long value.
 			break;
 		
 		case JsonType.TYPE_INT:
 			this.value = j.longValue();
-			cachedValue = null;
+			cachedValue = (JsonValue)j; // j is immutable, and long itself.
 			break;
 		
 		default:
