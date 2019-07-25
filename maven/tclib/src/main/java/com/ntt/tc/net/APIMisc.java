@@ -75,6 +75,7 @@ public class APIMisc {
 		Measurement m = new Measurement(source, "c8y_Temperature");
 		double t = Math.random() * 50 - 10;
 		m.put("c8y_Temperature.T", t, "C");
+		api.createMeasurement(m);
 		return m;
 	}
 	
