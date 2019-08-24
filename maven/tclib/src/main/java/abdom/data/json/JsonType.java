@@ -597,6 +597,19 @@ public abstract class JsonType extends Number
 	public static JsonValue v(boolean value) { return new JsonValue(value); }
 	
 	/**
+	 * 空の JsonObject を得るための便利関数です。
+	 * JsonType クラスのみで JsonObject を扱うこと、
+	 * および文字数(タイプ数)を減らす目的で設定されています。
+	 * new JsonObject() を
+	 * JsonType.o() で取得できます。
+	 *
+	 * @return	新しく生成されたJsonObject
+	 */
+	public static JsonObject o() {
+		return new JsonObject();
+	}
+	
+	/**
 	 * new JsonObject を得るための便利関数です。
 	 * JsonType クラスのみで JsonObject を扱うこと、
 	 * および文字数(タイプ数)を減らす目的で設定されています。
