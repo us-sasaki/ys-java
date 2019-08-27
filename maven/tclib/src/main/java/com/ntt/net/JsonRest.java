@@ -7,6 +7,17 @@ import java.util.HashMap;
 import java.text.SimpleDateFormat;
 import java.nio.charset.StandardCharsets;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.X509TrustManager;
+
 import com.ntt.tc.util.Base64; // till JDK1.7
 
 import abdom.data.json.JsonType;
@@ -37,6 +48,8 @@ public class JsonRest {
 	protected HttpURLConnection con;
 	protected InputStream in;
 	protected OutputStream out;
+	
+	protected boolean debugMode = false;
 	
 	//private byte[] buffer = new byte[4096];
 	
@@ -198,6 +211,15 @@ public class JsonRest {
 	}
 	
 	/**
+	 * デバッグモード(証明書チェックを行わない)設定
+	 *
+	 * @param	debugMode		チェックしないモードにする
+	 */
+	public synchronized void setDebugMode(boolean debugMode) {
+		this.debugMode = debugMode;
+	}
+	
+	/**
 	 * GET リクエストをします。
 	 *
 	 * @param	location	GETするリソース
@@ -327,6 +349,7 @@ public class JsonRest {
 			url = new URL(urlStr + location);
 		}
 		con = (HttpURLConnection)url.openConnection();
+		if (debugMode) setLooseCheck(con);
 		
 		// 出力設定
 		boolean doOutput = (body != null && body.length > 0);
@@ -457,4 +480,42 @@ public class JsonRest {
 		return target.replace("+", "%2B");
 	}
 	
+	private void setLooseCheck(HttpURLConnection con) throws IOException {
+		try {
+			if (!(con instanceof HttpsURLConnection)) return;
+			HttpsURLConnection c = (HttpsURLConnection)con;
+			SSLContext sslContext = SSLContext.getInstance("SSL");
+			sslContext.init(null,
+							new X509TrustManager[] { new LooseTrustManager() },
+							new SecureRandom());
+			c.setSSLSocketFactory(sslContext.getSocketFactory());
+			
+			c.setHostnameVerifier(new LooseHostnameVerifier());
+		} catch (java.security.GeneralSecurityException gse) {
+			throw new IOException(gse);
+		}
+	}
+	
+	private static class LooseTrustManager implements X509TrustManager {
+		@Override
+    	public void checkClientTrusted(X509Certificate[] chain, String authType)
+    					throws CertificateException {
+		}
+		
+		@Override
+		public void checkServerTrusted(X509Certificate[] chain, String authType)
+						throws CertificateException {
+		}
+		
+		@Override
+		public X509Certificate[] getAcceptedIssuers() {
+			return null;
+		}
+	}
+	
+	private static class LooseHostnameVerifier implements HostnameVerifier {
+		public boolean verify(String hostname, SSLSession session) {
+			return true;
+		}
+	}
 }

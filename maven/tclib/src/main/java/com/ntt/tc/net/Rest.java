@@ -161,6 +161,15 @@ public class Rest {
 	}
 	
 	/**
+	 * デバッグモード(証明書チェックを行わない)設定
+	 *
+	 * @param	debugMode		チェックしないモードにする
+	 */
+	public void setDebugMode(boolean debugMode) {
+		r.setDebugMode(debugMode);
+	}
+	
+	/**
 	 * Authentication ヘッダを指定します。
 	 */
 	private void setAuthentication() {
