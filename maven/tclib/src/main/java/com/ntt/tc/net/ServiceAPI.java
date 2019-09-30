@@ -13,6 +13,7 @@ import com.ntt.tc.data.inventory.ManagedObject;
 import com.ntt.tc.data.inventory.ManagedObjectCollection;
 import com.ntt.tc.data.services.SmartRule;
 import com.ntt.tc.data.services.Simulator;
+import com.ntt.tc.data.services.Dashboard;
 
 import static com.ntt.tc.net.Rest.Response;
 
@@ -275,4 +276,36 @@ public class ServiceAPI {
 			api.deleteManagedObject(kpi.id);
 		}
 	}
+
+/*-------------------
+ * Dashboard related
+ */
+	/**
+	 * 指定されたグループ id のもとに指定されたダッシュボードオブジェクトを
+	 * 紐づけます。
+	 * 未検証
+	 *
+	 * @param		gid		紐づけ先のグループ id
+	 * @param		d		Dashboard オブジェクト
+	 * @return		生成された Dashboard(指定されたオブジェクトが更新されます)
+	 */
+	public Dashboard createDashboard(String gid, Dashboard d) throws IOException {
+		Response resp = rest.post("/inventory/managedObjects/"+gid+"/childAdditions", d);
+		d.fill(resp);
+		return d;
+	}
+	
+	/**
+	 * 指定された Dashboard id のものを変更します。
+	 * 未検証
+	 *
+	 * @param		did		変更対象のダッシュボード id
+	 * @param		updater	Dashboard オブジェクト
+	 * @return		変更後の Dashboard オブジェクト(新規生成されます)
+	 */
+	public Dashboard updateDashboard(String did, Dashboard updater) throws IOException {
+		Response resp = rest.post("inventory/managedObjects/"+did, updater);
+		return Jsonizer.fromJson(resp, Dashboard.class);
+	}
+	
 }

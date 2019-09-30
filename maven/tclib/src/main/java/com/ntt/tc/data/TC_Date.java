@@ -13,6 +13,7 @@ import abdom.data.json.object.JValue;
  * C8y で使用される、日付のフォーマットです。
  * java.util.Date との相互変換が可能です。
  * 文字列では、"yyyy-MM-dd'T'HH:mm:ss.SSSXXX" のフォーマットを使用します。
+ * JSON との相互変換は、本フォーマットの文字列として行われます。
  *
  * @version		November 19, 2016
  * @author		Yusuke Sasaki
@@ -113,6 +114,15 @@ public class TC_Date extends C8yValue implements Comparable<TC_Date> {
 	 */
 	public Date toDate() {
 		return (Date)date.clone();
+	}
+	
+	/**
+	 * java.util.Date により、このオブジェクトを設定します。
+	 *
+	 * @param		date		設定する時刻を保持する Date オブジェクト
+	 */
+	public void fromDate(Date date) {
+		setTime(date.getTime());
 	}
 	
 	/**

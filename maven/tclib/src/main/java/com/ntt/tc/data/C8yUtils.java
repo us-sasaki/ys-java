@@ -6,6 +6,7 @@ package com.ntt.tc.data;
  * メッセージを統一化することを想定しています。
  */
 public final class C8yUtils {
+	public static String[] ICONS = {"th"};
 	/**
 	 * インスタンス化させないための定義
 	 */
@@ -56,5 +57,8 @@ public final class C8yUtils {
 	public static void checkMeasurementSeries(String series) {
 		if (series.contains("."))
 			throw new IllegalArgumentException("series に . は含められません");
+	}
+	
+	public static void checkIcon(String icon) {
 	}
 }

@@ -33,6 +33,7 @@ import com.ntt.tc.data.TC_Date;
  * ManagedObject の判定の仕方(fragment)...type ではわからない
  * デバイス               c8y_IsDevice:{} がある
  * SmartRESTテンプレート  com_cumulocity_model_smartrest_SmartRestTemplateがある
+ *                        type はユーザー指定のものになる
  * </pre>
  */
 public class ManagedObject extends C8yData {
