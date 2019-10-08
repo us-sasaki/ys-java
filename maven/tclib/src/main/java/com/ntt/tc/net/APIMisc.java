@@ -1,6 +1,8 @@
 package com.ntt.tc.net;
 
 import java.io.IOException;
+import java.io.Reader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -96,5 +98,34 @@ public class APIMisc {
 											throws IOException {
 		Event e = new Event(source, "nttcom_TestEvent", "Test Event");
 		return api.createEvent(e);
+	}
+	
+	/**
+	 * JSON 形式のファイルから JsonType を構築します。
+	 * エンコーディングはデフォルトエンコーディングを使用します。
+	 *
+	 * @param		filename	JSONファイル名
+	 * @return		読み込まれた JsonType
+	 * @throws		java.io.IOException		ファイル読み込み異常
+	 */
+	public JsonType readFromFile(String filename) throws IOException {
+		Reader r = new FileReader(filename);
+		JsonType j = JsonType.parse(r);
+		r.close();
+		return j;
+	}
+	
+	/**
+	 * JSON 形式のファイルより、指定したクラスのインスタンスを構築します。
+	 * エンコーディングはデフォルトエンコーディングを使用します。
+	 *
+	 * @param		filename	JSONファイル名
+	 * @param		clazz		
+	 * @return		T			返却型
+	 * @throws		java.io.IOException		ファイル読み込み異常
+	 */
+	public <T extends C8yData> T readFromFile(String filename, Class<T> clazz)
+									throws IOException {
+		return Jsonizer.fromJson(readFromFile(filename), clazz);
 	}
 }

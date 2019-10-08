@@ -300,6 +300,9 @@ public class MdLinkChecker {
 				throw new InternalError("name が srcPath の子ディレクトリではありません。name=" + name + " srcPath=" + srcPath);
 			name = name.substring(srcPath.length());
 			imageFiles.add(rootUrl + toUrlPath(name));
+
+			// pdf や画像ファイルもリソースになる
+			resources.add(rootUrl + toUrlPath(name));
 		}
 	}
 	
@@ -422,7 +425,8 @@ public class MdLinkChecker {
 			MatchResult mr = m.toMatchResult();
 			int b = Math.max(0, mr.start()-20);
 			int e = Math.min(text.length(), mr.end()+20);
-			toAdd.add(new Entry(toFullUrl(s.substring(1, s.length()-1), key), text.substring(b, e)));
+			int idx = Math.max(Math.max(key.lastIndexOf("/"), key.lastIndexOf("\\")), 0);
+			toAdd.add(new Entry(toFullUrl(s.substring(1, s.length()-1), key), key.substring(idx)+":"+text.substring(b, e)));
 		}
 	}
 	
@@ -518,19 +522,22 @@ public class MdLinkChecker {
 		}
 		
 		// 表示する
-		System.out.println("-------- 外部リンク --------");
+		System.out.println("■■■■■■■ 外部リンク ■■■■■■■");
 		System.out.println("総数 : " + outerLinks.size());
 		outerLinks.stream().forEach(System.out::println);
 		
-		System.out.println("-------- 有効でない内部リンク --------");
+		System.out.println();
+		System.out.println("■■■■■■■ 有効でない内部リンク ■■■■■■■");
 		System.out.println("総数 : " + absentLinks.size());
 		absentLinks.stream().forEach(System.out::println);
 		
-		System.out.println("-------- リンク切れ画像(要追加) --------");
+		System.out.println();
+		System.out.println("■■■■■■■ リンク切れ画像(要追加) ■■■■■■■");
 		System.out.println("総数 : " + absentImages.size());
 		absentImages.stream().forEach(System.out::println);
 		
-		System.out.println("-------- 使われていない画像ファイル(削除可) --------");
+		System.out.println();
+		System.out.println("■■■■■■■ 使われていない画像ファイル(削除可) ■■■■■■■");
 		System.out.println("総数 : " + nolinkImages.size());
 		nolinkImages.stream().forEach(System.out::println);
 	}
