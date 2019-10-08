@@ -7,6 +7,8 @@ package abdom.data.json.object;
 // IntAccessor や JsonTypeAccessor、ObjectAccessor など
 // それぞれ ArrayAccessor もあるためクラス数は増える
 // Property は現状のままで OK
+// JsonValue, JsonArray, JsonObject をメンバ変数として対応するようにする。
+// (これまで、JsonObject のみあった)
 //
 //
 import java.lang.reflect.Array;

@@ -83,27 +83,27 @@ class MdLinkCheckerTest {
 		
 		@Test
 		void MDリンクの正規表現() {
-			List<String> toAdd = new ArrayList<String>();
+			List<MdLinkChecker.Entry<String, String>> toAdd = new ArrayList<>();
 			md.findImpl(text, toAdd, md.mdlink, md.pickString1, "");
-			assertEquals("[http://hoge1.com]", toAdd.toString());
+			assertEquals("[[http://hoge1.com,0123 [textlink1](http://hoge1.com) [ hoge ] ( bar ) [ ]]", toAdd.toString());
 		}
 		@Test
 		void MD画像の正規表現() {
-			List<String> toAdd = new ArrayList<String>();
+			List<MdLinkChecker.Entry<String, String>> toAdd = new ArrayList<>();
 			md.findImpl(text, toAdd, md.mdimage, md.pickString1, "");
-			assertEquals("[http://hoge.com/images/fig1.png]", toAdd.toString());
+			assertEquals("[[http://hoge.com/images/fig1.png, ( bar ) [ \n1(2 ]3 )![imagelink1](http://hoge.com/images/fig1.png)\n <a href=\"http://ho]]", toAdd.toString());
 		}
 		@Test
 		void HTMLリンクの正規表現() {
-			List<String> toAdd = new ArrayList<String>();
+			List<MdLinkChecker.Entry<String, String>> toAdd = new ArrayList<>();
 			md.findImpl(text, toAdd, md.htmllink, md.pickString2, "");
-			assertEquals("[http://hoge2.com]", toAdd.toString());
+			assertEquals("[[http://hoge2.com,m/images/fig1.png)\n <a href=\"http://hoge2.com\">hoge.com</a> <IMG S]]", toAdd.toString());
 		}
 		@Test
 		void HTML画像の正規表現() {
-			List<String> toAdd = new ArrayList<String>();
+			List<MdLinkChecker.Entry<String, String>> toAdd = new ArrayList<>();
 			md.findImpl(text, toAdd, md.htmlimage, md.pickString2, "");
-			assertEquals("[https://bar.com/images/fig2.png]", toAdd.toString());
+			assertEquals("[[https://bar.com/images/fig2.png,2.com\">hoge.com</a> <IMG SRC=\"https://bar.com/images/fig2.png\">]]", toAdd.toString());
 		}
 	}
 	

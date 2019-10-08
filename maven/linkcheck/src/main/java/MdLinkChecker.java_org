@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-import java.util.regex.MatchResult;
 import java.util.stream.Collectors;
 
 /**
@@ -62,15 +61,15 @@ public class MdLinkChecker {
 	
 	/**
 	 * この文書からリンクされている画像リンクのリスト
-	 * 値は <URL のフルパス指定, 前後を含んだ文字列> とします。
+	 * 値は URL のフルパス指定とします。
 	 */
-	protected List<Entry<String, String>> linkedImages;
+	protected List<String> linkedImages;
 	
 	/**
 	 * この文書に含まれるリンクのリスト
-	 * 値は <http: などではじまる URL, 前後を含んだ文字列> です。
+	 * 値は http: などではじまる URL です。
 	 */
-	protected List<Entry<String, String>> links;
+	protected List<String> links;
 	
 	/**
 	 * ファイルの Canonical Path(からsrcPathを取ったもの) -> mdの全行
@@ -84,11 +83,6 @@ public class MdLinkChecker {
 	protected static class Entry<K, V> {
 		protected K key;
 		protected V value;
-		protected Entry() { }
-		protected Entry(K k, V v) { key = k; value = v;}
-		public String toString() {
-			return "["+key+","+value+"]";
-		}
 	}
 	
 /*-------------
@@ -113,9 +107,9 @@ public class MdLinkChecker {
 		this.imageDir	= new File(this.srcDir, "src/files");
 		
 		this.resources	= new ArrayList<String>();
+		this.linkedImages = new ArrayList<String>();
 		this.imageFiles	= new ArrayList<String>();
-		this.linkedImages = new ArrayList<Entry<String, String>>();
-		this.links		= new ArrayList<Entry<String, String>>();
+		this.links		= new ArrayList<String>();
 		this.lines		= new ArrayList<Entry<String, List<String>>>();
 		
 	}
@@ -338,6 +332,7 @@ public class MdLinkChecker {
 		
 		// 検出 <img src= リンク
 		findHtmlImage(text, e.key);
+		
 	}
 	
 	//
@@ -409,7 +404,7 @@ public class MdLinkChecker {
 	 * @param		key		markdown の格納されている相対パス
 	 */
 	void findImpl(String text,
-					List<Entry<String, String>> toAdd,
+					List<String> toAdd,
 					Pattern tagPicker,
 					Pattern linkPicker,
 					String key) {
@@ -419,10 +414,7 @@ public class MdLinkChecker {
 			Matcher link = linkPicker.matcher(picked);
 			link.find();
 			String s = link.group();
-			MatchResult mr = m.toMatchResult();
-			int b = Math.max(0, mr.start()-20);
-			int e = Math.min(text.length(), mr.end()+20);
-			toAdd.add(new Entry(toFullUrl(s.substring(1, s.length()-1), key), text.substring(b, e)));
+			toAdd.add(toFullUrl(s.substring(1, s.length()-1), key));
 		}
 	}
 	
@@ -486,34 +478,34 @@ public class MdLinkChecker {
 	 */
 	void check() {
 		// (1) 外部リンクのリストを生成
-		List<Entry<String,String>> outerLinks = new ArrayList<>();
+		List<String> outerLinks = new ArrayList<String>();
 		
-		for (Entry<String, String> link : links) {
-			if (!link.key.startsWith(rootUrl))
+		for (String link : links) {
+			if (!link.startsWith(rootUrl))
 				outerLinks.add(link);
 		}
 		
 		// (2) 有効でない内部リンクのリストを生成
-		List<Entry<String, String>> absentLinks = new ArrayList<>();
+		List<String> absentLinks = new ArrayList<String>();
 		Set<String> resourseSet = resources.stream().collect(Collectors.toSet());
 		
-		for (Entry<String, String> link : links) {
-			if (link.key.startsWith(rootUrl) && !(resourseSet.contains(link.key)))
+		for (String link : links) {
+			if (link.startsWith(rootUrl) && !(resourseSet.contains(link)))
 				absentLinks.add(link);
 		}
 		// (3) リンクされていない画像のリストを生成
 		//     同時に、使われていない画像ファイルのリストを生成
-		List<Entry<String, String>> absentImages = new ArrayList<>();
-		List<String> nolinkImages = new ArrayList<>();
+		List<String> absentImages = new ArrayList<String>();
+		List<String> nolinkImages = new ArrayList<String>();
 		Set<String> ifile = imageFiles.stream().collect(Collectors.toSet());
-		Set<String> limage = linkedImages.stream().map(e->e.key).collect(Collectors.toSet());
+		Set<String> limage = linkedImages.stream().collect(Collectors.toSet());
 		
 		for (String image : imageFiles) {
 			if (!limage.contains(image)) // どこからも使われていないファイル
 				nolinkImages.add(image); 
 		}
-		for (Entry<String, String> image : linkedImages) {
-			if (!ifile.contains(image.key)) // リンクされているが存在しない
+		for (String image : linkedImages) {
+			if (!ifile.contains(image)) // リンクされているが存在しない
 				absentImages.add(image);
 		}
 		
