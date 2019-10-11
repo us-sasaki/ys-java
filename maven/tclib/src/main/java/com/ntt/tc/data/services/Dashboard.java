@@ -33,6 +33,10 @@ public class Dashboard extends C8yData {
 	 * ダッシュボードを生成する際、このオブジェクトを
 	 * POST /inventory/managedObjects/{group-id}/childAdditions/
 	 * とする。
+	 *
+	 * @param		name		ダッシュボード名
+	 * @param		priority	プライオリティ
+	 * @param		icon		アイコン名
 	 */
 	public Dashboard(String name, int priority, String icon) {
 		c8y_Dashboard = new C8y_Dashboard(name, priority, icon);

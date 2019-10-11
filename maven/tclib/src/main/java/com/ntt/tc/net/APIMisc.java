@@ -119,8 +119,9 @@ public class APIMisc {
 	 * JSON 形式のファイルより、指定したクラスのインスタンスを構築します。
 	 * エンコーディングはデフォルトエンコーディングを使用します。
 	 *
+	 * @param		<T>			返却型
 	 * @param		filename	JSONファイル名
-	 * @param		clazz		
+	 * @param		clazz		クラスオブジェクト
 	 * @return		T			返却型
 	 * @throws		java.io.IOException		ファイル読み込み異常
 	 */

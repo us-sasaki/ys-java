@@ -147,6 +147,8 @@ public class API {
 	 * サポートユーザーログインによるサブテナント API のイテレーターを取得
 	 * します。
 	 * この API が management テナントのサポートユーザーである必要があります。
+	 *
+	 * @return		サブテナントのAPIをわたる Iterable
 	 */
 	public Iterable<API> subtenantAPIs() {
 		return (() -> new SubtenantAPIIterator(this));

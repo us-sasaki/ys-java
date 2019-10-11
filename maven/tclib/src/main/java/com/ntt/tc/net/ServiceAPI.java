@@ -288,6 +288,7 @@ public class ServiceAPI {
 	 * @param		gid		紐づけ先のグループ id
 	 * @param		d		Dashboard オブジェクト
 	 * @return		生成された Dashboard(指定されたオブジェクトが更新されます)
+	 * @throws		java.io.IOException		REST異常
 	 */
 	public Dashboard createDashboard(String gid, Dashboard d) throws IOException {
 		Response resp = rest.post("/inventory/managedObjects/"+gid+"/childAdditions", d);
@@ -302,6 +303,7 @@ public class ServiceAPI {
 	 * @param		did		変更対象のダッシュボード id
 	 * @param		updater	Dashboard オブジェクト
 	 * @return		変更後の Dashboard オブジェクト(新規生成されます)
+	 * @throws		java.io.IOException		REST異常
 	 */
 	public Dashboard updateDashboard(String did, Dashboard updater) throws IOException {
 		Response resp = rest.post("inventory/managedObjects/"+did, updater);
