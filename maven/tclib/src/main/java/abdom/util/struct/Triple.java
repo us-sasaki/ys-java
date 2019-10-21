@@ -4,7 +4,7 @@ package abdom.util.struct;
  * 3 つの要素を保持する構造体クラス。
  * フィールド名として key, value1, value2 としているが、特に要素への制約はない。
  * 単に 3 要素を持つクラスをまとめ、List などの要素として利用することを
- * 想定している。
+ * 想定しています。
  * <pre>
  * public class Profile extends Triple&lt;String, Integer, Double&gt; {
  *     public Profile() { }

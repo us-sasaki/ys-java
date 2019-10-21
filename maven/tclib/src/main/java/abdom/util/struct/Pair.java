@@ -10,7 +10,7 @@ import java.util.LinkedHashMap;
  * 2 つの要素を保持する構造体クラス。
  * フィールド名として key, value としているが、特に要素への制約はない。
  * 単に 2 要素を持つクラスをまとめ、List などの要素として利用することを
- * 想定している。
+ * 想定しています。
  *
  * <pre>
  * public class Profile extends Pair&lt;String, Integer&gt; {
@@ -52,7 +52,7 @@ public class Pair<K, V> {
 	/**
 	 * Collection から Map を生成します。
 	 * Map は LinkedHashMap のインスタンスが生成され、順序は Collection
-	 * の順序になります。
+	 * の iterator の順序になります。
 	 * Collection に重複する key があった場合、IllegalStateException が
 	 * スローされます。
 	 *
@@ -75,7 +75,8 @@ public class Pair<K, V> {
 	
 	/**
 	 * Map.entrySet の Pair 版です。
-	 * LinkedHashList のインスタンスが返却され、順序は map.keySet によります。
+	 * LinkedHashList のインスタンスが返却され、順序は map.keySet の
+	 * iterator のものになります。
 	 * 要素は shallow copy です。
 	 *
 	 * @param		<K>		key の型
