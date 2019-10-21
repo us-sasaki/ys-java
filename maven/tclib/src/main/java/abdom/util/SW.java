@@ -1,6 +1,6 @@
 package abdom.util;
 
-public class Timer {
+public class SW {
 	private static long t0 = -1L;
 	
 	public static void start() {
@@ -8,13 +8,22 @@ public class Timer {
 	}
 	
 	public static void print() {
-		if (t0 == -1) start();
 		System.out.print(lap());
 	}
 	
+	public static void print(String msg) {
+		System.out.print(msg);
+		print();
+	}
+	
 	public static void println() {
-		if (t0 == -1) start();
-		System.out.println(lap());
+		print();
+		System.out.println();
+	}
+	
+	public static void println(String msg) {
+		System.out.print(msg);
+		println();
 	}
 	
 	public static long lap() {
