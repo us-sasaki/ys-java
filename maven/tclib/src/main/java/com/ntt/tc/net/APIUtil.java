@@ -14,6 +14,7 @@ import abdom.data.json.JsonObject;
 import abdom.data.json.JsonValue;
 import abdom.data.json.object.Jsonizer;
 
+import com.ntt.tc.data.TC_Int;
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.alarms.*;
@@ -621,6 +622,118 @@ public class APIUtil {
 	public Stream<Alarm> alarmStream() {
 		Iterable<Alarm> i = api.alarms();
 		return StreamSupport.stream(i.spliterator(), false);
+	}
+	
+/*---------------
+ * class methods
+ */
+	/**
+	 * createDeviceIfAbsent などで使用できるデフォルトデバイスオブジェクトを
+	 * 生成します。com_cumulocity_model_Agent, CellInfo, c8y_Hardware 等
+	 * 各種パラメータが設定されています。
+	 * type = "APIUtil_device" となっています。
+	 *
+	 * @param		name		デバイス名
+	 * @return		デフォルトデバイスオブジェクト
+	 */
+	public static ManagedObject defaultDevice(String name) {
+		ManagedObject mo = new ManagedObject();
+		mo.name = name;
+		mo.type = "APIUtil_device";
+		
+		mo.com_cumulocity_model_Agent = new C8yData();
+		mo.c8y_AccelerationSensor = new C8yData();
+		
+		mo.c8y_CellInfo = new C8y_CellInfo();
+		mo.c8y_CellInfo.cellTowers = new C8y_CellTower[1];
+		mo.c8y_CellInfo.cellTowers[0] = new C8y_CellTower();
+		mo.c8y_CellInfo.cellTowers[0].cellId = 123;
+		mo.c8y_CellInfo.cellTowers[0].locationAreaCode = 12;
+		mo.c8y_CellInfo.cellTowers[0].mobileCountryCode = 99;
+		mo.c8y_CellInfo.cellTowers[0].mobileNetworkCode = 1;
+		mo.c8y_CellInfo.cellTowers[0].primaryScramblingCode = null;
+		mo.c8y_CellInfo.cellTowers[0].radioType = "radioType";
+		mo.c8y_CellInfo.cellTowers[0].serving = new TC_Int(1);
+		mo.c8y_CellInfo.cellTowers[0].signalStrength = new TC_Int(64);
+		mo.c8y_CellInfo.cellTowers[0].timingAdvance = new TC_Int(10);
+		
+		mo.c8y_Configuration = new C8y_Configuration();
+		mo.c8y_Configuration.config = "#Thu Apr 25 17:31:11 JST 2019\n"
+				+"c8y.log.eventLevel=INFO\n"
+				+"nttcom.enabledSensors=movement,humidity,battery,optical\n"
+				+"c8y.log.alarmLevel=ERROR\n"
+				+"nttcom.send.interval=60000\n"
+				+"nttcom.scan.interval=60000\n"
+				+"nttcom.collect.interval=60000\n"
+				+"nttcom.whiteList=B0\\:B4\\:48\\:BE\\:95\\:06,24\\:71\\:89\\:BD\\:08\\:02,24\\:71\\:89\\:C1\\:2F\\:07\n";
+		
+		mo.c8y_CurrentSensor = new C8yData();
+		
+		mo.c8y_DistanceSensor = new C8yData();
+		
+		mo.c8y_Firmware = new C8y_Firmware();
+		mo.c8y_Firmware.name = "firm name";
+		mo.c8y_Firmware.version = "firm version 1.0";
+		
+		mo.set("c8y_Hardware.model", "IoT-GW_"+name);
+		mo.set("c8y_Hardware.revision", "0000");
+		mo.set("c8y_Hardware.serialNumber", "0000-1234-5678");
+
+		// skip c8y_HumiditySensor
+		
+		mo.c8y_IsDevice = new C8yData();
+		
+		// skip LightSensor
+		
+		mo.c8y_Mobile = new C8y_Mobile();
+		mo.c8y_Mobile.cellId = "cellId";
+		mo.c8y_Mobile.connType = "connType";
+		mo.c8y_Mobile.currentBand = "currentBand";
+		mo.c8y_Mobile.currentOperator = "operator";
+		mo.c8y_Mobile.ecn0 = "ecn0";
+		mo.c8y_Mobile.iccid = "iccid";
+		mo.c8y_Mobile.imei = "imei";
+		mo.c8y_Mobile.imsi = "imsi";
+		mo.c8y_Mobile.lac = "lac";
+		mo.c8y_Mobile.mnc = "mnc";
+		mo.c8y_Mobile.msisdn = "msisdn";
+		mo.c8y_Mobile.rcsp = "rcsp";
+		
+		// skip moisture/motion sensors
+		mo.c8y_Position = new C8y_Position();
+		mo.c8y_Position.alt = 10;
+		mo.c8y_Position.lat = 35.686502827977364;
+		mo.c8y_Position.lng = 139.7662103176117;
+		mo.c8y_Position.reportReason = "normal";
+		mo.c8y_Position.trackingProtocol = "GPS";
+		
+		// skip
+		
+		mo.c8y_Software = new C8y_Software();
+		mo.c8y_Software.set("pi-driver", "pi-driver-3.4.5.jar");
+		mo.c8y_Software.set("pi4j-gpio-extension" , "pi4j-gpio-extension-0.0.5.jar");
+		
+		mo.c8y_SoftwareList = new C8y_SoftwareList[1];
+		mo.c8y_SoftwareList[0] = new C8y_SoftwareList();
+		mo.c8y_SoftwareList[0].name = "software name";
+		mo.c8y_SoftwareList[0].url = "http://software.url.com";
+		mo.c8y_SoftwareList[0].version = "1.0.2";
+		
+		// skip
+		
+		C8y_SupportedOperation[] op = new C8y_SupportedOperation[] {
+			C8y_SupportedOperation.c8y_Configuration,
+			C8y_SupportedOperation.c8y_Firmware,
+			C8y_SupportedOperation.c8y_Geofence,
+			C8y_SupportedOperation.c8y_LogfileRequest,
+			C8y_SupportedOperation.c8y_MotionTracking,
+			C8y_SupportedOperation.c8y_Restart,
+			C8y_SupportedOperation.c8y_SendConfiguration,
+			C8y_SupportedOperation.c8y_Software,
+			C8y_SupportedOperation.c8y_SoftwareList};
+			// c8y_SupportedLogs フィールドは入れていない
+		mo.set("c8y_SupportedOperations", Jsonizer.toJson(op));
+		return mo;
 	}
 	
 }
