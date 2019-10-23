@@ -11,24 +11,18 @@ import java.util.Iterator;
 import java.util.stream.Collectors;
 
 import abdom.data.json.JsonType;
-import abdom.data.json.JsonArray;
 import abdom.data.json.JsonObject;
-import abdom.data.json.JsonValue;
 import abdom.data.json.object.Jsonizer;
 
 import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.alarms.*;
 import com.ntt.tc.data.auditing.*;
-import com.ntt.tc.data.binaries.*;
 import com.ntt.tc.data.device.*;
 import com.ntt.tc.data.events.*;
 import com.ntt.tc.data.identity.*;
 import com.ntt.tc.data.inventory.*;
 import com.ntt.tc.data.measurements.*;
 import com.ntt.tc.data.real.*;
-import com.ntt.tc.data.rest.*;
-import com.ntt.tc.data.retention.*;
-import com.ntt.tc.data.sensor.*;
 import com.ntt.tc.data.tenants.*;
 import com.ntt.tc.data.users.*;
 import com.ntt.tc.util.Base64;

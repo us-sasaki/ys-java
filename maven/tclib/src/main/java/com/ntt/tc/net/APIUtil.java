@@ -9,17 +9,12 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import abdom.data.json.JsonType;
-import abdom.data.json.JsonArray;
-import abdom.data.json.JsonObject;
-import abdom.data.json.JsonValue;
 import abdom.data.json.object.Jsonizer;
 
 import com.ntt.tc.data.TC_Int;
 import com.ntt.tc.data.C8yData;
 import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.alarms.*;
-import com.ntt.tc.data.auditing.*;
-import com.ntt.tc.data.binaries.*;
 import com.ntt.tc.data.device.*;
 import com.ntt.tc.data.events.*;
 import com.ntt.tc.data.identity.*;
@@ -27,21 +22,18 @@ import com.ntt.tc.data.inventory.*;
 import com.ntt.tc.data.measurements.*;
 import com.ntt.tc.data.real.*;
 import com.ntt.tc.data.rest.*;
-import com.ntt.tc.data.retention.*;
-import com.ntt.tc.data.sensor.*;
 import com.ntt.tc.data.tenants.*;
 import com.ntt.tc.data.users.*;
-import com.ntt.tc.util.Base64;
 
 import static com.ntt.tc.net.Rest.Response;
 
 /**
  * Things Cloud の Rest API でよく使う一連の処理をまとめた便利クラスです。
  * 判断ロジックを含む複数の API コールをまとめることを意図しています。
- * API / APIUtil / ServiceAPI の使い分けの基本的な考えとして、
+ * API / APIUtil / ServiceAPI の使い分けの基本的な考えとして、<br />
  * API は c8y API のそのままのラッパーおよび Iterable 生成、
  * APIUtil は c8y API を利用した便利な/よく使う処理、
- * ServiceAPI は非公開 c8y API を利用した処理(Simulator/SmartRule 等)
+ * ServiceAPI は非公開 c8y API を利用した処理(Simulator/SmartRule 等)<br />
  * としています。
  *
  * @author		Yusuke Sasaki
@@ -628,12 +620,14 @@ public class APIUtil {
  * class methods
  */
 	/**
-	 * createDeviceIfAbsent などで使用できるデフォルトデバイスオブジェクトを
-	 * 生成します。com_cumulocity_model_Agent, CellInfo, c8y_Hardware 等
+	 * createDeviceIfAbsent などで使用できるテスト用のデフォルトデバイス
+	 * オブジェクトを生成します。
+	 * com_cumulocity_model_Agent, CellInfo, c8y_Hardware 等
 	 * 各種パラメータが設定されています。
 	 * type = "APIUtil_device" となっています。
 	 *
-	 * @param		name		デバイス名
+	 * @param		name		デバイス名、name, c8y_Hardware.model に設定
+	 *							されます。
 	 * @return		デフォルトデバイスオブジェクト
 	 */
 	public static ManagedObject defaultDevice(String name) {
