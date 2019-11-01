@@ -139,10 +139,10 @@ public class API {
  */
 	/**
 	 * サポートユーザーログインによるサブテナント API のイテレーターを取得
-	 * します。
+	 * します。Suspended でないサブテナントが対象です。
 	 * この API が management テナントのサポートユーザーである必要があります。
 	 *
-	 * @return		サブテナントのAPIをわたる Iterable
+	 * @return		Suspended でないサブテナントのAPIをわたる Iterable
 	 */
 	public Iterable<API> subtenantAPIs() {
 		return (() -> new SubtenantAPIIterator(this));
