@@ -30,10 +30,10 @@ import static com.ntt.tc.net.Rest.Response;
 /**
  * Things Cloud の Rest API でよく使う一連の処理をまとめた便利クラスです。
  * 判断ロジックを含む複数の API コールをまとめることを意図しています。
- * API / APIUtil / ServiceAPI の使い分けの基本的な考えとして、<br />
+ * API / APIUtil / ServiceAPI の使い分けの基本的な考えとして、<br>
  * API は c8y API のそのままのラッパーおよび Iterable 生成、
  * APIUtil は c8y API を利用した便利な/よく使う処理、
- * ServiceAPI は非公開 c8y API を利用した処理(Simulator/SmartRule 等)<br />
+ * ServiceAPI は非公開 c8y API を利用した処理(Simulator/SmartRule 等)<br>
  * としています。
  *
  * @author		Yusuke Sasaki
@@ -247,8 +247,8 @@ public class APIUtil {
 	 * 登録は credential 要求によって取得されたデバイスクレデンシャルを
 	 * 用いて行われます。
 	 * デバイスオーナーは通常デバイス同様、デバイス自身になります。
-	 * 事前に該当する External ID でデバイスが存在した場合、上書きせず、
-	 * デバイスオーナーも変更されません。(修正予定)
+	 * 事前に該当する External ID でデバイスが存在した場合、削除、上書き
+	 * されます。
 	 *
 	 * @param	deviceId	デバイス登録時に用いるデバイス ID
 	 * @param	type		設定する External ID の type
@@ -263,6 +263,14 @@ public class APIUtil {
 					String type,
 					String extId,
 					ManagedObject managedObject) throws IOException {
+		// デバイスが存在するか確認する
+		String moid = api.readIDByExternalID(type, extId);
+		if (moid != null) {
+			// デバイスを削除する
+			api.deleteExternalID(type, extId); // 不要と思われるが実行しておく
+			api.deleteManagedObject(moid);
+		}
+		
 		// 新規デバイスリクエストの作成
 		NewDeviceRequest req = new NewDeviceRequest();
 		req.id = deviceId;
@@ -299,6 +307,48 @@ public class APIUtil {
 		managedObject.fill(dbmo);
 		
 		return cred;
+	}
+	
+	/**
+	 * デバイスをシミュレートして初期登録を行います。
+	 * 指定された ManagedObject を指定されたデバイス名で登録します。
+	 * 登録は credential 要求によって取得されたデバイスクレデンシャルを
+	 * 用いて行われます。
+	 * デバイスオーナーは通常デバイス同様、デバイス自身になります。
+	 * 事前に該当する External ID でデバイスが存在した場合、削除、上書き
+	 * されます。
+	 * External ID の type は c8y_Serial が使用されます。
+	 *
+	 * @param	deviceId	デバイス登録時に用いるデバイス ID
+	 * @param	extId		設定する External ID
+	 * @param	managedObject	登録するデバイス情報(成功時、更新されます)
+	 * @return	デバイスクレデンシャル。指定した managedObject も更新され、
+	 *			ID などが付与されます。
+	 * @throws		java.io.IOException	REST異常
+	 */
+	public DeviceCredentials registerDevice(
+					String deviceId,
+					String extId,
+					ManagedObject managedObject) throws IOException {
+		return registerDevice(deviceId, "c8y_Serial", extId, managedObject);
+	}
+	
+	/**
+	 * Device Credential の認証情報を用いて API を生成します。
+	 *
+	 * @param		cred		デバイスクレデンシャル情報
+	 * @exception	IllegalStateException cred が user または password 情報を
+	 *				持たない場合
+	 */
+	public API deviceAPI(DeviceCredentials cred) {
+		if (cred.username == null || cred.username.equals(""))
+			throw new IllegalStateException("device credential has no user.");
+		if (cred.password == null || cred.password.equals(""))
+			throw new IllegalStateException("device credential has no password.");
+		Rest rest = api.getRest();
+		API devapi = new API(rest.getLocation(), rest.getTenant(),
+							cred.username, cred.password);
+		return devapi;
 	}
 	
 /*------------
