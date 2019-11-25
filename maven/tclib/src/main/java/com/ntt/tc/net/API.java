@@ -1772,6 +1772,18 @@ public class API {
 		return Jsonizer.fromJson(resp, ApplicationSubscriptionCollection.class);
 	}
 	
+	/**
+	 * アプリケーションサブスクリプションコレクション API を用いて、
+	 * Java の for ループで利用できる Iterable を取得します。
+	 *
+	 * @return	ApplicationUser の iterable
+	 */
+	public Iterable<ApplicationUser> applicationSubscriptions() {
+		return ( () -> new CollectionIterator<ApplicationUser>(rest,
+								"/application/currentApplication/subscriptions",
+								"users", ApplicationUser.class) );
+	}
+	
 /*----------
  * User API
  */
