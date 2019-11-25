@@ -337,6 +337,7 @@ public class APIUtil {
 	 * Device Credential の認証情報を用いて API を生成します。
 	 *
 	 * @param		cred		デバイスクレデンシャル情報
+	 * @return		指定されたクレデンシャル情報による API オブジェクト
 	 * @exception	IllegalStateException cred が user または password 情報を
 	 *				持たない場合
 	 */

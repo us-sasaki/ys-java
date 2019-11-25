@@ -1489,52 +1489,6 @@ public class API {
 	}
 	
 	/**
-	 * 子テナントに登録されているアプリケーションを登録します。
-	 * 指定された tenant や id のアプリケーションが存在しない場合、
-	 * C8yNoSuchObjectException がスローされます。
-	 *
-	 * @param		tenant		子テナントの id
-	 * @param		id			アプリケーション id
-	 * @throws		C8yNoSuchObjectException 指定された tenant または id の
-	 *				Application が存在しない
-	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
-	 *										存在しない
-	 * @throws		java.io.IOException REST異常
-	 */
-	public void createApplication(String tenant, String id) throws IOException {
-		JsonObject app = new JsonObject();
-		app.put("application", new JsonObject());
-		app.put("application.id", id);
-		
-		String ep = "/tenant/tenants/"+tenant+"/applications/";
-		app.put("application.self", rest.getLocation()+ep+id);
-		
-		Response resp = rest.post(ep, "applicationReference", app);
-		if (resp.status == 404) throw new C8yNoSuchObjectException(resp);
-	}
-	
-	/**
-	 * 子テナントに登録されているアプリケーションを削除します。
-	 * 指定された tenant や id のアプリケーションが存在しない場合、
-	 * C8yNoSuchObjectException がスローされます。
-	 *
-	 * @param		tenant		子テナントの id
-	 * @param		id			アプリケーション id
-	 * @throws		C8yNoSuchObjectException 指定された tenant または id の
-	 *				Application が存在しない
-	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
-	 *										存在しない
-	 * @throws		java.io.IOException REST異常
-	 */
-	public void deleteApplication(String tenant, String id) throws IOException {
-		Response resp = rest.delete("/tenant/tenants/" + tenant
-							+ "/applications/"+id);
-		if (resp.status == 404) throw new C8yNoSuchObjectException(resp);
-		if (resp.status != 204)
-			throw new IOException("application 削除失敗:"+resp.status+resp);
-	}
-	
-	/**
 	 * テナント使用状況統計コレクションを取得します。
 	 * Collection API では、結果のアトミック性が保証されていないことに注意して
 	 * 下さい。
@@ -1722,6 +1676,58 @@ public class API {
 		return Jsonizer.fromJson(resp, Option.class);
 	}
 	
+/*
+ * 以下は application API に統合された可能性あり
+ */
+	/**
+	 * 子テナントに登録されているアプリケーションを登録します。
+	 * 指定された tenant や id のアプリケーションが存在しない場合、
+	 * C8yNoSuchObjectException がスローされます。
+	 *
+	 * @param		tenant		子テナントの id
+	 * @param		id			アプリケーション id
+	 * @throws		C8yNoSuchObjectException 指定された tenant または id の
+	 *				Application が存在しない
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
+	 * @throws		java.io.IOException REST異常
+	 */
+	public void createApplication(String tenant, String id) throws IOException {
+		JsonObject app = new JsonObject();
+		app.put("application", new JsonObject());
+		app.put("application.id", id);
+		
+		String ep = "/tenant/tenants/"+tenant+"/applications/";
+		app.put("application.self", rest.getLocation()+ep+id);
+		
+		Response resp = rest.post(ep, "applicationReference", app);
+		if (resp.status == 404) throw new C8yNoSuchObjectException(resp);
+	}
+	
+	/**
+	 * 子テナントに登録されているアプリケーションを削除します。
+	 * 指定された tenant や id のアプリケーションが存在しない場合、
+	 * C8yNoSuchObjectException がスローされます。
+	 *
+	 * @param		tenant		子テナントの id
+	 * @param		id			アプリケーション id
+	 * @throws		C8yNoSuchObjectException 指定された tenant または id の
+	 *				Application が存在しない
+	 * @throws	C8yNoSuchObjectException	指定されたidのオブジェクトが
+	 *										存在しない
+	 * @throws		java.io.IOException REST異常
+	 */
+	public void deleteApplication(String tenant, String id) throws IOException {
+		Response resp = rest.delete("/tenant/tenants/" + tenant
+							+ "/applications/"+id);
+		if (resp.status == 404) throw new C8yNoSuchObjectException(resp);
+		if (resp.status != 204)
+			throw new IOException("application 削除失敗:"+resp.status+resp);
+	}
+	
+/*-----------------
+ * Application API
+ */
 	/**
 	 * ブートストラップユーザーを取得します。
 	 *
@@ -1782,6 +1788,20 @@ public class API {
 		return ( () -> new CollectionIterator<ApplicationUser>(rest,
 								"/application/currentApplication/subscriptions",
 								"users", ApplicationUser.class) );
+	}
+	
+	/**
+	 * アプリケーションイメージ(docker/web)をアップロードします。
+	 * (未テスト)
+	 *
+	 * @param	applicationId	アプリケーションID
+	 * @param	binary			アプリケーションイメージ
+	 * @throws	java.io.IOException	REST異常
+	 */
+	public void createBinaryOfApplication(String applicationId, byte[] binary)
+												throws IOException {
+		Response resp = rest.postMultipart("/application/applications/"+
+							applicationId + "/binaries", "filename", binary);
 	}
 	
 /*----------
