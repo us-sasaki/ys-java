@@ -16,6 +16,7 @@ import abdom.data.json.object.Jsonizer;
 
 import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.alarms.*;
+import com.ntt.tc.data.applications.*;
 import com.ntt.tc.data.auditing.*;
 import com.ntt.tc.data.device.*;
 import com.ntt.tc.data.events.*;
@@ -1721,6 +1722,55 @@ public class API {
 		return Jsonizer.fromJson(resp, Option.class);
 	}
 	
+	/**
+	 * ブートストラップユーザーを取得します。
+	 *
+	 * @param	microserviceAppId	microservice アプリケーション ID
+	 * @return	ブートストラップユーザークレデンシャル情報
+	 * @throws	java.io.IOException	REST異常
+	 */
+	public ApplicationUser readBootstrapUser(String microserviceAppId)
+												throws IOException {
+		Response resp = rest.get("/application/applications/"+
+									microserviceAppId+"/bootstrapUser");
+		return Jsonizer.fromJson(resp, ApplicationUser.class);
+	}
+	
+	/**
+	 * 現在のアプリケーションを取得します。
+	 *
+	 * @return	現在のアプリケーション
+	 * @throws	java.io.IOException	REST異常
+	 */
+	public Application readCurrentApplication() throws IOException {
+		Response resp = rest.get("/application/currentApplication");
+		return Jsonizer.fromJson(resp, Application.class);
+	}
+	
+	/**
+	 * 現在のアプリケーションを更新します。
+	 *
+	 * @param	updater		アップデートする項目を保持したオブジェクト
+	 * @return	更新後の現在のアプリケーション(新しいオブジェクト)
+	 * @throws	java.io.IOException	REST異常
+	 */
+	public Application updateCurrentApplication(Application updater)
+												throws IOException {
+		Response resp = rest.put("/application/currentApplication", updater);
+		return Jsonizer.fromJson(resp, Application.class);
+	}
+	
+	/**
+	 * 現在のアプリケーションのサブスクリプションを取得します。
+	 *
+	 * @return	現在のアプリケーションのサブスクリプション情報
+	 * @throws	java.io.IOException	REST異常
+	 */
+	public ApplicationSubscriptionCollection readApplicationSubscriptions()
+												throws IOException {
+		Response resp = rest.get("/application/currentApplication/subscriptions");
+		return Jsonizer.fromJson(resp, ApplicationSubscriptionCollection.class);
+	}
 	
 /*----------
  * User API
