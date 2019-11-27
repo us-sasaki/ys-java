@@ -8,14 +8,14 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
+import java.util.function.BinaryOperator;
 
 /**
  * SegmentTree テスト
  */
 class SegmentTreeTest {
-	static final int N = 20000; // ≦ sqrt(Integer.MAX_VALUE)
+	static final int N = 40000; // ≦ sqrt(Integer.MAX_VALUE)
 	static final int LOOP = 100;
-	static final int ID = Integer.MIN_VALUE;
 	
 	@Nested
 	class aggregatorがmax関数の場合 {
@@ -23,10 +23,10 @@ class SegmentTreeTest {
 		@BeforeEach void init() {
 		}
 		
-		@Test void 型() {
-/*			SegmentTree<Integer> st = new SegmentTree<>(N,
-													(a,b)->Math.max(a,b),
-													ID);
+		@Test void ランダムテスト() {
+			Integer id = Integer.MIN_VALUE;
+			BinaryOperator<Integer> agg = (a,b) -> Math.max(a,b);
+			SegmentTree<Integer> st = new SegmentTree<>(N, agg, id);
 			Integer[] val = new Integer[N];
 			Random r = new Random(12345L);
 			for (int i = 0; i < N; i++) val[i] = r.nextInt(N);
@@ -39,15 +39,15 @@ class SegmentTreeTest {
 				if (a > b) {
 					int tmp = a; a = b; b = tmp;
 				}
-				int stm = st.getSegmentResult(a, b);
-				int stc = ID;
+				int stm = st.calculate(a, b);
+				int stc = id;
 				for (int j = a; j < b; j++) {
 					stc = Math.max(stc, val[j]);
 				}
 				assertEquals(stc, stm);
 				
 			}
-*/		}
+		}
 	}
 }
 

@@ -5,8 +5,8 @@ import java.util.function.BinaryOperator;
 /**
  * 汎用のセグメントツリー class<br>
  *
- * ある型の要素に対する演算が結合的であり、単位元をもつ(単位的半群)場合、
- * 連続した要素の区間に対する演算結果のクエリを高速に実行可能です。
+ * ある型の要素に対する二項演算が結合的であり、単位元をもつ(単位的半群)場合、
+ * 直列した要素の区間に対する演算結果のクエリを高速に実行可能です。
  * 一般に、要素数 n に対し、任意の区間に対して O(log n) の計算量で結果を
  * 取得可能です。また、セグメント木の要素の変更は O(1) の計算量であり、
  * 構築はしたがって O(n) の計算量になります。
@@ -39,12 +39,12 @@ public class SegmentTree<E> {
 	private int size;
 	
 	/**
-	 * セグメントツリーを保持する配列の要素数。
+	 * セグメントツリーを保持する区間の最大要素数。
 	 * size 以上の 2 のべきの形の最小の数。
 	 */
 	private int m;
 	
-	/** セグメントツリーの要素を保持する配列 */
+	/** セグメントツリーの要素を保持する配列。サイズは 2m-1 */
 	private E[] st;
 	
 	/** E x E → E となる演算 */
@@ -67,8 +67,6 @@ public class SegmentTree<E> {
 	 */
 	@SuppressWarnings("unchecked")
 	public SegmentTree(int size, BinaryOperator<E> aggregator, E identity) {
-		// 既出 y 座標の個数を管理する segmented tree
-		// n 以上の最小の 2^n の形の数を求める
 		if (size <= 1 || size > 0x40000000)
 			throw new IllegalArgumentException("bad size : "+size);
 		if (!aggregator.apply(identity, identity).equals(identity))
@@ -100,22 +98,17 @@ public class SegmentTree<E> {
 	 * @param		endExclusive	elements における終了値(含みません)
 	 */
 	public void construct(E[] elements, int begin, int endExclusive) {
-		if (endExclusive - begin != size)
+		int n = endExclusive - begin;
+		if (n != size)
 			throw new IllegalArgumentException("size mismatch");
 		// 葉の値を設定
-		for (int i = 0; i < endExclusive-begin; i++)
+		for (int i = 0; i < n; i++)
 			st[m-1+i] = elements[begin+i];
-		for (int i = endExclusive-begin; i < 2*m-1; i++)
+		for (int i = m-1+n; i < 2*m-1; i++)
 			st[i] = identity;
 		// 各親の値を更新
-		for (int i = m-2; i >= 0; i--) {
-			try {
+		for (int i = m-2; i >= 0; i--)
 			st[i] = aggregator.apply(st[i*2+1], st[i*2+2]);
-			} catch (Exception e) {
-				System.out.printf("i=%d, st[2i+1]=%d, st[2i+2]=%d\r\n", i, st[i*2+1], st[i*2+2]);
-				throw e;
-			}
-		}
 	}
 	
 	/**
@@ -155,19 +148,23 @@ public class SegmentTree<E> {
 	}
 	
 	/**
-	 * 与えられた区間に対する aggregator 演算結果を高速に計算します。
+	 * 与えられた区間に対する aggregator 演算結果を高速に取得します。
 	 * 計算時間のオーダーは、O(log size) です。
 	 *
 	 * @param		s		区間の開始(含む)
 	 * @param		e		区間の終了(含まない)
 	 * @return		区間における aggregator の結果
 	 */
-	public E getResult(int s, int e) {
-		return getResultImpl(s, e, 0, 0, m);
+	public E calculate(int s, int e) {
+		if (s < 0 || e >= size)
+			throw new IndexOutOfBoundsException("wrong index");
+		if (s >= e)
+			throw new IllegalArgumentException("s must be smaller than e");
+		return calcImpl(s, e, 0, 0, m);
 	}
 	
 	/**
-	 * 与えられた区間での和を返却する。
+	 * 与えられた区間での演算結果を返却する。
 	 *
 	 * @param		s		区間の開始(含む)
 	 * @param		e		区間の終了(含まない)
@@ -175,14 +172,14 @@ public class SegmentTree<E> {
 	 * @param		l		セグメントの開始番号(含む)
 	 * @param		r		セグメントの終了番号(含まない)
 	 */
-	private E getResultImpl(int s, int e, int n, int l, int r) {
+	private E calcImpl(int s, int e, int n, int l, int r) {
 		// 共通部分がない場合
 		if (r <= s || e <= l) return identity;
 		// 完全に含んでいる場合
 		if (s <= l && r <= e) return st[n];
 		// 一部共通している場合
-		E vl = getResultImpl(s, e, 2*n + 1, l, (l+r)/2);
-		E vr = getResultImpl(s, e, 2*n + 2, (l+r)/2, r);
+		E vl = calcImpl(s, e, 2*n + 1, l, (l>>>1)+(r>>>1) );
+		E vr = calcImpl(s, e, 2*n + 2, (l>>>1)+(r>>>1), r);
 		return aggregator.apply(vl, vr);
 	}
 }
