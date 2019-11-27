@@ -5,7 +5,7 @@ import java.util.function.BinaryOperator;
 /**
  * 汎用のセグメントツリー class<br>
  *
- * その要素に対する演算が結合的であり、単位元をもつ(単位的半群)場合、
+ * ある型の要素に対する演算が結合的であり、単位元をもつ(単位的半群)場合、
  * 連続した要素の区間に対する演算結果のクエリを高速に実行可能です。
  * 一般に、要素数 n に対し、任意の区間に対して O(log n) の計算量で結果を
  * 取得可能です。また、セグメント木の要素の変更は O(1) の計算量であり、
@@ -143,8 +143,7 @@ public class SegmentTree<E> {
 	 */
 	public void update(int index, E element) {
 		if (index < 0 || index >= size)
-			throw new IndexOutOfBoundsException("index は 0 以上 "+size+
-						" 未満として下さい:"+index);
+			throw new IndexOutOfBoundsException("index is required that 0 <= index < "+size+", but was "+index);
 		// M-1 が末端セグメントの開始番号
 		int i = m-1+index;
 		st[i] = element;
@@ -163,8 +162,8 @@ public class SegmentTree<E> {
 	 * @param		e		区間の終了(含まない)
 	 * @return		区間における aggregator の結果
 	 */
-	public E getSegmentResult(int s, int e) {
-		return getSegmentResultImpl(s, e, 0, 0, m);
+	public E getResult(int s, int e) {
+		return getResultImpl(s, e, 0, 0, m);
 	}
 	
 	/**
@@ -176,14 +175,14 @@ public class SegmentTree<E> {
 	 * @param		l		セグメントの開始番号(含む)
 	 * @param		r		セグメントの終了番号(含まない)
 	 */
-	private E getSegmentResultImpl(int s, int e, int n, int l, int r) {
+	private E getResultImpl(int s, int e, int n, int l, int r) {
 		// 共通部分がない場合
 		if (r <= s || e <= l) return identity;
 		// 完全に含んでいる場合
 		if (s <= l && r <= e) return st[n];
 		// 一部共通している場合
-		E vl = getSegmentResultImpl(s, e, 2*n + 1, l, (l+r)/2);
-		E vr = getSegmentResultImpl(s, e, 2*n + 2, (l+r)/2, r);
+		E vl = getResultImpl(s, e, 2*n + 1, l, (l+r)/2);
+		E vr = getResultImpl(s, e, 2*n + 2, (l+r)/2, r);
 		return aggregator.apply(vl, vr);
 	}
 }
