@@ -29,8 +29,17 @@ import static java.net.HttpURLConnection.*;
  * エラー文字列を表すレスポンスが返却されることに注意して下さい。
  * このオブジェクトはスレッドセーフではなく、シングルスレッドで利用されることを
  * 想定しています。
- * ヘッダ設定処理部分がマルチスレッド対応になっていません。
+ * 実装上、ヘッダ設定処理部分がマルチスレッドに対応していません。
  * マルチスレッドで利用する場合、スレッドごとにインスタンスを生成して下さい。
+ * このオブジェクトでは、以下の html header を設定します。<br>
+ * <pre>
+ * Authorization
+ * Content-Type
+ * Accept
+ * X-Cumulocity-Application-Key
+ * X-Cumulocity-Processing-Mode
+ * </pre>
+ * テスト用に SSL 証明書検証をスキップするメソッドを持ちます。
  *
  * @version	16, June 2018
  * @author	Yusuke Sasaki
@@ -65,7 +74,7 @@ public class Rest {
  */
 	/**
 	 * 指定された host, user, password を保持する Rest を作成します。
-	 * tenant は host に含まれているものとします。
+	 * tenant は省略されます。(user/password の形式となる)
 	 *
 	 * @param		urlStr		"https://tenant.domain.com" の形式
 	 * @param		user		ユーザ名
