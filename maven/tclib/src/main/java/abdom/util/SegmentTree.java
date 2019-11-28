@@ -27,6 +27,7 @@ import java.util.function.BinaryOperator;
  * 例1)
  * E[i]∈Ｎ, agg(a, b) = max(a, b) とすると、任意の区間に含まれる自然数 E[i]
  * の最大値を取得することができる。
+ * 
  * </pre>
  *
  * @param	<E>	保持する要素の型
@@ -39,7 +40,8 @@ public class SegmentTree<E> {
 	private int size;
 	
 	/**
-	 * セグメントツリーを保持する区間の最大要素数。
+	 * セグメントツリーの全体サイズに関連する数。
+	 * 葉の index は m-1 から開始する。
 	 * size 以上の 2 のべきの形の最小の数。
 	 */
 	private int m;
