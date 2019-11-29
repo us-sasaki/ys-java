@@ -64,8 +64,11 @@ public class SegmentTree<E> {
  */
 	/**
 	 * 指定されたサイズの要素を保持する SegmentTree を生成します。
+	 * 単位元に関する簡易チェックが行われます。すわなち、
 	 * aggregator.apply(identity, identity) が identity に等しくない場合、
 	 * IllegalArgumentException がスローされます。
+	 * 単位元は ∀A, agg(A, E) = agg(E, A) = A を満たす E であり、この
+	 * チェックは部分的であることに注意してください。
 	 *
 	 * @param		size		セグメント木の大きさ
 	 * @param		aggregator	2 つの E の要素から E の要素への演算
@@ -89,6 +92,7 @@ public class SegmentTree<E> {
  */
 	/**
 	 * 配列でこのセグメント木を初期化します。
+	 * update を繰り返し呼ぶより高速ですが、計算量は O(n) です。
 	 *
 	 * @param		elements		このセグメント木に設定する値
 	 */
@@ -98,6 +102,7 @@ public class SegmentTree<E> {
 	
 	/**
 	 * 配列でこのセグメント木を初期化します。
+	 * update を繰り返し呼ぶより高速ですが、計算量は O(n) です。
 	 *
 	 * @param		elements		このセグメント木に設定する値
 	 * @param		begin			elements における開始値(含みます)
@@ -184,8 +189,9 @@ public class SegmentTree<E> {
 		// 完全に含んでいる場合
 		if (s <= l && r <= e) return st[n];
 		// 一部共通している場合
-		E vl = calcImpl(s, e, 2*n + 1, l, (l>>>1)+(r>>>1) );
-		E vr = calcImpl(s, e, 2*n + 2, (l>>>1)+(r>>>1), r);
-		return aggregator.apply(vl, vr);
+		int i = (l>>>1)+(r>>>1);
+		E cl = calcImpl(s, e, 2*n + 1, l, i);
+		E cr = calcImpl(s, e, 2*n + 2, i, r);
+		return aggregator.apply(cl, cr);
 	}
 }
