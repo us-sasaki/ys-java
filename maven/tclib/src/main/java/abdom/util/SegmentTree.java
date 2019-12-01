@@ -8,8 +8,8 @@ import java.util.function.BinaryOperator;
  * ある型の要素に対する二項演算が結合的であり、単位元をもつ(単位的半群)場合、
  * 直列した要素の区間に対する演算結果のクエリを高速に実行可能です。
  * 一般に、要素数 n に対し、任意の区間に対して O(log n) の計算量で結果を
- * 取得可能です。また、セグメント木の要素の変更は O(1) の計算量であり、
- * 構築はしたがって O(n) の計算量になります。
+ * 取得可能です。また、セグメント木の要素の変更は O(lon n) の計算量です。
+ * 構築のための計算量 O(n) のメソッドを公開しています。
  *
  * <pre>
  * 演算 agg : E x E → E が結合的である、とは、
@@ -69,13 +69,59 @@ public class SegmentTree<E> {
 	 * IllegalArgumentException がスローされます。
 	 * 単位元は ∀A, agg(A, E) = agg(E, A) = A を満たす E であり、この
 	 * チェックは部分的であることに注意してください。
+	 * 初期値は identity となります。
 	 *
 	 * @param		size		セグメント木の大きさ
 	 * @param		aggregator	2 つの E の要素から E の要素への演算
 	 * @param		identity	演算 aggregator における単位元
 	 */
-	@SuppressWarnings("unchecked")
 	public SegmentTree(int size, BinaryOperator<E> aggregator, E identity) {
+		init(size, aggregator, identity);
+		// 葉の値を設定
+		for (int i = 0; i < 2*m-1; i++)
+			st[i] = identity;
+	}
+	
+	/**
+	 * 指定されたサイズの要素を保持する SegmentTree を生成します。
+	 * 単位元に関する簡易チェックが行われます。すわなち、
+	 * aggregator.apply(identity, identity) が identity に等しくない場合、
+	 * IllegalArgumentException がスローされます。
+	 * 単位元は ∀A, agg(A, E) = agg(E, A) = A を満たす E であり、この
+	 * チェックは部分的であることに注意してください。
+	 *
+	 * @param		size		セグメント木の大きさ
+	 * @param		aggregator	2 つの E の要素から E の要素への演算
+	 * @param		identity	演算 aggregator における単位元
+	 * @param		value		初期値を与える配列
+	 */
+	public SegmentTree(int size, BinaryOperator<E> aggregator, E identity,
+						E[] value) {
+		this(size, aggregator, identity, value, 0, value.length);
+	}
+	
+	/**
+	 * 指定されたサイズの要素を保持する SegmentTree を生成します。
+	 * 単位元に関する簡易チェックが行われます。すわなち、
+	 * aggregator.apply(identity, identity) が identity に等しくない場合、
+	 * IllegalArgumentException がスローされます。
+	 * 単位元は ∀A, agg(A, E) = agg(E, A) = A を満たす E であり、この
+	 * チェックは部分的であることに注意してください。
+	 *
+	 * @param		size		セグメント木の大きさ
+	 * @param		aggregator	2 つの E の要素から E の要素への演算
+	 * @param		identity	演算 aggregator における単位元
+	 * @param		value		与える初期値を含む配列
+	 * @param		begin		初期値として利用する始点(含みます)
+	 * @param		endExclusive	初期値として利用する終点(含みません)
+	 */
+	public SegmentTree(int size, BinaryOperator<E> aggregator, E identity,
+						E[] value, int begin, int endExclusive) {
+		init(size, aggregator, identity);
+		construct(value, begin, endExclusive);
+	}
+	@SuppressWarnings("unchecked")
+	private void init(int size, BinaryOperator<E> aggregator, E identity) {
 		if (size <= 1 || size > 0x40000000)
 			throw new IllegalArgumentException("bad size : "+size);
 		if (!aggregator.apply(identity, identity).equals(identity))
@@ -141,6 +187,7 @@ public class SegmentTree<E> {
 	
 	/**
 	 * 指定された index の要素を指定されたものに更新し、木の値を再計算します。
+	 * 計算時間のオーダーは、O(log size) です。
 	 *
 	 * @param		index		追加するインデックス(0 以上 size 未満)
 	 * @param		element		更新する要素
