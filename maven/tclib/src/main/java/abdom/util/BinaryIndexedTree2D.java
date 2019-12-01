@@ -4,14 +4,17 @@ import java.util.function.BinaryOperator;
 import java.util.function.UnaryOperator;
 
 /**
- * 汎用の二次元 Binary Indexed Tree (BIT, Finwick Tree) class<br>
+ * 汎用の(ただし各次元が同じ型)二次元 Binary Indexed Tree (BIT, Fenwick Tree)
+ * class です。<br>
  *
+ * そのまま適用も可能ですが、各問題に適用するためのリファレンス実装として
+ * つくったものです。
  * ある型の要素に対する二項演算が結合的であり、単位元をもつ(単位的半群)場合、
  * 直列した要素の始点からの区間に対する演算結果のクエリを高速に実行可能です。
  * 一般に、要素数 n に対し、始点からの区間に対して O(log n) の計算量で結果を
  * 取得可能です。また、BITの要素の変更は O(log n) の計算量です。
  * 構築のための計算量 O(n) のメソッドを公開しています。
- * Segment Tree との際は、保持する要素数が n でメモリ効率がよい点です。
+ * Segment Tree との差異は、保持する要素数が n でメモリ効率がよい点です。
  * E に対して逆元が定義される場合、任意区間に拡張されます。
  *
  * <pre>
