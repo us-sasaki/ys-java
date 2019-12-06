@@ -252,7 +252,6 @@ public class API {
 	
 	/**
 	 * デバイスクレデンシャルを要求します。
-	 * bootstrap ユーザにする必要があると思われる。
 	 *
 	 * @param	req		デバイスクレデンシャルのオブジェクト。id は必須です。
 	 * @return	更新されたデバイスクレデンシャルが返却されます。
@@ -268,6 +267,53 @@ public class API {
 		Response resp = bootstrapRest.post("/devicecontrol/deviceCredentials", "deviceCredentials", req);
 		if (resp.status != 404) req.fill(resp);
 		return req;
+	}
+	
+	/**
+	 * 一括デバイス認証情報リクエストを作成します。
+	 * 一括デバイス認証情報は、以下の形式です。
+	 * <pre>
+	 * ヘッダ行(1行)、データ行(複数行)からなる。
+	 *
+	 * ヘッダ行形式
+	 * 　ID;CREDENTIALS;TENANT;TYPE;NAME;ICCID;IDTYPE;PATH;SHELL;{custom}
+	 * 　TENANT以降の項目はオプションで、ヘッダに指定した場合、値も必要になる。
+	 *
+	 * データ行形式
+	 * 　ヘッダに対応する値を記述。
+	 * 　ID          デバイスの外部ID
+	 * 　CREDENTIALS デバイスのユーザーが使用するパスワード
+	 * 　TENANT      登録実行対象のテナント名(management に限り指定可能)
+	 * 　TYPE        デバイス ManagedObject の type
+	 * 　NAME        デバイス ManagedObject の name
+	 * 　ICCID       デバイスのiccid (SIMカード番号, c8y_Mobile.iccid に設定)
+	 * 　            値なしが許容されます。
+	 * 　IDTYPE      ExternalID type(指定がない場合 c8y_Serial となる)
+	 * 　PATH        デバイスが追加されるグループ階層内の path。
+	 * 　            Maingroup/Subgroup/.../Last subgroup
+	 * 　            存在しないグループが指定された場合生成されます。
+	 * 　SHELL       1/0/値なし 1を指定されると c8y_SupportedOperations に
+	 * 　{custom}    上記以外の値を指定すると、fragment として登録されます。
+	 * 
+	 * csvファイル例(区切りはセミコロン、またはカンマが利用可能)
+	 * ID;CREDENTIALS;TYPE;NAME;ICCID;IDTYPE;PATH;SHELL
+	 * id_101;abcd1234;type_of_device;Device 101;1111111;;csv device/subgrp0;1
+	 * id_102;abcd1234;type_of_device;Device 102;2222222;;csv device/subgrp0;0
+	 * id_111;abcd1234;type_of_device;Device 111;3333333;c8y_Imei;csv device1/subgrp1;0
+	 * id_112;abcd1234;type_of_device;Device 112;4444444;;csv device1/subgrp1;1
+	 * id_121;abcd1234;type_of_device;Device 121;5555555;;csv device1/subgrp2;1
+	 * id_122;abcd1234;type_of_device;Device 122;;;csv device1/subgrp2;
+	 * id_131;abcd1234;type_of_device;Device 131;;;csv device1/subgrp3;
+	 * </pre>
+	 *
+	 * @param		data		一括デバイス認証情報リクエストのcsvファイル
+	 * @return		作成結果
+	 * @throws		java.io.IOException	REST異常
+	 */
+	public BulkNewDeviceRequest createBulkNewDeviceRequests(byte[] data)
+				throws IOException {
+		Response resp = rest.postMultipart("/devicecontrol/bulkNewDeviceRequests", "file", data);
+		return Jsonizer.fromJson(resp, BulkNewDeviceRequest.class);
 	}
 	
 /*--------------
