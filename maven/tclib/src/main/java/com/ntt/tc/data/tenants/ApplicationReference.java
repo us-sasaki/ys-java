@@ -22,6 +22,5 @@ public class ApplicationReference extends C8yData {
 	 * Occurs : 0..n
 	 * </pre>
 	 */
-	public Application[] reference;
-	
+	public Application application;
 }

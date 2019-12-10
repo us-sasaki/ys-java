@@ -2398,9 +2398,13 @@ public class API {
 	/**
 	 * モジュールコレクションAPIを用いて、Javaのforループで使える
 	 * Module の iterator を取得します。
+	 * CEP が利用できない環境(feature-cep-custom-rulesか。)では、エラーとなる。
+	 * 403 Access is denied. digicom 環境ではこれになる。
+	 * Apama 環境でもエラーとなる。(404 Not Found)
 	 *
 	 * @param		queryString	pageSize 等の設定
 	 * @return		登録されている module の itarable
+	 * @throws		com.ntt.tc.net.C8yRestRuntimeException CEPが使えない場合
 	 */
 	public Iterable<Module> modules(final String queryString) {
 		return ( () -> new CollectionIterator<Module>(
@@ -2410,8 +2414,12 @@ public class API {
 	
 	/**
 	 * 全モジュールコレクションを取得する便利メソッドです。
+	 * CEP が利用できない環境(feature-cep-custom-rulesか。)では、エラーとなる。
+	 * 403 Access is denied. digicom 環境ではこれになる。
+	 * Apama 環境でもエラーとなる。(404 Not Found)
 	 *
 	 * @return		登録されている module の itarable
+	 * @throws		com.ntt.tc.net.C8yRestRuntimeException CEPが使えない場合
 	 */
 	public Iterable<Module> modules() {
 		return modules("");
