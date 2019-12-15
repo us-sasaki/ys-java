@@ -11,8 +11,10 @@ import java.util.function.UnaryOperator;
  * 一般に、要素数 n に対し、始点からの区間に対して O(log n) の計算量で結果を
  * 取得可能です。また、BITの要素の変更は O(log n) の計算量です。
  * 構築のための計算量 O(n) のメソッドを公開しています。
- * Segment Tree との差異は、保持する要素数が n でメモリ効率がよい点です。
- * E に対して逆元が定義される場合、任意区間に拡張されます。
+ * Segment Tree との差異は、区間が始点からという制約があること、および保持する
+ * 要素数が n でメモリ効率がよい点です。
+ * E に対して逆元が定義される場合、始点開始制約はなくなり、任意区間に
+ * 拡張されます。
  *
  * <pre>
  * 演算 agg : E x E → E が結合的である、とは、
@@ -165,7 +167,7 @@ public class BinaryIndexedTree<E> {
 	
 	/**
 	 * 始点から与えられた終点までの区間に対する aggregator 演算結果を高速に
-	 * 取得します。計算時間のオーダーは、O(log size) です。
+	 * 取得します。計算時間のオーダーは、O(log n) です。
 	 *
 	 * @param		e		区間の終点(含まない)
 	 * @return		区間における aggregator の結果
@@ -184,7 +186,7 @@ public class BinaryIndexedTree<E> {
 	
 	/**
 	 * 与えられた区間に対する aggregator 演算結果を高速に取得します。
-	 * 計算時間のオーダーは、O(log size) です。
+	 * 計算時間のオーダーは、O(log n) です。
 	 * このメソッドを利用するには、コンストラクタで inverse を設定する
 	 * 必要があります。設定されていない場合、
 	 * UnsupportedOperationException がスローされます。
