@@ -149,6 +149,20 @@ public class API {
 		return (() -> new SubtenantAPIIterator(this));
 	}
 	
+	/**
+	 * サポートユーザーログインによるサブテナント API を取得します。
+	 * この API が management テナントのサポートユーザーである必要があります。
+	 *
+	 * @return		サブテナントのAPI(この API ユーザーによるサポートログイン)
+	 */
+	public API subtenantAPI(String tenant) {
+		String url = getRest().getLocation();
+		String user = getRest().getUser() + "$";
+		String pass = getRest().getPassword();
+		
+		return new API(url, tenant, user, pass);
+	}
+	
 /*------------
  * Device API
  */
