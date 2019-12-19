@@ -106,13 +106,16 @@ public class APIMisc {
 	 *
 	 * @param		filename	JSONファイル名
 	 * @return		読み込まれた JsonType
-	 * @throws		java.io.IOException		ファイル読み込み異常
+	 * @throws		java.io.UncheckedIOException		ファイル読み込み異常
 	 */
-	public JsonType readFromFile(String filename) throws IOException {
-		Reader r = new FileReader(filename);
-		JsonType j = JsonType.parse(r);
-		r.close();
-		return j;
+	public static JsonType readFromFile(String filename)
+					throws java.io.UncheckedIOException {
+		try (Reader r = new FileReader(filename)) {
+			JsonType j = JsonType.parse(r);
+			return j;
+		} catch (IOException ioe) {
+			throw new java.io.UncheckedIOException(ioe);
+		}
 	}
 	
 	/**
@@ -123,10 +126,9 @@ public class APIMisc {
 	 * @param		filename	JSONファイル名
 	 * @param		clazz		クラスオブジェクト
 	 * @return		T			返却型
-	 * @throws		java.io.IOException		ファイル読み込み異常
+	 * @throws		java.io.UncheckedIOException		ファイル読み込み異常
 	 */
-	public <T extends C8yData> T readFromFile(String filename, Class<T> clazz)
-									throws IOException {
+	public static <T extends C8yData> T readFromFile(String filename, Class<T> clazz) {
 		return Jsonizer.fromJson(readFromFile(filename), clazz);
 	}
 }
