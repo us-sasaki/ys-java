@@ -153,6 +153,7 @@ public class API {
 	 * サポートユーザーログインによるサブテナント API を取得します。
 	 * この API が management テナントのサポートユーザーである必要があります。
 	 *
+	 * @param		tenant		サブテナントid
 	 * @return		サブテナントのAPI(この API ユーザーによるサポートログイン)
 	 */
 	public API subtenantAPI(String tenant) {
