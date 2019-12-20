@@ -45,6 +45,12 @@ import static java.net.HttpURLConnection.*;
  * @author	Yusuke Sasaki
  */
 public class Rest {
+	/**
+	 * 処理モード列挙子
+	 */
+	public enum ProcessingMode {
+		PERSISTENT, TRANSIENT, QUIESCENT, CEP
+	}
 	
 	/** JsonRest の一般的な処理を行うオブジェクト(委譲先) */
 	protected JsonRest r;
@@ -283,6 +289,20 @@ public class Rest {
 			r.putHeader("X-Cumulocity-Processing-Mode", "TRANSIENT");
 		} else {
 			r.removeHeader("X-Cumulocity-Processing-Mode");
+		}
+	}
+	
+	/**
+	 * プロセッシングモードを設定します。
+	 * 以降のアクセスで X-Cumulocity-Processing-Mode ヘッダーに設定されます。
+	 *
+	 * @param	mode	モード定数
+	 */
+	public void setProcessingMode(ProcessingMode mode) {
+		if (mode == ProcessingMode.PERSISTENT) {
+			r.removeHeader("X-Cumulocity-Processing-Mode");
+		} else {
+			r.putHeader("X-Cumulocity-Processing-Mode", mode.name());
 		}
 	}
 	
