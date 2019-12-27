@@ -302,7 +302,7 @@ public class Rest {
 		if (mode == ProcessingMode.PERSISTENT) {
 			r.removeHeader("X-Cumulocity-Processing-Mode");
 		} else {
-			r.putHeader("X-Cumulocity-Processing-Mode", mode.name());
+			r.putHeader("X-Cumulocity-Processing-Mode", mode.toString());
 		}
 	}
 	
