@@ -164,8 +164,48 @@ public final class FileUtils {
 		return listOfFiles(path, filter).stream();
 	}
 	
+	/**
+	 * 指定されたファイル名のテキストファイルを読み込み、String として
+	 * 返却します。
+	 *
+	 * @param		p	テキストファイルの Path
+	 * @return		テキストファイル
+	 */
+	public static String readFileAsString(Path p) {
+		try {
+			// byte[] として読み込み
+			byte[] fimage = Files.readAllBytes(p);
+			// Encoding 判定
+			Charset cs = Encodings.charset(fimage);
+			if (cs == null) throw new CharacterCodingException();
+			
+			return new String(fimage, cs.toString());
+		}
+	}
+	
+	/**
+	 * 文字列を改行で区切り、List 化して返却します。
+	 *
+	 * @param	s	処理対象のテキスト文字列
+	 * @return	行ごとに区切られた List
+	 */
+	public static List<String> splitIntoLines(String s) {
+		List<String> result = new ArrayList<String>();
+		try (StringReader sr = new StringReader(s);
+				BufferedReader br = new BufferedReader(sr);) {
+			while (true) {
+				String line = br.readLine();
+				if (line == null) break;
+				result.add(line);
+			}
+			return result;
+		} catch (IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
+	}
+	
 /*------------------
- * instance methods
+ * private methods
  */
 	private static void addList(List<Path> list, File f) {
 		if (f.isDirectory()) {
