@@ -180,6 +180,8 @@ public final class FileUtils {
 			if (cs == null) throw new CharacterCodingException();
 			
 			return new String(fimage, cs.toString());
+		} catch (IOException ioe) {
+			throw new UncheckedIOException(ioe);
 		}
 	}
 	
