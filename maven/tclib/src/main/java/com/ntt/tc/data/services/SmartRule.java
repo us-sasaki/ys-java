@@ -47,6 +47,7 @@ public class SmartRule extends C8yData {
 	/**
 	 * CEP のテンプレート名と思われる。
 	 * "thresholdSmartRule" : measurement の閾値で alarm 生成
+	 * "sendExportViaEmail" : レポートの定期メール送信スケジューラー
 	 */
 	public String ruleTemplateName;
 	
