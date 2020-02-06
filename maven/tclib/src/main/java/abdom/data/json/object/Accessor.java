@@ -233,7 +233,7 @@ class SimpleAccessor extends Accessor {
 						prop.getName() + "\" field of class \"" +
 						instance.getClass().getName() +
 						"\" expects type of "+type.getName()+
-						". Specified value: " +arg.getClass());
+						". Specified value: " +arg);
 			// arg をそのまま割り付ける
 			prop.setObj(instance, arg);
 			return;
