@@ -1,8 +1,9 @@
 package com.ntt.tc.data.inventory;
 
-import abdom.data.json.JsonObject;
+import abdom.data.json.JsonType;
 
 import com.ntt.tc.data.C8yData;
+import com.ntt.tc.data.C8yJsonData;
 import com.ntt.tc.data.TC_Date;
 
 /**
@@ -242,11 +243,11 @@ public class ManagedObject extends C8yData {
 	 * デバイス数としてカウントされるようになる。
 	 * 設定は、
 	 * <pre>
-	 * managedObject.c8y_IsDevice = new C8yData();
+	 * managedObject.c8y_IsDevice = new C8yJsonData();
 	 * </pre>
-	 * のように、C8yData(のサブクラス) を設定して下さい。(JSON上、{} となる)
+	 * のように、C8yJsonData(のサブクラス) を設定して下さい。(JSON上、{} となる)
 	 */
-	public C8yData c8y_IsDevice;
+//	public C8yJsonData c8y_IsDevice;
 	
 	/**
 	 * "com_cumulocity_model_Agent" marks devices running a Cumulocity agent.
@@ -262,11 +263,11 @@ public class ManagedObject extends C8yData {
 	 * 必要があります。
 	 * 設定は、
 	 * <pre>
-	 * managedObject.com_cumulocity_model_Agent = new C8yData();
+	 * managedObject.com_cumulocity_model_Agent = new C8yJsonData();
 	 * </pre>
-	 * のように、C8yData を設定して下さい。(JSON上、{} となる)
+	 * のように、C8yJsonData を設定して下さい。(JSON上、{} となる)
 	 */
-	public C8yData com_cumulocity_model_Agent;
+//	public C8yJsonData com_cumulocity_model_Agent;
 	
 	/**
 	 * Guides / Referense / Sensor にある inventory 表現。
@@ -274,7 +275,7 @@ public class ManagedObject extends C8yData {
 	 *
 	 * @see	com.ntt.tc.data.sensor.C8y_TemperatureMeasurement
 	 */
-	public C8yData c8y_TemperatureSensor;
+//	public C8yJsonData c8y_TemperatureSensor;
 	
 	/**
 	 * Guides / Referense / Sensor にある inventory 表現。
@@ -282,7 +283,7 @@ public class ManagedObject extends C8yData {
 	 *
 	 * @see	com.ntt.tc.data.sensor.C8y_MotionMeasurement
 	 */
-	public C8yData c8y_MotionSensor;
+//	public C8yJsonData c8y_MotionSensor;
 	
 	/**
 	 * Guides / Referense / Sensor にある inventory 表現。
@@ -290,7 +291,7 @@ public class ManagedObject extends C8yData {
 	 *
 	 * @see	com.ntt.tc.data.sensor.C8y_AccelerationMeasurement
 	 */
-	public C8yData c8y_AccelerationSensor;
+//	public C8yJsonData c8y_AccelerationSensor;
 	
 	/**
 	 * Guides / Referense / Sensor にある inventory 表現。
@@ -298,7 +299,7 @@ public class ManagedObject extends C8yData {
 	 *
 	 * @see	com.ntt.tc.data.sensor.C8y_LightMeasurement
 	 */
-	public C8yData c8y_LightSensor;
+//	public C8yJsonData c8y_LightSensor;
 	
 	/**
 	 * Guides / Referense / Sensor にある inventory 表現。
@@ -306,7 +307,7 @@ public class ManagedObject extends C8yData {
 	 *
 	 * @see	com.ntt.tc.data.sensor.C8y_HumidityMeasurement
 	 */
-	public C8yData c8y_HumiditySensor;
+//	public C8yJsonData c8y_HumiditySensor;
 	
 	/**
 	 * Guides / Referense / Sensor にある inventory 表現。
@@ -314,7 +315,7 @@ public class ManagedObject extends C8yData {
 	 *
 	 * @see	com.ntt.tc.data.sensor.C8y_MoistureMeasurement
 	 */
-	public C8yData c8y_MoistureSensor;
+//	public C8yJsonData c8y_MoistureSensor;
 	
 	/**
 	 * Guides / Referense / Sensor にある inventory 表現。
@@ -322,7 +323,7 @@ public class ManagedObject extends C8yData {
 	 *
 	 * @see com.ntt.tc.data.sensor.C8y_DistanceMeasurement
 	 */
-	public C8yData c8y_DistanceSensor;
+//	public C8yJsonData c8y_DistanceSensor;
 	
 	/**
 	 * Guides / Referense / Sensor にある inventory 表現。
@@ -330,7 +331,7 @@ public class ManagedObject extends C8yData {
 	 *
 	 * @see com.ntt.tc.data.sensor.C8y_SinglePhaseElectricityMeasurement
 	 */
-	public C8yData c8y_SinglePhaseElectricitySensor;
+//	public C8yJsonData c8y_SinglePhaseElectricitySensor;
 	
 	/**
 	 * Guides / Referense / Sensor にある inventory 表現。
@@ -338,7 +339,7 @@ public class ManagedObject extends C8yData {
 	 *
 	 * @see com.ntt.tc.data.sensor.C8y_ThreePhaseElectricityMeasurement
 	 */
-	public C8yData c8y_ThreePhaseElectricitySensor;
+//	public C8yJsonData c8y_ThreePhaseElectricitySensor;
 	
 	/**
 	 * Guides / Referense / Sensor にある inventory 表現。
@@ -346,7 +347,7 @@ public class ManagedObject extends C8yData {
 	 *
 	 * @see com.ntt.tc.data.sensor.C8y_CurrentMeasurement
 	 */
-	public C8yData c8y_CurrentSensor;
+//	public C8yJsonData c8y_CurrentSensor;
 	
 	/**
 	 * Guides / Referense / Sensor にある inventory 表現。
@@ -354,13 +355,13 @@ public class ManagedObject extends C8yData {
 	 *
 	 * @see com.ntt.tc.data.sensor.C8y_VoltageMeasurement
 	 */
-	public C8yData c8y_VoltageSensor;
+//	public C8yJsonData c8y_VoltageSensor;
 	
 	/**
 	 * Guides / Referense / Sensor にある inventory 表現。
 	 * ManagementObject の要素としては Object * と表現されている。
 	 */
-	public C8y_Relay c8y_Relay;
+//	public C8yJsonData c8y_Relay;
 	
 	
 	/**

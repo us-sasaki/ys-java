@@ -310,4 +310,18 @@ public class ServiceAPI {
 		return Jsonizer.fromJson(resp, Dashboard.class);
 	}
 	
+/*--------
+ * tenant
+ */
+	/**
+	 * このテナントにおけるサポートユーザーの on / off を切り替えます
+	 * v10.5 で発見
+	 *
+	 * @param		enable		true..有効 false..無効
+	 */
+	public void enableSupportUser(boolean enable) throws IOException {
+		String e = enable?"enable":"disable";
+		Response resp = rest.put("/tenant/support-user/"+e, "");
+	}
+	
 }

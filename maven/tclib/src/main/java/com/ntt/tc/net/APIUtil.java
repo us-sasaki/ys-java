@@ -9,10 +9,12 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import abdom.data.json.JsonType;
+import abdom.data.json.JsonObject;
 import abdom.data.json.object.Jsonizer;
 
 import com.ntt.tc.data.TC_Int;
 import com.ntt.tc.data.C8yData;
+import com.ntt.tc.data.C8yJsonData;
 import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.alarms.*;
 import com.ntt.tc.data.device.*;
@@ -145,8 +147,8 @@ public class APIUtil {
 				createDeviceIfAbsent(
 					String type, String extId, ManagedObject asDefault)
 								throws IOException {
-		if (asDefault.c8y_IsDevice == null)
-			asDefault.c8y_IsDevice = new C8yData();
+		if (asDefault.get("c8y_IsDevice") == null)
+			asDefault.set("c8y_IsDevice", new JsonObject());
 		return createManagedObjectIfAbsent(type, extId, asDefault);
 	}
 	
@@ -686,8 +688,8 @@ public class APIUtil {
 		mo.name = name;
 		mo.type = "APIUtil_device";
 		
-		mo.com_cumulocity_model_Agent = new C8yData();
-		mo.c8y_AccelerationSensor = new C8yData();
+		mo.set("com_cumulocity_model_Agent", new JsonObject());
+		mo.set("c8y_AccelerationSensor", new JsonObject());
 		
 		mo.c8y_CellInfo = new C8y_CellInfo();
 		mo.c8y_CellInfo.cellTowers = new C8y_CellTower[1];
@@ -712,9 +714,9 @@ public class APIUtil {
 				+"nttcom.collect.interval=60000\n"
 				+"nttcom.whiteList=B0\\:B4\\:48\\:BE\\:95\\:06,24\\:71\\:89\\:BD\\:08\\:02,24\\:71\\:89\\:C1\\:2F\\:07\n";
 		
-		mo.c8y_CurrentSensor = new C8yData();
+		mo.set("c8y_CurrentSensor", new JsonObject());
 		
-		mo.c8y_DistanceSensor = new C8yData();
+		mo.set("c8y_DistanceSensor", new JsonObject());
 		
 		mo.c8y_Firmware = new C8y_Firmware();
 		mo.c8y_Firmware.name = "firm name";
@@ -726,7 +728,7 @@ public class APIUtil {
 
 		// skip c8y_HumiditySensor
 		
-		mo.c8y_IsDevice = new C8yData();
+		mo.set("c8y_IsDevice", new JsonObject());
 		
 		// skip LightSensor
 		

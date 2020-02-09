@@ -21,18 +21,18 @@ class MOTest {
 	@Nested
 	class フィールドへの設定 {
 		@Test
-		void c8y_IsDeviceへの設定がC8yDataでできる() {
+		void c8y_IsDeviceへの設定がJsonObjectでできる() {
 			ManagedObject mo = new ManagedObject();
-			mo.c8y_IsDevice = new C8yData();
+			mo.set("c8y_IsDevice", new JsonObject());
 			assertEquals("{\"c8y_IsDevice\":{}}", mo.toString());
 		}
 		
 		@Test
-		void com_cumulocity_model_Agentへの設定がC8yDataでできる() {
+		void com_cumulocity_model_Agentへの設定がJsonObjectでできる() {
 			ManagedObject mo = new ManagedObject();
-			mo.com_cumulocity_model_Agent = new C8yData();
+			mo.set("com_cumulocity_model_Agent", new JsonObject());
 			assertEquals("{\"com_cumulocity_model_Agent\":{}}", mo.toString());
-			mo.com_cumulocity_model_Agent.set("someProp", 15);
+			mo.set("com_cumulocity_model_Agent.someProp", 15);
 			assertEquals("{\"com_cumulocity_model_Agent\":{\"someProp\":15}}", mo.toString());
 		}
 		
