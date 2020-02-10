@@ -108,6 +108,7 @@ public class ServiceAPI {
 	/**
 	 * 指定された id の SmartRule を取得します。
 	 * 動作確認バージョン：8.15, 9.12, 9.16
+	 * Global では確認済み、Private では未確認
 	 *
 	 * @param		id		SmartRule id
 	 * @return		SmartRule
@@ -137,6 +138,9 @@ public class ServiceAPI {
 	 * 指定された SmartRule(Global/Private) を更新します。
 	 * たたき方は ui と同様。(id や他のパラメータも指定している)
 	 * 動作確認バージョン：8.15, 9.12, 9.16
+	 * Private であることは、c8y_Context fragment の存在により判定します。
+	 * update では、type, cepModuleId, lastUpdated はすべて null である
+	 * 必要があるため、updater のこれらのフィールドは null に設定されます。
 	 *
 	 * @param		updater		更新する SmartRule
 	 * @return		更新された新規 SmartRule
@@ -144,20 +148,41 @@ public class ServiceAPI {
 	 */
 	public SmartRule updateSmartRule(SmartRule updater)
 									throws IOException {
-		Response resp = rest.put("/service/smartrule/smartrules/"+updater.id
-									,updater);
+		updater.type = null;
+		updater.cepModuleId = null;
+		updater.lastUpdated = null;
+		
+		JsonType context = updater.get("c8y_Context");
+		if (context == null) {
+			Response resp = rest.put("/service/smartrule/smartrules/"+
+									updater.id	,updater);
+			return Jsonizer.fromJson(resp, SmartRule.class);
+		}
+		String id = context.get("id").getValue();
+		Response resp = rest.put("/service/smartrule/managedObjects/"+id+
+							"/smartrules/"+updater.id, updater);
 		return Jsonizer.fromJson(resp, SmartRule.class);
 	}
 	
 	/**
-	 * 指定された SmartRule を削除します。
+	 * 指定された SmartRule(Global/Private) を削除します。
 	 * 動作確認バージョン：8.15, 9.12, 9.16
+	 * Private であることは、c8y_Context fragment の存在により判定します。
 	 *
 	 * @param		id			更新する SmartRule の id
 	 * @throws		java.io.IOException REST異常
 	 */
 	public void deleteSmartRule(String id) throws IOException {
-		Response resp = rest.delete("/service/smartrule/smartrules/"+id);
+		// readSmartRule は global/private 共通であることを前提
+		SmartRule sr = readSmartRule(id);
+		JsonType context = sr.get("c8y_Context");
+		if (context == null) {
+			Response resp = rest.delete("/service/smartrule/smartrules/"+id);
+		} else {
+			String mid = context.get("id").getValue();
+			Response resp = rest.delete("/service/smartrule/managedObjects/"+
+							mid+"/smartrules/"+id);
+		}
 	}
 	
 /*------------------
