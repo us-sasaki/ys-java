@@ -244,6 +244,43 @@ public class APIUtil {
  * Device credential
  */
 	/**
+	 * デバイスクレデンシャルをシーケンスシミュレートして取得します。
+	 * ユーザー名は "device_"+deviceId となります。
+	 * 
+	 * @param	deviceId	デバイス登録時に用いるデバイス ID
+	 * @throws	java.io.IOException REST異常
+	 */
+	public DeviceCredentials createDeviceCredentials(String deviceId)
+								throws IOException {
+		// 新規デバイスリクエストの作成
+		NewDeviceRequest req = new NewDeviceRequest();
+		req.id = deviceId;
+		NewDeviceRequest ndr = api.createNewDeviceRequest(req);
+		
+		// クレデンシャル要求
+		DeviceCredentials cred = new DeviceCredentials();
+		cred.id = deviceId;
+		cred = api.createDeviceCredentials(cred);
+		if (cred.isValid())
+			throw new C8yRestException("承認前にクレデンシャルが取得されました:"+cred);
+		
+		// 承認する
+		NewDeviceRequest r = api.readNewDeviceRequest(deviceId);
+		if (r.getStatus().equals(NewDeviceRequest.PENDING_ACCEPTANCE)) {
+			api.updateNewDeviceRequest(deviceId, NewDeviceRequest.ACCEPTED);
+		} else {
+			throw new C8yRestException("デバイスリクエストのステータスが異常です:"+r);
+		}
+		
+		// クレデンシャル取得
+		cred = api.createDeviceCredentials(cred);
+		if (!cred.isValid())
+			throw new C8yRestException("承認してもクレデンシャルが付与されませんでした:"+cred);
+			
+		return cred;
+	}
+	
+	/**
 	 * デバイスをシミュレートして初期登録を行います。
 	 * 指定された ManagedObject を指定されたデバイス名で登録します。
 	 * 登録は credential 要求によって取得されたデバイスクレデンシャルを
@@ -273,30 +310,8 @@ public class APIUtil {
 			api.deleteManagedObject(moid);
 		}
 		
-		// 新規デバイスリクエストの作成
-		NewDeviceRequest req = new NewDeviceRequest();
-		req.id = deviceId;
-		NewDeviceRequest ndr = api.createNewDeviceRequest(req);
-		
 		// クレデンシャル要求
-		DeviceCredentials cred = new DeviceCredentials();
-		cred.id = deviceId;
-		cred = api.createDeviceCredentials(cred);
-		if (cred.isValid())
-			throw new C8yRestException("承認前にクレデンシャルが取得されました:"+cred);
-		
-		// 承認する
-		NewDeviceRequest r = api.readNewDeviceRequest(deviceId);
-		if (r.getStatus().equals(NewDeviceRequest.PENDING_ACCEPTANCE)) {
-			api.updateNewDeviceRequest(deviceId, NewDeviceRequest.ACCEPTED);
-		} else {
-			throw new C8yRestException("デバイスリクエストのステータスが異常です:"+r);
-		}
-		
-		// クレデンシャル取得
-		cred = api.createDeviceCredentials(cred);
-		if (!cred.isValid())
-			throw new C8yRestException("承認してもクレデンシャルが付与されませんでした:"+cred);
+		DeviceCredentials cred = createDeviceCredentials(deviceId);
 		
 		// 取得されたクレデンシャルを用いて
 		// ManagedObject を登録(managedObject は更新される)
