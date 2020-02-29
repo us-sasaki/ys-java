@@ -419,6 +419,98 @@ public class JsonRest {
 	}
 	
 	/**
+	 * multipart/form-data を利用してファイルを送信します。
+	 *
+	 * @param		endPoint	POST を行う end point
+	 * @param		filename	ファイル名
+	 * @param		data		出力するバイナリ情報
+	 * @return		Rest.Response オブジェクト
+	 * @throws		java.io.IOException REST異常
+	 */
+	public synchronized Response postMultipart(
+									String endPoint,
+									String filename,
+									byte[] data)
+										throws IOException {
+		return postMultipart(endPoint, filename, "text/plain", data);
+	}
+	
+	/**
+	 * multipart/form-data を利用してファイルを送信します。
+	 *
+	 * @param		endPoint	POST を行う end point
+	 * @param		filename	ファイル名
+	 * @param		contentType	Content-Type に指定する値(text/plainなど)
+	 * @param		data		出力するバイナリ情報
+	 * @return		Rest.Response オブジェクト
+	 * @throws		java.io.IOException REST異常
+	 */
+	public synchronized Response postMultipart(
+									String endPoint,
+									String filename,
+									String contentType,
+									byte[] data)
+										throws IOException {
+		return requestMultipart(endPoint, "POST", filename, contentType, data);
+	}
+	
+	/**
+	 * multipart/form-data を利用してファイル(1つ)を送信します。
+	 *
+	 * @param		endPoint	request を行う end point
+	 * @param		method		httpメソッド(POSTなど)
+	 * @param		filename	ファイル名
+	 * @param		contentType	Content-Type に指定する値(text/plainなど)
+	 * @param		data		出力するバイナリ情報
+	 * @return		Rest.Response オブジェクト
+	 * @throws		java.io.IOException REST異常
+	 */
+	public synchronized Response requestMultipart(
+									String endPoint,
+									String method,
+									String filename,
+									String contentType,
+									byte[] data)
+										throws IOException {
+		// body を生成する
+		String bry = "----boundary----13243546"+(long)(Math.random() * 1000000000)+"5789554----";
+		final String CRLF = "\r\n";
+		
+		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+			PrintWriter pw = new PrintWriter(
+								new OutputStreamWriter(out, "UTF-8"))) {
+			
+			// file part
+			pw.print("--"+bry+CRLF);
+			pw.print("Content-Disposition: form-data; name=\"file\"; filename=\""
+						+filename+"\""+CRLF);
+			pw.print("Content-Type: "+contentType+CRLF);
+			pw.print(CRLF);
+			pw.flush();
+			
+			// ファイル実体
+			out.write(data);
+			out.write(CRLF.getBytes());
+			out.flush();
+			pw.print("--"+bry+"--"+CRLF);
+			pw.print(CRLF);
+			pw.flush();
+			
+			String ct = getHeader("Content-Type");
+			String ac = getHeader("Accept");
+			putHeader("Content-Type","multipart/form-data; boundary="+bry);
+			putHeader("Accept", "application/json");
+			Response r = request(endPoint, method, out.toByteArray());
+			if (ct == null) removeHeader("Content-Type");
+			else putHeader("Content-Type", ct);
+			if (ac == null) removeHeader("Accept");
+			else putHeader("Accept", ac);
+			
+			return r;
+		}
+	}
+	
+	/**
 	 * 保持している HttpURLConnection の disconnect を呼び、
 	 * InputStream, OutputStream を close() します。
 	 * ですが、読み込み中のブロックはキャンセルされません。
@@ -455,29 +547,8 @@ public class JsonRest {
 	 * @return	%2B に置換された文字列
 	 */
 	protected static String convLocation(String target) {
-/*		try {
-			int i = target.indexOf('?');
-			if (i == -1) return target;
-			
-			StringBuilder sb = new StringBuilder();
-			sb.append(target.substring(0, i+1));
-			String[] kv = target.substring(i+1).split("&");
-			for (int j = 0; j < kv.length; j++) {
-				if (j > 0) sb.append('&');
-				String s = kv[j];
-				int ind = s.indexOf('=');
-				if (ind == -1) {
-					sb.append(s);
-					continue;
-				}
-				sb.append(s.substring(0, ind+1));
-				sb.append(URLEncoder.encode(s.substring(ind+1), "UTF-8"));
-			}
-			return sb.toString();
-		} catch (UnsupportedEncodingException uee) {
-			throw new InternalError("UTF-8 が利用できません");
-		}*/
 		return target.replace("+", "%2B");
+		// return URLEncoder.encode(target, "UTF-8");
 	}
 	
 	private void setLooseCheck(HttpURLConnection con) throws IOException {
@@ -499,18 +570,14 @@ public class JsonRest {
 	private static class LooseTrustManager implements X509TrustManager {
 		@Override
     	public void checkClientTrusted(X509Certificate[] chain, String authType)
-    					throws CertificateException {
-		}
+    					throws CertificateException { }
 		
 		@Override
 		public void checkServerTrusted(X509Certificate[] chain, String authType)
-						throws CertificateException {
-		}
+						throws CertificateException { }
 		
 		@Override
-		public X509Certificate[] getAcceptedIssuers() {
-			return null;
-		}
+		public X509Certificate[] getAcceptedIssuers() { return null; }
 	}
 	
 	private static class LooseHostnameVerifier implements HostnameVerifier {
