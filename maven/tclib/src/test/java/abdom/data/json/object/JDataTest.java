@@ -202,4 +202,15 @@ public class JDataTest extends TestCase{
 		// Accessor で宣言型で判定しているのをやめるべきか。
 //		System.out.println(j);
 	}
+	
+	static class JTA extends JData {
+		public JsonType c;
+	}
+	
+	public void testJsonTypeAssignability() {
+		JTA j = Jsonizer.fromJson("{\"c\":\"\"}", JTA.class);
+		assertEquals(JsonType.NULL_STRING, j.c);
+		JTA j2 = Jsonizer.fromJson("{\"c\":{}}", JTA.class);
+		assertEquals(JsonType.o(), j2.c);
+	}
 }

@@ -12,8 +12,11 @@ import com.ntt.tc.data.inventory.ID;
  * 基本は ManagedObject だが、ManagedObject は大きいので継承しないこととする。
  * パラメータ値はすべて推測。
  * 本クラスは、各 SmartRule を生成するためのファクトリメソッドを提供します。
- * type として c8y_SmartRule が設定されますが、update する場合 null を設定
- * して下さい。
+ * type として c8y_SmartRule または c8y_PrivateSmartRule が設定されますが、
+ * update する場合 null を設定して下さい。
+ * 同様に cepModuleId, lastUpdated も update 時、null とする必要があります。
+ * private smart rule では、fragment c8y_Context が付与されます。
+ * c8y_Context.id には関連するデバイス id が格納されます。
  *
  * @version		February 8, 2019
  * @author		Yusuke Sasaki
@@ -47,6 +50,7 @@ public class SmartRule extends C8yData {
 	/**
 	 * CEP のテンプレート名と思われる。
 	 * "thresholdSmartRule" : measurement の閾値で alarm 生成
+	 * "sendExportViaEmail" : レポートの定期メール送信スケジューラー
 	 */
 	public String ruleTemplateName;
 	

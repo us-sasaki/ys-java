@@ -8,6 +8,4 @@ import abdom.data.json.object.JValue;
  * 現状 JValue と変わりません。
  */
 public abstract class C8yValue extends JValue {
-	
-	
 }

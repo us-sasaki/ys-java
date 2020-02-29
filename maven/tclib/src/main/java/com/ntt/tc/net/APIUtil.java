@@ -9,10 +9,12 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import abdom.data.json.JsonType;
+import abdom.data.json.JsonObject;
 import abdom.data.json.object.Jsonizer;
 
 import com.ntt.tc.data.TC_Int;
 import com.ntt.tc.data.C8yData;
+import com.ntt.tc.data.C8yJsonData;
 import com.ntt.tc.data.TC_Date;
 import com.ntt.tc.data.alarms.*;
 import com.ntt.tc.data.device.*;
@@ -145,8 +147,8 @@ public class APIUtil {
 				createDeviceIfAbsent(
 					String type, String extId, ManagedObject asDefault)
 								throws IOException {
-		if (asDefault.c8y_IsDevice == null)
-			asDefault.c8y_IsDevice = new C8yData();
+		if (asDefault.get("c8y_IsDevice") == null)
+			asDefault.set("c8y_IsDevice", new JsonObject());
 		return createManagedObjectIfAbsent(type, extId, asDefault);
 	}
 	
@@ -242,6 +244,43 @@ public class APIUtil {
  * Device credential
  */
 	/**
+	 * デバイスクレデンシャルをシーケンスシミュレートして取得します。
+	 * ユーザー名は "device_"+deviceId となります。
+	 * 
+	 * @param	deviceId	デバイス登録時に用いるデバイス ID
+	 * @throws	java.io.IOException REST異常
+	 */
+	public DeviceCredentials createDeviceCredentials(String deviceId)
+								throws IOException {
+		// 新規デバイスリクエストの作成
+		NewDeviceRequest req = new NewDeviceRequest();
+		req.id = deviceId;
+		NewDeviceRequest ndr = api.createNewDeviceRequest(req);
+		
+		// クレデンシャル要求
+		DeviceCredentials cred = new DeviceCredentials();
+		cred.id = deviceId;
+		cred = api.createDeviceCredentials(cred);
+		if (cred.isValid())
+			throw new C8yRestException("承認前にクレデンシャルが取得されました:"+cred);
+		
+		// 承認する
+		NewDeviceRequest r = api.readNewDeviceRequest(deviceId);
+		if (r.getStatus().equals(NewDeviceRequest.PENDING_ACCEPTANCE)) {
+			api.updateNewDeviceRequest(deviceId, NewDeviceRequest.ACCEPTED);
+		} else {
+			throw new C8yRestException("デバイスリクエストのステータスが異常です:"+r);
+		}
+		
+		// クレデンシャル取得
+		cred = api.createDeviceCredentials(cred);
+		if (!cred.isValid())
+			throw new C8yRestException("承認してもクレデンシャルが付与されませんでした:"+cred);
+			
+		return cred;
+	}
+	
+	/**
 	 * デバイスをシミュレートして初期登録を行います。
 	 * 指定された ManagedObject を指定されたデバイス名で登録します。
 	 * 登録は credential 要求によって取得されたデバイスクレデンシャルを
@@ -271,30 +310,8 @@ public class APIUtil {
 			api.deleteManagedObject(moid);
 		}
 		
-		// 新規デバイスリクエストの作成
-		NewDeviceRequest req = new NewDeviceRequest();
-		req.id = deviceId;
-		NewDeviceRequest ndr = api.createNewDeviceRequest(req);
-		
 		// クレデンシャル要求
-		DeviceCredentials cred = new DeviceCredentials();
-		cred.id = deviceId;
-		cred = api.createDeviceCredentials(cred);
-		if (cred.isValid())
-			throw new C8yRestException("承認前にクレデンシャルが取得されました:"+cred);
-		
-		// 承認する
-		NewDeviceRequest r = api.readNewDeviceRequest(deviceId);
-		if (r.getStatus().equals(NewDeviceRequest.PENDING_ACCEPTANCE)) {
-			api.updateNewDeviceRequest(deviceId, NewDeviceRequest.ACCEPTED);
-		} else {
-			throw new C8yRestException("デバイスリクエストのステータスが異常です:"+r);
-		}
-		
-		// クレデンシャル取得
-		cred = api.createDeviceCredentials(cred);
-		if (!cred.isValid())
-			throw new C8yRestException("承認してもクレデンシャルが付与されませんでした:"+cred);
+		DeviceCredentials cred = createDeviceCredentials(deviceId);
 		
 		// 取得されたクレデンシャルを用いて
 		// ManagedObject を登録(managedObject は更新される)
@@ -686,8 +703,8 @@ public class APIUtil {
 		mo.name = name;
 		mo.type = "APIUtil_device";
 		
-		mo.com_cumulocity_model_Agent = new C8yData();
-		mo.c8y_AccelerationSensor = new C8yData();
+		mo.set("com_cumulocity_model_Agent", new JsonObject());
+		mo.set("c8y_AccelerationSensor", new JsonObject());
 		
 		mo.c8y_CellInfo = new C8y_CellInfo();
 		mo.c8y_CellInfo.cellTowers = new C8y_CellTower[1];
@@ -712,9 +729,9 @@ public class APIUtil {
 				+"nttcom.collect.interval=60000\n"
 				+"nttcom.whiteList=B0\\:B4\\:48\\:BE\\:95\\:06,24\\:71\\:89\\:BD\\:08\\:02,24\\:71\\:89\\:C1\\:2F\\:07\n";
 		
-		mo.c8y_CurrentSensor = new C8yData();
+		mo.set("c8y_CurrentSensor", new JsonObject());
 		
-		mo.c8y_DistanceSensor = new C8yData();
+		mo.set("c8y_DistanceSensor", new JsonObject());
 		
 		mo.c8y_Firmware = new C8y_Firmware();
 		mo.c8y_Firmware.name = "firm name";
@@ -726,7 +743,7 @@ public class APIUtil {
 
 		// skip c8y_HumiditySensor
 		
-		mo.c8y_IsDevice = new C8yData();
+		mo.set("c8y_IsDevice", new JsonObject());
 		
 		// skip LightSensor
 		

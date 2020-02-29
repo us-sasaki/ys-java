@@ -226,14 +226,14 @@ class SimpleAccessor extends Accessor {
 			prop.setObj(instance, arg.getValue());
 			return;
 		}
-		// JsonObject の場合
-		if (JsonObject.class.isAssignableFrom(type)) {
-			if (!(arg instanceof JsonObject))
+		// JsonType の場合
+		if (JsonType.class.isAssignableFrom(type)) {
+			if (!(type.isAssignableFrom(arg.getClass())))
 				throw new IllegalFieldTypeException("\"" +
 						prop.getName() + "\" field of class \"" +
 						instance.getClass().getName() +
-						"\" expects type of JsonObject. Specified value: " +
-						arg);
+						"\" expects type of "+type.getName()+
+						". Specified value: " +arg);
 			// arg をそのまま割り付ける
 			prop.setObj(instance, arg);
 			return;

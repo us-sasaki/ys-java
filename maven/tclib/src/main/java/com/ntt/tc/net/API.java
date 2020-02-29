@@ -135,6 +135,46 @@ public class API {
 		return bootstrapRest;
 	}
 	
+	/**
+	 * アクセス先の URL 文字列を取得します。
+	 * このオブジェクトで保持している Rest オブジェクトに処理を委譲しています。
+	 *
+	 * @return		"https://tenant.domain.com" の形式の文字列
+	 */
+	public String getLocation() {
+		return rest.getLocation();
+	}
+	
+	/**
+	 * 設定されたユーザーを取得します。
+	 * このオブジェクトで保持している Rest オブジェクトに処理を委譲しています。
+	 *
+	 * @return		ユーザー
+	 */
+	public String getUser() {
+		return rest.getUser();
+	}
+	
+	/**
+	 * 設定されたパスワードを取得します。
+	 * このオブジェクトで保持している Rest オブジェクトに処理を委譲しています。
+	 *
+	 * @return		パスワード
+	 */
+	public String getPassword() {
+		return rest.getPassword();
+	}
+	
+	/**
+	 * 設定された tenant 名、ない場合 URL のホスト名から取得されます。
+	 * このオブジェクトで保持している Rest オブジェクトに処理を委譲しています。
+	 *
+	 * @return		テナント名(末尾に "/" がつきます)
+	 */
+	public String getTenant() {
+		return rest.getTenant();
+	}
+	
 /*------------------
  * Subtenant's Rest
  */
@@ -2414,7 +2454,7 @@ public class API {
 	 * モジュールコレクションAPIを用いて、Javaのforループで使える
 	 * Module の iterator を取得します。
 	 * CEP が利用できない環境(feature-cep-custom-rulesか。)では、エラーとなる。
-	 * 403 Access is denied. digicom 環境ではこれになる。
+	 * 403 Access is denied. digicon 環境ではこれになる。
 	 * Apama 環境でもエラーとなる。(404 Not Found)
 	 *
 	 * @param		queryString	pageSize 等の設定
@@ -2430,7 +2470,7 @@ public class API {
 	/**
 	 * 全モジュールコレクションを取得する便利メソッドです。
 	 * CEP が利用できない環境(feature-cep-custom-rulesか。)では、エラーとなる。
-	 * 403 Access is denied. digicom 環境ではこれになる。
+	 * 403 Access is denied. Digicon 環境ではこれになる。
 	 * Apama 環境でもエラーとなる。(404 Not Found)
 	 *
 	 * @return		登録されている module の itarable
