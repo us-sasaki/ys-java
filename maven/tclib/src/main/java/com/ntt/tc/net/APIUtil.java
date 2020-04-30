@@ -23,6 +23,7 @@ import com.ntt.tc.data.identity.*;
 import com.ntt.tc.data.inventory.*;
 import com.ntt.tc.data.measurements.*;
 import com.ntt.tc.data.real.*;
+import com.ntt.tc.data.real.Module;
 import com.ntt.tc.data.rest.*;
 import com.ntt.tc.data.tenants.*;
 import com.ntt.tc.data.users.*;
