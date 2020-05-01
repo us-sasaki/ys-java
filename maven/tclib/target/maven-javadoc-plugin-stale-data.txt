@@ -1,28 +1,31 @@
 cmd.exe
 /X
 /C
-""C:\Program Files\Java\openjdk-11\bin\javadoc.exe" @options @packages"
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\allclasses-index.html = 1588292875688
+""C:\Program Files\Java\openjdk-11\bin\javadoc.exe" --frames @options @packages"
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\allclasses-frame.html = 1588293470233
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\allclasses-index.html = 1588293470155
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\allclasses-noframe.html = 1588293470248
 G:\GitHub\ys-java\maven\tclib\target\site\apidocs\allclasses.html = 1588292875782
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\allpackages-index.html = 1588292875719
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\constant-values.html = 1588292870176
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\deprecated-list.html = 1588292875751
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\element-list = 1588292868520
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\help-doc.html = 1588292875829
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\index-all.html = 1588292875641
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\index.html = 1588292875797
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\javadoc.bat = 1588292663835
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\member-search-index.js = 1588292875594
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\member-search-index.zip = 1588292875626
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\options = 1588292860036
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\overview-summary.html = 1588292875813
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\overview-tree.html = 1588292875391
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\package-search-index.js = 1588292875563
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\package-search-index.zip = 1588292875563
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\packages = 1588292860036
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\script.js = 1588292875860
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\search.js = 1588292875860
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\serialized-form.html = 1588292870207
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\stylesheet.css = 1588292875860
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\type-search-index.js = 1588292875579
-G:\GitHub\ys-java\maven\tclib\target\site\apidocs\type-search-index.zip = 1588292875579
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\allpackages-index.html = 1588293470170
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\constant-values.html = 1588293464686
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\deprecated-list.html = 1588293470201
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\element-list = 1588293462842
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\help-doc.html = 1588293470295
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\index-all.html = 1588293470108
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\index.html = 1588293470248
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\javadoc.bat = 1588293430149
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\member-search-index.js = 1588293470061
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\member-search-index.zip = 1588293470092
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\options = 1588293454389
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\overview-frame.html = 1588293462842
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\overview-summary.html = 1588293470264
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\overview-tree.html = 1588293469842
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\package-search-index.js = 1588293470014
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\package-search-index.zip = 1588293470045
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\packages = 1588293454389
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\script.js = 1588293470326
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\search.js = 1588293470326
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\serialized-form.html = 1588293464733
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\stylesheet.css = 1588293470311
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\type-search-index.js = 1588293470045
+G:\GitHub\ys-java\maven\tclib\target\site\apidocs\type-search-index.zip = 1588293470045
