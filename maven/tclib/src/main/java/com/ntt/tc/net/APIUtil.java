@@ -249,6 +249,7 @@ public class APIUtil {
 	 * ユーザー名は "device_"+deviceId となります。
 	 * 
 	 * @param	deviceId	デバイス登録時に用いるデバイス ID
+	 * @return	取得されたデバイスクレデンシャル
 	 * @throws	java.io.IOException REST異常
 	 */
 	public DeviceCredentials createDeviceCredentials(String deviceId)

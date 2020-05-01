@@ -604,7 +604,6 @@ public class API {
 	 * 全 ManagedObject を取得する便利メソッドです。
 	 *
 	 * @return		全 ManagedObject を取得する iterable
-	 * @return	ManagedObject の iterable
 	 */
 	public Iterable<ManagedObject> managedObjects() {
 		return managedObjects("");

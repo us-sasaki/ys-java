@@ -12,11 +12,11 @@
 <li>Rest...RESTアクセスを提供します。</li>
 </ul>
 
-Things Cloud への REST API へのアクセスに外部パッケージを用いておらず、java 環境によらない軽量な利用が可能です。<br/>
+Things Cloud への REST API へのアクセスに外部パッケージを用いておらず、java 環境によらない軽量な利用が可能です。<br>
 
-APIUtil では、Measurement 等のオブジェクトをストリームとして取得する関数を用意しています。ちょっとした調査で便利に使えます。<br/>
+APIUtil では、Measurement 等のオブジェクトをストリームとして取得する関数を用意しています。ちょっとした調査で便利に使えます。<br>
 
-利用例...Event 4000個をとり、type 値の種類を表示させるコード<br/>
+利用例...Event 4000個をとり、type 値の種類を表示させるコード<br>
 
 <pre>
 import java.util.*;
@@ -26,10 +26,10 @@ import java.util.stream.*;
 		API api = new API(.....);
 		APIUtil util = new APIUtil(api);
 		
-		Map<String, List<Event>>
+		Map&lt;String, List&lt;Event&gt;&gt;
 			map = util.eventStream()
 					.limit(4000)
-					.collect(Collectors.groupingBy( m -> m.type ));
+					.collect(Collectors.groupingBy( m -&gt; m.type ));
 		
 		map.keySet().stream().forEach( System.out::println );
 	:
