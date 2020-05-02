@@ -5,6 +5,11 @@ package abdom.data.json;
  * JSON 文法上誤っていた場合にスローされる例外です。
  */
 public class JsonParseException extends IllegalArgumentException {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 8352724061057238417L;
+
 	public JsonParseException() {
 		super();
 	}

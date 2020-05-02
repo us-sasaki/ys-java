@@ -4,8 +4,6 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-import abdom.data.ByteArray;
-
 /**
  * 日本語の文字エンコードを検出し、変換するプログラム。
  * 実行したディレクトリ以下のすべての .java ファイルのエンコードを
@@ -173,17 +171,18 @@ public class Encodings {
 		System.out.println("Convert : " + f.getAbsolutePath());
 		
 		// ファイルを読み込み baos に格納
-		FileInputStream fis = new FileInputStream(f);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		for (;;) {
-			int c = fis.read();
-			if (c == -1) break;
-			baos.write(c);
+		byte[] fileimage = null;
+		try (FileInputStream fis = new FileInputStream(f);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
+			for (;;) {
+				int c = fis.read();
+				if (c == -1) break;
+				baos.write(c);
+			}
+			fileimage = baos.toByteArray();
+		} catch (IOException ioe) {
+			throw ioe;
 		}
-		fis.close();
-		baos.close();
-		
-		byte[] fileimage = baos.toByteArray();
 		
 		String orgenc = detect(fileimage);
 		System.out.println("File " + f.getName() + " encoding : " + orgenc);

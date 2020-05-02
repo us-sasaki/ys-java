@@ -3,7 +3,6 @@ package abdom.data.json.object;
 import java.util.Set;
 
 import abdom.data.json.JsonType;
-import abdom.data.json.JsonArray;
 import abdom.data.json.JsonObject;
 import abdom.data.json.JsonValue;
 import abdom.data.json.Jsonizable;

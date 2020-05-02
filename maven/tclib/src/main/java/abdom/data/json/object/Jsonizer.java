@@ -13,7 +13,6 @@ import java.util.Set;
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonArray;
 import abdom.data.json.JsonObject;
-import abdom.data.json.JsonValue;
 import abdom.data.json.Jsonizable;
 
 /**
@@ -424,7 +423,7 @@ public final class Jsonizer {
 			// transient も除外
 			if (Modifier.isTransient(f.getModifiers())) continue;
 			
-			Class type = f.getType();
+			Class<?> type = f.getType();
 			
 			String name = f.getName();
 			if (type.isArray()) {
@@ -480,7 +479,6 @@ public final class Jsonizer {
 				}
 			}
 			
-			Class<?> retType  = m.getReturnType();
 			Class<?>[] params = m.getParameterTypes();
 			
 			if (methodName.startsWith("get")) { // get
