@@ -96,7 +96,7 @@ public class ServiceAPI {
 	 */
 	public List<SmartRule> privateSmartRules() {
 		List<SmartRule> result = new ArrayList<>();
-		for (ManagedObject mo : api.managedObjects("query%3dhas(childAdditions)")) {
+		for (ManagedObject mo : api.managedObjects("pageSize=2000&query%3dhas(childAdditions)")) {
 			JsonType refs = mo.get("childAdditions.references");
 			if (refs == null) continue;
 			if (refs.size() == 0) continue;
