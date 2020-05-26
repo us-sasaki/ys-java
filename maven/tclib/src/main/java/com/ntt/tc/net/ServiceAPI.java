@@ -343,6 +343,7 @@ public class ServiceAPI {
 	 * v10.5 で発見
 	 *
 	 * @param		enable		true..有効 false..無効
+	 * @throws		java.io.IOException		REST異常
 	 */
 	public void enableSupportUser(boolean enable) throws IOException {
 		String e = enable?"enable":"disable";

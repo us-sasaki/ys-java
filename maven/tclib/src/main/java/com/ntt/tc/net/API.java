@@ -24,6 +24,7 @@ import com.ntt.tc.data.identity.*;
 import com.ntt.tc.data.inventory.*;
 import com.ntt.tc.data.measurements.*;
 import com.ntt.tc.data.real.*;
+import com.ntt.tc.data.real.Module;
 import com.ntt.tc.data.tenants.*;
 import com.ntt.tc.data.users.*;
 import com.ntt.tc.util.Base64;
@@ -603,7 +604,6 @@ public class API {
 	 * 全 ManagedObject を取得する便利メソッドです。
 	 *
 	 * @return		全 ManagedObject を取得する iterable
-	 * @return	ManagedObject の iterable
 	 */
 	public Iterable<ManagedObject> managedObjects() {
 		return managedObjects("");

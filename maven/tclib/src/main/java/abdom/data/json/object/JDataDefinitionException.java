@@ -14,6 +14,11 @@ package abdom.data.json.object;
  * @author		Yusuke Sasaki
  */
 public class JDataDefinitionException extends RuntimeException {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -4231036125978343240L;
+
 	public JDataDefinitionException() {
 		super();
 	}

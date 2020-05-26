@@ -10,6 +10,10 @@ package abdom.data.json;
  * @author		Yusuke Sasaki
  */
 public final class JsonValue extends JsonType {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -8736010870230976674L;
 	private String value;
 	private String quote = "";
 	private int typeCache = TYPE_UNKNOWN;

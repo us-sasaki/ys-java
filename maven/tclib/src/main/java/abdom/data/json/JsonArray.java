@@ -11,8 +11,12 @@ import java.util.ArrayList;
  */
 public class JsonArray extends JsonType {
 	/**
-	 * 配列の要素を保持します。要素に null を含めてはならず、
-	 * 明示的に含ませる場合、JsonValue(null) を含めます。
+	 *
+	 */
+	private static final long serialVersionUID = 4755144543361429991L;
+	
+	/**
+	 * 配列の要素を保持します。要素に null を含めてはならず、 明示的に含ませる場合、JsonValue(null) を含めます。
 	 */
 	protected List<JsonType> array = new ArrayList<JsonType>();
 	

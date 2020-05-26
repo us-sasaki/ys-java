@@ -23,6 +23,7 @@ import com.ntt.tc.data.identity.*;
 import com.ntt.tc.data.inventory.*;
 import com.ntt.tc.data.measurements.*;
 import com.ntt.tc.data.real.*;
+import com.ntt.tc.data.real.Module;
 import com.ntt.tc.data.rest.*;
 import com.ntt.tc.data.tenants.*;
 import com.ntt.tc.data.users.*;
@@ -248,6 +249,7 @@ public class APIUtil {
 	 * ユーザー名は "device_"+deviceId となります。
 	 * 
 	 * @param	deviceId	デバイス登録時に用いるデバイス ID
+	 * @return	取得されたデバイスクレデンシャル
 	 * @throws	java.io.IOException REST異常
 	 */
 	public DeviceCredentials createDeviceCredentials(String deviceId)

@@ -624,18 +624,12 @@ public class Rest {
 	 */
 	protected Response requestImpl(String location, String method, byte[] body)
 											throws IOException {
-//System.out.println(abdom.data.ByteArray.toDumpList(body));
 		JsonRest.Response resp = r.request(location, method, body);
 		Response result = new Response(resp);
-//System.out.println(result);
-//System.out.println(result.status);
 		//
 		// レスポンスコードの処理(404 Not Found は正常応答)
 		//
 		if (resp.status >= 400 && resp.status != 404) {
-//System.out.println(abdom.data.ByteArray.toDumpList(resp.body));
-//System.out.println(resp.message);
-//System.out.println(resp.toString());
 			throw new C8yRestException(result, location, method, r.getHeader("Content-Type"), r.getHeader("Accept"));
 			
 		}
@@ -757,34 +751,8 @@ public class Rest {
 									String contentType,
 									byte[] data)
 										throws IOException {
-		// body を生成する
-		String bry = "----boundary----13243546"+(long)(Math.random() * 1000000000)+"5789554----";
-		final String CRLF = "\r\n";
-		
-		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-			PrintWriter pw = new PrintWriter(
-								new OutputStreamWriter(out, "UTF-8"))) {
-			
-			// file part
-			pw.print("--"+bry+CRLF);
-			pw.print("Content-Disposition: form-data; name=\"file\"; filename=\""
-						+filename+"\""+CRLF);
-			pw.print("Content-Type: "+contentType+CRLF);
-			pw.print(CRLF);
-			pw.flush();
-			
-			// ファイル実体
-			out.write(data);
-			out.write(CRLF.getBytes());
-			out.flush();
-			pw.print("--"+bry+"--"+CRLF);
-			pw.print(CRLF);
-			pw.flush();
-			
-			setContentType("multipart/form-data; boundary="+bry);
-			setAccept("");
-			return requestImpl(endPoint, method, out.toByteArray());
-		}
+		return new Response(r.requestMultipart(endPoint, method, filename,
+								contentType, data));
 	}
 	
 	public void disconnect() {

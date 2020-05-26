@@ -9,8 +9,12 @@ import java.util.TreeMap;
  */
 public class JsonObject extends JsonType {
 	/**
-	 * オブジェクトの要素を保持します。null 値を含ませてはいけません。
-	 * その場合、JsonValue(null) を挿入して下さい。
+	 *
+	 */
+	private static final long serialVersionUID = 5363961986453016922L;
+	
+	/**
+	 * オブジェクトの要素を保持します。null 値を含ませてはいけません。 その場合、JsonValue(null) を挿入して下さい。
 	 */
 	protected Map<String, JsonType> map;
 	

@@ -10,11 +10,9 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import abdom.util.Encodings;
 
 /**
  * ファイル処理に便利なクラスメソッドを提供します。

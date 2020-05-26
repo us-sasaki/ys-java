@@ -6,6 +6,11 @@ package abdom.data.json.object;
  * 通常、設定値(JsonType)側に問題があります。
  */
 public class IllegalFieldTypeException extends IllegalArgumentException {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1731684087349098474L;
+
 	public IllegalFieldTypeException() {
 		super();
 	}

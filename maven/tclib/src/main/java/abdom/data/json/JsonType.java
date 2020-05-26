@@ -1,12 +1,8 @@
 package abdom.data.json;
 
 import java.io.Reader;
-//import java.io.PushbackReader;
-import java.io.StringReader;
 import java.io.IOException;
 import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Json形式で表現されるデータ構造を表す抽象クラスです。
@@ -22,6 +18,11 @@ import java.util.ArrayList;
  */
 public abstract class JsonType extends Number
 								implements Iterable<JsonType>, Jsonizable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1306867687898139543L;
+
 	/** getType() で返却される、JavaScript での型 void(null) を表す定数です */
 	public static final int TYPE_VOID = 0;
 	

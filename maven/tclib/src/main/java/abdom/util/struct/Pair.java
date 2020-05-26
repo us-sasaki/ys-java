@@ -1,7 +1,6 @@
 package abdom.util.struct;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedHashMap;

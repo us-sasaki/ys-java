@@ -2,8 +2,8 @@
 <HEAD><TITLE></TITLE>
 </HEAD>
 <BODY>
-このパッケージは Java オブジェクトと JSON 形式の相互変換に関するユーティリティクラス群を含んでいます。このパッケージにある JData を継承することで、Java オブジェクトを JSON 形式として直列化する toJson() メソッド、逆に JSON 形式から Java オブジェクトの値を設定する fill() メソッドが利用できるようになります。<br/>
-<br/>
+このパッケージは Java オブジェクトと JSON 形式の相互変換に関するユーティリティクラス群を含んでいます。このパッケージにある JData を継承することで、Java オブジェクトを JSON 形式として直列化する toJson() メソッド、逆に JSON 形式から Java オブジェクトの値を設定する fill() メソッドが利用できるようになります。<br>
+<br>
 <h2>JData利用例</h2>
 
 JData を継承したクラスを作成します。
@@ -46,8 +46,12 @@ JObject の fill() によって JSON 形式の値の設定ができます。
 Java オブジェクトと JSON 値の対応については、次の項を参照ください。
 
 <h2>Java オブジェクトと JSON 形式の変換ルール</h2>
-<table align=center width=80% border=1 cellspacing=0 bordercolor="#aaaaaa" cellpadding=5>
-<tr><td>Javaオブジェクト</td><td>JSON</td><td>説明</td></tr>
+<table style="text-align:left; width:80%; margin:0px; border-color:#aaaaaa; padding:5px; border:2px;">
+<caption>Java オブジェクトと JSON 形式の対応表</caption>
+<thead>
+<tr><th>Javaオブジェクト</th><th>JSON</th><th>説明</th></tr>
+</thead>
+<tbody>
 <tr><td>boolean</td><td>boolean</td><td>Java の boolean 値は JSON 形式の boolean 値に自然にマッピングされます</td></tr>
 <tr><td>byte</td><td>number</td><td>Java の byte 値は JSON 形式の number 値に自然にマッピングされます。JSON 形式で小数や指数表現を含んでいた場合、整数に丸められます。</td></tr>
 <tr><td>short</td><td>number</td><td>Java の short 値は JSON 形式の number 値に自然にマッピングされます。JSON 形式で小数や指数表現を含んでいた場合、整数に丸められます。</td></tr>
@@ -63,6 +67,7 @@ Java オブジェクトと JSON 値の対応については、次の項を参照
 <tr><td>JData</td><td>object</td><td>Java の JData 値は JSON 形式の object 値に自然にマッピングされます。</td></tr>
 <tr><td>Object</td><td>object</td><td>Java の一般 Object 値は JSON 形式の object 値にマッピングされます。マッピングの仕方は、再帰的にこの変換ルールに従います。</td></tr>
 <tr><td>上記の要素の配列</td><td>array</td><td>Java の配列値は JSON 形式の array 値にマッピングされます。配列の各要素の変換規則は上記に従います</td></tr>
+</tbody>
 </table>
 
 </BODY>
