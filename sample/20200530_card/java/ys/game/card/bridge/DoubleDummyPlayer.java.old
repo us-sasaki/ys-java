@@ -1,0 +1,22 @@
+package ys.game.card.bridge;
+
+import ys.game.card.Card;
+import ys.game.card.Packet;
+import ys.game.card.PacketImpl;
+import ys.game.card.bridge.Trick;
+import ys.game.card.bridge.TrickImpl;
+
+/**
+ * ダブルダミー問題を解くクラスです。
+ * ビッドはつねにパスします。
+ *
+ * @version		making		9, September 2000
+ * @author		Yusuke Sasaki
+ */
+public class DoubleDummyPlayer extends Player {
+
+/*-------------
+ * Constructor
+ */
+	public 
+}

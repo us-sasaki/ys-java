@@ -1,0 +1,100 @@
+package ys.game.card.gui;
+
+import java.awt.*;
+import java.awt.image.*;
+
+import ys.game.card.*;
+
+public class AppletCardImageHolder extends java.applet.Applet implements CardImageHolder {
+	Image[][] image;
+	
+	public void init() {
+		MediaTracker mt = new MediaTracker(new Canvas());
+		
+		image = new Image[4][53];
+		Image tmp;
+		
+		try {
+		
+		for (int i = 0; i < 13; i++) {
+			tmp = getImage(getCodeBase(), "images/c" + (i+1) + ".gif");
+			mt.addImage(tmp, i);
+			mt.waitForAll();
+			image[0][i] = createImage(GuiedCard.XSIZE, GuiedCard.YSIZE);
+			image[0][i].getGraphics().drawImage(tmp, 0, 0, this);
+		}
+		for (int i = 0; i < 13; i++) {
+			tmp = getImage(getCodeBase(), "images/d" + (i+1) + ".gif");
+			mt.addImage(tmp, i+13);
+			mt.waitForAll();
+			image[0][i + 13] = createImage(GuiedCard.XSIZE, GuiedCard.YSIZE);
+			image[0][i + 13].getGraphics().drawImage(tmp, 0, 0, this);
+		}
+		for (int i = 0; i < 13; i++) {
+			tmp = getImage(getCodeBase(), "images/h" + (i+1) + ".gif");
+			mt.addImage(tmp, i+26);
+			mt.waitForAll();
+			image[0][i + 26] = createImage(GuiedCard.XSIZE, GuiedCard.YSIZE);
+			image[0][i + 26].getGraphics().drawImage(tmp, 0, 0, this);
+		}
+		for (int i = 0; i < 13; i++) {
+			tmp = getImage(getCodeBase(), "images/s" + (i+1) + ".gif");
+			mt.addImage(tmp, i+39);
+			mt.waitForAll();
+			image[0][i + 39] = createImage(GuiedCard.XSIZE, GuiedCard.YSIZE);
+			image[0][i + 39].getGraphics().drawImage(tmp, 0, 0, this);
+		}
+		
+		} catch (InterruptedException ignored) {
+		}
+		// joker の絵はまだない
+		image[0][52] = image[0][0];
+		
+		RotateImageFilter rot = new RotateImageFilter();
+		
+		int xsize = GuiedCard.YSIZE;
+		int ysize = GuiedCard.XSIZE;
+		
+		for (int direction = 1; direction < 4; direction++) {
+			for (int i = 0; i < 53; i++) {
+				Image ori = image[direction - 1][i];
+				tmp = createImage(new FilteredImageSource(ori.getSource(), rot) );
+				image[direction][i] = createImage(tmp.getWidth(this), tmp.getHeight(this)); //xsize, ysize);
+				image[direction][i].getGraphics().drawImage(tmp, 0, 0, this);
+				
+				int sw = xsize; xsize = ysize; ysize = sw;
+			}
+		}
+		GuiedCard.setCardImageHolder(this);
+	}
+	
+	
+/*-----------------------------
+ * implements(CardImageHolder)
+ */
+	/**
+	 * スートとバリュー、向きを指定してカードの Image を取得します。
+	 *
+	 * @param		suit		スート
+	 * @param		value		バリュー
+	 * @param		direction	向き
+	 *
+	 * @return		カードのイメージ
+	 */
+	public Image getImage(int suit, int value, int direction) {
+		if (suit == Card.JOKER) return image[direction][52];
+		return image[direction][ (suit-1)*13 + value-1 ];
+	}
+	
+	/**
+	 * 向きを指定して、カード背面の Image を取得します。
+	 *
+	 * @param		direction	向き
+	 *
+	 * @return		カード背面のイメージ
+	 */
+	public Image getBackImage(int direction) {
+		return null;
+	}
+	
+}

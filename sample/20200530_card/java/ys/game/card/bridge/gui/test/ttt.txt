@@ -1,0 +1,45 @@
+3NT
+Test
+----- コントラクト -----
+contract：[3 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:
+               H:
+               D:
+               C:
+S:                 N          S:
+H:             W       E      H:
+D:                            D:
+C:                 S          C:
+               S:
+               H:
+               D:
+               C:
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+---------- Board Information ----------
+  [    Status     ]  : Opening Lead
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : South
+
+  [Bidding History]
+Bidding Sequence Unknown
+  [  Table Info   ]
+N : {_SA_S8_S7_S3_HK_C9_C7_C5_C4_DK_DJ_D8_D2}
+E : {_SQ_S9_S6_S5_S4_H8_H2_CQ_C8_C2_DT_D9_D6}
+S : {_SJ_S2_HQ_H9_H7_H6_H3_CA_CK_CJ_C6_DQ_D5}
+W : {_SK_ST_HA_HJ_HT_H5_H4_CT_C3_DA_D7_D4_D3}
+
+Leader:West {}
+
+
+

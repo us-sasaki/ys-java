@@ -1,0 +1,48 @@
+はじめの状態
+---------- Board Information ----------
+  [    Status     ]  : Opening Lead
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {_CQ_C9_C8_SQ_SJ_ST_S6_HK_HQ_HT_H6_H5_H3}
+East  : {_S7_S4_S2_H8_H4_CA_CJ_C6_D9_D6_D5_D4_D3}
+South : {_C4_C3_C2_DA_DK_DT_D7_D2_SK_S9_S8_HJ_H7}
+West  : {_SA_S5_S3_HA_H9_H2_CK_CT_C7_C5_DQ_DJ_D8}
+
+Leader:East {}
+
+
+
+status=OPEN&dealer=N&vul=No&N=SQJT6HKQT653CQ98&E=S742H84CAJ6D96543&S=SK98HJ7C432DAKT72&W=SA53HA92CKT75DQJ8&bid=1C-P-P-P&contract=1C&declarer=N
+
+●変数内容表示●
+count     ：32
+nsWins    ：6
+trump     ：0
+カード状態：C2:0/S C3:2/S C4:27/S C5:0/W C6:1/E C7:0/W C8:25/N C9:0/N CT:3/W CJ:0/E CQ:4/N CK:28/W CA:26/E C_:0/f D2:0/S D3:0/E D4:12/E D5:20/E D6:0/E D7:9/S D8:0/W D9:0/E DT:0/S DJ:10/W DQ:18/W DK:17/S DA:0/S D_:0/f H2:13/W H3:19/N H4:15/E H5:5/N H6:14/N H7:16/S H8:6/E H9:8/W HT:0/N HJ:7/S HQ:0/N HK:11/N HA:0/W H_:0/f S2:24/E S3:22/W S4:0/E S5:31/W S6:32/N S7:29/E S8:0/S S9:21/S ST:23/N SJ:0/N SQ:0/N SK:30/S SA:0/W S_:0/f 
+プレイされたカード：1:C6 2:C3 3:CT 4:CQ 5:H5 6:H8 7:HJ 8:H9 9:D7 10:DJ 11:HK 12:D4 13:H2 14:H6 15:H4 16:H7 17:DK 18:DQ 19:H3 20:D5 21:S9 22:S3 23:ST 24:S2 25:C8 26:CA 27:C4 28:CK 29:S7 30:SK 31:S5 32:S6 
+leader：0E 1N 2S 3W 4S 5S 6N 7E 8S 
+●ボード状態表示●
+ハンド情報：
+               S:QJ
+               H:QT
+               D:
+               C:9
+S:A                           S:4
+H:A                           H:
+D:8                           D:963
+C:75                          C:J
+               S:8
+               H:
+               D:AT2
+               C:2
+
+所要時間(msec) 1970
+bestPlayCount=2, totalPlayCount=337920, finalNSTricks=8

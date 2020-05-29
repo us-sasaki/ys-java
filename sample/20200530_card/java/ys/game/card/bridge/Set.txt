@@ -1,0 +1,86 @@
+ÇÕÇ∂ÇﬂÇÃèÛë‘
+---------- Board Information ----------
+  [    Status     ]  : Opening Lead
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1 NT  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {_SQ_SJ_ST_S6_HK_HQ_HT_H6_H5_H3_CQ_C9_C8}
+East  : {_S7_S4_S2_H8_H4_CA_CJ_C6_D9_D6_D5_D4_D3}
+South : {_SK_S9_S8_HJ_H7_C4_C3_C2_DA_DK_DT_D7_D2}
+West  : {_SA_S5_S3_HA_H9_H2_CK_CT_C7_C5_DQ_DJ_D8}
+
+Leader:East {}
+
+
+
+status=OPEN&dealer=N&vul=No&N=SQJT6HKQT653CQ98&E=S742H84CAJ6D96543&S=SK98HJ7C432DAKT72&W=SA53HA92CKT75DQJ8&bid=1N-P-P-P&contract=1N&declarer=N
+
+ç≈å„ÇÃèÛë‘
+---------- Board Information ----------
+  [    Status     ]  : Opening Lead
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1 NT  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {_SQ_SJ_ST_S6_HK_HQ_HT_H6_H5_H3_CQ_C9_C8}
+East  : {_S7_S4_S2_H8_H4_CA_CJ_C6_D9_D6_D5_D4_D3}
+South : {_SK_S9_S8_HJ_H7_C4_C3_C2_DA_DK_DT_D7_D2}
+West  : {_SA_S5_S3_HA_H9_H2_CK_CT_C7_C5_DQ_DJ_D8}
+
+Leader:East {}
+
+
+
+status=OPEN&dealer=N&vul=No&N=SQJT6HKQT653CQ98&E=S742H84CAJ6D96543&S=SK98HJ7C432DAKT72&W=SA53HA92CKT75DQJ8&bid=1N-P-P-P&contract=1N&declarer=N
+
+ç≈ó«ÇÃéË
+ç≈çÇì_ÅF-240
+ç≈ëPéËÅF/S7
+ç≈å„ÇÃèÛë‘
+---------- Board Information ----------
+  [    Status     ]  : Scoring
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1 NT  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {}
+East  : {}
+South : {}
+West  : {}
+
+
+
+[12]Leader:North{/C8/D3/D2/D8}  winner=/C8  North
+[11]Leader:North{/C9/D4/D7/DJ}  winner=/C9  North
+[10]Leader:North{/CQ/D5/DT/DQ}  winner=/CQ  North
+[ 9]Leader:North{/H3/D6/DK/C5}  winner=/H3  North
+[ 8]Leader:North{/H5/D9/DA/C7}  winner=/H5  North
+[ 7]Leader:North{/H6/C6/C2/CT}  winner=/H6  North
+[ 6]Leader:North{/HT/CJ/C3/CK}  winner=/HT  North
+[ 5]Leader:North{/HQ/CA/C4/H2}  winner=/HQ  North
+[ 4]Leader:North{/HK/H4/H7/H9}  winner=/HK  North
+[ 3]Leader:North{/S6/H8/HJ/HA}  winner=/S6  North
+[ 2]Leader:North{/ST/S2/S8/S3}  winner=/ST  North
+[ 1]Leader:West {/S5/SJ/S4/S9}  winner=/SJ  North
+[ 0]Leader:East {/S7/SK/SA/SQ}  winner=/SA  West 
+
+

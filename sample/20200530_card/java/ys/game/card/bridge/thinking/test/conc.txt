@@ -1,0 +1,59 @@
+はじめの状態
+---------- Board Information ----------
+  [    Status     ]  : Opening Lead
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {_C5_C4_DA_DK_D7_SQ_ST_S8_S4_S3_HA_H5_H3}
+East  : {_SK_SJ_S7_S6_S2_HQ_HT_H8_H2_CT_C6_DJ_D6}
+South : {_CA_CQ_DQ_D5_D3_D2_SA_S9_S5_HK_HJ_H9_H7}
+West  : {_H6_H4_CK_CJ_C9_C8_C7_C3_C2_DT_D9_D8_D4}
+
+Leader:East {}
+
+
+
+status=OPEN&dealer=N&vul=No&N=SQT843HA53C54DAK7&E=SKJ762HQT82CT6DJ6&S=SA95HKJ97CAQDQ532&W=H64CKJ98732DT984&bid=1C-P-P-P&contract=1C&declarer=N
+
+最後の状態
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {_DK_SQ_ST_S8_S3_HA}
+East  : {_SK_SJ_S7_S6_HT_H8}
+South : {/DQ/D5/SA/S9/H9/H7}
+West  : {_CJ_C9_C8_C3_C2_DT}
+
+Leader:South{}
+
+[ 6]Leader:South{/HJ/H6/H5/H2}  winner=/HJ  South
+[ 5]Leader:West {/C7/C4/CT/CQ}  winner=/CQ  South
+[ 4]Leader:South{/D2/D9/D7/D6}  winner=/D9  West 
+[ 3]Leader:South{/S5/D8/S4/S2}  winner=/S5  South
+[ 2]Leader:North{/C5/C6/CA/CK}  winner=/CA  South
+[ 1]Leader:South{/D3/D4/DA/DJ}  winner=/DA  North
+[ 0]Leader:East {/HQ/HK/H4/H3}  winner=/HK  South
+
+
+status=PLAY&dealer=N&vul=No&N=SQT843HA53C54DAK7&E=SKJ762HQT82CT6DJ6&S=SA95HKJ97CAQDQ532&W=H64CKJ98732DT984&bid=1C-P-P-P&contract=1C&declarer=N&p1=HQHKH4H3&p2=D3D4DADJ&p3=C5C6CACK&p4=S5D8S4S2&p5=D2D9D7D6&p6=C7C4CTCQ&p7=HJH6H5H2&p8=
+
+最良の手
+最高点：7
+最善手：SA
+所要時間：32900

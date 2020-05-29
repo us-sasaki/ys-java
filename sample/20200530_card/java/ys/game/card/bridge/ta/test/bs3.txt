@@ -1,0 +1,53 @@
+はじめの状態
+---------- Board Information ----------
+  [    Status     ]  : Opening Lead
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {_CQ_C9_C8_SQ_SJ_ST_S6_HK_HQ_HT_H6_H5_H3}
+East  : {_S7_S4_S2_H8_H4_CA_CJ_C6_D9_D6_D5_D4_D3}
+South : {_C4_C3_C2_DA_DK_DT_D7_D2_SK_S9_S8_HJ_H7}
+West  : {_SA_S5_S3_HA_H9_H2_CK_CT_C7_C5_DQ_DJ_D8}
+
+Leader:East {}
+
+
+
+status=OPEN&dealer=N&vul=No&N=SQJT6HKQT653CQ98&E=S742H84CAJ6D96543&S=SK98HJ7C432DAKT72&W=SA53HA92CKT75DQJ8&bid=1C-P-P-P&contract=1C&declarer=N
+
+●変数内容表示●
+count     ：48
+nsWins    ：5
+trump     ：0
+カード状態：C2:2/S C3:20/S C4:40/S C5:17/W C6:19/E C7:3/W C8:38/N C9:18/N CT:41/W CJ:39/E CQ:4/N CK:37/W CA:1/E C_:0/f D2:48/S D3:31/E D4:28/E D5:47/E D6:43/E D7:0/S D8:29/W D9:0/E DT:25/S DJ:26/W DQ:0/W DK:32/S DA:44/S D_:0/f H2:45/W H3:13/N H4:14/E H5:27/N H6:30/N H7:15/S H8:36/E H9:16/W HT:35/N HJ:33/S HQ:0/N HK:46/N HA:34/W H_:0/f S2:22/E S3:24/W S4:11/E S5:9/W S6:8/N S7:5/E S8:12/S S9:6/S ST:42/N SJ:10/N SQ:21/N SK:23/S SA:7/W S_:0/f 
+プレイされたカード：1:CA 2:C2 3:C7 4:CQ 5:S7 6:S9 7:SA 8:S6 9:S5 10:SJ 11:S4 12:S8 13:H3 14:H4 15:H7 16:H9 17:C5 18:C9 19:C6 20:C3 21:SQ 22:S2 23:SK 24:S3 25:DT 26:DJ 27:H5 28:D4 29:D8 30:H6 31:D3 32:DK 33:HJ 34:HA 35:HT 36:H8 37:CK 38:C8 39:CJ 40:C4 41:CT 42:ST 43:D6 44:DA 45:H2 46:HK 47:D5 48:D2 
+leader：0E 1E 2W 3N 4W 5N 6S 7W 8S 9W 10W 11W 12N 
+●ボード状態表示●
+ハンド情報：
+N HQ
+E D9
+S D7
+W DQ
+
+bestPlayCount=1, totalPlayCount=1, finalNSTricks=5
+●変数内容表示●
+count     ：48
+nsWins    ：5
+trump     ：0
+カード状態：C2:2/S C3:20/S C4:40/S C5:17/W C6:19/E C7:3/W C8:38/N C9:18/N CT:41/W CJ:39/E CQ:4/N CK:37/W CA:1/E C_:0/f D2:48/S D3:31/E D4:28/E D5:47/E D6:43/E D7:0/S D8:29/W D9:0/E DT:25/S DJ:26/W DQ:0/W DK:32/S DA:44/S D_:0/f H2:45/W H3:13/N H4:14/E H5:27/N H6:30/N H7:15/S H8:36/E H9:16/W HT:35/N HJ:33/S HQ:0/N HK:46/N HA:34/W H_:0/f S2:22/E S3:24/W S4:11/E S5:9/W S6:8/N S7:5/E S8:12/S S9:6/S ST:42/N SJ:10/N SQ:21/N SK:23/S SA:7/W S_:0/f 
+プレイされたカード：1:CA 2:C2 3:C7 4:CQ 5:S7 6:S9 7:SA 8:S6 9:S5 10:SJ 11:S4 12:S8 13:H3 14:H4 15:H7 16:H9 17:C5 18:C9 19:C6 20:C3 21:SQ 22:S2 23:SK 24:S3 25:DT 26:DJ 27:H5 28:D4 29:D8 30:H6 31:D3 32:DK 33:HJ 34:HA 35:HT 36:H8 37:CK 38:C8 39:CJ 40:C4 41:CT 42:ST 43:D6 44:DA 45:H2 46:HK 47:D5 48:D2 
+leader：0E 1E 2W 3N 4W 5N 6S 7W 8S 9W 10W 11W 12N 
+●ボード状態表示●
+ハンド情報：
+N HQ
+E D9
+S D7
+W DQ
+

@@ -1,0 +1,198 @@
+ÇÕÇ∂ÇﬂÇÃèÛë‘
+---------- Board Information ----------
+  [    Status     ]  : Opening Lead
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {_DK_DT_D9_D7_D5_D4_SA_SJ_S7_S6_HJ_H6_H4}
+East  : {_SK_SQ_ST_HK_H5_H3_CA_CK_C5_C4_DJ_D6_D3}
+South : {_CQ_C9_C8_C6_C3_D2_S8_S5_S4_HA_HQ_HT_H2}
+West  : {_S9_S3_S2_H9_H8_H7_CJ_CT_C7_C2_DA_DQ_D8}
+
+Leader:East {}
+
+
+
+status=OPEN&dealer=N&vul=No&N=SAJ76HJ64DKT9754&E=SKQTHK53CAK54DJ63&S=S854HAQT2CQ9863D2&W=S932H987CJT72DAQ8&bid=1C-P-P-P&contract=1C&declarer=N
+
+ç≈å„ÇÃèÛë‘
+---------- Board Information ----------
+  [    Status     ]  : Scoring
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {}
+East  : {}
+South : {}
+West  : {}
+
+
+
+[12]Leader:North{/S7/DJ/HA/DQ}  winner=/S7  North
+[11]Leader:East {/SK/S8/S3/SA}  winner=/SA  North
+[10]Leader:East {/HK/HT/H9/DK}  winner=/HK  East 
+[ 9]Leader:West {/CT/D9/CK/C9}  winner=/CK  East 
+[ 8]Leader:East {/C5/C8/CJ/DT}  winner=/CJ  West 
+[ 7]Leader:East {/C4/C3/C2/H4}  winner=/C4  East 
+[ 6]Leader:East {/SQ/S5/S9/S6}  winner=/SQ  East 
+[ 5]Leader:South{/CQ/C7/D5/CA}  winner=/CA  East 
+[ 4]Leader:West {/DA/D4/D3/C6}  winner=/C6  South
+[ 3]Leader:South{/H2/H7/H6/H5}  winner=/H7  West 
+[ 2]Leader:West {/H8/HJ/H3/HQ}  winner=/HQ  South
+[ 1]Leader:North{/D7/D6/D2/D8}  winner=/D8  West 
+[ 0]Leader:East {/ST/S4/S2/SJ}  winner=/SJ  North
+
+
+
+Å¶Å¶Å¶Å¶Å¶Å¶ undo 3 âÒ Å¶Å¶Å¶Å¶Å¶Å¶
+ÅúÅú Board èÛë‘ ÅúÅú
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {}
+East  : {_DJ}
+South : {/HA}
+West  : {_DQ}
+
+Leader:North{/S7}
+
+[11]Leader:East {/SK/S8/S3/SA}  winner=/SA  North
+[10]Leader:East {/HK/HT/H9/DK}  winner=/HK  East 
+[ 9]Leader:West {/CT/D9/CK/C9}  winner=/CK  East 
+[ 8]Leader:East {/C5/C8/CJ/DT}  winner=/CJ  West 
+[ 7]Leader:East {/C4/C3/C2/H4}  winner=/C4  East 
+[ 6]Leader:East {/SQ/S5/S9/S6}  winner=/SQ  East 
+[ 5]Leader:South{/CQ/C7/D5/CA}  winner=/CA  East 
+[ 4]Leader:West {/DA/D4/D3/C6}  winner=/C6  South
+[ 3]Leader:South{/H2/H7/H6/H5}  winner=/H7  West 
+[ 2]Leader:West {/H8/HJ/H3/HQ}  winner=/HQ  South
+[ 1]Leader:North{/D7/D6/D2/D8}  winner=/D8  West 
+[ 0]Leader:East {/ST/S4/S2/SJ}  winner=/SJ  North
+
+
+Åú 0
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {}
+East  : {}
+South : {/HA}
+West  : {_DQ}
+
+Leader:North{/S7/DJ}
+
+[11]Leader:East {/SK/S8/S3/SA}  winner=/SA  North
+[10]Leader:East {/HK/HT/H9/DK}  winner=/HK  East 
+[ 9]Leader:West {/CT/D9/CK/C9}  winner=/CK  East 
+[ 8]Leader:East {/C5/C8/CJ/DT}  winner=/CJ  West 
+[ 7]Leader:East {/C4/C3/C2/H4}  winner=/C4  East 
+[ 6]Leader:East {/SQ/S5/S9/S6}  winner=/SQ  East 
+[ 5]Leader:South{/CQ/C7/D5/CA}  winner=/CA  East 
+[ 4]Leader:West {/DA/D4/D3/C6}  winner=/C6  South
+[ 3]Leader:South{/H2/H7/H6/H5}  winner=/H7  West 
+[ 2]Leader:West {/H8/HJ/H3/HQ}  winner=/HQ  South
+[ 1]Leader:North{/D7/D6/D2/D8}  winner=/D8  West 
+[ 0]Leader:East {/ST/S4/S2/SJ}  winner=/SJ  North
+
+
+Åú 1
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {}
+East  : {}
+South : {}
+West  : {_DQ}
+
+Leader:North{/S7/DJ/HA}
+
+[11]Leader:East {/SK/S8/S3/SA}  winner=/SA  North
+[10]Leader:East {/HK/HT/H9/DK}  winner=/HK  East 
+[ 9]Leader:West {/CT/D9/CK/C9}  winner=/CK  East 
+[ 8]Leader:East {/C5/C8/CJ/DT}  winner=/CJ  West 
+[ 7]Leader:East {/C4/C3/C2/H4}  winner=/C4  East 
+[ 6]Leader:East {/SQ/S5/S9/S6}  winner=/SQ  East 
+[ 5]Leader:South{/CQ/C7/D5/CA}  winner=/CA  East 
+[ 4]Leader:West {/DA/D4/D3/C6}  winner=/C6  South
+[ 3]Leader:South{/H2/H7/H6/H5}  winner=/H7  West 
+[ 2]Leader:West {/H8/HJ/H3/HQ}  winner=/HQ  South
+[ 1]Leader:North{/D7/D6/D2/D8}  winner=/D8  West 
+[ 0]Leader:East {/ST/S4/S2/SJ}  winner=/SJ  North
+
+
+Åú 2
+---------- Board Information ----------
+  [    Status     ]  : Scoring
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {}
+East  : {}
+South : {}
+West  : {}
+
+
+
+[12]Leader:North{/S7/DJ/HA/DQ}  winner=/S7  North
+[11]Leader:East {/SK/S8/S3/SA}  winner=/SA  North
+[10]Leader:East {/HK/HT/H9/DK}  winner=/HK  East 
+[ 9]Leader:West {/CT/D9/CK/C9}  winner=/CK  East 
+[ 8]Leader:East {/C5/C8/CJ/DT}  winner=/CJ  West 
+[ 7]Leader:East {/C4/C3/C2/H4}  winner=/C4  East 
+[ 6]Leader:East {/SQ/S5/S9/S6}  winner=/SQ  East 
+[ 5]Leader:South{/CQ/C7/D5/CA}  winner=/CA  East 
+[ 4]Leader:West {/DA/D4/D3/C6}  winner=/C6  South
+[ 3]Leader:South{/H2/H7/H6/H5}  winner=/H7  West 
+[ 2]Leader:West {/H8/HJ/H3/HQ}  winner=/HQ  South
+[ 1]Leader:North{/D7/D6/D2/D8}  winner=/D8  West 
+[ 0]Leader:East {/ST/S4/S2/SJ}  winner=/SJ  North
+
+

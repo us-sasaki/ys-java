@@ -1,0 +1,320 @@
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:Q42
+               H:T632
+               D:T32
+               C:J96
+S:AKJ8             N          S:973
+H:KJ85         W       E      H:A4
+D:AQ                          D:KJ764
+C:542              S          C:QT7
+               S:T65
+               H:Q97
+               D:985
+               C:AK83
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+calcApproximateTricks(NT) : 1000
+calcApproximateTricks(S ) : 900
+calcApproximateTricks(H ) : 900
+calcApproximateTricks(D ) : 1000
+calcApproximateTricks(C ) : 900
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J9865
+               H:A
+               D:AT94
+               C:T84
+S:AK7              N          S:QT3
+H:KT8542       W       E      H:J7
+D:75                          D:J832
+C:65               S          C:KJ93
+               S:42
+               H:Q963
+               D:KQ6
+               C:AQ72
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+calcApproximateTricks(NT) : 550
+calcApproximateTricks(S ) : 600
+calcApproximateTricks(H ) : 600
+calcApproximateTricks(D ) : 500
+calcApproximateTricks(C ) : 550
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J2
+               H:432
+               D:QT85
+               C:Q975
+S:Q743             N          S:96
+H:A            W       E      H:KJT76
+D:AJ32                        D:K96
+C:KT62             S          C:AJ8
+               S:AKT85
+               H:Q985
+               D:74
+               C:43
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+calcApproximateTricks(NT) : 800
+calcApproximateTricks(S ) : 750
+calcApproximateTricks(H ) : 850
+calcApproximateTricks(D ) : 800
+calcApproximateTricks(C ) : 800
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AQJ763
+               H:AQ64
+               D:4
+               C:Q5
+S:98542            N          S:KT
+H:T            W       E      H:972
+D:Q973                        D:AT82
+C:JT3              S          C:A642
+               S:
+               H:KJ853
+               D:KJ65
+               C:K987
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+calcApproximateTricks(NT) : 450
+calcApproximateTricks(S ) : 650
+calcApproximateTricks(H ) : 450
+calcApproximateTricks(D ) : 650
+calcApproximateTricks(C ) : 650
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:982
+               H:QJ65
+               D:AT52
+               C:A8
+S:AT7              N          S:Q6
+H:T873         W       E      H:K942
+D:63                          D:QJ987
+C:KQ93             S          C:64
+               S:KJ543
+               H:A
+               D:K4
+               C:JT752
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+calcApproximateTricks(NT) : 500
+calcApproximateTricks(S ) : 500
+calcApproximateTricks(H ) : 500
+calcApproximateTricks(D ) : 500
+calcApproximateTricks(C ) : 500
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AKQ6
+               H:AKJ85
+               D:76
+               C:64
+S:T2               N          S:98
+H:QT9632       W       E      H:4
+D:JT                          D:Q5432
+C:AQ8              S          C:J9732
+               S:J7543
+               H:7
+               D:AK98
+               C:KT5
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+calcApproximateTricks(NT) : 250
+calcApproximateTricks(S ) : 300
+calcApproximateTricks(H ) : 400
+calcApproximateTricks(D ) : 450
+calcApproximateTricks(C ) : 500
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:72
+               H:832
+               D:K973
+               C:J962
+S:KJ64             N          S:QT985
+H:AT           W       E      H:KJ965
+D:JT8                         D:64
+C:AKT5             S          C:Q
+               S:A3
+               H:Q74
+               D:AQ52
+               C:8743
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+calcApproximateTricks(NT) : 600
+calcApproximateTricks(S ) : 750
+calcApproximateTricks(H ) : 750
+calcApproximateTricks(D ) : 600
+calcApproximateTricks(C ) : 700
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K852
+               H:A86
+               D:T9
+               C:KQT6
+S:7                N          S:QJT93
+H:T943         W       E      H:Q72
+D:Q87632                      D:KJ54
+C:93               S          C:2
+               S:A64
+               H:KJ5
+               D:A
+               C:AJ8754
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+calcApproximateTricks(NT) : 100
+calcApproximateTricks(S ) : 350
+calcApproximateTricks(H ) : 400
+calcApproximateTricks(D ) : 550
+calcApproximateTricks(C ) : 150
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K98
+               H:A8765
+               D:K9
+               C:T97
+S:AQJT52           N          S:3
+H:2            W       E      H:QJ4
+D:J65                         D:A8732
+C:KJ2              S          C:AQ54
+               S:764
+               H:KT93
+               D:QT4
+               C:863
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+calcApproximateTricks(NT) : 850
+calcApproximateTricks(S ) : 900
+calcApproximateTricks(H ) : 700
+calcApproximateTricks(D ) : 900
+calcApproximateTricks(C ) : 900
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:75
+               H:AKJ95
+               D:KJT3
+               C:AT
+S:T982             N          S:KJ63
+H:T3           W       E      H:84
+D:A9865                       D:
+C:KJ               S          C:Q987642
+               S:AQ4
+               H:Q762
+               D:Q742
+               C:53
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+calcApproximateTricks(NT) : 350
+calcApproximateTricks(S ) : 500
+calcApproximateTricks(H ) : 350
+calcApproximateTricks(D ) : 500
+calcApproximateTricks(C ) : 650

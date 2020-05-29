@@ -1,0 +1,30 @@
+<html>
+<body>
+<head>
+<title>Request Parameters Example</title>
+<script language="JavaScript">
+<!--
+	function changeParam() {
+		document.form0.firstname.value="変わったよ!!";
+	}
+// -->
+</script>
+</head>
+<body bgcolor="white" onLoad=changeParam()>
+<h3>Request Parameters Example</h3>
+<p>
+この html では、JavaScript によって form の値が変えられることを確認します。<BR>
+firstname の初期値は "はじめ" になっており、JavaScript によって "変わったよ!!"<BR>
+に変更しています。<BR>
+ＩＥ６，ＮＮ７で変わることを確認しました。<BR>
+
+<form action="http://192.168.0.19/examples/servlet/RequestParamExample" method=POST name=form0>
+First Name:
+<input type=hidden name=firstname value="はじめ">
+<br>
+Last Name:
+<input type=text size=20 name=lastname><BR>
+<input type=submit>
+</form>
+</body>
+</html><BR>

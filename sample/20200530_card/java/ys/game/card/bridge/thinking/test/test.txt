@@ -1,0 +1,63 @@
+ÇÕÇ∂ÇﬂÇÃèÛë‘
+---------- Board Information ----------
+  [    Status     ]  : Opening Lead
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {_C9_C7_C6_DK_D6_D5_D3_SJ_S9_HK_H8_H4_H3}
+East  : {_S6_S5_S4_S2_HA_H9_CK_C8_C5_DQ_DT_D8_D7}
+South : {_CQ_CT_C4_C2_DJ_D4_D2_SA_S8_S7_S3_HT_H2}
+West  : {_SK_SQ_ST_HQ_HJ_H7_H6_H5_CA_CJ_C3_DA_D9}
+
+Leader:East {}
+
+
+
+status=OPEN&dealer=N&vul=No&N=SJ9HK843C976DK653&E=S6542HA9CK85DQT87&S=SA873HT2CQT42DJ42&W=SKQTHQJ765CAJ3DA9&bid=1C-P-P-P&contract=1C&declarer=N
+
+countApproximateNSWinners : suit = 0
+totalWinners = 2
+longerLength = 3
+shorterLength= 3
+lowestCardOfShorterSuit = C3
+highestCardOfLongerSuit = CK
+lowestCardOfShorterSuitIsWinner = false
+-----
+countApproximateNSWinners : suit = 1
+totalWinners = 1
+longerLength = 4
+shorterLength= 2
+lowestCardOfShorterSuit = D9
+highestCardOfLongerSuit = DQ
+lowestCardOfShorterSuitIsWinner = false
+-----
+opp1.cnt = 3
+opp2.cnt = 4
+countApproximateNSWinners : suit = 2
+totalWinners = 1
+longerLength = 5
+shorterLength= 2
+lowestCardOfShorterSuit = H9
+highestCardOfLongerSuit = HQ
+lowestCardOfShorterSuitIsWinner = false
+-----
+opp1.cnt = 2
+opp2.cnt = 4
+countApproximateNSWinners : suit = 3
+totalWinners = 0
+longerLength = 4
+shorterLength= 3
+lowestCardOfShorterSuit = ST
+highestCardOfLongerSuit = S6
+lowestCardOfShorterSuitIsWinner = false
+-----
+opp1.cnt = 4
+opp2.cnt = 2
+î’ñ ï]âøÇ…ÇÊÇÈ leader ÇÃÉgÉäÉbÉNêî : 4

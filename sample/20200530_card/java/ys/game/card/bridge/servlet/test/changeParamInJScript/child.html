@@ -1,0 +1,30 @@
+<html>
+<body>
+<head>
+<title>Request Parameters Example</title>
+<script language="JavaScript">
+<!--
+	function loaded() {
+		// 実際には、この getStr() をPracticeAppletのメソッドとする
+		document.form0.firstname.value=window.opener.getStr();
+		
+		document.form0.elements[2].click(); // auto submit !!!
+	}
+// -->
+</script>
+</head>
+<body bgcolor="white" onLoad="loaded()">
+<h3>Request Parameters Example</h3>
+<p>
+この html は、子 window です<BR>
+
+<form action="http://192.168.0.19/examples/servlet/RequestParamExample" method=POST name=form0>
+First Name:
+<input type=hidden name=firstname value="はじめ">
+<br>
+Last Name:
+<input type=text size=20 name=lastname><BR>
+<input type=submit>
+</form>
+</body>
+</html><BR>

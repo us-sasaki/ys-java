@@ -1,0 +1,61 @@
+はじめの状態
+---------- Board Information ----------
+  [    Status     ]  : Opening Lead
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {_CQ_C9_C8_SQ_SJ_ST_S6_HK_HQ_HT_H6_H5_H3}
+East  : {_S7_S4_S2_H8_H4_CA_CJ_C6_D9_D6_D5_D4_D3}
+South : {_C4_C3_C2_DA_DK_DT_D7_D2_SK_S9_S8_HJ_H7}
+West  : {_SA_S5_S3_HA_H9_H2_CK_CT_C7_C5_DQ_DJ_D8}
+
+Leader:East {}
+
+
+
+status=OPEN&dealer=N&vul=No&N=SQJT6HKQT653CQ98&E=S742H84CAJ6D96543&S=SK98HJ7C432DAKT72&W=SA53HA92CKT75DQJ8&bid=1C-P-P-P&contract=1C&declarer=N
+
+●変数内容表示●
+count     ：12
+nsWins    ：2
+trump     ：0
+カード状態：C2:0/S C3:0/S C4:0/S C5:0/W C6:0/E C7:0/W C8:0/N C9:0/N CT:0/W CJ:0/E CQ:0/N CK:0/W CA:0/E C_:0/f D2:0/S D3:0/E D4:0/E D5:0/E D6:0/E D7:0/S D8:0/W D9:0/E DT:0/S DJ:0/W DQ:0/W DK:0/S DA:0/S D_:0/f H2:0/W H3:0/N H4:10/E H5:0/N H6:9/N H7:0/S H8:0/E H9:12/W HT:0/N HJ:11/S HQ:0/N HK:0/N HA:0/W H_:0/f S2:7/E S3:0/W S4:1/E S5:5/W S6:4/N S7:0/E S8:8/S S9:2/S ST:0/N SJ:6/N SQ:0/N SK:0/S SA:3/W S_:0/f 
+プレイされたカード：1:S4 2:S9 3:SA 4:S6 5:S5 6:SJ 7:S2 8:S8 9:H6 10:H4 11:HJ 12:H9 
+leader：0E 1W 2N 3S 
+●ボード状態表示●
+ハンド情報：
+               S:QT
+               H:KQT53
+               D:
+               C:Q98
+S:3                           S:7
+H:A2                          H:8
+D:QJ8                         D:96543
+C:KT75                        C:AJ6
+               S:K
+               H:7
+               D:AKT72
+               C:432
+
+calcPropData()
+lowestCardOfShorterSuit
+[0][0]=C8, [0][1]=C2, [0][2]=H7, [0][3]=SK, 
+[1][0]=C6, [1][1]=D8, [1][2]=H8, [1][3]=S7, 
+highestCardOfLongerSuit
+[0][0]=C4, [0][1]=DA, [0][2]=HK, [0][3]=SQ, 
+[1][0]=CK, [1][1]=D9, [1][2]=HA, [1][3]=S3, 
+isWinner
+CK,CA,DK,DA,HA,ST,SQ,SK,
+Xs (NS)
+  0:0  1:2  2:0  3:1
+Xs (EW)
+  0:2  1:0  2:1  3:0
+calcX(north) = 1
+calcMaxX(EW) = 3

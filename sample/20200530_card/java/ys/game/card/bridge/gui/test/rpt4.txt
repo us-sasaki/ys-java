@@ -1,0 +1,7000 @@
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 800
+min 650  max 800
+Total Point : 27
+4Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:Q754
+               H:J97
+               D:K8
+               C:QJ93
+S:832              N          S:KT96
+H:KT62         W       E      H:A84
+D:AJT7                        D:9542
+C:54               S          C:86
+               S:AJ
+               H:Q53
+               D:Q63
+               C:AKT72
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 550  max 650
+Total Point : 17
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:9864
+               H:T975
+               D:853
+               C:A6
+S:73               N          S:KJT2
+H:J6           W       E      H:AK42
+D:KQ74                        D:6
+C:QJ743            S          C:KT85
+               S:AQ5
+               H:Q83
+               D:AJT92
+               C:92
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 550
+ denom : 5  Tricks : 750
+min 550  max 750
+Total Point : 22
+2Sダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  SX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:Q84
+               H:KJ653
+               D:K62
+               C:72
+S:K                N          S:652
+H:974          W       E      H:AQT82
+D:J943                        D:A87
+C:AQT83            S          C:J9
+               S:AJT973
+               H:
+               D:QT5
+               C:K654
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 550  max 700
+Total Point : 23
+2D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KT7
+               H:AJ97
+               D:AJT
+               C:KQ9
+S:A95              N          S:J842
+H:T2           W       E      H:Q853
+D:K6                          D:Q92
+C:AJ6432           S          C:75
+               S:Q63
+               H:K64
+               D:87543
+               C:T8
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 600  max 800
+Total Point : 18
+1C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:865
+               H:T865
+               D:QJ
+               C:AT85
+S:KQJ2             N          S:A974
+H:KQJ32        W       E      H:4
+D:872                         D:KT963
+C:Q                S          C:K97
+               S:T3
+               H:A97
+               D:A54
+               C:J6432
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 250
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 300
+min 250  max 700
+Total Point : 29
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AKQ84
+               H:Q653
+               D:JT3
+               C:5
+S:J32              N          S:T976
+H:AK8742       W       E      H:J9
+D:Q                           D:96
+C:QJ7              S          C:A9864
+               S:5
+               H:T
+               D:AK87542
+               C:KT32
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 900
+ denom : 5  Tricks : 800
+min 550  max 900
+Total Point : 26
+3S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AKQ
+               H:KJ62
+               D:KQ5
+               C:T95
+S:T95              N          S:4
+H:Q97          W       E      H:AT543
+D:JT32                        D:98
+C:K63              S          C:AJ874
+               S:J87632
+               H:8
+               D:A764
+               C:Q2
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 950
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 900
+min 800  max 950
+Total Point : 28
+4H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AQ942
+               H:54
+               D:AT3
+               C:982
+S:J763             N          S:85
+H:J2           W       E      H:8763
+D:8652                        D:J97
+C:K43              S          C:AQJT
+               S:KT
+               H:AKQT9
+               D:KQ4
+               C:765
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 400
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 600
+min 400  max 600
+Total Point : 21
+1H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K83
+               H:A96
+               D:932
+               C:A863
+S:J7               N          S:QT96
+H:QT           W       E      H:753
+D:KT65                        D:AQ74
+C:KT975            S          C:Q4
+               S:A542
+               H:KJ842
+               D:J8
+               C:J2
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 400
+min 400  max 600
+Total Point : 26
+3S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AK8
+               H:KT53
+               D:T74
+               C:AK7
+S:43               N          S:952
+H:A84          W       E      H:Q976
+D:A9532                       D:K6
+C:943              S          C:J652
+               S:QJT76
+               H:J2
+               D:QJ8
+               C:QT8
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 800
+min 600  max 800
+Total Point : 26
+3Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:Q97
+               H:AKQ5
+               D:AQT2
+               C:J9
+S:J83              N          S:AK542
+H:9742         W       E      H:J83
+D:643                         D:97
+C:KT6              S          C:A43
+               S:T6
+               H:T6
+               D:KJ85
+               C:Q8752
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 400
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 400
+min 400  max 500
+Total Point : 27
+4NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:752
+               H:AQ85
+               D:K876
+               C:K3
+S:A843             N          S:JT
+H:KJ973        W       E      H:64
+D:J                           D:T5432
+C:JT4              S          C:Q876
+               S:KQ96
+               H:T2
+               D:AQ9
+               C:A952
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 500
+min 500  max 650
+Total Point : 25
+3Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K7
+               H:KQ975
+               D:A2
+               C:AKJ8
+S:A832             N          S:QJT
+H:T3           W       E      H:AJ862
+D:Q65                         D:KJ43
+C:7543             S          C:T
+               S:9654
+               H:4
+               D:T987
+               C:Q962
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 500
+min 500  max 750
+Total Point : 25
+3D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K98
+               H:AQT64
+               D:K92
+               C:84
+S:A6               N          S:QT53
+H:J53          W       E      H:982
+D:JT873                       D:5
+C:T62              S          C:AKQ53
+               S:J742
+               H:K7
+               D:AQ64
+               C:J97
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 250
+ denom : 2  Tricks : 250
+ denom : 3  Tricks : 200
+ denom : 4  Tricks : 250
+ denom : 5  Tricks : 250
+min 200  max 250
+Total Point : 31
+5NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AK654
+               H:JT87
+               D:63
+               C:K5
+S:QT73             N          S:982
+H:Q3           W       E      H:942
+D:Q942                        D:T87
+C:Q63              S          C:J872
+               S:J
+               H:AK65
+               D:AKJ5
+               C:AT94
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 700
+ denom : 5  Tricks : 800
+min 700  max 800
+Total Point : 18
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:7
+               H:T9874
+               D:Q943
+               C:KQ9
+S:K9642            N          S:Q8
+H:A5           W       E      H:KQJ6
+D:K7                          D:T52
+C:AT84             S          C:6532
+               S:AJT53
+               H:32
+               D:AJ86
+               C:J7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 700
+ denom : 5  Tricks : 750
+min 600  max 850
+Total Point : 23
+2D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:9864
+               H:74
+               D:AT32
+               C:A63
+S:AQJT             N          S:752
+H:AK86         W       E      H:QT93
+D:84                          D:J6
+C:T98              S          C:Q754
+               S:K3
+               H:J52
+               D:KQ975
+               C:KJ2
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 950
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 1000
+ denom : 4  Tricks : 1000
+ denom : 5  Tricks : 1000
+min 950  max 1000
+Total Point : 11
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J75
+               H:J43
+               D:8652
+               C:932
+S:K92              N          S:AQT8
+H:A6           W       E      H:K9752
+D:A73                         D:KJT
+C:QT754            S          C:K
+               S:643
+               H:QT8
+               D:Q94
+               C:AJ86
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 1000
+ denom : 2  Tricks : 1200
+ denom : 3  Tricks : 1050
+ denom : 4  Tricks : 1100
+ denom : 5  Tricks : 1300
+min 1000  max 1300
+Total Point : 30
+5D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:65
+               H:AT8532
+               D:T
+               C:Q954
+S:842              N          S:T93
+H:KJ4          W       E      H:Q76
+D:9875                        D:63
+C:632              S          C:KJT87
+               S:AKQJ7
+               H:9
+               D:AKQJ42
+               C:A
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 800
+min 750  max 800
+Total Point : 13
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J7
+               H:Q9765
+               D:JT6
+               C:965
+S:T4               N          S:AKQ8
+H:AKJT         W       E      H:82
+D:8543                        D:KQ92
+C:432              S          C:KQ8
+               S:96532
+               H:43
+               D:A7
+               C:AJT7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 950
+min 500  max 950
+Total Point : 28
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AK97
+               H:632
+               D:AQ84
+               C:T8
+S:32               N          S:JT854
+H:AT7          W       E      H:KJ95
+D:762                         D:
+C:Q7643            S          C:AJ52
+               S:Q6
+               H:Q84
+               D:KJT953
+               C:K9
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 400
+ denom : 2  Tricks : 250
+ denom : 3  Tricks : 400
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 250
+min 250  max 400
+Total Point : 26
+3D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A2
+               H:AJT
+               D:A543
+               C:T865
+S:853              N          S:KJT76
+H:K842         W       E      H:Q953
+D:J6                          D:T8
+C:KQ92             S          C:J7
+               S:Q94
+               H:76
+               D:KQ972
+               C:A43
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 300
+ denom : 2  Tricks : 450
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 300
+min 300  max 500
+Total Point : 28
+4C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AQ9
+               H:93
+               D:A832
+               C:QJ92
+S:J65              N          S:T732
+H:AK642        W       E      H:85
+D:J74                         D:KQ965
+C:T5               S          C:64
+               S:K84
+               H:QJT7
+               D:T
+               C:AK873
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 700
+min 650  max 800
+Total Point : 20
+1S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T42
+               H:AJ76
+               D:8542
+               C:76
+S:753              N          S:J86
+H:Q832         W       E      H:K4
+D:AT63                        D:KQ97
+C:QJ               S          C:A853
+               S:AKQ9
+               H:T95
+               D:J
+               C:KT942
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 900
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 800
+min 550  max 900
+Total Point : 30
+5Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A63
+               H:K
+               D:JT976
+               C:QJ85
+S:Q974             N          S:JT5
+H:T875432      W       E      H:A96
+D:5                           D:KQ82
+C:7                S          C:KT4
+               S:K82
+               H:QJ
+               D:A43
+               C:A9632
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 450
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 450
+min 450  max 700
+Total Point : 23
+2H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KT83
+               H:KQ3
+               D:865
+               C:Q43
+S:AQ762            N          S:J95
+H:954          W       E      H:J6
+D:72                          D:QT3
+C:J92              S          C:AKT76
+               S:4
+               H:AT872
+               D:AKJ94
+               C:85
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 900
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 550
+min 550  max 900
+Total Point : 24
+3Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AK87
+               H:AQ4
+               D:A863
+               C:QT
+S:T5               N          S:Q9432
+H:76           W       E      H:K3
+D:Q74                         D:K95
+C:AJ9853           S          C:K42
+               S:J6
+               H:JT9852
+               D:JT2
+               C:76
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 800
+min 700  max 800
+Total Point : 18
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AT32
+               H:6
+               D:QT732
+               C:J94
+S:Q95              N          S:KJ764
+H:JT75         W       E      H:A832
+D:A96                         D:
+C:AK3              S          C:T865
+               S:8
+               H:KQ94
+               D:KJ854
+               C:Q72
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 650
+min 550  max 700
+Total Point : 22
+2H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A72
+               H:JT97
+               D:Q87
+               C:843
+S:T9               N          S:QJ853
+H:K2           W       E      H:54
+D:9653                        D:AKJ4
+C:AT972            S          C:J6
+               S:K64
+               H:AQ863
+               D:T2
+               C:KQ5
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 250
+ denom : 2  Tricks : 200
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 200
+min 200  max 550
+Total Point : 31
+5Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AKJT
+               H:A9
+               D:9874
+               C:942
+S:Q42              N          S:98763
+H:J87652       W       E      H:KQT3
+D:2                           D:J53
+C:KJ6              S          C:7
+               S:5
+               H:4
+               D:AKQT6
+               C:AQT853
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 350
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 450
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 550
+min 350  max 550
+Total Point : 25
+3C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A
+               H:AKQ62
+               D:T843
+               C:T98
+S:KQ92             N          S:8764
+H:9875         W       E      H:JT4
+D:Q97                         D:AK62
+C:52               S          C:KQ
+               S:JT53
+               H:3
+               D:J5
+               C:AJ7643
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 850
+min 750  max 850
+Total Point : 14
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:QT832
+               H:A874
+               D:T96
+               C:9
+S:AKJ7             N          S:964
+H:K            W       E      H:9652
+D:AJ873                       D:Q4
+C:T73              S          C:AKJ8
+               S:5
+               H:QJT3
+               D:K52
+               C:Q6542
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 500  max 750
+Total Point : 26
+3Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J9532
+               H:AK94
+               D:2
+               C:AK5
+S:K4               N          S:AQ
+H:T            W       E      H:QJ2
+D:A653                        D:T9874
+C:Q98742           S          C:JT3
+               S:T876
+               H:87653
+               D:KQJ
+               C:6
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 250
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 400
+min 250  max 750
+Total Point : 26
+3Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:84
+               H:K542
+               D:763
+               C:J762
+S:2                N          S:KT97653
+H:QJT3         W       E      H:86
+D:KQJT84                      D:A95
+C:Q5               S          C:T
+               S:AQJ
+               H:A97
+               D:2
+               C:AK9843
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 450
+ denom : 2  Tricks : 400
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 350
+ denom : 5  Tricks : 300
+min 300  max 500
+Total Point : 27
+4S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KT65
+               H:J3
+               D:K52
+               C:8742
+S:J98              N          S:32
+H:Q9874        W       E      H:KT65
+D:T63                         D:J87
+C:A9               S          C:K653
+               S:AQ74
+               H:A2
+               D:AQ94
+               C:QJT
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 650
+min 550  max 650
+Total Point : 21
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T2
+               H:AKT97
+               D:875
+               C:J74
+S:974              N          S:KQJ5
+H:43           W       E      H:Q52
+D:JT93                        D:A642
+C:QT95             S          C:A2
+               S:A863
+               H:J86
+               D:KQ
+               C:K863
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 400
+ denom : 3  Tricks : 350
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 300
+min 300  max 650
+Total Point : 31
+5Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KJ6
+               H:A653
+               D:AKQJ2
+               C:6
+S:9                N          S:AQT854
+H:QJ97         W       E      H:
+D:985                         D:64
+C:T8742            S          C:KQ953
+               S:732
+               H:KT842
+               D:T73
+               C:AJ
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 350
+ denom : 2  Tricks : 300
+ denom : 3  Tricks : 350
+ denom : 4  Tricks : 350
+ denom : 5  Tricks : 350
+min 300  max 350
+Total Point : 22
+2NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T2
+               H:A8753
+               D:653
+               C:AK8
+S:J96              N          S:Q843
+H:K94          W       E      H:QJ6
+D:QJ8                         D:KT
+C:J743             S          C:Q965
+               S:AK75
+               H:T2
+               D:A9742
+               C:T2
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 300
+ denom : 2  Tricks : 200
+ denom : 3  Tricks : 200
+ denom : 4  Tricks : 150
+ denom : 5  Tricks : 250
+min 150  max 300
+Total Point : 41
+7Sダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[7  SX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AK
+               H:QT984
+               D:QJ9854
+               C:
+S:J763             N          S:T2
+H:6            W       E      H:K732
+D:T732                        D:K6
+C:T642             S          C:98753
+               S:Q9854
+               H:AJ5
+               D:A
+               C:AKQJ
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 750
+min 600  max 850
+Total Point : 27
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:JT652
+               H:Q876
+               D:72
+               C:KT
+S:K43              N          S:Q97
+H:AT92         W       E      H:543
+D:T                           D:J654
+C:87652            S          C:A94
+               S:A8
+               H:KJ
+               D:AKQ983
+               C:QJ3
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 250
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 250
+min 250  max 550
+Total Point : 32
+5Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AJ5
+               H:KT9
+               D:AT876
+               C:42
+S:98732            N          S:QT4
+H:A8765        W       E      H:J42
+D:3                           D:2
+C:96               S          C:KQJ853
+               S:K6
+               H:Q3
+               D:KQJ954
+               C:AT7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 550
+min 550  max 700
+Total Point : 24
+3Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J83
+               H:43
+               D:KJ65
+               C:A974
+S:AQT              N          S:652
+H:K8           W       E      H:AJ762
+D:973                         D:82
+C:QJ863            S          C:T52
+               S:K974
+               H:QT95
+               D:AQT4
+               C:K
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 400
+ denom : 2  Tricks : 300
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 450
+min 300  max 500
+Total Point : 27
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:762
+               H:KQT985
+               D:K6
+               C:AJ
+S:KQ83             N          S:JT95
+H:AJ432        W       E      H:76
+D:3                           D:QJ98
+C:T65              S          C:Q43
+               S:A4
+               H:
+               D:AT7542
+               C:K9872
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 450
+ denom : 2  Tricks : 400
+ denom : 3  Tricks : 450
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 400
+min 400  max 450
+Total Point : 23
+2NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:Q85
+               H:T9543
+               D:K95
+               C:98
+S:432              N          S:K6
+H:KQ62         W       E      H:87
+D:8                           D:QJT742
+C:KQ652            S          C:J43
+               S:AJT97
+               H:AJ
+               D:A63
+               C:AT7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 450
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 400
+min 400  max 550
+Total Point : 25
+3S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AT6
+               H:AK3
+               D:KT7
+               C:Q763
+S:8                N          S:QJ32
+H:QT9765       W       E      H:4
+D:Q86                         D:A953
+C:J84              S          C:KT95
+               S:K9754
+               H:J82
+               D:J42
+               C:A2
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 450
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 550
+min 450  max 600
+Total Point : 20
+1D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:Q73
+               H:976
+               D:K86
+               C:Q987
+S:KJ65             N          S:AT84
+H:KQJ83        W       E      H:542
+D:JT                          D:Q73
+C:T3               S          C:K42
+               S:92
+               H:AT
+               D:A9542
+               C:AJ65
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 950
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 1200
+ denom : 5  Tricks : 1200
+min 800  max 1200
+Total Point : 32
+5S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A73
+               H:KQ
+               D:K876
+               C:A975
+S:T                N          S:965
+H:J876532      W       E      H:T9
+D:QJ42                        D:95
+C:J                S          C:KQT642
+               S:KQJ842
+               H:A4
+               D:AT3
+               C:83
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 950
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 650
+min 600  max 950
+Total Point : 23
+2C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J6
+               H:AKJ85
+               D:Q852
+               C:94
+S:Q3               N          S:AT52
+H:Q7642        W       E      H:T9
+D:JT94                        D:AK763
+C:J2               S          C:K7
+               S:K9874
+               H:3
+               D:
+               C:AQT8653
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 750
+min 700  max 750
+Total Point : 16
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T732
+               H:Q72
+               D:T965
+               C:94
+S:AKJ              N          S:Q954
+H:KT63         W       E      H:J85
+D:32                          D:KJ7
+C:AQ76             S          C:T82
+               S:86
+               H:A94
+               D:AQ84
+               C:KJ53
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 550
+ denom : 5  Tricks : 500
+min 500  max 550
+Total Point : 27
+4NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T87
+               H:J9652
+               D:K4
+               C:KJ5
+S:95               N          S:Q642
+H:73           W       E      H:AT4
+D:JT732                       D:86
+C:A762             S          C:Q843
+               S:AKJ3
+               H:KQ8
+               D:AQ95
+               C:T9
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 450
+min 400  max 600
+Total Point : 27
+4S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AK73
+               H:AQ93
+               D:742
+               C:K7
+S:QJ9              N          S:4
+H:KJ86         W       E      H:542
+D:AJT95                       D:83
+C:Q                S          C:JT86532
+               S:T8652
+               H:T7
+               D:KQ6
+               C:A94
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 750
+min 750  max 750
+Total Point : 19
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:7
+               H:QT965
+               D:T97
+               C:KQ98
+S:T864             N          S:AQ9
+H:K74          W       E      H:A32
+D:A64                         D:K82
+C:T54              S          C:J732
+               S:KJ532
+               H:J8
+               D:QJ53
+               C:A6
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 900
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 800
+min 650  max 950
+Total Point : 28
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AJT6
+               H:T
+               D:A5
+               C:Q98654
+S:Q875             N          S:K42
+H:842          W       E      H:AQ9763
+D:Q94                         D:76
+C:JT7              S          C:K2
+               S:93
+               H:KJ5
+               D:KJT832
+               C:A3
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 1000
+ denom : 5  Tricks : 650
+min 650  max 1000
+Total Point : 22
+2S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A
+               H:AT532
+               D:QJ8
+               C:J962
+S:T5               N          S:K7
+H:KQ8          W       E      H:764
+D:7652                        D:KT93
+C:QT54             S          C:AK73
+               S:QJ986432
+               H:J9
+               D:A4
+               C:8
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 600  max 600
+Total Point : 22
+2NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:954
+               H:T84
+               D:K73
+               C:KQ94
+S:AJT83            N          S:76
+H:Q2           W       E      H:KJ65
+D:QJ8                         D:T654
+C:AT8              S          C:753
+               S:KQ2
+               H:A973
+               D:A92
+               C:J62
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 350
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 550
+ denom : 5  Tricks : 550
+min 350  max 750
+Total Point : 27
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:3
+               H:AJ75
+               D:KQ985
+               C:874
+S:KT4              N          S:Q765
+H:962          W       E      H:KQ84
+D:T6                          D:4
+C:QJ532            S          C:AK96
+               S:AJ982
+               H:T3
+               D:AJ732
+               C:T
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 800
+min 600  max 800
+Total Point : 25
+3Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:Q94
+               H:QJ5
+               D:AJ9
+               C:Q432
+S:AJ873            N          S:T65
+H:4            W       E      H:T8732
+D:QT6                         D:7542
+C:AKJ7             S          C:8
+               S:K2
+               H:AK96
+               D:K83
+               C:T965
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 850
+min 700  max 850
+Total Point : 22
+2S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K6
+               H:QT76
+               D:K8753
+               C:A3
+S:987              N          S:JT4
+H:AJ4          W       E      H:985
+D:AT6                         D:QJ
+C:JT65             S          C:KQ982
+               S:AQ532
+               H:K32
+               D:942
+               C:74
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 1050
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 700
+min 650  max 1050
+Total Point : 33
+6Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[6  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:75
+               H:A854
+               D:KJT95
+               C:64
+S:T82              N          S:AK9643
+H:J97          W       E      H:T
+D:Q84                         D:763
+C:J985             S          C:T72
+               S:QJ
+               H:KQ632
+               D:A2
+               C:AKQ3
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 550
+min 550  max 750
+Total Point : 27
+4Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:986
+               H:Q9
+               D:K98765
+               C:43
+S:QJ754            N          S:A32
+H:AT83         W       E      H:74
+D:A2                          D:JT43
+C:T8               S          C:9752
+               S:KT
+               H:KJ652
+               D:Q
+               C:AKQJ6
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 1100
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 800
+min 700  max 1100
+Total Point : 31
+5Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AKQ8
+               H:T8
+               D:AJ43
+               C:JT9
+S:J72              N          S:T543
+H:KQJ2         W       E      H:A9763
+D:Q8752                       D:T6
+C:6                S          C:53
+               S:96
+               H:54
+               D:K9
+               C:AKQ8742
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 450
+ denom : 3  Tricks : 900
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 500
+min 450  max 900
+Total Point : 22
+2H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KQT
+               H:A72
+               D:764
+               C:7643
+S:953              N          S:J876
+H:6            W       E      H:J98
+D:AKQ982                      D:T3
+C:A85              S          C:KJT9
+               S:A42
+               H:KQT543
+               D:J5
+               C:Q2
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 950
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 950
+ denom : 4  Tricks : 1100
+ denom : 5  Tricks : 1100
+min 950  max 1100
+Total Point : 27
+4S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:Q976
+               H:A8
+               D:T987
+               C:A43
+S:83               N          S:J4
+H:Q542         W       E      H:JT76
+D:Q5                          D:KJ63
+C:T8752            S          C:KQ9
+               S:AKT52
+               H:K93
+               D:A42
+               C:J6
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 600
+min 550  max 650
+Total Point : 18
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:
+               H:QJ62
+               D:AJT952
+               C:965
+S:92               N          S:KQJ843
+H:3            W       E      H:AK97
+D:KQ763                       D:4
+C:KJ842            S          C:T3
+               S:AT765
+               H:T854
+               D:8
+               C:AQ7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 900
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 950
+ denom : 4  Tricks : 900
+ denom : 5  Tricks : 900
+min 900  max 950
+Total Point : 14
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J943
+               H:54
+               D:K96
+               C:Q942
+S:AT               N          S:KQ85
+H:AKJ32        W       E      H:T7
+D:83                          D:QT42
+C:AK76             S          C:T83
+               S:762
+               H:Q986
+               D:AJ75
+               C:J5
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 600
+min 600  max 700
+Total Point : 21
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KQJ
+               H:KT54
+               D:87
+               C:T542
+S:T4               N          S:A763
+H:Q872         W       E      H:J
+D:J4                          D:KQ9653
+C:AQ986            S          C:73
+               S:9852
+               H:A963
+               D:AT2
+               C:KJ
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 550  max 600
+Total Point : 20
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KJ8
+               H:T853
+               D:8532
+               C:T6
+S:AT2              N          S:Q543
+H:Q74          W       E      H:J96
+D:AK94                        D:JT6
+C:Q94              S          C:J73
+               S:976
+               H:AK2
+               D:Q7
+               C:AK852
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 450
+ denom : 3  Tricks : 450
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 450
+min 450  max 750
+Total Point : 25
+3D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K53
+               H:K7
+               D:9762
+               C:K742
+S:62               N          S:AQJT984
+H:T93          W       E      H:J65
+D:K43                         D:8
+C:AQJ83            S          C:65
+               S:7
+               H:AQ842
+               D:AQJT5
+               C:T9
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 550
+min 550  max 750
+Total Point : 23
+2Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J543
+               H:KJ85
+               D:32
+               C:752
+S:T                N          S:AK982
+H:T7643        W       E      H:Q
+D:KJT9876                     D:4
+C:                 S          C:KQT643
+               S:Q76
+               H:A92
+               D:AQ5
+               C:AJ98
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 750
+min 700  max 850
+Total Point : 23
+2Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T32
+               H:A53
+               D:QJ64
+               C:A74
+S:KJ9              N          S:874
+H:JT64         W       E      H:Q72
+D:KT985                       D:A73
+C:9                S          C:K652
+               S:AQ65
+               H:K98
+               D:2
+               C:QJT83
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 500
+min 400  max 650
+Total Point : 24
+3S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AK8
+               H:T7632
+               D:Q
+               C:8542
+S:4                N          S:J962
+H:QJ5          W       E      H:K98
+D:86432                       D:AK7
+C:QT97             S          C:KJ3
+               S:QT753
+               H:A4
+               D:JT95
+               C:A6
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 450
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 950
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 700
+min 450  max 950
+Total Point : 30
+5Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T62
+               H:Q84
+               D:AJ6542
+               C:K
+S:A83              N          S:KQJ54
+H:5            W       E      H:J7
+D:T87                         D:Q9
+C:AJ9842           S          C:T753
+               S:97
+               H:AKT9632
+               D:K3
+               C:Q6
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 650
+min 650  max 700
+Total Point : 19
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:JT5
+               H:9654
+               D:AK9
+               C:974
+S:96               N          S:K843
+H:AJ7          W       E      H:K8
+D:74                          D:QJT652
+C:AQJT65           S          C:8
+               S:AQ72
+               H:QT32
+               D:83
+               C:K32
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 900
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 900
+ denom : 4  Tricks : 900
+ denom : 5  Tricks : 900
+min 900  max 900
+Total Point : 18
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KJ984
+               H:J
+               D:KT9
+               C:9542
+S:AQ532            N          S:76
+H:A854         W       E      H:92
+D:A                           D:76542
+C:T63              S          C:AKJ7
+               S:T
+               H:KQT763
+               D:QJ83
+               C:Q8
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 650
+min 650  max 650
+Total Point : 18
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:962
+               H:943
+               D:K765
+               C:KQ9
+S:QJ4              N          S:AK8
+H:J6           W       E      H:KQT75
+D:AQT32                       D:9
+C:T86              S          C:7542
+               S:T753
+               H:A82
+               D:J84
+               C:AJ3
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 600
+min 400  max 600
+Total Point : 19
+1S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:3
+               H:T8752
+               D:9732
+               C:T64
+S:862              N          S:QJ4
+H:KJ4          W       E      H:Q93
+D:Q65                         D:AKJ8
+C:QJ92             S          C:853
+               S:AKT975
+               H:A6
+               D:T4
+               C:AK7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 400
+ denom : 2  Tricks : 400
+ denom : 3  Tricks : 300
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 300
+min 300  max 400
+Total Point : 26
+3NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T7
+               H:6532
+               D:Q93
+               C:AT82
+S:Q643             N          S:K982
+H:84           W       E      H:JT7
+D:KT76                        D:J2
+C:K74              S          C:J963
+               S:AJ5
+               H:AKQ9
+               D:A854
+               C:Q5
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 750
+min 700  max 800
+Total Point : 19
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AJ42
+               H:Q65
+               D:6
+               C:QT863
+S:KQ9765           N          S:T8
+H:T32          W       E      H:AJ87
+D:A83                         D:QT74
+C:A                S          C:J72
+               S:3
+               H:K94
+               D:KJ952
+               C:K954
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 950
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 1000
+ denom : 5  Tricks : 650
+min 550  max 1000
+Total Point : 22
+2S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:542
+               H:983
+               D:AJ
+               C:AJ852
+S:K                N          S:J83
+H:AKQJ         W       E      H:T76542
+D:Q9873                       D:T42
+C:KQ6              S          C:T
+               S:AQT976
+               H:
+               D:K65
+               C:9743
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 1000
+ denom : 2  Tricks : 1000
+ denom : 3  Tricks : 1000
+ denom : 4  Tricks : 1100
+ denom : 5  Tricks : 1000
+min 1000  max 1100
+Total Point : 14
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J2
+               H:Q95
+               D:QT963
+               C:J52
+S:T9764            N          S:AQ53
+H:AK62         W       E      H:T4
+D:74                          D:A82
+C:A7               S          C:KQ98
+               S:K8
+               H:J873
+               D:KJ5
+               C:T643
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 500  max 600
+Total Point : 19
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:9732
+               H:AT8
+               D:843
+               C:965
+S:KJ65             N          S:AQT
+H:652          W       E      H:KQ74
+D:J5                          D:QT76
+C:JT87             S          C:Q2
+               S:84
+               H:J93
+               D:AK92
+               C:AK43
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 500
+min 500  max 700
+Total Point : 21
+1S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A643
+               H:QJ4
+               D:KT4
+               C:J98
+S:QJ               N          S:97
+H:A532         W       E      H:KT98
+D:J65                         D:9832
+C:QT65             S          C:AK7
+               S:KT852
+               H:76
+               D:AQ7
+               C:432
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 1000
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 1000
+min 600  max 1000
+Total Point : 29
+4Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A9
+               H:QJ9
+               D:8653
+               C:AK32
+S:J86              N          S:T542
+H:A75432       W       E      H:T86
+D:A9                          D:QJT42
+C:QJ               S          C:T
+               S:KQ73
+               H:K
+               D:K7
+               C:987654
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 900
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 800
+min 600  max 900
+Total Point : 24
+3C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AQ73
+               H:AQ3
+               D:JT73
+               C:76
+S:J                N          S:K652
+H:J98          W       E      H:KT76542
+D:Q8654                       D:K2
+C:AT93             S          C:
+               S:T984
+               H:
+               D:A9
+               C:KQJ8542
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 350
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 350
+min 350  max 650
+Total Point : 26
+3Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:62
+               H:AKJT
+               D:AJ62
+               C:Q82
+S:JT9875           N          S:AQ3
+H:32           W       E      H:Q7
+D:K7                          D:T83
+C:K43              S          C:JT965
+               S:K4
+               H:98654
+               D:Q954
+               C:A7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 900
+ denom : 5  Tricks : 900
+min 650  max 900
+Total Point : 24
+3S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K9
+               H:J4
+               D:932
+               C:AKJ943
+S:JT2              N          S:87
+H:KQT85        W       E      H:7632
+D:KQ75                        D:AJ6
+C:Q                S          C:T765
+               S:AQ6543
+               H:A9
+               D:T84
+               C:82
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 700
+min 700  max 750
+Total Point : 15
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:QJ
+               H:9863
+               D:A864
+               C:732
+S:T832             N          S:AK75
+H:742          W       E      H:KQJ
+D:KQJ                         D:T952
+C:QT9              S          C:A6
+               S:964
+               H:AT5
+               D:73
+               C:KJ854
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 700
+ denom : 5  Tricks : 700
+min 550  max 700
+Total Point : 22
+2Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:74
+               H:842
+               D:T7432
+               C:A73
+S:T53              N          S:AKQ9
+H:A63          W       E      H:5
+D:965                         D:QJ8
+C:KQ84             S          C:T9652
+               S:J862
+               H:KQJT97
+               D:AK
+               C:J
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 550
+ denom : 5  Tricks : 900
+min 550  max 900
+Total Point : 27
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:73
+               H:Q85432
+               D:874
+               C:52
+S:T8642            N          S:AQ95
+H:J7           W       E      H:K9
+D:3                           D:JT5
+C:AQJ86            S          C:T943
+               S:KJ
+               H:AT6
+               D:AKQ962
+               C:K7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 1000
+ denom : 5  Tricks : 1000
+min 700  max 1000
+Total Point : 25
+3S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J9752
+               H:43
+               D:Q765
+               C:K9
+S:K                N          S:Q
+H:KQ752        W       E      H:JT96
+D:982                         D:KT43
+C:AQ43             S          C:J752
+               S:AT8643
+               H:A8
+               D:AJ
+               C:T86
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 1100
+ denom : 2  Tricks : 1000
+ denom : 3  Tricks : 1000
+ denom : 4  Tricks : 1000
+ denom : 5  Tricks : 1000
+min 1000  max 1100
+Total Point : 13
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:872
+               H:T8654
+               D:Q4
+               C:542
+S:AT94             N          S:K63
+H:KJ           W       E      H:A73
+D:A863                        D:JT
+C:K96              S          C:AT873
+               S:QJ5
+               H:Q92
+               D:K9752
+               C:QJ
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 400
+ denom : 2  Tricks : 300
+ denom : 3  Tricks : 400
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 400
+min 300  max 400
+Total Point : 28
+4NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:Q73
+               H:7542
+               D:KJ732
+               C:J
+S:AT85             N          S:J94
+H:83           W       E      H:QJT6
+D:T86                         D:Q4
+C:T972             S          C:Q853
+               S:K62
+               H:AK9
+               D:A95
+               C:AK64
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 900
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 850
+min 750  max 950
+Total Point : 24
+3S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J8
+               H:Q432
+               D:AJT7
+               C:KQ3
+S:9                N          S:KQ52
+H:KT986        W       E      H:AJ7
+D:843                         D:Q952
+C:J985             S          C:74
+               S:AT7643
+               H:5
+               D:K6
+               C:AT62
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 350
+ denom : 3  Tricks : 450
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 350
+min 350  max 700
+Total Point : 31
+5Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KQ94
+               H:KJ876
+               D:QT2
+               C:8
+S:865              N          S:JT73
+H:2            W       E      H:AT9
+D:J86                         D:53
+C:AQJT92           S          C:7543
+               S:A2
+               H:Q543
+               D:AK974
+               C:K6
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 300
+ denom : 2  Tricks : 350
+ denom : 3  Tricks : 350
+ denom : 4  Tricks : 300
+ denom : 5  Tricks : 250
+min 250  max 350
+Total Point : 30
+5NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A652
+               H:AT7
+               D:J53
+               C:KQ6
+S:7                N          S:QJT3
+H:86532        W       E      H:QJ
+D:T97                         D:K8642
+C:T873             S          C:J4
+               S:K984
+               H:K94
+               D:AQ
+               C:A952
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 350
+ denom : 2  Tricks : 450
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 550
+ denom : 5  Tricks : 400
+min 350  max 600
+Total Point : 29
+4C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:7
+               H:T96
+               D:A8742
+               C:9542
+S:QT6542           N          S:93
+H:KQJ8         W       E      H:A732
+D:T                           D:QJ953
+C:T7               S          C:J6
+               S:AKJ8
+               H:54
+               D:K6
+               C:AKQ83
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 650
+min 650  max 700
+Total Point : 21
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:973
+               H:T52
+               D:QT4
+               C:AQ74
+S:T865             N          S:QJ
+H:4            W       E      H:AJ983
+D:AKJ32                       D:75
+C:K92              S          C:T653
+               S:AK42
+               H:KQ76
+               D:986
+               C:J8
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 600
+min 450  max 750
+Total Point : 20
+1S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A73
+               H:T875
+               D:K852
+               C:J3
+S:6                N          S:QJ4
+H:K943         W       E      H:QJ
+D:AJ93                        D:Q74
+C:Q954             S          C:AT762
+               S:KT9852
+               H:A62
+               D:T6
+               C:K8
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 700
+ denom : 5  Tricks : 650
+min 550  max 700
+Total Point : 23
+2Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AJ5
+               H:K54
+               D:K9
+               C:76543
+S:QT743            N          S:K982
+H:876          W       E      H:A
+D:AJ7                         D:Q8652
+C:J9               S          C:K82
+               S:6
+               H:QJT932
+               D:T43
+               C:AQT
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 950
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 1000
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 950
+min 950  max 1000
+Total Point : 12
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T32
+               H:Q832
+               D:QJ73
+               C:93
+S:Q87              N          S:AJ4
+H:K7           W       E      H:AT964
+D:K952                        D:A6
+C:AQ87             S          C:J54
+               S:K965
+               H:J5
+               D:T84
+               C:KT62
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 900
+min 650  max 900
+Total Point : 22
+2Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K32
+               H:T652
+               D:Q8
+               C:9652
+S:QJ9765           N          S:T8
+H:Q7           W       E      H:AJ843
+D:65                          D:J72
+C:AT8              S          C:K74
+               S:A4
+               H:K9
+               D:AKT943
+               C:QJ3
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 500
+min 500  max 500
+Total Point : 24
+3NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AQ82
+               H:K9543
+               D:T8
+               C:96
+S:KJ6              N          S:T73
+H:7            W       E      H:AJT2
+D:K975                        D:J43
+C:QJT53            S          C:842
+               S:954
+               H:Q86
+               D:AQ62
+               C:AK7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 450
+ denom : 2  Tricks : 450
+ denom : 3  Tricks : 400
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 450
+min 400  max 450
+Total Point : 23
+2NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J74
+               H:JT875
+               D:J542
+               C:9
+S:K52              N          S:986
+H:9            W       E      H:KQ62
+D:T873                        D:KQ6
+C:KJ753            S          C:864
+               S:AQT3
+               H:A43
+               D:A9
+               C:AQT2
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 850
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 900
+min 850  max 900
+Total Point : 14
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AT9
+               H:T3
+               D:JT754
+               C:QT8
+S:QJ54             N          S:K862
+H:96542        W       E      H:A8
+D:86                          D:AKQ9
+C:AK               S          C:973
+               S:73
+               H:KQJ7
+               D:32
+               C:J6542
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 450
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 450
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 500
+min 450  max 650
+Total Point : 26
+3Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AK92
+               H:AK62
+               D:4
+               C:AJ76
+S:QJT              N          S:854
+H:9873         W       E      H:Q4
+D:K73                         D:AT9865
+C:Q82              S          C:K9
+               S:763
+               H:JT5
+               D:QJ2
+               C:T543
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 850
+ denom : 4  Tricks : 700
+ denom : 5  Tricks : 800
+min 700  max 850
+Total Point : 22
+2Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T63
+               H:92
+               D:A654
+               C:Q963
+S:AKJ72            N          S:854
+H:JT5          W       E      H:Q86
+D:97                          D:K82
+C:T87              S          C:KJ54
+               S:Q9
+               H:AK743
+               D:QJT3
+               C:A2
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 700
+min 600  max 700
+Total Point : 16
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T
+               H:KJ6
+               D:T875432
+               C:T6
+S:J85              N          S:K76
+H:AQ9          W       E      H:87542
+D:KJ6                         D:A9
+C:K543             S          C:QJ9
+               S:AQ9432
+               H:T3
+               D:Q
+               C:A872
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 450
+ denom : 3  Tricks : 200
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 200
+min 200  max 500
+Total Point : 26
+3H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A5
+               H:T2
+               D:AJ52
+               C:J9843
+S:JT864            N          S:92
+H:64           W       E      H:QJ
+D:KQT9                        D:8764
+C:A5               S          C:KT762
+               S:KQ73
+               H:AK98753
+               D:3
+               C:Q
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 400
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 400
+min 400  max 750
+Total Point : 28
+4Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KJ962
+               H:AT932
+               D:K
+               C:K5
+S:T854             N          S:AQ7
+H:8            W       E      H:KJ7
+D:AT964                       D:Q8532
+C:T64              S          C:J8
+               S:3
+               H:Q654
+               D:J7
+               C:AQ9732
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 400
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 400
+min 400  max 650
+Total Point : 25
+3D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A764
+               H:T98
+               D:AKT6
+               C:J6
+S:52               N          S:T93
+H:Q7653        W       E      H:KJ4
+D:J85                         D:93
+C:854              S          C:AKQ72
+               S:KQJ8
+               H:A2
+               D:Q742
+               C:T93
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 950
+min 800  max 950
+Total Point : 27
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AK43
+               H:KJ8
+               D:3
+               C:KT964
+S:J876             N          S:QT95
+H:97           W       E      H:A42
+D:875                         D:J64
+C:AQ73             S          C:J82
+               S:2
+               H:QT653
+               D:AKQT92
+               C:5
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 600  max 650
+Total Point : 23
+2NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:Q742
+               H:J5
+               D:AQ8
+               C:QT65
+S:KT5              N          S:J83
+H:K7           W       E      H:T632
+D:T97                         D:K543
+C:A9842            S          C:K7
+               S:A96
+               H:AQ984
+               D:J62
+               C:J3
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 750
+min 750  max 750
+Total Point : 19
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:Q854
+               H:Q5
+               D:KT98
+               C:T43
+S:9                N          S:AT762
+H:8732         W       E      H:A96
+D:AQJ764                      D:
+C:65               S          C:KQJ97
+               S:KJ3
+               H:KJT4
+               D:532
+               C:A82
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 450
+min 450  max 800
+Total Point : 26
+3S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J863
+               H:AJ54
+               D:Q42
+               C:K5
+S:Q                N          S:52
+H:K92          W       E      H:T873
+D:T9853                       D:AK
+C:8642             S          C:AQ973
+               S:AKT974
+               H:Q6
+               D:J76
+               C:JT
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 550
+min 550  max 850
+Total Point : 21
+1S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:642
+               H:AQJT
+               D:J872
+               C:86
+S:QT5              N          S:87
+H:8732         W       E      H:K9
+D:KQ9                         D:T54
+C:QJ5              S          C:AK9432
+               S:AKJ93
+               H:654
+               D:A63
+               C:T7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 700
+min 550  max 700
+Total Point : 20
+1H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AJ872
+               H:A
+               D:AJ87
+               C:942
+S:KQ3              N          S:T95
+H:J864         W       E      H:T732
+D:Q9                          D:KT5
+C:KJT8             S          C:AQ5
+               S:64
+               H:KQ95
+               D:6432
+               C:763
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 650
+min 550  max 800
+Total Point : 27
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AJ765
+               H:863
+               D:AJ74
+               C:2
+S:K42              N          S:T983
+H:Q7           W       E      H:AKJ95
+D:8                           D:Q92
+C:QJT8753          S          C:9
+               S:Q
+               H:T42
+               D:KT653
+               C:AK64
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 1000
+ denom : 3  Tricks : 850
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 550
+min 550  max 1000
+Total Point : 24
+3D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AJ964
+               H:JT4
+               D:AQ6
+               C:J3
+S:T32              N          S:Q5
+H:K5           W       E      H:Q632
+D:K75                         D:8
+C:T9754            S          C:AKQ862
+               S:K87
+               H:A987
+               D:JT9432
+               C:
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 700
+min 500  max 950
+Total Point : 28
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J
+               H:A987
+               D:JT63
+               C:QJ83
+S:AQT752           N          S:K864
+H:6            W       E      H:KJ432
+D:542                         D:7
+C:942              S          C:KT7
+               S:93
+               H:QT5
+               D:AKQ98
+               C:A65
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 600  max 700
+Total Point : 23
+2NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AKJ4
+               H:T983
+               D:J98
+               C:75
+S:9853             N          S:Q
+H:A7           W       E      H:6542
+D:Q6432                       D:AT5
+C:K3               S          C:Q9864
+               S:T762
+               H:KQJ
+               D:K7
+               C:AJT2
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 350
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 550
+ denom : 5  Tricks : 500
+min 350  max 700
+Total Point : 19
+1D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AT2
+               H:AJT65
+               D:A6
+               C:985
+S:QJ95             N          S:K84
+H:KQ97         W       E      H:83
+D:75                          D:J82
+C:432              S          C:AKQJ6
+               S:763
+               H:42
+               D:KQT943
+               C:T7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 750
+min 750  max 750
+Total Point : 21
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T86
+               H:T6
+               D:KQJ42
+               C:QJ4
+S:7                N          S:AKJ4
+H:QJ873        W       E      H:954
+D:T98                         D:A753
+C:AT82             S          C:63
+               S:Q9532
+               H:AK2
+               D:6
+               C:K975
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 850
+ denom : 4  Tricks : 1050
+ denom : 5  Tricks : 1050
+min 750  max 1050
+Total Point : 28
+4S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KQJ
+               H:A962
+               D:Q94
+               C:K64
+S:5                N          S:7643
+H:83           W       E      H:KQJT4
+D:JT3                         D:K2
+C:QJT9852          S          C:73
+               S:AT982
+               H:75
+               D:A8765
+               C:A
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 300
+ denom : 2  Tricks : 300
+ denom : 3  Tricks : 300
+ denom : 4  Tricks : 300
+ denom : 5  Tricks : 300
+min 300  max 300
+Total Point : 29
+4NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AJ5
+               H:A64
+               D:AT43
+               C:J72
+S:QT98             N          S:42
+H:JT9          W       E      H:8753
+D:K752                        D:Q8
+C:54               S          C:KT986
+               S:K763
+               H:KQ2
+               D:J96
+               C:AQ3
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 1100
+ denom : 4  Tricks : 900
+ denom : 5  Tricks : 900
+min 800  max 1100
+Total Point : 26
+3H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A83
+               H:A6
+               D:AK86
+               C:KT95
+S:QT9              N          S:J754
+H:K8           W       E      H:JT
+D:9754                        D:J3
+C:AQJ8             S          C:76432
+               S:K62
+               H:Q975432
+               D:QT2
+               C:
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 900
+min 600  max 950
+Total Point : 27
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AK753
+               H:642
+               D:6
+               C:QJ73
+S:QJ6              N          S:T84
+H:AT           W       E      H:QJ98753
+D:JT975                       D:4
+C:842              S          C:K6
+               S:92
+               H:K
+               D:AKQ832
+               C:AT95
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 600  max 650
+Total Point : 23
+2NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K954
+               H:J5
+               D:865
+               C:KJ84
+S:J                N          S:A632
+H:876432       W       E      H:KT
+D:9                           D:AQJ73
+C:QT963            S          C:75
+               S:QT87
+               H:AQ9
+               D:KT42
+               C:A2
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 350
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 650
+min 350  max 800
+Total Point : 28
+4H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J97653
+               H:872
+               D:9865
+               C:
+S:                 N          S:KQT842
+H:J543         W       E      H:6
+D:QT3                         D:J42
+C:AQJT76           S          C:K52
+               S:A
+               H:AKQT9
+               D:AK7
+               C:9843
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 300
+ denom : 2  Tricks : 250
+ denom : 3  Tricks : 300
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 600
+min 250  max 750
+Total Point : 29
+4D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:9
+               H:AKJ6
+               D:732
+               C:AK752
+S:KQJT763          N          S:A8542
+H:52           W       E      H:T43
+D:KJ                          D:84
+C:T8               S          C:Q43
+               S:
+               H:Q987
+               D:AQT965
+               C:J96
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 400
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 400
+min 400  max 650
+Total Point : 31
+5Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KQ
+               H:AK
+               D:AQ64
+               C:K9862
+S:AJ5              N          S:9763
+H:Q9875        W       E      H:T632
+D:3                           D:J95
+C:AJ54             S          C:T3
+               S:T842
+               H:J4
+               D:KT872
+               C:Q7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 1150
+ denom : 5  Tricks : 800
+min 600  max 1150
+Total Point : 27
+4Sダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  SX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J87
+               H:9643
+               D:AKJ3
+               C:JT
+S:95               N          S:2
+H:AKQ72        W       E      H:JT85
+D:T98                         D:Q76
+C:KQ6              S          C:98754
+               S:AKQT643
+               H:
+               D:542
+               C:A32
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 1100
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 900
+ denom : 5  Tricks : 650
+min 650  max 1100
+Total Point : 23
+2C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KT5
+               H:8642
+               D:Q962
+               C:63
+S:Q72              N          S:984
+H:QJ95         W       E      H:AKT73
+D:JT73                        D:854
+C:Q7               S          C:K8
+               S:AJ63
+               H:
+               D:AK
+               C:AJT9542
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 1000
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 950
+min 850  max 1000
+Total Point : 30
+5Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:6532
+               H:A742
+               D:AT32
+               C:K
+S:K4               N          S:JT8
+H:J5           W       E      H:QT3
+D:J65                         D:Q974
+C:JT8752           S          C:Q93
+               S:AQ97
+               H:K986
+               D:K8
+               C:A64
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 1000
+min 750  max 1000
+Total Point : 26
+3S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AQJ
+               H:AT9
+               D:KQ5
+               C:Q972
+S:87               N          S:962
+H:QJ643        W       E      H:K875
+D:J8                          D:9762
+C:K643             S          C:A5
+               S:KT543
+               H:2
+               D:AT43
+               C:JT8
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 450
+ denom : 2  Tricks : 400
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 550
+ denom : 5  Tricks : 400
+min 400  max 550
+Total Point : 29
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:Q3
+               H:AQ96
+               D:AT
+               C:AQJ43
+S:AJ62             N          S:KT97
+H:752          W       E      H:T843
+D:J9543                       D:2
+C:9                S          C:KT52
+               S:854
+               H:KJ
+               D:KQ876
+               C:876
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 1050
+ denom : 5  Tricks : 1050
+min 600  max 1050
+Total Point : 31
+5S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:63
+               H:T96
+               D:QT983
+               C:AQ4
+S:T92              N          S:7
+H:83           W       E      H:AK7542
+D:K52                         D:64
+C:JT972            S          C:8653
+               S:AKQJ854
+               H:QJ
+               D:AJ7
+               C:K
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 1000
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 1100
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 1000
+min 900  max 1100
+Total Point : 33
+6Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[6  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J9
+               H:AQJ74
+               D:Q8
+               C:AQJ7
+S:Q843             N          S:K52
+H:K            W       E      H:63
+D:K9743                       D:JT62
+C:642              S          C:9853
+               S:AT76
+               H:T9852
+               D:A5
+               C:KT
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 700
+ denom : 5  Tricks : 650
+min 650  max 850
+Total Point : 18
+1C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T4
+               H:KJT972
+               D:QJT53
+               C:
+S:J95              N          S:KQ732
+H:654          W       E      H:A8
+D:A82                         D:K974
+C:T932             S          C:Q5
+               S:A86
+               H:Q3
+               D:6
+               C:AKJ8764
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 850
+min 550  max 850
+Total Point : 25
+3C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KQJ953
+               H:T63
+               D:43
+               C:J7
+S:82               N          S:764
+H:KJ85         W       E      H:A942
+D:AJ986                       D:Q752
+C:K3               S          C:T8
+               S:AT
+               H:Q7
+               D:KT
+               C:AQ96542
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 600
+min 500  max 700
+Total Point : 25
+3Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:865
+               H:KT72
+               D:J2
+               C:KJ62
+S:A9               N          S:7432
+H:Q64          W       E      H:3
+D:Q93                         D:K7654
+C:AQ987            S          C:543
+               S:KQJT
+               H:AJ985
+               D:AT8
+               C:T
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 350
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 350
+min 350  max 500
+Total Point : 25
+3D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:864
+               H:543
+               D:AK3
+               C:AQ53
+S:K9732            N          S:QT5
+H:QT8          W       E      H:AJ97
+D:T64                         D:72
+C:T8               S          C:K972
+               S:AJ
+               H:K62
+               D:QJ985
+               C:J64
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 700
+ denom : 5  Tricks : 650
+min 500  max 700
+Total Point : 22
+2C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:Q952
+               H:J7
+               D:KJ94
+               C:KQT
+S:AJ7              N          S:KT843
+H:QT832        W       E      H:K96
+D:Q875                        D:32
+C:3                S          C:AJ5
+               S:6
+               H:A54
+               D:AT6
+               C:987642
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 900
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 1000
+min 650  max 1000
+Total Point : 27
+4S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KQT
+               H:K6
+               D:K972
+               C:AK82
+S:74               N          S:532
+H:QT953        W       E      H:A8
+D:863                         D:AQJT54
+C:JT9              S          C:76
+               S:AJ986
+               H:J742
+               D:
+               C:Q543
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 1000
+min 650  max 1000
+Total Point : 25
+3Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AJ862
+               H:K975
+               D:QJ
+               C:AJ
+S:                 N          S:KQ9543
+H:AQT8         W       E      H:632
+D:75                          D:643
+C:KQT9864          S          C:2
+               S:T7
+               H:J4
+               D:AKT982
+               C:753
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 550
+ denom : 5  Tricks : 850
+min 550  max 900
+Total Point : 24
+3Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:97
+               H:QT74
+               D:842
+               C:J643
+S:QJT4             N          S:A8632
+H:K952         W       E      H:6
+D:3                           D:J97
+C:KT72             S          C:A985
+               S:K5
+               H:AJ83
+               D:AKQT65
+               C:Q
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 700
+min 550  max 850
+Total Point : 25
+3Sダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  SX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KJT3
+               H:T3
+               D:K853
+               C:KJ5
+S:62               N          S:75
+H:K865         W       E      H:AQ742
+D:AQ92                        D:T64
+C:QT6              S          C:942
+               S:AQ984
+               H:J9
+               D:J7
+               C:A873
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 850
+ denom : 4  Tricks : 1050
+ denom : 5  Tricks : 1000
+min 850  max 1050
+Total Point : 29
+4S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KQT6
+               H:AKJ4
+               D:862
+               C:75
+S:J975             N          S:
+H:98           W       E      H:Q765
+D:QJT                         D:K7543
+C:KJ63             S          C:T942
+               S:A8432
+               H:T32
+               D:A9
+               C:AQ8
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 800
+min 650  max 850
+Total Point : 28
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AT83
+               H:
+               D:KT92
+               C:86532
+S:Q95              N          S:KJ6
+H:QJT985       W       E      H:K764
+D:73                          D:Q84
+C:T4               S          C:A97
+               S:742
+               H:A32
+               D:AJ65
+               C:KQJ
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 900
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 750
+min 450  max 900
+Total Point : 22
+2C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K65
+               H:AQ2
+               D:AJ42
+               C:T96
+S:A92              N          S:QJT8743
+H:4            W       E      H:KJT863
+D:KQ865                       D:
+C:K853             S          C:
+               S:
+               H:975
+               D:T973
+               C:AQJ742
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 800
+min 600  max 800
+Total Point : 21
+1C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A843
+               H:765
+               D:52
+               C:KQT2
+S:QJ92             N          S:KT6
+H:AK82         W       E      H:JT43
+D:KQJ87                       D:4
+C:                 S          C:J9854
+               S:75
+               H:Q9
+               D:AT963
+               C:A763
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 650
+min 600  max 700
+Total Point : 22
+2NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J5
+               H:KQJ3
+               D:863
+               C:QJT2
+S:732              N          S:QT6
+H:952          W       E      H:AT874
+D:Q952                        D:KT
+C:K95              S          C:A64
+               S:AK984
+               H:6
+               D:AJ74
+               C:873
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 650
+min 550  max 700
+Total Point : 23
+2H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A9532
+               H:KT8
+               D:AJT9
+               C:T
+S:KT7              N          S:Q86
+H:42           W       E      H:AJ
+D:K8642                       D:Q73
+C:A43              S          C:QJ652
+               S:J4
+               H:Q97653
+               D:5
+               C:K987
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 450
+ denom : 2  Tricks : 250
+ denom : 3  Tricks : 450
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 500
+min 250  max 600
+Total Point : 28
+4D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:QJ853
+               H:AQ
+               D:J95
+               C:AK4
+S:AT9764           N          S:K2
+H:KT6          W       E      H:J8753
+D:Q                           D:432
+C:Q95              S          C:T72
+               S:
+               H:942
+               D:AKT876
+               C:J863
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 550
+ denom : 5  Tricks : 550
+min 500  max 750
+Total Point : 30
+5Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K3
+               H:K974
+               D:A72
+               C:K982
+S:7                N          S:JT8542
+H:AJ           W       E      H:5
+D:KJT643                      D:985
+C:A765             S          C:T43
+               S:AQ96
+               H:QT8632
+               D:Q
+               C:QJ
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 750
+min 700  max 850
+Total Point : 29
+4Sダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  SX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K6532
+               H:T86
+               D:JT6
+               C:Q3
+S:A8               N          S:9
+H:J943         W       E      H:K752
+D:K98532                      D:74
+C:J                S          C:K87542
+               S:QJT74
+               H:AQ
+               D:AQ
+               C:AT96
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 450
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 450
+min 450  max 600
+Total Point : 24
+3Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K765
+               H:87
+               D:KQT
+               C:AK83
+S:A9432            N          S:QJ
+H:65           W       E      H:KQJT4
+D:J854                        D:A973
+C:T4               S          C:76
+               S:T8
+               H:A932
+               D:62
+               C:QJ952
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 1150
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 1150
+min 800  max 1150
+Total Point : 28
+4H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AKT
+               H:Q72
+               D:AJ76
+               C:AQT
+S:Q3               N          S:J854
+H:J6           W       E      H:T5
+D:KQ5                         D:T84
+C:K76432           S          C:J985
+               S:9762
+               H:AK9843
+               D:932
+               C:
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 450
+ denom : 4  Tricks : 550
+ denom : 5  Tricks : 550
+min 450  max 550
+Total Point : 21
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:3
+               H:T8752
+               D:KQ32
+               C:753
+S:Q952             N          S:KJ74
+H:K6           W       E      H:43
+D:96                          D:A874
+C:T9862            S          C:KQJ
+               S:AT86
+               H:AQJ9
+               D:JT5
+               C:A4
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 550
+min 450  max 650
+Total Point : 25
+3S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J762
+               H:97
+               D:A2
+               C:K8732
+S:84               N          S:53
+H:AK8          W       E      H:QT52
+D:T63                         D:K985
+C:AJT65            S          C:Q94
+               S:AKQT9
+               H:J643
+               D:QJ74
+               C:
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 1050
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 800
+min 750  max 1050
+Total Point : 26
+3H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KJT5
+               H:AK
+               D:A65
+               C:J743
+S:Q43              N          S:86
+H:62           W       E      H:T875
+D:QJT42                       D:98
+C:AQT              S          C:K9852
+               S:A972
+               H:QJ943
+               D:K73
+               C:6
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 850
+min 600  max 850
+Total Point : 27
+4Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:7
+               H:KJ74
+               D:KJ2
+               C:A9865
+S:T9865            N          S:KQJ2
+H:A93          W       E      H:QT865
+D:A875                        D:QT
+C:4                S          C:J7
+               S:A43
+               H:2
+               D:9643
+               C:KQT32
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 350
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 700
+ denom : 5  Tricks : 350
+min 350  max 700
+Total Point : 28
+4Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:98
+               H:QT83
+               D:82
+               C:A6532
+S:QT43             N          S:KJ7652
+H:9652         W       E      H:AK
+D:QT5                         D:7643
+C:97               S          C:Q
+               S:A
+               H:J74
+               D:AKJ9
+               C:KJT84
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 600  max 650
+Total Point : 21
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AQ754
+               H:94
+               D:AT54
+               C:54
+S:K92              N          S:JT83
+H:A7           W       E      H:K8653
+D:J6                          D:K87
+C:KJT963           S          C:8
+               S:6
+               H:QJT2
+               D:Q932
+               C:AQ72
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 550
+ denom : 5  Tricks : 550
+min 550  max 550
+Total Point : 21
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:QJ82
+               H:6
+               D:T9653
+               C:KQ6
+S:K7653            N          S:94
+H:KJ74         W       E      H:QT3
+D:7                           D:KQJ82
+C:A97              S          C:T53
+               S:AT
+               H:A9852
+               D:A4
+               C:J842
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 550  max 600
+Total Point : 21
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J9
+               H:QJT653
+               D:K72
+               C:K8
+S:2                N          S:AQ653
+H:A84          W       E      H:K7
+D:QJT53                       D:84
+C:J642             S          C:Q753
+               S:KT874
+               H:92
+               D:A96
+               C:AT9
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 950
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 900
+ denom : 5  Tricks : 950
+min 600  max 950
+Total Point : 28
+4Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AT
+               H:QT985
+               D:A9
+               C:T542
+S:J82              N          S:975
+H:KJ2          W       E      H:A7
+D:QJ7654                      D:KT832
+C:7                S          C:Q86
+               S:KQ643
+               H:643
+               D:
+               C:AKJ93
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 800
+min 750  max 800
+Total Point : 14
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A854
+               H:654
+               D:T832
+               C:32
+S:K92              N          S:J3
+H:KJT9         W       E      H:AQ
+D:J94                         D:KQ65
+C:AQ9              S          C:T8764
+               S:QT76
+               H:8732
+               D:A7
+               C:KJ5
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 750
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 750
+min 700  max 750
+Total Point : 18
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K962
+               H:J76
+               D:K85
+               C:J96
+S:A53              N          S:QJ74
+H:KT85         W       E      H:4
+D:A2                          D:QT63
+C:T742             S          C:AQ85
+               S:T8
+               H:AQ932
+               D:J974
+               C:K3
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 500
+min 500  max 550
+Total Point : 23
+2NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T543
+               H:Q
+               D:AT5
+               C:KT863
+S:J86              N          S:K9
+H:K765         W       E      H:JT932
+D:862                         D:QJ7
+C:A75              S          C:Q92
+               S:AQ72
+               H:A84
+               D:K943
+               C:J4
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 450
+ denom : 3  Tricks : 400
+ denom : 4  Tricks : 350
+ denom : 5  Tricks : 400
+min 350  max 700
+Total Point : 27
+4S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J97
+               H:K97
+               D:AKJ9
+               C:Q86
+S:4                N          S:Q652
+H:83           W       E      H:JT54
+D:Q62                         D:T83
+C:AT97532          S          C:KJ
+               S:AKT83
+               H:AQ62
+               D:754
+               C:4
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 1100
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 900
+ denom : 5  Tricks : 600
+min 500  max 1100
+Total Point : 31
+5Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A9754
+               H:
+               D:AJ72
+               C:AJ74
+S:J3               N          S:QT82
+H:AKJ9532      W       E      H:Q8
+D:KQ9                         D:T8653
+C:3                S          C:T8
+               S:K6
+               H:T764
+               D:4
+               C:KQ9652
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 300
+ denom : 2  Tricks : 150
+ denom : 3  Tricks : 300
+ denom : 4  Tricks : 300
+ denom : 5  Tricks : 150
+min 150  max 300
+Total Point : 30
+5D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AJ83
+               H:A86
+               D:K984
+               C:K5
+S:K96542           N          S:7
+H:7            W       E      H:KQJT42
+D:Q7                          D:62
+C:8643             S          C:JT97
+               S:QT
+               H:953
+               D:AJT53
+               C:AQ2
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 1050
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 1050
+min 800  max 1050
+Total Point : 34
+6Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[6  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:5
+               H:AQ8
+               D:KJ95
+               C:KJ732
+S:QJ76             N          S:T832
+H:KJ964        W       E      H:T32
+D:82                          D:T
+C:AQ               S          C:T9864
+               S:AK94
+               H:75
+               D:AQ7643
+               C:5
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 1100
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 900
+ denom : 5  Tricks : 850
+min 800  max 1100
+Total Point : 24
+3C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AT
+               H:Q9872
+               D:AKQ2
+               C:Q8
+S:Q972             N          S:KJ65
+H:K653         W       E      H:AJT4
+D:T85                         D:J64
+C:92               S          C:K3
+               S:843
+               H:
+               D:973
+               C:AJT7654
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 1000
+ denom : 3  Tricks : 850
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 1000
+min 850  max 1000
+Total Point : 29
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A9
+               H:96
+               D:AKT
+               C:QT7654
+S:J53              N          S:Q742
+H:K83          W       E      H:QJT72
+D:742                         D:J8
+C:AJ83             S          C:92
+               S:KT86
+               H:A54
+               D:Q9653
+               C:K
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 300
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 300
+min 300  max 550
+Total Point : 24
+3C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J43
+               H:J954
+               D:A83
+               C:743
+S:KQ976            N          S:52
+H:82           W       E      H:AQT3
+D:QJ92                        D:KT654
+C:52               S          C:T9
+               S:AT8
+               H:K76
+               D:7
+               C:AKQJ86
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 700
+ denom : 5  Tricks : 700
+min 700  max 700
+Total Point : 19
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:752
+               H:QJ
+               D:QT652
+               C:T64
+S:QJ94             N          S:T863
+H:T76          W       E      H:K43
+D:973                         D:AK
+C:AJ8              S          C:K973
+               S:AK
+               H:A9852
+               D:J84
+               C:Q52
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 900
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 700
+min 650  max 900
+Total Point : 21
+1H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AT874
+               H:A8
+               D:J8
+               C:JT87
+S:92               N          S:K63
+H:QJ           W       E      H:963
+D:K75432                      D:QT9
+C:K43              S          C:AQ62
+               S:QJ5
+               H:KT7542
+               D:A6
+               C:95
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 1000
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 1000
+min 700  max 1000
+Total Point : 27
+4Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:JT95
+               H:T8
+               D:QJ985
+               C:A2
+S:K832             N          S:Q6
+H:96           W       E      H:753
+D:A742                        D:KT
+C:Q98              S          C:T76543
+               S:A74
+               H:AKQJ42
+               D:63
+               C:KJ
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 700
+ denom : 5  Tricks : 700
+min 700  max 700
+Total Point : 18
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:T8742
+               H:983
+               D:96
+               C:JT8
+S:K95              N          S:AJ6
+H:K75          W       E      H:Q62
+D:Q532                        D:KT87
+C:632              S          C:A94
+               S:Q3
+               H:AJT4
+               D:AJ4
+               C:KQ75
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 650
+min 600  max 700
+Total Point : 20
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AJ5
+               H:74
+               D:K94
+               C:JT976
+S:74               N          S:QT86
+H:JT86         W       E      H:KQ532
+D:J852                        D:AT7
+C:AK2              S          C:5
+               S:K932
+               H:A9
+               D:Q63
+               C:Q843
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 300
+ denom : 3  Tricks : 400
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 400
+min 300  max 550
+Total Point : 25
+3D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AT3
+               H:K8
+               D:A643
+               C:JT76
+S:J975             N          S:KQ64
+H:Q43          W       E      H:976
+D:95                          D:JT
+C:KQ92             S          C:A543
+               S:82
+               H:AJT52
+               D:KQ872
+               C:8
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 650
+ denom : 2  Tricks : 450
+ denom : 3  Tricks : 450
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 450
+min 450  max 650
+Total Point : 29
+4D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:QT9
+               H:Q9764
+               D:QT5
+               C:T3
+S:75               N          S:K32
+H:KT8          W       E      H:32
+D:62                          D:J9874
+C:AJ9754           S          C:Q62
+               S:AJ864
+               H:AJ5
+               D:AK3
+               C:K8
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 400
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 650
+min 400  max 750
+Total Point : 20
+1H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:985
+               H:AJ42
+               D:742
+               C:652
+S:KJT              N          S:Q72
+H:73           W       E      H:T65
+D:98                          D:KQT3
+C:AT9873           S          C:KQ4
+               S:A643
+               H:KQ98
+               D:AJ65
+               C:J
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 300
+ denom : 2  Tricks : 400
+ denom : 3  Tricks : 0
+ denom : 4  Tricks : 350
+ denom : 5  Tricks : 0
+min 0  max 400
+Total Point : 37
+7Hダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[7  HX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AKJ
+               H:K854
+               D:A85
+               C:KQT
+S:QT986            N          S:753
+H:             W       E      H:T93
+D:QT9762                      D:J3
+C:73               S          C:J8642
+               S:42
+               H:AQJ762
+               D:K4
+               C:A95
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 900
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 700
+ denom : 5  Tricks : 800
+min 700  max 900
+Total Point : 23
+2C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J965
+               H:A96
+               D:AJT
+               C:AT5
+S:A7               N          S:KQ842
+H:QJT432       W       E      H:85
+D:Q984                        D:32
+C:Q                S          C:J862
+               S:T3
+               H:K7
+               D:K765
+               C:K9743
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 700
+min 550  max 850
+Total Point : 24
+3Sダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  SX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:A86
+               H:AJ53
+               D:8432
+               C:QT
+S:T92              N          S:43
+H:QT98         W       E      H:764
+D:96                          D:AKQJT
+C:AJ62             S          C:954
+               S:KQJ75
+               H:K2
+               D:75
+               C:K873
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 450
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 300
+ denom : 4  Tricks : 350
+ denom : 5  Tricks : 200
+min 200  max 550
+Total Point : 29
+4H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KJ9
+               H:K72
+               D:972
+               C:AK95
+S:72               N          S:T863
+H:93           W       E      H:T85
+D:JT864                       D:AK5
+C:JT84             S          C:Q76
+               S:AQ54
+               H:AQJ64
+               D:Q3
+               C:32
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 700
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 750
+min 500  max 900
+Total Point : 21
+1D
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1  D  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K76
+               H:K73
+               D:A64
+               C:K984
+S:Q85432           N          S:AJT9
+H:AQJ4         W       E      H:T9
+D:                            D:QJ72
+C:Q65              S          C:J32
+               S:
+               H:8652
+               D:KT9853
+               C:AT7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 700
+min 700  max 800
+Total Point : 20
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K7654
+               H:K853
+               D:J
+               C:542
+S:AQT              N          S:832
+H:9            W       E      H:AQJ42
+D:T98654                      D:3
+C:T63              S          C:AK98
+               S:J9
+               H:T76
+               D:AKQ72
+               C:QJ7
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 1000
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 950
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 1000
+min 950  max 1000
+Total Point : 12
+1NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[1 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:JT92
+               H:J854
+               D:Q73
+               C:J7
+S:K864             N          S:AQ
+H:AQ9          W       E      H:T762
+D:T8                          D:A6542
+C:AKQ5             S          C:84
+               S:753
+               H:K3
+               D:KJ9
+               C:T9632
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 550
+min 500  max 600
+Total Point : 23
+2NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:JT765
+               H:AQ743
+               D:A6
+               C:6
+S:32               N          S:AKQ9
+H:JT8652       W       E      H:9
+D:875                         D:KJ9
+C:J8               S          C:QT953
+               S:84
+               H:K
+               D:QT432
+               C:AK742
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 450
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 950
+ denom : 4  Tricks : 1050
+ denom : 5  Tricks : 500
+min 450  max 1050
+Total Point : 31
+5Sダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  SX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KJT43
+               H:963
+               D:Q765
+               C:7
+S:75               N          S:6
+H:42           W       E      H:QJ7
+D:2                           D:K9843
+C:AKJT8532         S          C:Q964
+               S:AQ982
+               H:AKT85
+               D:AJT
+               C:
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 400
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 400
+min 400  max 650
+Total Point : 22
+2C
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2  C  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:J852
+               H:QJT2
+               D:AK53
+               C:2
+S:A93              N          S:K74
+H:K985         W       E      H:A76
+D:9876                        D:QJ42
+C:93               S          C:JT7
+               S:QT6
+               H:43
+               D:T
+               C:AKQ8654
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 950
+min 800  max 950
+Total Point : 28
+4Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K862
+               H:K52
+               D:JT8
+               C:AQ7
+S:J54              N          S:AT93
+H:A964         W       E      H:QT3
+D:97                          D:642
+C:JT83             S          C:654
+               S:Q7
+               H:J87
+               D:AKQ53
+               C:K92
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 350
+ denom : 2  Tricks : 350
+ denom : 3  Tricks : 200
+ denom : 4  Tricks : 350
+ denom : 5  Tricks : 200
+min 200  max 350
+Total Point : 32
+5H
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  H  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:AKJ74
+               H:AK63
+               D:J5
+               C:Q3
+S:952              N          S:Q863
+H:JT           W       E      H:85
+D:QT984                       D:K3
+C:K84              S          C:J9765
+               S:T
+               H:Q9742
+               D:A762
+               C:AT2
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 750
+min 650  max 850
+Total Point : 28
+4Cダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[4  CX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KJ95
+               H:T
+               D:J97654
+               C:Q9
+S:AT8732           N          S:Q6
+H:K5           W       E      H:J9764
+D:KQ                          D:T832
+C:KT3              S          C:62
+               S:4
+               H:AQ832
+               D:A
+               C:AJ8754
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 400
+ denom : 3  Tricks : 450
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 400
+min 400  max 500
+Total Point : 22
+2NT
+---ボード情報---
+null
+----- コントラクト -----
+contract：[2 NT  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KT42
+               H:A86
+               D:T84
+               C:QT4
+S:Q98              N          S:J6
+H:KQJ          W       E      H:T532
+D:J72                         D:963
+C:AK32             S          C:J985
+               S:A753
+               H:974
+               D:AKQ5
+               C:76
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 350
+min 350  max 600
+Total Point : 25
+3S
+---ボード情報---
+null
+----- コントラクト -----
+contract：[3  S  ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:KQ3
+               H:KQT9
+               D:KT6
+               C:K75
+S:72               N          S:J65
+H:J872         W       E      H:53
+D:73                          D:AQ952
+C:J8642            S          C:AQ3
+               S:AT984
+               H:A64
+               D:J84
+               C:T9
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 700
+ denom : 5  Tricks : 1000
+min 700  max 1000
+Total Point : 31
+5Dダブル
+---ボード情報---
+null
+----- コントラクト -----
+contract：[5  DX ] by South
+vul     ：none
+
+----- オリジナルハンド -----
+               S:K8
+               H:A87
+               D:AT954
+               C:AQ3
+S:T73              N          S:AQ942
+H:QJ9432       W       E      H:5
+D:3                           D:J6
+C:T96              S          C:K8742
+               S:J65
+               H:KT6
+               D:KQ872
+               C:J5
+
+----- プレイ -----
+    1  2  3  4  5  6  7  8  9 10 11 12 13
+N 
+E 
+S 
+W 
+

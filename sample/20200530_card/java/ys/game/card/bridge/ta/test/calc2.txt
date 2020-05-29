@@ -1,0 +1,79 @@
+はじめの状態
+---------- Board Information ----------
+  [    Status     ]  : Opening Lead
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {_CQ_C9_C8_SQ_SJ_ST_S6_HK_HQ_HT_H6_H5_H3}
+East  : {_S7_S4_S2_H8_H4_CA_CJ_C6_D9_D6_D5_D4_D3}
+South : {_C4_C3_C2_DA_DK_DT_D7_D2_SK_S9_S8_HJ_H7}
+West  : {_SA_S5_S3_HA_H9_H2_CK_CT_C7_C5_DQ_DJ_D8}
+
+Leader:East {}
+
+
+
+status=OPEN&dealer=N&vul=No&N=SQJT6HKQT653CQ98&E=S742H84CAJ6D96543&S=SK98HJ7C432DAKT72&W=SA53HA92CKT75DQJ8&bid=1C-P-P-P&contract=1C&declarer=N
+
+●変数内容表示●
+count     ：0
+nsWins    ：0
+trump     ：0
+カード状態：C2:0/S C3:0/S C4:0/S C5:0/W C6:0/E C7:0/W C8:0/N C9:0/N CT:0/W CJ:0/E CQ:0/N CK:0/W CA:0/E C_:0/f D2:0/S D3:0/E D4:0/E D5:0/E D6:0/E D7:0/S D8:0/W D9:0/E DT:0/S DJ:0/W DQ:0/W DK:0/S DA:0/S D_:0/f H2:0/W H3:0/N H4:0/E H5:0/N H6:0/N H7:0/S H8:0/E H9:0/W HT:0/N HJ:0/S HQ:0/N HK:0/N HA:0/W H_:0/f S2:0/E S3:0/W S4:0/E S5:0/W S6:0/N S7:0/E S8:0/S S9:0/S ST:0/N SJ:0/N SQ:0/N SK:0/S SA:0/W S_:0/f 
+プレイされたカード：
+leader：0E 
+●ボード状態表示●
+ハンド情報：
+               S:QJT6
+               H:KQT653
+               D:
+               C:Q98
+S:A53                         S:742
+H:A92                         H:84
+D:QJ8                         D:96543
+C:KT75                        C:AJ6
+               S:K98
+               H:J7
+               D:AKT72
+               C:432
+
+calcPropData()
+suitCount
+[0][0]=3, [0][1]=0, [0][2]=6, [0][3]=4, 
+[1][0]=3, [1][1]=5, [1][2]=2, [1][3]=3, 
+[2][0]=3, [2][1]=5, [2][2]=2, [2][3]=3, 
+[3][0]=4, [3][1]=3, [3][2]=3, [3][3]=3, 
+totalWinners
+[0][0]=0, [0][1]=2, [0][2]=0, [0][3]=0, 
+[1][0]=2, [1][1]=0, [1][2]=1, [1][3]=1, 
+longerLength
+[0][0]=3, [0][1]=5, [0][2]=6, [0][3]=4, 
+[1][0]=4, [1][1]=5, [1][2]=3, [1][3]=3, 
+shorterLength
+[0][0]=3, [0][1]=0, [0][2]=2, [0][3]=3, 
+[1][0]=3, [1][1]=3, [1][2]=2, [1][3]=3, 
+lowestCard
+[0][0]=6, [0][1]=0, [0][2]=29, [0][3]=46, 
+[1][0]=4, [1][1]=15, [1][2]=30, [1][3]=42, 
+[2][0]=1, [2][1]=14, [2][2]=33, [2][3]=48, 
+[3][0]=3, [3][1]=20, [3][2]=28, [3][3]=43, 
+highestCard
+[0][0]=10, [0][1]=0, [0][2]=39, [0][3]=52, 
+[1][0]=12, [1][1]=21, [1][2]=34, [1][3]=47, 
+[2][0]=2, [2][1]=26, [2][2]=37, [2][3]=53, 
+[3][0]=11, [3][1]=24, [3][2]=40, [3][3]=54, 
+lowestCardOfShorterSuit
+[0][0]=6, [0][1]=0, [0][2]=33, [0][3]=48, 
+[1][0]=4, [1][1]=20, [1][2]=30, [1][3]=42, 
+highestCardOfLongerSuit
+[0][0]=2, [0][1]=26, [0][2]=39, [0][3]=52, 
+[1][0]=11, [1][1]=21, [1][2]=40, [1][3]=54, 
+isWinner
+CK,CA,DK,DA,HA,SA,

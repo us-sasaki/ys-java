@@ -1,0 +1,153 @@
+ÇÕÇ∂ÇﬂÇÃèÛë‘
+---------- Board Information ----------
+  [    Status     ]  : Opening Lead
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {_C8_C3_C2_DA_DQ_DJ_D5_SK_S7_S6_HQ_H7_H6}
+East  : {_SQ_SJ_S2_H2_CA_CQ_CT_C7_DK_DT_D6_D4_D2}
+South : {_CK_C9_C5_C4_S9_S8_S4_S3_HA_HK_HT_H8_H4}
+West  : {_SA_ST_S5_HJ_H9_H5_H3_CJ_C6_D9_D8_D7_D3}
+
+Leader:East {}
+
+
+
+status=OPEN&dealer=N&vul=No&N=SK76HQ76C832DAQJ5&E=SQJ2H2CAQT7DKT642&S=S9843HAKT84CK954&W=SAT5HJ953CJ6D9873&bid=1C-P-P-P&contract=1C&declarer=N
+
+countApproximateNSWinners : suit = 0
+----- 1;9;3;11
+----- 1;10;3;11
+totalWinners = 1
+longerLength = 4
+shorterLength= 2
+lowestCardOfShorterSuit = C6
+highestCardOfLongerSuit = CA
+lowestCardOfShorterSuitIsWinner = false
+-----
+countApproximateNSWinners : suit = 1
+----- 1;4;3;7
+totalWinners = 0
+longerLength = 5
+shorterLength= 4
+lowestCardOfShorterSuit = D3
+highestCardOfLongerSuit = DK
+lowestCardOfShorterSuitIsWinner = false
+-----
+opp1.cnt = 0
+opp2.cnt = 4
+countApproximateNSWinners : suit = 2
+----- 1;3;3;3
+totalWinners = 0
+longerLength = 4
+shorterLength= 1
+lowestCardOfShorterSuit = H2
+highestCardOfLongerSuit = HJ
+lowestCardOfShorterSuitIsWinner = false
+-----
+opp1.cnt = 5
+opp2.cnt = 3
+countApproximateNSWinners : suit = 3
+----- 1;0;3;0
+----- 1;0;3;1
+totalWinners = 1
+longerLength = 3
+shorterLength= 3
+lowestCardOfShorterSuit = S5
+highestCardOfLongerSuit = SQ
+lowestCardOfShorterSuitIsWinner = false
+-----
+opp1.cnt = 4
+opp2.cnt = 3
+leaderQuickTricks = 2
+countApproximateNSWinners : suit = 0
+----- 2;9;0;10
+totalWinners = 0
+longerLength = 4
+shorterLength= 3
+lowestCardOfShorterSuit = C2
+highestCardOfLongerSuit = CK
+lowestCardOfShorterSuitIsWinner = false
+-----
+countApproximateNSWinners : suit = 1
+countApproximateNSWinners : suit = 2
+----- 2;4;0;3
+----- 2;5;0;3
+----- 2;6;0;3
+----- 2;6;0;4
+totalWinners = 3
+longerLength = 5
+shorterLength= 3
+lowestCardOfShorterSuit = H6
+highestCardOfLongerSuit = HA
+lowestCardOfShorterSuitIsWinner = false
+-----
+opp1.cnt = 4
+opp2.cnt = 1
+countApproximateNSWinners : suit = 3
+----- 2;0;0;0
+totalWinners = 0
+longerLength = 4
+shorterLength= 3
+lowestCardOfShorterSuit = S6
+highestCardOfLongerSuit = S9
+lowestCardOfShorterSuitIsWinner = false
+-----
+opp1.cnt = 3
+opp2.cnt = 3
+oppQT1            = 1
+countApproximateNSWinners : suit = 0
+----- 0;10;2;9
+totalWinners = 0
+longerLength = 4
+shorterLength= 3
+lowestCardOfShorterSuit = C2
+highestCardOfLongerSuit = CK
+lowestCardOfShorterSuitIsWinner = false
+-----
+countApproximateNSWinners : suit = 1
+----- 0;6;2;13
+----- 0;7;2;13
+totalWinners = 1
+longerLength = 4
+shorterLength= 0
+lowestCardOfShorterSuitIsWinner = false
+-----
+opp1.cnt = 5
+opp2.cnt = 4
+countApproximateNSWinners : suit = 2
+----- 0;3;2;4
+----- 0;3;2;5
+----- 0;3;2;6
+----- 0;4;2;6
+totalWinners = 3
+longerLength = 5
+shorterLength= 3
+lowestCardOfShorterSuit = H6
+highestCardOfLongerSuit = HA
+lowestCardOfShorterSuitIsWinner = false
+-----
+opp1.cnt = 1
+opp2.cnt = 4
+countApproximateNSWinners : suit = 3
+----- 0;0;2;0
+totalWinners = 0
+longerLength = 4
+shorterLength= 3
+lowestCardOfShorterSuit = S6
+highestCardOfLongerSuit = S9
+lowestCardOfShorterSuitIsWinner = false
+-----
+opp1.cnt = 3
+opp2.cnt = 3
+oppQT2            = 2
+leftTricks        = 13
+leaderTricks     = 7
+î’ñ ï]âøÇ…ÇÊÇÈ leader ÇÃÉgÉäÉbÉNêî : 6

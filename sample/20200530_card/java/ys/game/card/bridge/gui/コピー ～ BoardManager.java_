@@ -1,0 +1,436 @@
+package ys.game.card.bridge.gui;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Vector;
+
+import ys.game.card.*;
+import ys.game.card.gui.*;
+import ys.game.card.bridge.*;
+import ys.game.card.bridge.gui.*;
+
+/**
+ * PlayMain を整理して Board を進めるオブジェクトを作成することとする。
+ * このオブジェクトはアプレットで使用されることを前提とする。
+ * 将来的な GUI オプション、プレイ内容制御機能を提供させたい。
+ *
+ * 基本的な考え方は、上位で Board を与え、その Board を終了させる役割を持つ。
+ * 与えられた board の reset は上位で行う。(途中から実行させたいため)
+ * また、Player も上位で設定する。
+ *
+ * GUI オプション、プレイ内容制御機能としては、次を含められるようにしたい
+ * ・プレイナビゲーション(解説。あるイベントですみれが説明する。)
+ * ●中断
+ * ●ダブルダミーモード
+ * ・視点の設定
+ * ・部分的オープンモード
+ * ・カードの裏の模様設定
+ * ・点滅時間など、wait の設定
+ * ・Undo
+ * ・これらの機能の有効化、無効化
+ */
+public class BoardManager implements MouseListener, ActionListener {
+	/**
+	 * 各種オプション項目を保存するオブジェクト
+	 */
+	protected BoardManagerConfig config;
+	
+	/**
+	 * 親 Container で、表示される場所である。
+	 */
+	protected Container		display;
+	
+	/**
+	 * 表示エリアに貼り付けられる BridgeField である
+	 */
+	protected BridgeField	field;
+	
+	/**
+	 * 進行対象となるボード
+	 */
+	protected GuiedBoard	board;
+	
+	/**
+	 * プレイヤーアルゴリズム
+	 */
+	protected Player[]		player;
+	
+	protected Explanation	sumire;
+	protected Button		quit;
+	protected Button		dd;
+	protected Thread		mainThread;
+	protected YesNoDialog	confirmDialog;
+	
+/*-------------
+ * Constructor
+ */
+	public BoardManager() {
+		player = new Player[4];
+	}
+	
+/*----------------------------
+ * implements (MouseListener)
+ */
+	/**
+	 * マウスがクリックされた場合、このオブジェクトの wait() を開放します。
+	 */
+	public void mouseClicked(MouseEvent me) {
+		synchronized (this) {
+			notifyAll();
+		}
+	}
+	
+	public void mousePressed(MouseEvent me) { }
+	public void mouseReleased(MouseEvent me) { }
+	public void mouseEntered(MouseEvent me) { }
+	public void mouseExited(MouseEvent me) { }
+	
+/*-----------------------------
+ * implements (ActionListener)
+ */
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == quit) {
+			if (mainThread != null) mainThread.interrupt();
+		}
+		
+		if (!config.doubleDummyIsAvailable()) return;
+		
+		if (e.getSource() == dd) {
+			config.setDoubleDummy(!config.doubleDummy());
+			if (!config.doubleDummy()) {
+				dd.setLabel("ダブルダミー");
+				if (board.getStatus() == Board.PLAYING) {
+					board.getHand(Board.EAST).turn(false);
+					board.getHand(Board.WEST).turn(false);
+					field.repaint();
+				}
+			} else {
+				dd.setLabel("通常に戻す");
+				if (board.getStatus() == Board.PLAYING) {
+					board.getHand(Board.EAST).turn(true);
+					board.getHand(Board.WEST).turn(true);
+					field.repaint();
+				}
+			}
+		}
+	}
+	
+/*--------------
+ * 設定メソッド
+ */
+	/**
+	 * 各種ＧＵＩリソースの初期化を行います。
+	 * init と destroy は対となるメソッドで、init では各種リソースの生成、
+	 * destroy では各種リソースの破棄を行います。
+	 *
+	 * @param		display		親Containerを指定。peered component である必要がある。
+	 * @param		board		進行対象のボードを設定する
+	 */
+	public void init(Container display, BoardManagerConfig config) {
+		this.display	= display;
+		this.config		= config;
+		
+		// 画面の大枠である BridgeField を設定する。
+		field	= new BridgeField(display);
+		
+		//
+		// レイアウト設定
+		//
+		display.setLayout(null);
+		
+		// 中断ボタン(必ず存在)
+		quit = new Button("中断");
+		quit.setVisible(true);
+		display.add(quit);
+		quit.setBounds(540, 30, 80, 24);
+		quit.addActionListener(this);
+		
+		// ダブルダミーボタン(設置設定可能)
+		if ( config.doubleDummyIsAvailable() ) {
+			dd = new Button("ダブルダミー");
+			dd.setVisible(true);
+			display.add(dd);
+			dd.setBounds(540, 58, 80, 24);
+			dd.addActionListener(this);
+		}
+		
+		// BridgeField を親 Container に追加する
+		display.add(field.getCanvas());
+		field.getCanvas().requestFocus();
+	}
+	
+	/**
+	 * init()と対になるメソッドで、init()で初期化したリソースの破棄を行います。
+	 * また、いつでも呼ばれる可能性があるため、本クラスで使用するすべてのリソースの
+	 * 破棄も行います。
+	 * 上位から明示的にコールすることによってダイアログが残るバグは解消されます。
+	 */
+	public void destroy() {
+		quit.removeActionListener(this);
+		if (dd != null) dd.removeActionListener(this);
+		
+		
+		if (field != null)
+			field.removeEntity(board);
+		if (confirmDialog != null) confirmDialog.disposeDialog();
+		if (player != null) {
+			for (int i = 0; i < player.length; i++) {
+				if ((player[i] != null)&&(player[i] instanceof HumanPlayer)) {
+					((HumanPlayer)player[i]).dispose();
+				}
+			}
+		}
+	}
+	
+	/**
+	 * この BoardManager GUI を利用する HumanPlayer のインスタンスを作成します。
+	 * init() されていないか、 destroy() 後でこのメソッドを呼ぶと、field が存在
+	 * しないため null が返却されます。
+	 */
+	public HumanPlayer getHumanPlayerInstance(int seat) {
+		if (field == null) return null;
+		return new HumanPlayer(board, field, seat);
+	}
+	
+	/**
+	 * プレイヤーを設定します。
+	 * 設定されたプレイヤーインスタンスの setBoard(), setMySeat() が自動的に呼ばれます。
+	 */
+	public void setPlayer(Player p, int seat) {
+		p.setMySeat(seat);
+		
+		player[seat] = p;
+	}
+	
+/*------------
+ * ボード進行
+ */
+	/**
+	 * init() で指定された設定を用いて、board を進行させます。
+	 */
+	public void start(Board b) {
+		if (field == null) throw new IllegalStatusException("start() 前に init() してください");
+		if (board instanceof GuiedBoard)
+			this.board = (GuiedBoard)b;
+		else
+			this.board = new GuiedBoard(b);
+		for (int i = 0; i < 4; i++) {
+			if (player[i] == null)
+				throw new IllegalStatusException("start() 前に player を設定してください: "+i);
+			player[i].setBoard(board);
+		}
+		board.setName(config.getTitle());
+		
+		field.addEntity(board);
+		board.setPosition(0, 0);
+		board.setDirection(0);
+		
+		mainThread = Thread.currentThread();
+		Thread.interrupted(); // interruptステータスクリア
+		
+		try {
+			explain();
+			mainLoop();
+			displayScore();
+		} catch (InterruptedBridgeException e) {
+			// 中断ボタンが押され、終了が選択された場合
+			field.removeSpot();
+			field.repaint();
+		}
+		mainThread = null;
+		field.removeEntity(board);
+		
+	}
+	
+	/**
+	 * 始めのすみれによる説明を表示します。
+	 * 中断ボタンを検知し、中断が選択されると InterruptedBridgeException がスローされます。
+	 */
+	protected void explain() throws InterruptedBridgeException {
+		
+		sumire = new Explanation(field, config.getDescription());
+		
+		field.addEntity(sumire);
+		field.repaint();
+		try {
+			waitClick(); // 中断ボタン押下による InterruptedException スローするかも
+		} catch (InterruptedException e) {
+			if (confirmQuit()) {
+				field.removeEntity(sumire);
+				throw new InterruptedBridgeException();
+			}
+		}
+		field.removeEntity(sumire); // これによってすみれのスレッドも終了する
+		field.repaint();
+	}
+	
+	/**
+	 * メインループ
+	 */
+	protected void mainLoop() throws InterruptedBridgeException {
+		if ( (config.doubleDummyIsAvailable())&&(config.doubleDummy()) ) {
+			board.getHand(Board.EAST).turn(true);
+			board.getHand(Board.WEST).turn(true);
+		}
+		
+		while (true) {
+			//
+			// Spot を指定する
+			//
+			field.setSpot(board.getTurn());
+			field.repaint();
+			
+			Object c = null;
+			while (c == null) {
+				try {
+					c = player[board.getPlayer()].play(); // ブロックする
+				} catch (InterruptedException e) {
+					if (confirmQuit()) throw new InterruptedBridgeException();
+				}
+			}
+			board.play(c);
+			field.repaint();
+			played();
+			
+			if (board.getStatus() == Board.SCORING) break;
+		}
+	}
+	
+	/**
+	 * 毎回の play 後に呼ばれます
+	 */
+	protected void played() {
+	}
+	
+	/**
+	 * config の内容を変更したときなど、再描画を行わせます。
+	 */
+	public void repaint() {
+		if (field != null) field.repaint();
+	}
+	
+	/**
+	 * 元のハンドの表示、スコアの表示を行う
+	 */
+	protected void displayScore() throws InterruptedBridgeException {
+		field.removeSpot();
+		field.repaint();
+		
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			if (confirmQuit()) throw new InterruptedBridgeException();
+		}
+		//
+		// カードをもう一度表示する
+		//
+		Packet[] original = BridgeUtils.calculateOriginalHand(board);
+		for (int i = 0; i < 4; i++) {
+			GuiedPacket hand = (GuiedPacket)(board.getHand(i));
+			for (int j = 0; j < original[i].size(); j++) {
+				Card c = original[i].peek(j);
+				c.turn(true);
+				hand.add(c);
+			}
+		}
+
+		board.layout();
+		for (int i = 0; i < 4; i++) {
+			GuiedPacket hand = (GuiedPacket)(board.getHand(i));
+			hand.arrange();
+			hand.layout();
+		}
+		
+		//
+		// スコア表示
+		//
+		String msg = "結果：" + config.getContractString() + "  ";
+		String msg2;
+		// メイク数
+		int win		= BridgeUtils.countDeclarerSideWinners(board);
+		int up		= win - board.getContract().getLevel() - 6;
+		int make	= win - 6;
+		
+		if (up >= 0) {
+			// メイク
+			msg += String.valueOf(make) + "メイク";
+			msg2 = "おめでとう！！";
+		} else {
+			// ダウン
+			msg += String.valueOf(-up) + "ダウン";
+			msg2 = "残念。もう一度がんばって！";
+		}
+		
+		msg += "("+win+"トリック)\nN-S側のスコア："+Score.calculate(board, Board.SOUTH);
+		msg += "\n \n" + msg2;
+		
+		sumire = new Explanation(field, msg);
+		if (up >= 0) 
+			sumire.animate(Explanation.DELIGHTED);
+		else
+			sumire.animate(Explanation.SAD);
+		field.addEntity(sumire);
+		field.repaint();
+		try {
+			waitClick();
+		} catch (InterruptedException e) {
+			if (confirmQuit()) {
+				field.removeEntity(sumire);
+				clearHands();
+				throw new InterruptedBridgeException();
+			}
+		}
+		field.removeEntity(sumire);
+		field.repaint();
+		clearHands();
+	}
+	
+	/**
+	 * Board の状態を正しいものにするため、ハンドをクリアする
+	 */
+	protected void clearHands() {
+		for (int i = 0; i < 4; i++) {
+			Packet hand = board.getHand(i);
+			while (hand.size() > 0)
+				hand.draw();
+		}
+	}
+	
+	/**
+	 * 中断ボタンが押されたときに表示する、中断確認ダイアログ表示処理
+	 */
+	protected boolean confirmQuit() {
+		try {
+			confirmDialog = new YesNoDialog(
+								field.getCanvas(),
+								"このボードを破棄して中断しますか？");
+			confirmDialog.show();
+			boolean yes = confirmDialog.isYes();
+			confirmDialog.disposeDialog();
+			confirmDialog = null;
+			return yes;
+		} catch (Exception e) {
+			// ブラウザの強制終了の場合
+			return true;
+		}
+	}
+	
+	/**
+	 * クリックされるのを待ちます。
+	 * 中断ボタンが押された場合、InterruptedException がスローされます。
+	 */
+	protected void waitClick() throws InterruptedException {
+		synchronized (this) {
+			Canvas canvas = field.getCanvas();
+			canvas.addMouseListener(this);
+			try {
+				wait();
+				canvas.removeMouseListener(this);
+			} catch (InterruptedException e) {
+				canvas.removeMouseListener(this);
+				throw new InterruptedException();
+			}
+		}
+	}
+	
+}

@@ -1,0 +1,614 @@
+package ys.game.card.bridge;
+
+import ys.game.card.Card;
+import ys.game.card.Packet;
+import ys.game.card.PacketImpl;
+
+/**
+ * 和美の考えたディフェンダープレイを行うクラスです。
+ * ビッドはつねにパスします。
+ *
+ * @version		making		15, April 2001
+ * @author		Yusuke Sasaki
+ */
+public class SimplePlayer2 extends Player {
+	protected Card		lead;
+	protected Board		board;
+	protected Packet	hand;
+	protected Packet	dummyHand;
+	
+	protected String	openingLead;
+	
+/*-------------
+ * constructor
+ */
+	public SimplePlayer2(Board board, int seat) {
+		setBoard(board);
+		setMySeat(seat);
+		
+	}
+	
+	public SimplePlayer2(Board board, int seat, String ol) {
+		this(board, seat);
+		openingLead = ol;
+	}
+	
+/*------------
+ * implements
+ */
+	/**
+	 * パスします。
+	 *
+	 * @return		パス
+	 */
+	public Bid bid() throws InterruptedException {
+		return new Bid(Bid.PASS, 0, 0);
+	}
+	
+	/**
+	 * 和美の考えたディフェンダープレイを行います。
+	 *
+	 * @return		和美の考えたプレイ
+	 */
+	public Card draw() throws InterruptedException {
+		Thread.sleep(400); // 考えた振り
+		
+		board		= getBoard();
+		hand		= getHand(); // = getMyHand()
+		dummyHand	= getDummyHand();
+		lead		= getLead();
+		
+		switch (getPlayOrder()) {
+		
+		case LEAD:
+			return playAt1st();
+			
+		case SECOND:
+			return playAt2nd();
+			
+		case THIRD:
+			return playAt3rd();
+			
+		case FORTH:
+			return playAt4th();
+		
+		default:
+		}
+	}
+	
+	/**
+	 * リードの位置にいるときの手を考えます。
+	 * オープニングリードかどうか、コントラクトがＮＴかどうかで４通りの関数に分岐します。
+	 */
+	private Card playAt1st() {
+		if (board.getStatus() == Board.OPENING) {
+			// オープニングリード
+			
+			//
+			// 指定がある場合はそのカード
+			//
+			if (openingLead != null) {
+				Card play = null;
+				int suit	= -1;
+				int value	= -1;
+				
+				try {
+					switch (openingLead.charAt(0)) {
+					case 'S': suit = Card.SPADE;	break;
+					case 'H': suit = Card.HEART;	break;
+					case 'D': suit = Card.DIAMOND;	break;
+					case 'C': suit = Card.CLUB;		break;
+					}
+					switch (openingLead.charAt(1)) {
+					case 'A': value = Card.ACE;		break;
+					case 'K': value = Card.KING;	break;
+					case 'Q': value = Card.QUEEN;	break;
+					case 'J': value = Card.JACK;	break;
+					case 'T': value = 10;			break;
+					default: value = openingLead.charAt(1) - '0';
+					}
+				} catch (Exception e) {
+				}
+				if ( (suit != -1)&&(value != -1) ) {
+					// 指定されたスートとバリューがともに有効
+					Card ol = getMyHand().peek(suit, value);
+					if (ol != null) return ol;
+				}
+				if ((suit != -1)&&(hand.containsSuit(suit))) {
+					// スートのみが有効
+					if (board.getContract().getSuit() == Bid.NO_TRUMP) return ntOpening(suit);
+					return suitOpening(suit);
+				}
+			}
+			
+			if (board.getContract().getSuit() == Bid.NO_TRUMP) return ntOpening();
+			return suitOpening();
+		}
+		if (board.getContract().getSuit() == Bid.NO_TRUMP) return ntLead();
+		return suitLead();
+	}
+	
+	/**
+	 * ＮＴコントラクトの場合のオープニングリードを考えます
+	 */
+	private Card ntOpening() {
+		//
+		// 一番長いスートを選ぶ(同一枚数のときはランクの高いスート)
+		//
+		int suit = -1;
+		int max  = -1;
+		
+		for (int i = 0; i < 4; i++) {
+			int c = hand.countSuit(i+1);
+			if (c > max) {
+				max = c;
+				suit = i+1;
+			}
+		}
+		
+		return ntOpening(suit);
+	}
+	
+	/**
+	 * ＮＴコントラクトのオープニングリードでスートまできまっている場合
+	 */
+	private Card ntOpening(int suit) {
+		String suitPat = BridgeUtils.valuePattern(hand, suit);
+		int value = -1;
+		
+		//
+		// 所定のハンドパターンに合致するか
+		//
+		if (suitPat.startsWith("AKQ"))	{
+			if (hand.countSuit(suit) >= 5) value = Card.ACE;
+			else value = Card.KING;
+		}
+		if (suitPat.startsWith("KQJ"))	value = Card.KING;
+		if (suitPat.startsWith("KQT"))	value = Card.KING;
+		if (suitPat.startsWith("AQJT"))	value = Card.QUEEN;
+		if (suitPat.startsWith("AQJ9"))	value = Card.QUEEN;
+		if (suitPat.startsWith("QJT"))	value = Card.QUEEN;
+		if (suitPat.startsWith("QJ9"))	value = Card.QUEEN;
+		if (suitPat.startsWith("AKJT"))	{
+			if (hand.countSuit(suit) >= 5) value = Card.ACE;
+			else value = Card.KING;
+		}
+		if (suitPat.startsWith("AJT"))	value = Card.JACK;
+		if (suitPat.startsWith("KJT"))	value = Card.JACK;
+		if (suitPat.startsWith("JT"))	value = Card.JACK;
+		if (suitPat.startsWith("AKT9"))	value = 10;
+		if (suitPat.startsWith("AT9"))	value = 10;
+		if (suitPat.startsWith("KT9"))	value = 10;
+		if (suitPat.startsWith("QT9"))	value = 10;
+		if (suitPat.startsWith("AQT9"))	value = 10;
+		if (suitPat.startsWith("T9"))	value = 10;
+		
+		if (value > -1) return hand.peek(suit, value);
+		
+		//
+		// ４ｔｈベストが出せるか
+		//
+		Packet p = hand.subpacket(suit);
+		p.arrange();
+		int size = p.size();
+		
+		if (size >= 4) return p.peek(3);
+		
+		//
+		// ４ｔｈベストが出せない
+		//
+		if (size == 3) return p.peek(2);
+		return p.peek(0);
+	}
+	
+	/**
+	 * スーツコントラクトのオープニングリードを考える。
+	 */
+	private Card suitOpening() {
+		int max  = -1;
+		Card play = null;
+		
+		for (int i = 0; i < 4; i++) {
+			if ( (i+1) == board.getContract().getSuit() ) continue; // トランプは除外
+			
+			String suitPat = BridgeUtils.suitPattern(hand, i+1);
+			
+			// AK のあるスート (10 点)
+			if ( (suitPat.startsWith("AK"))&&(max < 10) ) {
+				max = 10;
+				play = hand.peek(i+1, Card.KING);
+			}
+			// KQ のあるスート ( 9 点)
+			if ( (suitPat.startsWith("KQ"))&&(max < 9) ) {
+				max = 9;
+				play = hand.peek(i+1, Card.KING);
+			}
+			// シングルトン ( 8 点)
+			if ( (suitPat.length() == 1)&&(max < 8) ) {
+				max = 8;
+				play = hand.subpacket(i+1).peek();
+			}
+			// QJ のあるスート (7 点)
+			if ( (suitPat.startsWith("QJ"))&&(max < 7) ) {
+				max = 7;
+				play = hand.peek(i+1, Card.QUEEN);
+			}
+			// ダブルトン (6 点)
+			if ( (suitPat.length() == 2)&&(max < 6) ) {
+				max = 6;
+				Packet p = hand.subpacket(i+1);
+				p.arrange();
+				play = p.peek(0);
+			}
+		}
+		if (play != null) return play;
+		
+		//
+		// 決まらなかった(適当なスートを乱数で選ぶ)
+		//
+		for (int i = 0; i < 20; i++) {
+			int suit = (int)(Math.random() * 4) + 1;
+			if (suit == board.getContract().getSuit()) continue;
+			
+			if (hand.containsSuit(suit)) return suitOpening(suit);
+		}
+		//
+		// ハンドがトランプスートのみからなっているなど稀な場合
+		//
+		return hand.peek();
+	}
+	
+	/**
+	 * スーツコントラクトでオープニングリードのスートが決まったとき
+	 */
+	private Card suitOpening(int suit) {
+		if (suit == Board.getContract().getSuit()) return 0;
+		
+		String suitPat = BridgeUtils.suitPattern(hand, suit);
+		if (suitPat.startsWith("A")) return hand.peek(suit, Card.ACE);
+		if (suitPat.startsWith("KJT")) return hand.peek(suit, Card.JACK);
+		if (suitPat.startsWith("JT")) return hand.peek(suit, Card.JACK);
+		if (suitPat.startsWith("KT9")) return hand.peek(suit, 10);
+		if (suitPat.startsWith("QT9")) return hand.peek(suit, 10);
+		if (suitPat.startsWith("T9")) return hand.peek(suit, 10);
+		if (suitPat.charAt(0) <= '9') return hand.peek(suit, suitPat.charAt(0) - '0');
+		
+		Packet p = hand.subpacket(suit);
+		p.arrange();
+		if (p.size() >= 4) return p.peek(3);
+		if (p.size() == 3) return p.peek(2);
+		return p.peek(0);
+	}
+	
+	/**
+	 * ＮＴコントラクトでのリード
+	 *
+	 *
+	 */
+	private Card ntLead() {
+		// ウィナーの数をカウントする
+		Packet winners = getWinners(false);
+		
+		//
+		// 未実装
+		//
+	}
+	
+	private Card suitLead() {
+		//
+		// 未実装
+		//
+	}
+	
+	
+	/**
+	 * ２番手では、
+	 * ・ウィナーがあれば出す（複数あれば下から）
+	 * ・なければローエスト
+	 */
+	private Card playAt2nd() {
+		int suit = lead.getSuit();
+		
+		boolean afterDummy = (getDummyPosition() == RIGHT);
+		
+		Packet winner = getWinners(afterDummy);
+		
+		Packet pack = hand.subpacket(suit);
+		// win = pack.intersection(winner); のような実装が簡潔。
+		
+		winner.arrange();
+		for (int i = winner.size() - 1; i >= 0; i--) {
+			Card c = winner.peek(i);
+			if ( (pack.contains(c))&&(c.getSuit() == suit) ) return c;
+		}
+		
+		// ない
+		pack.arrange();
+		
+		return pack.peek(); // ローエスト
+	}
+	
+	/**
+	 * ３番手では、
+	 * ・ＬＨＯの場合、ダミーとプレイされたカードを見て、勝てるか考える。
+	 *   勝てるならチーペストに勝つ。だめならローエスト。
+	 * ・ＲＨＯの場合、ハイエストを出す（ただしダミーと自分を合わせたカードで
+	 *   シークエンスとなる時はその内で最下位を出す）
+	 */
+	private Card playIn3rd() {
+		if (getDummyPosition() == LEFT) {
+
+			//
+			// LHO
+			//
+			
+			// 勝てるカードを持っているか？
+			// ダミーのもっとも強いカードを選ぶ
+			Card dummyStrongest;
+			Packet dFollow = dummyHand.subpacket(lead.getSuit());
+			
+			if (dFollow.size() == 0) {
+				dummyStrongest = dummyHand.peek(); // 適当なもの(trumpかもしれないが)
+			}
+			else {
+				dFollow.arrange();
+				dummyStrongest = dFollow.peek(0);
+			}
+			
+			//
+			// 将来をシミュレートする
+			//
+			Packet pack = hand.subpacket(lead.getSuit());
+			pack.arrange();
+			
+			Card play = null;
+			for (int i = 0; i < pack.size(); i++) {
+				Trick virtual = new TrickImpl(getTrick());
+				virtual.add(pack.peek(i));
+				virtual.add(dummyStrongest);
+				if (((virtual.getWinner() ^ getMySeat()) & 1) == 0) play = pack.peek(i);
+			}
+			if (play == null) play = pack.peek();
+			
+			return play;
+		} else {
+			//
+			// RHO(単にハイエストを選ぶ、負けるカードしかない場合、ローエスト) 
+			//                   ↑うまく機能してないかも
+			//
+			Packet pack = hand.subpacket(lead.getSuit());
+			pack.arrange();
+			
+			Card c = pack.peek(0); // ハイエスト
+			
+			if (pack.size() == 1) return c;
+			
+			Trick virtual = new TrickImpl(getTrick());
+			virtual.add(c);
+			virtual.add(pack.peek(1));
+			if (virtual.getWinner() == getMySeat()) return c;
+			return pack.peek();
+		}
+	}
+	
+	/**
+	 * ４番手では、一番安く勝つかローエスト
+	 */
+	private Card playIn4th() {
+		Packet pack = hand.subpacket(lead.getSuit());
+		pack.arrange();
+		Card play = null;
+		
+		for (int i = 0; i < pack.size(); i++) {
+			Trick virtual = new TrickImpl(getTrick());
+			virtual.add(pack.peek(i));
+			if (((virtual.getWinner() ^ getMySeat()) & 1) == 0) play = pack.peek(i);
+		}
+		if (play == null) play = pack.peek();
+		return play;
+	}
+	
+	/**
+	 * 自分のハンドの中でウィナーとなっているカードを抽出した Packet を返却します。
+	 * ウィナーであることは、各スートにおいて今プレイされていないカードのうちもっとも
+	 * 高いカードであることで判断します。
+	 * 不確定な情報は使用しません。
+	 * 
+	 * @return		winner
+	 */
+	private Packet getWinners(boolean afterDummy) {
+		Packet result = new PacketImpl();
+		
+		//
+		// 残りのカードを抽出する
+		//
+		Packet rest = board.getOpenCards().complement();
+		rest.add(getTrick());
+		
+		if (!afterDummy) rest.add(getDummyHand());
+		
+		// 残りのカードを各スートに分ける
+		Packet[] suits = new Packet[4];
+		
+		for (int i = 0; i < 4; i++) {
+			suits[i] = rest.subpacket(i+1);
+			suits[i].arrange();	// 強いカードを小さいインデックスに
+		}
+		
+		// 各スーツのウィナーを抽出する
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < suits[i].size(); j++) {
+				Card winner = suits[i].peek(j);
+				if (hand.contains(winner)) {
+					result.add(winner); // 最高位を持っている場合、次の位も調べる
+				} else {
+					break;	// シークエンスが切れた場合、終了
+				}
+			}
+		}
+		
+		result.arrange();
+		return result;
+	}
+	
+	/**
+	 * ＮＴコントラクトの場合の自分たちの持っている絶対的なウィナーを考えます。
+	 * 自分の手はすべて評価対象となりますが、パートナーの手はオープニングリードの
+	 * 決まりから推定されるもののみが対象となります。
+	 */
+	private Packet getWinnersInNTLead() {
+		//
+		// すでに見えているカード(Lead のため Trick はまだ見えていない)
+		//
+		Packet opened = (Packet)board.getOpenCards().clone();
+		
+		//
+		// まだプレイされていないカード
+		//
+		Packet rest = opened.complement();
+		resp.add(getDummyHand());
+		
+		//
+		// 自分たちのハンド
+		//
+		Packet ours = new PacketImpl();
+		ours.add(getHand()); // 自分のハンド
+		ours.add(getExpectedCardsInNT()); // パートナーが持っていると期待されるカード
+		
+		//
+		//
+		//
+		
+		
+		//
+		//
+		//
+		
+	}
+	
+	private static final String[][] NT_EXPECTED_PATTERN = {
+		{ "T9*" }, // T lead
+		{ "JT*" },	// J lead
+		{ "QJ9*", "QJT*" },	// Q lead
+		{ "KQT*", "KQJ*", "AKJT*", "AKQ*" }, // K lead
+		{ "AKJTx*", "AKQxx*" } }; // A lead
+	/**
+	 * ＮＴコントラクトの場合のオープニングリードから推定されるパートナーの手を取り出します。
+	 * パートナーがオープニングリーダーであった場合に、そのスートは一定のルール
+	 * によってある優先順位に基づいてハンドパターンが推定されます。
+	 * リードされたカードのバリューと推定されるハンドパターンは次の通りです。
+	 * 先頭のものがより優先順位が高く設定されています。
+	 *
+		{ "T9*" }, // T lead
+		{ "JT*" },	// J lead
+		{ "QJ9*", "QJT*" },	// Q lead
+		{ "KQT*", "KQJ*", "AKJT*", "AKQ*" }, // K lead
+		{ "AKJTx*", "AKQxx*" } }; // A lead
+	 *
+	 * @param		パートナーが持っていると推定されるカード
+	 */
+	private Packet getExpectedCardsInNT() {
+		return getExpectedCardsInNT(NT_EXPECTED_PATTERN);
+	}
+	
+	private Packet getExpectedCardsImpl(String[][] pattern) {
+		Packet result = new PacketImpl();
+		
+		Trick opening = board.getHistory().getTrick(0); // null はありえない
+		
+		//自分がオープニングリーダーの場合、情報はない
+		if (opening.getLeader() == getMySeat()) return result;
+		
+		// パートナーがオープニングリーダーであり、自分の番になっているため、
+		// すでにオープニングリードは行われているはず
+		Card openingLead = opening.getLead();
+		
+		int value = openingLead.getValue();
+		if ((value <= 9)&&(value >= 2)) return result; // ローカードのリードは何も期待できない
+		int suit = openingLead.getSuit();
+		
+		int index = value - 10;
+		if (index < 0) index = 4; // ACE は value == 1 となっているため
+		String [] handPattern = pattern[index];
+		
+		// 優先順位の高いものから順に推定
+		int handPatternIndex = 0;
+		
+		//
+		// パートナーとディクレアラーの手の Union を求める。
+		// このアルゴリズムではこれをパートナーの持ちうる手とみなす。
+		//
+		// そのため、まず、すでにだれが持っているか確定しているものをだす
+		Packet open = board.getOpenCards();
+		open.add(getMyHand());
+		
+		// これにこれまでプレイしたパートナーの手を合わせたものが Union
+		Packet rest = open.complement();
+		Trick[] trick = board.getAllTricks();
+		for (int i = 0; i < board.getTricks(); i++) {
+			for (int j = 0; j < trick[i].size(); j++) {
+				int seat = (trick[i].getLeader() + j)%4;
+				if (( (seat - getMySeat() + 6)%4 ) == 0) rest.add(trick[i].peek(j));
+			}
+		}
+System.out.println("expected card (NT) rest : " + rest);
+		
+		for (handPatternIndex = 0; handPatternIndex < handPattern.length; handPatternIndex++) {
+			if (BridgeUtils.patternMatch(rest, handPattern, suit) break;
+		}
+		
+		if (handPatternIndex == handPattern.length) return result; // 該当なし
+		
+		// 該当ありのため、パターン文字列を result に加える(High Card のみ)
+		Strint toAdd = handPattern[handPatternIndex];
+		for (int i = 0; i < toAdd.length(); i++) {
+			char c = toAdd.charAt(i);
+			switch (c) {
+			case 'A':
+				result.add(rest.peek(suit, Card.ACE));
+				break;
+			case 'K':
+				result.add(rest.peek(suit, Card.KING));
+				break;
+			case 'Q':
+				result.add(rest.peek(suit, Card.QUEEN));
+				break;
+			case 'J':
+				result.add(rest.peek(suit, Card.JACK));
+				break;
+			case 'T':
+				result.add(rest.peek(suit, 10));
+				break;
+			default:
+			}
+		}
+		return result;
+	}
+	
+	private static final String[][] SUIT_EXPECTED_PATTERN = {
+		{ "T9*", "KT9*", "QT9" }, // T lead
+		{ "JT*", "KJT*" },	// J lead
+		{ "QJ*" },	// Q lead
+		{ "KQ*" }, // K lead
+		{ "A*" } }; // A lead
+	
+	/**
+	 * スーツコントラクトの場合のオープニングリードから推定されるパートナーの手を取り出します。
+	 * パートナーがオープニングリーダーであった場合に、そのスートは一定のルール
+	 * によってある優先順位に基づいてハンドパターンが推定されます。
+	 * リードされたカードのバリューと推定されるハンドパターンは次の通りです。
+	 * 先頭のものがより優先順位が高く設定されています。
+	 *
+		{ "T9*", "KT9*", "QT9" }, // T lead
+		{ "JT*", "KJT*" },	// J lead
+		{ "QJ*" },	// Q lead
+		{ "KQ*" }, // K lead
+		{ "A*" } }; // A lead
+	 *
+	 * @param		パートナーが持っていると推定されるカード
+	 */
+	private Packet getExpectedCardsInTrump() {
+		return getExpectedCardsInTrump(SUIT_EXPECTED_PATTERN);
+	}
+	
+}

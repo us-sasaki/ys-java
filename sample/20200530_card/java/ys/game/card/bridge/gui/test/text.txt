@@ -1,0 +1,25 @@
+        at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+        at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+        at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+        at java.awt.EventDispatchThread.run(Unknown Source)
+java.lang.ArrayIndexOutOfBoundsException: -1
+        at ys.game.card.bridge.gui.TableGui.drawContract(TableGui.java:84)
+        at ys.game.card.bridge.gui.TableGui.draw(TableGui.java:48)
+        at ys.game.card.gui.Entities.draw(Entities.java:281)
+        at ys.game.card.gui.Entities.draw(Entities.java:281)
+        at ys.game.card.gui.Field.draw(Field.java:48)
+        at ys.game.card.gui.FieldCanvas.paint(FieldCanvas.java:40)
+        at ys.game.card.gui.FieldCanvas.update(FieldCanvas.java:32)
+        at sun.awt.RepaintArea.paint(Unknown Source)
+        at sun.awt.windows.WComponentPeer.handleEvent(Unknown Source)
+        at java.awt.Component.dispatchEventImpl(Unknown Source)
+        at java.awt.Component.dispatchEvent(Unknown Source)
+        at java.awt.EventQueue.dispatchEvent(Unknown Source)
+        at java.awt.EventDispatchThread.pumpOneEventForHierarchy(Unknown Source)
+
+        at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+        at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+        at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+        at java.awt.EventDispatchThread.run(Unknown Source)
+
+TableGui‚ªnull‚Ì‚±‚Æ‚ª‚ ‚é

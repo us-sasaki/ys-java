@@ -1,0 +1,50 @@
+<html>
+<body>
+<head>
+<title>Request Parameters Example</title>
+<script language="JavaScript">
+<!--
+	oh = window.open("child.html");
+	
+	function getStr() {
+		return document.BridgePracticeApplet.getString();
+	}
+// -->
+</script>
+</head>
+<body bgcolor="white">
+<h3>Request Parameters Example</h3>
+<p>
+この html では、JavaScript によって 子 window の form の値が親ウィンドウから変えられることを確認します。<BR>
+子 window の firstname の初期値は "はじめ" になっており、JavaScript によって "changed!! ついでに日本語！"<BR>
+に変更しています。<BR>
+IE6でうまくいきました NN7はだめお<BR><BR>
+<OBJECT 
+    classid="clsid:CAFEEFAC-0014-0000-0001-ABCDEFFEDCBA"
+    WIDTH = 640 HEIGHT = 480  
+    codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_0_01-win.cab#Version=1,4,0,10"
+    id="BridgePracticeApplet">
+    <PARAM NAME = CODE VALUE = "test.class" >
+
+    <PARAM NAME="type" VALUE="application/x-java-applet;jpi-version=1.4.0_01">
+    <PARAM NAME="scriptable" VALUE="true">
+    <PARAM NAME = "QuitURL" VALUE ="JavaScript:winclose()">
+
+    <COMMENT>
+	<EMBED 
+            type="application/x-java-applet;jpi-version=1.4.0_01" 
+            CODE = "test.class"
+            WIDTH = 640
+            HEIGHT = 480 
+	    scriptable=true 
+	    pluginspage="http://java.sun.com/products/plugin/index.html#download"
+	    id="BridgePracticeApplet">
+	        <NOEMBED>
+		
+		</NOEMBED>
+	</EMBED>
+    </COMMENT>
+</OBJECT>
+
+</body>
+</html><BR>

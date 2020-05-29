@@ -1,0 +1,96 @@
+<HTML><HEAD><meta http-equiv="Content-Type" content="text/html; charset=x-euc-jp"> <meta http-equiv="Pragma" content="no-cache"><meta http-equiv="cache-control" content="no-cache"></HEAD>
+<BODY BGCOLOR="#FFFFEE" TEXT="#000000" LINK="#0000FF" VLINK="#0000FF" ALINK="#FF0000" TOPMARGIN="0" LEFTMARGIN="0" MARGINHEIGHT="0" MARGINWIDTH="0">
+<TABLE BORDER=3 CELLPADDING="2">
+<TR VALIGN="bottom" ALIGN="center">
+<TD WIDTH="800" BGCOLOR="#483D8B">
+<FONT SIZE="+2" COLOR="#FFFFFF"><STRONG>インタフェース情報</STRONG></FONT></TD>
+<FORM METHOD=POST ACTION="./sh_if"><TD NOWRAP WIDTH="" BGCOLOR="#5F9EA0"><INPUT TYPE="submit" VALUE="情報の更新">&nbsp;</TD></TR></TABLE>
+<BLOCKQUOTE><table><tr><td bgcolor="#FFFFEE"><font color="#0000BB">
+<pre>
+lan0: flags=UP|BROADCAST|NOTRAILERS|RUNNING|SIMPLEX|MULTICAST mtu=1500
+	ether 00:00:4c:16:07:ab
+	inet 192.168.0.1 netmask FFFFFF00 broadcast 192.168.0.255
+lis1: flags=NBMA|SIMPLEX mtu=9180
+lis2: flags=NBMA|SIMPLEX mtu=9180
+lis3: flags=NBMA|SIMPLEX mtu=9180
+lis4: flags=NBMA|SIMPLEX mtu=9180
+lis5: flags=NBMA|SIMPLEX mtu=9180
+lis6: flags=NBMA|SIMPLEX mtu=9180
+lis7: flags=NBMA|SIMPLEX mtu=9180
+lis8: flags=NBMA|SIMPLEX mtu=9180
+poa0: flags=POINTOPOINT|SIMPLEX mtu=9180
+poa1: flags=POINTOPOINT|SIMPLEX mtu=9180
+poa2: flags=POINTOPOINT|SIMPLEX mtu=9180
+poa3: flags=POINTOPOINT|SIMPLEX mtu=9180
+poa4: flags=POINTOPOINT|SIMPLEX mtu=9180
+poa5: flags=POINTOPOINT|SIMPLEX mtu=9180
+poa6: flags=POINTOPOINT|SIMPLEX mtu=9180
+poa7: flags=POINTOPOINT|SIMPLEX mtu=9180
+poe0: flags=UP|POINTOPOINT|RUNNING|SIMPLEX mtu=1454
+	inet 218.229.58.89 destination 133.160.247.133
+poe1: flags=POINTOPOINT|SIMPLEX mtu=1492
+poe2: flags=POINTOPOINT|SIMPLEX mtu=1492
+poe3: flags=POINTOPOINT|SIMPLEX mtu=1492
+poe4: flags=POINTOPOINT|SIMPLEX mtu=1492
+poe5: flags=POINTOPOINT|SIMPLEX mtu=1492
+poe6: flags=POINTOPOINT|SIMPLEX mtu=1492
+poe7: flags=POINTOPOINT|SIMPLEX mtu=1492
+lo0: flags=UP|LOOPBACK|RUNNING|MULTICAST mtu=16384
+	inet 127.0.0.1 netmask FF000000 
+</pre></font></td></tr>
+<tr><td bgcolor="#FFFFEE"><font color="#0000BB">
+<pre>
+name  ipackets     ibytes ierrors imcasts  opackets     obytes oerrors omcasts
+lan0   3775707 1068399954       0  121531   4288313 3864890920       0    3214
+lis1         0          0       0       0         0          0       0       0
+lis2         0          0       0       0         0          0       0       0
+lis3         0          0       0       0         0          0       0       0
+lis4         0          0       0       0         0          0       0       0
+lis5         0          0       0       0         0          0       0       0
+lis6         0          0       0       0         0          0       0       0
+lis7         0          0       0       0         0          0       0       0
+lis8         0          0       0       0         0          0       0       0
+poa0         0          0       0       0         0          0       0       0
+poa1         0          0       0       0         0          0       0       0
+poa2         0          0       0       0         0          0       0       0
+poa3         0          0       0       0         0          0       0       0
+poa4         0          0       0       0         0          0       0       0
+poa5         0          0       0       0         0          0       0       0
+poa6         0          0       0       0         0          0       0       0
+poa7         0          0       0       0         0          0       0       0
+poe0   4561613 3961553788       0       0   3932713 1113098226      24       0
+poe1         0          0       0       0         0          0       0       0
+poe2         0          0       0       0         0          0       0       0
+poe3         0          0       0       0         0          0       0       0
+poe4         0          0       0       0         0          0       0       0
+poe5         0          0       0       0         0          0       0       0
+poe6         0          0       0       0         0          0       0       0
+poe7         0          0       0       0         0          0       0       0
+lo0          1         40       0       0         1         40       0       0
+</pre></font></td></tr>
+<tr><td bgcolor="#FFFFEE"><font color="#0000BB">
+<pre>
+PPP list
+[11] Name          : 
+    Interface     : poe0 status UP
+    PPP info      : status Open auth NO_AUTH
+    PPP IPCP info : status OPEN
+                  : My addr REQ   0.0.0.0 NEGO 218.229.58.89
+                  : Peer addr REQ 0.0.0.0 NEGO 133.160.247.133
+    PPP LCP info  : status OPEN MRU 1454
+</pre></font></td></tr>
+<tr><td bgcolor="#FFFFEE"><font color="#0000BB">
+<pre>
+ATM VC Table
+   name type Tx VP/VC Stat Rx VP/VC Stat   PCR   Proto   PeerIPAddress
+ 1 poe0  pvc     0/32   UP     0/32   UP    11     POE 133.160.247.133
+ 2 ----
+ 3 ----
+ 4 ----
+ 5 ----
+ 6 ----
+ 7 ----
+ 8 ----
+</pre></font></td></tr></table>
+</blockquote>
+</form></body></html>

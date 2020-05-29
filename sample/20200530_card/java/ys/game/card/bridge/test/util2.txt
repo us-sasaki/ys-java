@@ -1,0 +1,1830 @@
+---------- Board Information ----------
+  [    Status     ]  : Bid
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : none
+
+  [Bidding History]
+   N       E       S       W
+
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_CT_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_C5_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_CA_C3_DK_DQ_D9_D7}
+West  : {_SA_SJ_S7_S6_HA_HJ_H8_H2_C9_C6_C2_DJ_D5}
+
+null
+
+
+
+---------- Board Information ----------
+  [    Status     ]  : Bid
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_CT_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_C5_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_CA_C3_DK_DQ_D9_D7}
+West  : {_SA_SJ_S7_S6_HA_HJ_H8_H2_C9_C6_C2_DJ_D5}
+
+null
+
+
+
+---------- Board Information ----------
+  [    Status     ]  : Bid
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_CT_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_C5_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_CA_C3_DK_DQ_D9_D7}
+West  : {_SA_SJ_S7_S6_HA_HJ_H8_H2_C9_C6_C2_DJ_D5}
+
+null
+
+
+
+---------- Board Information ----------
+  [    Status     ]  : Bid
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_CT_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_C5_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_CA_C3_DK_DQ_D9_D7}
+West  : {_SA_SJ_S7_S6_HA_HJ_H8_H2_C9_C6_C2_DJ_D5}
+
+null
+
+
+
+---------- Board Information ----------
+  [    Status     ]  : Bid
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_CT_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_C5_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_CA_C3_DK_DQ_D9_D7}
+West  : {_SA_SJ_S7_S6_HA_HJ_H8_H2_C9_C6_C2_DJ_D5}
+
+null
+
+
+
+---------- Board Information ----------
+  [    Status     ]  : Bid
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : North
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_CT_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_C5_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_CA_C3_DK_DQ_D9_D7}
+West  : {_SA_SJ_S7_S6_HA_HJ_H8_H2_C9_C6_C2_DJ_D5}
+
+null
+
+
+
+---------- Board Information ----------
+  [    Status     ]  : Bid
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_CT_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_C5_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_CA_C3_DK_DQ_D9_D7}
+West  : {_SA_SJ_S7_S6_HA_HJ_H8_H2_C9_C6_C2_DJ_D5}
+
+null
+
+
+
+---------- Board Information ----------
+  [    Status     ]  : Bid
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_CT_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_C5_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_CA_C3_DK_DQ_D9_D7}
+West  : {_SA_SJ_S7_S6_HA_HJ_H8_H2_C9_C6_C2_DJ_D5}
+
+null
+
+
+
+---------- Board Information ----------
+  [    Status     ]  : Bid
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_CT_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_C5_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_CA_C3_DK_DQ_D9_D7}
+West  : {_SA_SJ_S7_S6_HA_HJ_H8_H2_C9_C6_C2_DJ_D5}
+
+null
+
+
+
+---------- Board Information ----------
+  [    Status     ]  : Opening Lead
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_CT_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_C5_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_CA_C3_DK_DQ_D9_D7}
+West  : {_SA_SJ_S7_S6_HA_HJ_H8_H2_C9_C6_C2_DJ_D5}
+
+Leader:South{}
+
+
+
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_CT_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_C5_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/HJ/H8/H2/C9/C6/C2/DJ/D5}
+
+Leader:South{/CA}
+
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/4)(0/9)(0/6)(0/6)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/4)(0/9)(0/6)(0/6)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_CT_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_C5_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/HJ/H8/H2/C9/C6/DJ/D5}
+
+Leader:South{/CA/C2}
+
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/4)(0/9)(0/6)(0/6)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/4)(0/9)(0/6)(0/6)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_C5_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/HJ/H8/H2/C9/C6/DJ/D5}
+
+Leader:South{/CA/C2/CT}
+
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/4)(0/9)(0/6)(0/6)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/4)(0/9)(0/6)(0/6)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H9_H6_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/HJ/H8/H2/C9/C6/DJ/D5}
+
+Leader:South{}
+
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/6)(0/6)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/6)(0/6)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H6_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/HJ/H8/H2/C9/C6/DJ/D5}
+
+Leader:South{/H9}
+
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/5)(0/6)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/5)(0/6)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_HT_H7_H4_CK_CQ_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H6_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/H8/H2/C9/C6/DJ/D5}
+
+Leader:South{/H9/HJ}
+
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/5)(0/6)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/5)(0/6)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_H7_H4_CK_CQ_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_H5_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H6_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/H8/H2/C9/C6/DJ/D5}
+
+Leader:South{/H9/HJ/HT}
+
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/5)(0/6)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/5)(0/6)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_H7_H4_CK_CQ_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H6_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/H8/H2/C9/C6/DJ/D5}
+
+Leader:West {}
+
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/4)(0/6)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/4)(0/6)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_H7_H4_CK_CQ_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H6_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/H2/C9/C6/DJ/D5}
+
+Leader:West {/H8}
+
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/4)(0/6)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/4)(0/6)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_H7_CK_CQ_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_HK_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H6_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/H2/C9/C6/DJ/D5}
+
+Leader:West {/H8/H4}
+
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/4)(0/6)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/4)(0/6)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_H7_CK_CQ_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H6_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/H2/C9/C6/DJ/D5}
+
+Leader:West {/H8/H4/HK}
+
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/3)(0/6)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/3)(0/6)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_H7_CK_CQ_C7_C4_D6_D2}
+East  : {_SQ_S8_S2_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/H2/C9/C6/DJ/D5}
+
+Leader:East {}
+
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/2)(0/6)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/2)(0/6)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_H7_CK_CQ_C7_C4_D6_D2}
+East  : {_S8_S2_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S9_S4_HQ_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/H2/C9/C6/DJ/D5}
+
+Leader:East {/SQ}
+
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/2)(0/5)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/2)(0/5)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_H7_CK_CQ_C7_C4_D6_D2}
+East  : {_S8_S2_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S4_HQ_H3_C3_DK_DQ_D9_D7}
+West  : {/SA/SJ/S7/S6/HA/H2/C9/C6/DJ/D5}
+
+Leader:East {/SQ/S9}
+
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S5_S3_H7_CK_CQ_C7_C4_D6_D2}
+East  : {_S8_S2_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S4_HQ_H3_C3_DK_DQ_D9_D7}
+West  : {/SJ/S7/S6/HA/H2/C9/C6/DJ/D5}
+
+Leader:East {/SQ/S9/SA}
+
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C7_C4_D6_D2}
+East  : {_S8_S2_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S4_HQ_H3_C3_DK_DQ_D9_D7}
+West  : {/SJ/S7/S6/HA/H2/C9/C6/DJ/D5}
+
+Leader:West {}
+
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C7_C4_D6_D2}
+East  : {_S8_S2_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S4_HQ_H3_C3_DK_DQ_D9_D7}
+West  : {/SJ/S7/S6/HA/H2/C9/C6/D5}
+
+Leader:West {/DJ}
+
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C7_C4_D6}
+East  : {_S8_S2_CJ_C8_DA_DT_D8_D4_D3}
+South : {_ST_S4_HQ_H3_C3_DK_DQ_D9_D7}
+West  : {/SJ/S7/S6/HA/H2/C9/C6/D5}
+
+Leader:West {/DJ/D2}
+
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/9)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/9)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C7_C4_D6}
+East  : {_S8_S2_CJ_C8_DA_DT_D4_D3}
+South : {_ST_S4_HQ_H3_C3_DK_DQ_D9_D7}
+West  : {/SJ/S7/S6/HA/H2/C9/C6/D5}
+
+Leader:West {/DJ/D2/D8}
+
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/8)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/8)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C7_C4_D6}
+East  : {_S8_S2_CJ_C8_DA_DT_D4_D3}
+South : {_ST_S4_HQ_H3_C3_DK_DQ_D9}
+West  : {/SJ/S7/S6/HA/H2/C9/C6/D5}
+
+Leader:West {}
+
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/7)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/7)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C7_C4_D6}
+East  : {_S8_S2_CJ_C8_DA_DT_D4_D3}
+South : {_ST_S4_HQ_H3_C3_DK_DQ_D9}
+West  : {/SJ/S7/S6/HA/H2/C9/D5}
+
+Leader:West {/C6}
+
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/7)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/7)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C4_D6}
+East  : {_S8_S2_CJ_C8_DA_DT_D4_D3}
+South : {_ST_S4_HQ_H3_C3_DK_DQ_D9}
+West  : {/SJ/S7/S6/HA/H2/C9/D5}
+
+Leader:West {/C6/C7}
+
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/3)(0/7)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/3)(0/7)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C4_D6}
+East  : {_S8_S2_C8_DA_DT_D4_D3}
+South : {_ST_S4_HQ_H3_C3_DK_DQ_D9}
+West  : {/SJ/S7/S6/HA/H2/C9/D5}
+
+Leader:West {/C6/C7/CJ}
+
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/2)(0/7)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/2)(0/7)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C4_D6}
+East  : {_S8_S2_C8_DA_DT_D4_D3}
+South : {_ST_S4_HQ_H3_DK_DQ_D9}
+West  : {/SJ/S7/S6/HA/H2/C9/D5}
+
+Leader:East {}
+
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/7)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/7)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C4_D6}
+East  : {_S8_S2_C8_DT_D4_D3}
+South : {_ST_S4_HQ_H3_DK_DQ_D9}
+West  : {/SJ/S7/S6/HA/H2/C9/D5}
+
+Leader:East {/DA}
+
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/6)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/6)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C4_D6}
+East  : {_S8_S2_C8_DT_D4_D3}
+South : {_ST_S4_HQ_H3_DK_D9}
+West  : {/SJ/S7/S6/HA/H2/C9/D5}
+
+Leader:East {/DA/DQ}
+
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/5)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/5)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C4_D6}
+East  : {_S8_S2_C8_DT_D4_D3}
+South : {_ST_S4_HQ_H3_DK_D9}
+West  : {/SJ/S7/S6/HA/H2/C9}
+
+Leader:East {/DA/DQ/D5}
+
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/5)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/5)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C4}
+East  : {_S8_S2_C8_DT_D4_D3}
+South : {_ST_S4_HQ_H3_DK_D9}
+West  : {/SJ/S7/S6/HA/H2/C9}
+
+Leader:East {}
+
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/5)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/5)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C4}
+East  : {_S8_S2_C8_DT_D3}
+South : {_ST_S4_HQ_H3_DK_D9}
+West  : {/SJ/S7/S6/HA/H2/C9}
+
+Leader:East {/D4}
+
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/4)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/4)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C4}
+East  : {_S8_S2_C8_DT_D3}
+South : {_ST_S4_HQ_H3_D9}
+West  : {/SJ/S7/S6/HA/H2/C9}
+
+Leader:East {/D4/DK}
+
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/3)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/3)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_CQ_C4}
+East  : {_S8_S2_C8_DT_D3}
+South : {_ST_S4_HQ_H3_D9}
+West  : {/SJ/S7/S6/HA/H2}
+
+Leader:East {/D4/DK/C9}
+
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/3)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/3)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_C4}
+East  : {_S8_S2_C8_DT_D3}
+South : {_ST_S4_HQ_H3_D9}
+West  : {/SJ/S7/S6/HA/H2}
+
+Leader:South{}
+
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/3)(0/2)(0/4)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/3)(0/2)(0/4)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_C4}
+East  : {_S8_S2_C8_DT_D3}
+South : {_ST_HQ_H3_D9}
+West  : {/SJ/S7/S6/HA/H2}
+
+Leader:South{/S4}
+
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/3)(0/2)(0/3)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/3)(0/2)(0/3)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_S3_H7_CK_C4}
+East  : {_S8_S2_C8_DT_D3}
+South : {_ST_HQ_H3_D9}
+West  : {/SJ/S7/HA/H2}
+
+Leader:South{/S4/S6}
+
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/3)(0/2)(0/3)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/3)(0/2)(0/3)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_H7_CK_C4}
+East  : {_S8_S2_C8_DT_D3}
+South : {_ST_HQ_H3_D9}
+West  : {/SJ/S7/HA/H2}
+
+Leader:South{/S4/S6/S3}
+
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/3)(0/2)(0/3)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/3)(0/2)(0/3)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_H7_CK_C4}
+East  : {_S8_C8_DT_D3}
+South : {_ST_HQ_H3_D9}
+West  : {/SJ/S7/HA/H2}
+
+Leader:West {}
+
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/3)(0/2)(0/2)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/3)(0/2)(0/2)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_SK_H7_CK_C4}
+East  : {_S8_C8_DT_D3}
+South : {_ST_HQ_H3_D9}
+West  : {/S7/HA/H2}
+
+Leader:West {/SJ}
+
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/3)(0/2)(0/2)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/3)(0/2)(0/2)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_H7_CK_C4}
+East  : {_S8_C8_DT_D3}
+South : {_ST_HQ_H3_D9}
+West  : {/S7/HA/H2}
+
+Leader:West {/SJ/SK}
+
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/3)(0/2)(0/2)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/3)(0/2)(0/2)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_H7_CK_C4}
+East  : {_C8_DT_D3}
+South : {_ST_HQ_H3_D9}
+West  : {/S7/HA/H2}
+
+Leader:West {/SJ/SK/S8}
+
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/3)(0/2)(0/1)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/3)(0/2)(0/1)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_H7_CK_C4}
+East  : {_C8_DT_D3}
+South : {_HQ_H3_D9}
+West  : {/S7/HA/H2}
+
+Leader:North{}
+
+[ 9]Leader:West {/SJ/SK/S8/ST}  winner=/SK  North
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/3)(0/2)(0/0)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/3)(0/2)(0/0)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_H7_C4}
+East  : {_C8_DT_D3}
+South : {_HQ_H3_D9}
+West  : {/S7/HA/H2}
+
+Leader:North{/CK}
+
+[ 9]Leader:West {/SJ/SK/S8/ST}  winner=/SK  North
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/1)(0/3)(0/2)(0/0)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/1)(0/3)(0/2)(0/0)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_H7_C4}
+East  : {_DT_D3}
+South : {_HQ_H3_D9}
+West  : {/S7/HA/H2}
+
+Leader:North{/CK/C8}
+
+[ 9]Leader:West {/SJ/SK/S8/ST}  winner=/SK  North
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/0)(0/2)(0/2)(0/0)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/0)(1/3)(0/2)(0/0)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_H7_C4}
+East  : {_DT_D3}
+South : {_HQ_H3}
+West  : {/S7/HA/H2}
+
+Leader:North{/CK/C8/D9}
+
+[ 9]Leader:West {/SJ/SK/S8/ST}  winner=/SK  North
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/0)(0/2)(0/2)(0/0)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/0)(0/2)(0/2)(0/0)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_H7_C4}
+East  : {_DT_D3}
+South : {_HQ_H3}
+West  : {/S7/HA}
+
+Leader:North{}
+
+[10]Leader:North{/CK/C8/D9/H2}  winner=/CK  North
+[ 9]Leader:West {/SJ/SK/S8/ST}  winner=/SK  North
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/0)(0/2)(0/2)(0/0)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/0)(0/2)(0/2)(0/0)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_H7}
+East  : {_DT_D3}
+South : {_HQ_H3}
+West  : {/S7/HA}
+
+Leader:North{/C4}
+
+[10]Leader:North{/CK/C8/D9/H2}  winner=/CK  North
+[ 9]Leader:West {/SJ/SK/S8/ST}  winner=/SK  North
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/0)(0/2)(0/2)(0/0)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/0)(0/2)(0/2)(0/0)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_H7}
+East  : {_DT}
+South : {_HQ_H3}
+West  : {/S7/HA}
+
+Leader:North{/C4/D3}
+
+[10]Leader:North{/CK/C8/D9/H2}  winner=/CK  North
+[ 9]Leader:West {/SJ/SK/S8/ST}  winner=/SK  North
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/0)(0/1)(0/1)(0/0)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/0)(0/1)(1/2)(0/0)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_H7}
+East  : {_DT}
+South : {_HQ}
+West  : {/S7/HA}
+
+Leader:North{/C4/D3/H3}
+
+[10]Leader:North{/CK/C8/D9/H2}  winner=/CK  North
+[ 9]Leader:West {/SJ/SK/S8/ST}  winner=/SK  North
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/0)(0/1)(0/1)(0/0)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/0)(0/1)(0/1)(0/0)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {_H7}
+East  : {_DT}
+South : {_HQ}
+West  : {/HA}
+
+Leader:North{}
+
+[11]Leader:North{/C4/D3/H3/S7}  winner=/C4  North
+[10]Leader:North{/CK/C8/D9/H2}  winner=/CK  North
+[ 9]Leader:West {/SJ/SK/S8/ST}  winner=/SK  North
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/0)(0/1)(0/1)(0/0)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/0)(0/1)(0/1)(0/0)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {}
+East  : {_DT}
+South : {_HQ}
+West  : {/HA}
+
+Leader:North{/H7}
+
+[11]Leader:North{/C4/D3/H3/S7}  winner=/C4  North
+[10]Leader:North{/CK/C8/D9/H2}  winner=/CK  North
+[ 9]Leader:West {/SJ/SK/S8/ST}  winner=/SK  North
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/0)(0/1)(0/1)(0/0)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/0)(0/1)(0/1)(0/0)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {}
+East  : {}
+South : {_HQ}
+West  : {/HA}
+
+Leader:North{/H7/DT}
+
+[11]Leader:North{/C4/D3/H3/S7}  winner=/C4  North
+[10]Leader:North{/CK/C8/D9/H2}  winner=/CK  North
+[ 9]Leader:West {/SJ/SK/S8/ST}  winner=/SK  North
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/0)(0/0)(0/0)(0/0)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/0)(0/0)(1/1)(0/0)
+---------- Board Information ----------
+  [    Status     ]  : Playing
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {}
+East  : {}
+South : {}
+West  : {/HA}
+
+Leader:North{/H7/DT/HQ}
+
+[11]Leader:North{/C4/D3/H3/S7}  winner=/C4  North
+[10]Leader:North{/CK/C8/D9/H2}  winner=/CK  North
+[ 9]Leader:West {/SJ/SK/S8/ST}  winner=/SK  North
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+
+-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½EAST)-----
+(0/0)(0/0)(0/0)(0/0)-----------------------Distrubution(NORTH‚©‚ç‚Ý‚½SOUTH)-----
+(0/0)(0/0)(0/0)(0/0)
+---------- Board Information ----------
+  [    Status     ]  : Scoring
+  [ Vulnerability ]  : none
+  [    Dealer     ]  : North
+  [   Declarer    ]  : East 
+
+  [Bidding History]
+   N       E       S       W
+[1  C  ][pass  ][pass  ][1  CX ]
+[1  CXX][1 NT  ][pass  ][pass  ]
+[pass  ]
+
+  [  Table Info   ]
+North : {}
+East  : {}
+South : {}
+West  : {}
+
+
+
+[12]Leader:North{/H7/DT/HQ/HA}  winner=/HA  West 
+[11]Leader:North{/C4/D3/H3/S7}  winner=/C4  North
+[10]Leader:North{/CK/C8/D9/H2}  winner=/CK  North
+[ 9]Leader:West {/SJ/SK/S8/ST}  winner=/SK  North
+[ 8]Leader:South{/S4/S6/S3/S2}  winner=/S6  West 
+[ 7]Leader:East {/D4/DK/C9/CQ}  winner=/DK  South
+[ 6]Leader:East {/DA/DQ/D5/D6}  winner=/DA  East 
+[ 5]Leader:West {/C6/C7/CJ/C3}  winner=/CJ  East 
+[ 4]Leader:West {/DJ/D2/D8/D7}  winner=/DJ  West 
+[ 3]Leader:East {/SQ/S9/SA/S5}  winner=/SA  West 
+[ 2]Leader:West {/H8/H4/HK/H6}  winner=/HK  East 
+[ 1]Leader:South{/H9/HJ/HT/H5}  winner=/HJ  West 
+[ 0]Leader:South{/CA/C2/CT/C5}  winner=/CA  South
+
+

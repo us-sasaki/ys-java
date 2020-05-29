@@ -1,0 +1,240 @@
+ denom : 1  Tricks : 900
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 900
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 1000
+min 900  max 1000
+Total Point : 10
+1NT
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 850
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 850
+min 850  max 850
+Total Point : 13
+1NT
+ denom : 1  Tricks : 850
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 600
+min 450  max 850
+Total Point : 24
+3Sダブル
+ denom : 1  Tricks : 950
+ denom : 2  Tricks : 1050
+ denom : 3  Tricks : 950
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 950
+min 950  max 1050
+Total Point : 12
+1NT
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 300
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 300
+min 300  max 650
+Total Point : 28
+4Hダブル
+ denom : 1  Tricks : 900
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 1150
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 1000
+min 800  max 1150
+Total Point : 29
+4Hダブル
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 950
+ denom : 3  Tricks : 700
+ denom : 4  Tricks : 800
+ denom : 5  Tricks : 950
+min 700  max 950
+Total Point : 27
+4Dダブル
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 400
+ denom : 3  Tricks : 300
+ denom : 4  Tricks : 200
+ denom : 5  Tricks : 350
+min 200  max 500
+Total Point : 27
+4S
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 850
+min 800  max 850
+Total Point : 15
+1NT
+ denom : 1  Tricks : 400
+ denom : 2  Tricks : 700
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 350
+min 350  max 700
+Total Point : 25
+3Cダブル
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 650
+min 500  max 750
+Total Point : 24
+3Dダブル
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 300
+ denom : 5  Tricks : 300
+min 300  max 650
+Total Point : 27
+4S
+ denom : 1  Tricks : 950
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 700
+ denom : 5  Tricks : 950
+min 700  max 950
+Total Point : 27
+4Cダブル
+ denom : 1  Tricks : 450
+ denom : 2  Tricks : 850
+ denom : 3  Tricks : 400
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 350
+min 350  max 850
+Total Point : 32
+5Hダブル
+ denom : 1  Tricks : 450
+ denom : 2  Tricks : 250
+ denom : 3  Tricks : 250
+ denom : 4  Tricks : 450
+ denom : 5  Tricks : 300
+min 250  max 450
+Total Point : 35
+6D
+ denom : 1  Tricks : 750
+ denom : 2  Tricks : 900
+ denom : 3  Tricks : 800
+ denom : 4  Tricks : 950
+ denom : 5  Tricks : 850
+min 750  max 950
+Total Point : 27
+4Sダブル
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 550
+ denom : 3  Tricks : 500
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 550
+min 500  max 600
+Total Point : 16
+1NT
+ denom : 1  Tricks : 400
+ denom : 2  Tricks : 250
+ denom : 3  Tricks : 400
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 250
+min 250  max 400
+Total Point : 28
+4D
+ denom : 1  Tricks : 300
+ denom : 2  Tricks : 400
+ denom : 3  Tricks : 250
+ denom : 4  Tricks : 350
+ denom : 5  Tricks : 250
+min 250  max 400
+Total Point : 28
+4H
+ denom : 1  Tricks : 1000
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 900
+ denom : 5  Tricks : 750
+min 600  max 1000
+Total Point : 31
+5Cダブル
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 400
+ denom : 5  Tricks : 400
+min 400  max 600
+Total Point : 25
+3S
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 400
+ denom : 3  Tricks : 150
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 150
+min 150  max 500
+Total Point : 33
+6Hダブル
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 450
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 550
+ denom : 5  Tricks : 550
+min 450  max 600
+Total Point : 21
+1D
+ denom : 1  Tricks : 550
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 900
+ denom : 4  Tricks : 750
+ denom : 5  Tricks : 700
+min 550  max 900
+Total Point : 25
+3Hダブル
+ denom : 1  Tricks : 800
+ denom : 2  Tricks : 800
+ denom : 3  Tricks : 950
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 600  max 950
+Total Point : 25
+3Hダブル
+ denom : 1  Tricks : 450
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 600
+ denom : 4  Tricks : 650
+ denom : 5  Tricks : 550
+min 450  max 650
+Total Point : 26
+3Cダブル
+ denom : 1  Tricks : 500
+ denom : 2  Tricks : 650
+ denom : 3  Tricks : 550
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 500
+min 500  max 650
+Total Point : 24
+3Cダブル
+ denom : 1  Tricks : 300
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 450
+ denom : 4  Tricks : 500
+ denom : 5  Tricks : 450
+min 300  max 500
+Total Point : 30
+5Cダブル
+ denom : 1  Tricks : 950
+ denom : 2  Tricks : 600
+ denom : 3  Tricks : 750
+ denom : 4  Tricks : 850
+ denom : 5  Tricks : 750
+min 600  max 950
+Total Point : 30
+5Cダブル
+ denom : 1  Tricks : 600
+ denom : 2  Tricks : 500
+ denom : 3  Tricks : 650
+ denom : 4  Tricks : 600
+ denom : 5  Tricks : 600
+min 500  max 650
+Total Point : 22
+2D

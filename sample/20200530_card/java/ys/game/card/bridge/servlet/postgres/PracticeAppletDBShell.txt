@@ -1,0 +1,31 @@
+DROP TABLE Record;
+CREATE TABLE Record (
+score     INTEGER   DEFAULT 0,
+date      TIMESTAMP DEFAULT now(),
+cont1     CHAR(5),
+made1     INTEGER  DEFAULT 0,
+cont2     CHAR(5),
+made2     INTEGER DEFAULT 0,
+cont3     CHAR(5),
+made3     INTEGER DEFAULT 0,
+cont4     CHAR(5),
+made4     INTEGER DEFAULT 0,
+name      CHAR(32),
+comment   CHAR(64),
+id        INTEGER DEFAULT NEXTVAL('PlaySerial'),
+intcode   INTEGER DEFAULT 0
+);
+
+DROP SEQUENCE PlaySerial;
+CREATE SEQUENCE PlaySerial
+    INCREMENT  1
+    MINVALUE   1
+    MAXVALUE   100000
+    START      1
+;
+
+DROP TABLE PlayLine;
+CREATE TABLE PlayLine (
+id        INTEGER DEFAULT 0,
+board     TEXT
+);

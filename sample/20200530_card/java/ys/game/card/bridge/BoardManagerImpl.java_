@@ -1,0 +1,203 @@
+package ys.game.card.bridge;
+
+import java.util.*;
+
+import ys.game.card.bridge.gui.GuiedBoard;
+
+/**
+ * UserとBoardを保持しており、Userへのプレイ要求、Boardへの状態更新を行う。
+ * 旗振り(Client)オブジェクト。
+ *
+ * @version		draft		7, May 2000
+ * @author		Yusuke Sasaki
+ */
+public class BoardManagerImpl implements BoardManager {
+	
+/*--------------------
+ * instance variables
+ */
+	/**
+	 * BoardManager 内において、基準とする Board。
+	 * ディール時のマスター、ビッドなどプレイ可能性はこのオブジェクトが判断する。
+	 */
+	private GuiedBoard masterBoard;
+	
+	/**
+	 * 状態通知対象の Board
+	 */
+	private Vector board;
+	
+	/**
+	 * NESW のプレイヤー
+	 */
+	private Player[] player;
+	
+/*------------------
+ * instance methods
+ */
+	public BoardManagerImpl() {
+		board = new Vector();
+		masterBoard = new GuiedBoard(new BoardImpl(1));
+	}
+	
+	/**
+	 * プレイ状態を監視するオブジェクト(Boardなど)を登録する。
+	 */
+	public void addBoard(int kind, Board o) {
+		if ((kind < 0)||(kind > 11))
+			throw new IllegalArgumentException("addBoardで不正な種別" +
+					kind + "が指定されました。");
+		if (o instanceof GuiedBoard) {
+			((GuiedBoard)o).setDirection( (kind+2) & 3); // Boardにおける視点を通知する。
+		}
+		if (!board.contains(o)) board.addElement(o); // 二重登録はしない
+	}
+	
+	public Board getMasterBoard() {
+		return masterBoard;
+	}
+	
+	/**
+	 * 登録されている全てのボードを配列として取得します。
+	 *
+	 * @return		登録されているすべてのボード
+	 */
+	public Board[] getBoards() {
+		return (Board[])(board.toArray());
+	}
+	
+	/**
+	 * 登録していた Board を削除する。
+	 */
+	public void removeBoard(Board o) {
+		// 今のところ、とくに board に対して切断通知はしない
+		board.removeElement(o);
+	}
+	
+	/**
+	 * Player を登録する。
+	 */
+	public void setPlayer(int seat, Player p) {
+		if ((seat < 0)||(seat > 3))
+			throw new IllegalArgumentException("setPlayerで不正な席番号"
+				+ seat +"が指定されました");
+		if (player[seat] != null) removePlayer(seat);
+		addBoard(seat | PLAYER, p.getBoard());
+	}
+	
+	/**
+	 * 登録していた Player を削除する。
+	 */
+	public void removePlayer(int seat) {
+		if ((seat < 0)||(seat > 3))
+			throw new IllegalArgumentException("removePlayerで不正な席番号"
+				+ seat +"が指定されました");
+		if (player[seat] == null) return;
+		removeBoard(player[seat].getBoard());
+		player[seat] = null;
+	}
+	
+	/**
+	 * ゲームを進行する。
+	 */
+	public void main() throws BridgeException {
+		init();
+		checkPlayerState();
+		
+		//
+		// ゲーム開始
+		//
+		deal();
+		
+		int status;
+		while ( (status = masterBoard.getStatus()) != Board.SCORING) {
+			int n = masterBoard.getPlayer();
+			Object play = player[n].play();
+			
+			if (!masterBoard.allows(play)) {
+				// hoge hoge
+			}
+			masterBoard.play(play);
+			notify(play);
+			
+			switch(status) {
+			
+			case Board.DEALING:
+			case Board.BIDDING:
+			case Board.PLAYING:
+				break;
+			
+			case Board.OPENING:
+				notifyDummy();
+				break;
+				
+			default:
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * 初期化を行う。
+	 */
+	private void init() {
+		addBoard(NORTH | OBSERVER, new BoardImpl(1));
+		
+	}
+	
+	/**
+	 * player が設定されているかをチェックする。
+	 */
+	private void checkPlayerState() throws BridgeException {
+		for (int i = 0; i < 4; i++) {
+			if (player[i] == null)
+				throw new BridgeException();
+		}
+	}
+	
+	/**
+	 * ハンドを配り、各ボードに通知を行います。
+	 *
+	 */
+	private void deal() {
+		masterBoard.deal();
+		//
+		// 通知は未実装
+		//
+	}
+	
+	/**
+	 * プレイを各ボードに通知します。
+	 */
+	private void notify(Object play) {
+		//
+		// 通知は未実装
+		//
+	}
+	
+	/**
+	 * ダミーハンドを各ボードに通知します。
+	 */
+	private void notifyDummy() {
+		//
+		// 通知は未実装
+		//
+	}
+	
+	/**
+	 * main() の動作を中断する。
+	 * 当然main()とは別のスレッドからコールされる。
+	 */
+	public void quit() {
+	}
+	
+	/**
+	 * main() に対して undo 処理の予約を行う。
+	 * 当然main()とは別のスレッドからコールされる。
+	 */
+	public void undo() {
+	}
+	
+}
+
+	
