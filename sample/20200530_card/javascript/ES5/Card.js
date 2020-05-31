@@ -1,93 +1,4 @@
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>
-      Card.js - Documentation
-  </title>
-
-  <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-
-  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
-
-  
-
-  <!-- start Mixpanel -->
-  <script type="text/javascript">(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
-  0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
-  for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
-  mixpanel.init("1919205b2da72e4da3b9b6639b444d59");</script>
-  <!-- end Mixpanel -->
-</head>
-
-<body>
-  <svg style="display: none;">
-    <defs>
-      <symbol id="linkIcon" fill="#706d77" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0h24v24H0z" fill="none"/>
-          <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
-      </symbol>
-    </defs>
-  </svg>
-
-  <input type="checkbox" id="nav-trigger" class="nav-trigger" />
-  <label for="nav-trigger" class="navicon-button x">
-    <div class="navicon"></div>
-  </label>
-
-  <label for="nav-trigger" class="overlay"></label>
-
-  <div class="top-nav-wrapper">
-    <ul>
-      <li >
-        <a href="index.html">
-          
-            <svg fill="#6D6D6D" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-              <path d="M0 0h24v24H0z" fill="none"/>
-            </svg>
-          
-          
-        </a>
-      </li>
-
-      
-
-    </ul>
-  </div>
-
-  <nav>
-    <h3 class="reference-title">
-      Braintree SDK Client Reference
-    </h3>
-
-    <h3>Classes</h3><ul><li id="Bid-nav"><a href="Bid.html">Bid</a><ul class='methods'><li data-type="method" id="Bid-isBiddableOver-nav"><a href="Bid.html#isBiddableOver">isBiddableOver</a></li><li data-type="method" id="Bid-toString-nav"><a href="Bid.html#toString">toString</a></li></ul></li><li id="BiddingHistory-nav"><a href="BiddingHistory.html">BiddingHistory</a><ul class='methods'><li data-type="method" id="BiddingHistory-allows-nav"><a href="BiddingHistory.html#allows">allows</a></li><li data-type="method" id="BiddingHistory-getAllBids-nav"><a href="BiddingHistory.html#getAllBids">getAllBids</a></li><li data-type="method" id="BiddingHistory-getTurn-nav"><a href="BiddingHistory.html#getTurn">getTurn</a></li><li data-type="method" id="BiddingHistory-play-nav"><a href="BiddingHistory.html#play">play</a></li><li data-type="method" id="BiddingHistory-reset-nav"><a href="BiddingHistory.html#reset">reset</a></li><li data-type="method" id="BiddingHistory-setContract-nav"><a href="BiddingHistory.html#setContract">setContract</a></li><li data-type="method" id="BiddingHistory-toString-nav"><a href="BiddingHistory.html#toString">toString</a></li><li data-type="method" id="BiddingHistory-undo-nav"><a href="BiddingHistory.html#undo">undo</a></li></ul></li><li id="Board-nav"><a href="Board.html">Board</a><ul class='methods'><li data-type="method" id="Board-calculateOriginalHand-nav"><a href="Board.html#.calculateOriginalHand">calculateOriginalHand</a></li><li data-type="method" id="Board-_dummyClose_-nav"><a href="Board.html#_dummyClose_">_dummyClose_</a></li><li data-type="method" id="Board-_dummyOpen_-nav"><a href="Board.html#_dummyOpen_">_dummyOpen_</a></li><li data-type="method" id="Board-_reorderHand_-nav"><a href="Board.html#_reorderHand_">_reorderHand_</a></li><li data-type="method" id="Board-add-nav"><a href="Board.html#add">add</a></li><li data-type="method" id="Board-allows-nav"><a href="Board.html#allows">allows</a></li><li data-type="method" id="Board-deal-nav"><a href="Board.html#deal">deal</a></li><li data-type="method" id="Board-draw-nav"><a href="Board.html#draw">draw</a></li><li data-type="method" id="Board-getAllTricks-nav"><a href="Board.html#getAllTricks">getAllTricks</a></li><li data-type="method" id="Board-getContract-nav"><a href="Board.html#getContract">getContract</a></li><li data-type="method" id="Board-getDealer-nav"><a href="Board.html#getDealer">getDealer</a></li><li data-type="method" id="Board-getDeclarer-nav"><a href="Board.html#getDeclarer">getDeclarer</a></li><li data-type="method" id="Board-getDummy-nav"><a href="Board.html#getDummy">getDummy</a></li><li data-type="method" id="Board-getHand-nav"><a href="Board.html#getHand">getHand</a></li><li data-type="method" id="Board-getPlayer-nav"><a href="Board.html#getPlayer">getPlayer</a></li><li data-type="method" id="Board-getPlayOrder-nav"><a href="Board.html#getPlayOrder">getPlayOrder</a></li><li data-type="method" id="Board-getRect-nav"><a href="Board.html#getRect">getRect</a></li><li data-type="method" id="Board-getSize-nav"><a href="Board.html#getSize">getSize</a></li><li data-type="method" id="Board-getTrick-nav"><a href="Board.html#getTrick">getTrick</a></li><li data-type="method" id="Board-getTricks-nav"><a href="Board.html#getTricks">getTricks</a></li><li data-type="method" id="Board-getTrump-nav"><a href="Board.html#getTrump">getTrump</a></li><li data-type="method" id="Board-getTurn-nav"><a href="Board.html#getTurn">getTurn</a></li><li data-type="method" id="Board-isVul-nav"><a href="Board.html#isVul">isVul</a></li><li data-type="method" id="Board-play-nav"><a href="Board.html#play">play</a></li><li data-type="method" id="Board-pull-nav"><a href="Board.html#pull">pull</a></li><li data-type="method" id="Board-reset-nav"><a href="Board.html#reset">reset</a></li><li data-type="method" id="Board-setContract-nav"><a href="Board.html#setContract">setContract</a></li><li data-type="method" id="Board-setDirection-nav"><a href="Board.html#setDirection">setDirection</a></li><li data-type="method" id="Board-setParent-nav"><a href="Board.html#setParent">setParent</a></li><li data-type="method" id="Board-setPlayHistory-nav"><a href="Board.html#setPlayHistory">setPlayHistory</a></li><li data-type="method" id="Board-setPosition-nav"><a href="Board.html#setPosition">setPosition</a></li><li data-type="method" id="Board-setSize-nav"><a href="Board.html#setSize">setSize</a></li><li data-type="method" id="Board-toString-nav"><a href="Board.html#toString">toString</a></li><li data-type="method" id="Board-toText-nav"><a href="Board.html#toText">toText</a></li><li data-type="method" id="Board-undo-nav"><a href="Board.html#undo">undo</a></li></ul></li><li id="BoardLayout-nav"><a href="BoardLayout.html">BoardLayout</a></li><li id="Card-nav"><a href="Card.html">Card</a><ul class='methods'><li data-type="method" id="Card-draw-nav"><a href="Card.html#draw">draw</a></li><li data-type="method" id="Card-getRect-nav"><a href="Card.html#getRect">getRect</a></li><li data-type="method" id="Card-setDirection-nav"><a href="Card.html#setDirection">setDirection</a></li><li data-type="method" id="Card-setParent-nav"><a href="Card.html#setParent">setParent</a></li><li data-type="method" id="Card-setPosition-nav"><a href="Card.html#setPosition">setPosition</a></li><li data-type="method" id="Card-setSize-nav"><a href="Card.html#setSize">setSize</a></li><li data-type="method" id="Card-toString-nav"><a href="Card.html#toString">toString</a></li></ul></li><li id="CardHandLayout-nav"><a href="CardHandLayout.html">CardHandLayout</a><ul class='methods'><li data-type="method" id="CardHandLayout-layout-nav"><a href="CardHandLayout.html#layout">layout</a></li><li data-type="method" id="CardHandLayout-layoutSize-nav"><a href="CardHandLayout.html#layoutSize">layoutSize</a></li></ul></li><li id="CardImageHolder-nav"><a href="CardImageHolder.html">CardImageHolder</a><ul class='methods'><li data-type="method" id="CardImageHolder-getBackImage-nav"><a href="CardImageHolder.html#.getBackImage">getBackImage</a></li><li data-type="method" id="CardImageHolder-getImage-nav"><a href="CardImageHolder.html#.getImage">getImage</a></li><li data-type="method" id="CardImageHolder-loadImages-nav"><a href="CardImageHolder.html#.loadImages">loadImages</a></li></ul></li><li id="DummyHandLayout-nav"><a href="DummyHandLayout.html">DummyHandLayout</a><ul class='methods'><li data-type="method" id="DummyHandLayout-layout-nav"><a href="DummyHandLayout.html#layout">layout</a></li><li data-type="method" id="DummyHandLayout-layoutSize-nav"><a href="DummyHandLayout.html#layoutSize">layoutSize</a></li></ul></li><li id="Entities-nav"><a href="Entities.html">Entities</a><ul class='methods'><li data-type="method" id="Entities-add-nav"><a href="Entities.html#add">add</a></li><li data-type="method" id="Entities-draw-nav"><a href="Entities.html#draw">draw</a></li><li data-type="method" id="Entities-getRect-nav"><a href="Entities.html#getRect">getRect</a></li><li data-type="method" id="Entities-getSize-nav"><a href="Entities.html#getSize">getSize</a></li><li data-type="method" id="Entities-pull-nav"><a href="Entities.html#pull">pull</a></li><li data-type="method" id="Entities-setDirection-nav"><a href="Entities.html#setDirection">setDirection</a></li><li data-type="method" id="Entities-setParent-nav"><a href="Entities.html#setParent">setParent</a></li><li data-type="method" id="Entities-setPosition-nav"><a href="Entities.html#setPosition">setPosition</a></li><li data-type="method" id="Entities-setSize-nav"><a href="Entities.html#setSize">setSize</a></li></ul></li><li id="Entity-nav"><a href="Entity.html">Entity</a><ul class='methods'><li data-type="method" id="Entity-draw-nav"><a href="Entity.html#draw">draw</a></li><li data-type="method" id="Entity-getRect-nav"><a href="Entity.html#getRect">getRect</a></li><li data-type="method" id="Entity-setDirection-nav"><a href="Entity.html#setDirection">setDirection</a></li><li data-type="method" id="Entity-setParent-nav"><a href="Entity.html#setParent">setParent</a></li><li data-type="method" id="Entity-setPosition-nav"><a href="Entity.html#setPosition">setPosition</a></li><li data-type="method" id="Entity-setSize-nav"><a href="Entity.html#setSize">setSize</a></li></ul></li><li id="Field-nav"><a href="Field.html">Field</a><ul class='methods'><li data-type="method" id="Field-add-nav"><a href="Field.html#add">add</a></li><li data-type="method" id="Field-addEventListener-nav"><a href="Field.html#addEventListener">addEventListener</a></li><li data-type="method" id="Field-draw-nav"><a href="Field.html#draw">draw</a></li><li data-type="method" id="Field-getRect-nav"><a href="Field.html#getRect">getRect</a></li><li data-type="method" id="Field-getSize-nav"><a href="Field.html#getSize">getSize</a></li><li data-type="method" id="Field-pull-nav"><a href="Field.html#pull">pull</a></li><li data-type="method" id="Field-setDirection-nav"><a href="Field.html#setDirection">setDirection</a></li><li data-type="method" id="Field-setParent-nav"><a href="Field.html#setParent">setParent</a></li><li data-type="method" id="Field-setPosition-nav"><a href="Field.html#setPosition">setPosition</a></li><li data-type="method" id="Field-setSize-nav"><a href="Field.html#setSize">setSize</a></li></ul></li><li id="NaturalCardOrder-nav"><a href="NaturalCardOrder.html">NaturalCardOrder</a><ul class='methods'><li data-type="method" id="NaturalCardOrder-compare-nav"><a href="NaturalCardOrder.html#compare">compare</a></li></ul></li><li id="Packet-nav"><a href="Packet.html">Packet</a><ul class='methods'><li data-type="method" id="Packet-deal-nav"><a href="Packet.html#.deal">deal</a></li><li data-type="method" id="Packet-provideDeck-nav"><a href="Packet.html#.provideDeck">provideDeck</a></li><li data-type="method" id="Packet-add-nav"><a href="Packet.html#add">add</a></li><li data-type="method" id="Packet-arrange-nav"><a href="Packet.html#arrange">arrange</a></li><li data-type="method" id="Packet-countSuit-nav"><a href="Packet.html#countSuit">countSuit</a></li><li data-type="method" id="Packet-countValue-nav"><a href="Packet.html#countValue">countValue</a></li><li data-type="method" id="Packet-draw-nav"><a href="Packet.html#draw">draw</a></li><li data-type="method" id="Packet-getRect-nav"><a href="Packet.html#getRect">getRect</a></li><li data-type="method" id="Packet-getSize-nav"><a href="Packet.html#getSize">getSize</a></li><li data-type="method" id="Packet-pull-nav"><a href="Packet.html#pull">pull</a></li><li data-type="method" id="Packet-setDirection-nav"><a href="Packet.html#setDirection">setDirection</a></li><li data-type="method" id="Packet-setParent-nav"><a href="Packet.html#setParent">setParent</a></li><li data-type="method" id="Packet-setPosition-nav"><a href="Packet.html#setPosition">setPosition</a></li><li data-type="method" id="Packet-setSize-nav"><a href="Packet.html#setSize">setSize</a></li><li data-type="method" id="Packet-shuffle-nav"><a href="Packet.html#shuffle">shuffle</a></li><li data-type="method" id="Packet-sub-nav"><a href="Packet.html#sub">sub</a></li><li data-type="method" id="Packet-subpacket-nav"><a href="Packet.html#subpacket">subpacket</a></li><li data-type="method" id="Packet-toString-nav"><a href="Packet.html#toString">toString</a></li><li data-type="method" id="Packet-turn-nav"><a href="Packet.html#turn">turn</a></li></ul></li><li id="PlayHistory-nav"><a href="PlayHistory.html">PlayHistory</a><ul class='methods'><li data-type="method" id="PlayHistory-allows-nav"><a href="PlayHistory.html#allows">allows</a></li><li data-type="method" id="PlayHistory-getAllTricks-nav"><a href="PlayHistory.html#getAllTricks">getAllTricks</a></li><li data-type="method" id="PlayHistory-getTrick-nav"><a href="PlayHistory.html#getTrick">getTrick</a></li><li data-type="method" id="PlayHistory-getTricks-nav"><a href="PlayHistory.html#getTricks">getTricks</a></li><li data-type="method" id="PlayHistory-getTurn-nav"><a href="PlayHistory.html#getTurn">getTurn</a></li><li data-type="method" id="PlayHistory-isFinished-nav"><a href="PlayHistory.html#isFinished">isFinished</a></li><li data-type="method" id="PlayHistory-play-nav"><a href="PlayHistory.html#play">play</a></li><li data-type="method" id="PlayHistory-reset-nav"><a href="PlayHistory.html#reset">reset</a></li><li data-type="method" id="PlayHistory-setContract-nav"><a href="PlayHistory.html#setContract">setContract</a></li><li data-type="method" id="PlayHistory-setHand-nav"><a href="PlayHistory.html#setHand">setHand</a></li><li data-type="method" id="PlayHistory-toString-nav"><a href="PlayHistory.html#toString">toString</a></li><li data-type="method" id="PlayHistory-undo-nav"><a href="PlayHistory.html#undo">undo</a></li></ul></li><li id="ReproducibleRandom-nav"><a href="ReproducibleRandom.html">ReproducibleRandom</a><ul class='methods'><li data-type="method" id="ReproducibleRandom-next-nav"><a href="ReproducibleRandom.html#next">next</a></li><li data-type="method" id="ReproducibleRandom-nextInt-nav"><a href="ReproducibleRandom.html#nextInt">nextInt</a></li></ul></li><li id="TableGui-nav"><a href="TableGui.html">TableGui</a><ul class='methods'><li data-type="method" id="TableGui-draw-nav"><a href="TableGui.html#draw">draw</a></li><li data-type="method" id="TableGui-getRect-nav"><a href="TableGui.html#getRect">getRect</a></li><li data-type="method" id="TableGui-setDirection-nav"><a href="TableGui.html#setDirection">setDirection</a></li><li data-type="method" id="TableGui-setParent-nav"><a href="TableGui.html#setParent">setParent</a></li><li data-type="method" id="TableGui-setPosition-nav"><a href="TableGui.html#setPosition">setPosition</a></li><li data-type="method" id="TableGui-setSize-nav"><a href="TableGui.html#setSize">setSize</a></li></ul></li><li id="Trick-nav"><a href="Trick.html">Trick</a><ul class='methods'><li data-type="method" id="Trick-add-nav"><a href="Trick.html#add">add</a></li><li data-type="method" id="Trick-arrange-nav"><a href="Trick.html#arrange">arrange</a></li><li data-type="method" id="Trick-countSuit-nav"><a href="Trick.html#countSuit">countSuit</a></li><li data-type="method" id="Trick-countValue-nav"><a href="Trick.html#countValue">countValue</a></li><li data-type="method" id="Trick-draw-nav"><a href="Trick.html#draw">draw</a></li><li data-type="method" id="Trick-getRect-nav"><a href="Trick.html#getRect">getRect</a></li><li data-type="method" id="Trick-getSize-nav"><a href="Trick.html#getSize">getSize</a></li><li data-type="method" id="Trick-getTurn-nav"><a href="Trick.html#getTurn">getTurn</a></li><li data-type="method" id="Trick-isFinished-nav"><a href="Trick.html#isFinished">isFinished</a></li><li data-type="method" id="Trick-pull-nav"><a href="Trick.html#pull">pull</a></li><li data-type="method" id="Trick-setDirection-nav"><a href="Trick.html#setDirection">setDirection</a></li><li data-type="method" id="Trick-setParent-nav"><a href="Trick.html#setParent">setParent</a></li><li data-type="method" id="Trick-setPosition-nav"><a href="Trick.html#setPosition">setPosition</a></li><li data-type="method" id="Trick-setSize-nav"><a href="Trick.html#setSize">setSize</a></li><li data-type="method" id="Trick-shuffle-nav"><a href="Trick.html#shuffle">shuffle</a></li><li data-type="method" id="Trick-sub-nav"><a href="Trick.html#sub">sub</a></li><li data-type="method" id="Trick-subpacket-nav"><a href="Trick.html#subpacket">subpacket</a></li><li data-type="method" id="Trick-toString-nav"><a href="Trick.html#toString">toString</a></li><li data-type="method" id="Trick-turn-nav"><a href="Trick.html#turn">turn</a></li></ul></li><li id="TrickLayout-nav"><a href="TrickLayout.html">TrickLayout</a><ul class='methods'><li data-type="method" id="TrickLayout-layout-nav"><a href="TrickLayout.html#layout">layout</a></li><li data-type="method" id="TrickLayout-layoutSize-nav"><a href="TrickLayout.html#layoutSize">layoutSize</a></li></ul></li><li id="WinnerCard-nav"><a href="WinnerCard.html">WinnerCard</a><ul class='methods'><li data-type="method" id="WinnerCard-draw-nav"><a href="WinnerCard.html#draw">draw</a></li><li data-type="method" id="WinnerCard-getRect-nav"><a href="WinnerCard.html#getRect">getRect</a></li><li data-type="method" id="WinnerCard-setDirection-nav"><a href="WinnerCard.html#setDirection">setDirection</a></li><li data-type="method" id="WinnerCard-setParent-nav"><a href="WinnerCard.html#setParent">setParent</a></li><li data-type="method" id="WinnerCard-setPosition-nav"><a href="WinnerCard.html#setPosition">setPosition</a></li><li data-type="method" id="WinnerCard-setSize-nav"><a href="WinnerCard.html#setSize">setSize</a></li></ul></li><li id="WinnerGui-nav"><a href="WinnerGui.html">WinnerGui</a><ul class='methods'><li data-type="method" id="WinnerGui-add-nav"><a href="WinnerGui.html#add">add</a></li><li data-type="method" id="WinnerGui-draw-nav"><a href="WinnerGui.html#draw">draw</a></li><li data-type="method" id="WinnerGui-getRect-nav"><a href="WinnerGui.html#getRect">getRect</a></li><li data-type="method" id="WinnerGui-getSize-nav"><a href="WinnerGui.html#getSize">getSize</a></li><li data-type="method" id="WinnerGui-pull-nav"><a href="WinnerGui.html#pull">pull</a></li><li data-type="method" id="WinnerGui-setDirection-nav"><a href="WinnerGui.html#setDirection">setDirection</a></li><li data-type="method" id="WinnerGui-setParent-nav"><a href="WinnerGui.html#setParent">setParent</a></li><li data-type="method" id="WinnerGui-setPosition-nav"><a href="WinnerGui.html#setPosition">setPosition</a></li><li data-type="method" id="WinnerGui-setSize-nav"><a href="WinnerGui.html#setSize">setSize</a></li></ul></li></ul>
-  </nav>
-
-  <div id="main">
-    
-      <h1 class="page-title">
-        Card.js
-      </h1>
-    
-
-    
-      
-
-<section>
-  <article>
-    <pre class="prettyprint source linenums"><code>/**
+/**
  * @fileOverview ブリッジシミュレーターのソースです。
  */
 var inherits = function(childCtor, parentCtor) {
@@ -114,7 +25,7 @@ var ReproducibleRandom = function(seed) {
 	 * @return	{number} 乱数値
 	 */
 	ReproducibleRandom.prototype.next = function() {
-		var t = this.x ^ (this.x &lt;&lt; 11);
+		var t = this.x ^ (this.x << 11);
 	    this.x = this.y; this.y = this.z; this.z = this.w;
 	    return this.w = (this.w ^ (this.w >>> 19)) ^ (t ^ (t >>> 8)); 
 	}
@@ -193,15 +104,15 @@ var NaturalCardOrder = function(trump) {
 	 * @param	{Card} b 比較対象のカード2
 	 * @return 	{number} カード1 > カード2 なら 1 、
 	 *    カード1 = カード2 なら 0、
-	 *    カード1 &lt; カード2 なら -1 を返却します。
+	 *    カード1 < カード2 なら -1 を返却します。
 	 */
 	NaturalCardOrder.prototype.compare = function(a, b) {
-		if ( a.suit == b.suit &amp;&amp; a.value == b.value ) return 0;
+		if ( a.suit == b.suit && a.value == b.value ) return 0;
 		
 		var suitA = this.suitOrder[a.suit];
 		var suitB = this.suitOrder[b.suit];
 		if (suitA > suitB) return 1;
-		if (suitA &lt; suitB) return -1;
+		if (suitA < suitB) return -1;
 
 		var valueA = NaturalCardOrder.VALUE_ORDER[a.value];
 		var valueB = NaturalCardOrder.VALUE_ORDER[b.value];
@@ -302,7 +213,7 @@ var Entity = function() {
 	 * @param	{number} dir 向き(0-3)
 	 */
 	Entity.prototype.setDirection = function(dir) {
-		if (dir!=0 &amp;&amp; dir!=1 &amp;&amp; dir!=2 &amp;&amp; dir!=3)
+		if (dir!=0 && dir!=1 && dir!=2 && dir!=3)
 			throw new Error("setDirection で direction の値が不正です:"+dir);
 		this.direction = dir;
 	}
@@ -342,9 +253,9 @@ var Entities = function() {
  * instance field
  */
 	/**
-	 * 子要素を格納します。子要素数は、this.children.length で取得できます。&lt;br>
-	 * &lt;strong>直接書き込みは行わず、add を利用して下さい。&lt;/strong>
-	 * @type	{Array.&lt;Entity>}
+	 * 子要素を格納します。子要素数は、this.children.length で取得できます。<br>
+	 * <strong>直接書き込みは行わず、add を利用して下さい。</strong>
+	 * @type	{Array.<Entity>}
 	 * @see	#add
 	 */
 	this.children = [];
@@ -385,7 +296,7 @@ inherits(Entities, Entity);
 	Entities.prototype.pull = function(index) {
 		if (index===void 0) index = this.children.length - 1;
 		
-		if (index &lt; 0 || index >= this.children.length)
+		if (index < 0 || index >= this.children.length)
 			throw new Error("pull で指定された index が不正です:"+index);
 		var child = this.children[index];
 		this.children.splice(index, 1); // 削除
@@ -478,7 +389,7 @@ inherits(Packet, Entities);
 		var rnd = new ReproducibleRandom(seed); // seed
 		var tmp = []; // Card
 		var size = this.children.length;
-		for (var i = 0; i &lt; size; i++) {
+		for (var i = 0; i < size; i++) {
 			var index = rnd.nextInt(0, this.children.length-1);
 			tmp.push(this.children[index]); // 取得
 			this.children.splice(index,1); // 削除
@@ -501,7 +412,7 @@ inherits(Packet, Entities);
 	 */
 	Packet.prototype.countSuit = function(suit) {
 		var c = 0;
-		for (var i = 0; i &lt; this.children.length; i++) {
+		for (var i = 0; i < this.children.length; i++) {
 			if (this.children[i].suit == suit) c++;
 		}
 		return c;
@@ -515,7 +426,7 @@ inherits(Packet, Entities);
 	Packet.prototype.countValue = function(value) {
 		var c = 0;
 		var size = this.children.length;
-		for (var i = 0; i &lt; size; i++) {
+		for (var i = 0; i < size; i++) {
 			if (this.children[i].value == value) c++;
 		}
 		return c;
@@ -529,7 +440,7 @@ inherits(Packet, Entities);
 	Packet.prototype.subpacket = function(suit) {
 		var result = new Packet();
 		var size = this.children.length;
-		for (var i = 0; i &lt; size; i++) {
+		for (var i = 0; i < size; i++) {
 			var card = this.children[i];
 			if (card.suit == suit) result.add(card);
 		}
@@ -541,7 +452,7 @@ inherits(Packet, Entities);
 	 * @param	{boolean} head	表にする場合 true、裏にする場合 false
 	 */
 	Packet.prototype.turn = function(head) {
-		for (var i = 0; i &lt; this.children.length; i++) {
+		for (var i = 0; i < this.children.length; i++) {
 			this.children.isHead = head;
 		}
 	}
@@ -554,7 +465,7 @@ inherits(Packet, Entities);
 	Packet.prototype.sub = function(target) {
 		var result = new Packet();
 		
-		for (var i = 0; i &lt; this.children.length; i++) {
+		for (var i = 0; i < this.children.length; i++) {
 			var c = this.children[i];
 			if (target.children.indexOf(c) == -1) result.add(c);
 		}
@@ -567,7 +478,7 @@ inherits(Packet, Entities);
 	Packet.prototype.toString = function() {
 		var s = "";
 		var size = this.children.length;
-		for (var i = 0; i &lt; size; i++) {
+		for (var i = 0; i < size; i++) {
 			s += this.children[i].toString();
 		}
 		return "{" + s + "}";
@@ -582,8 +493,8 @@ inherits(Packet, Entities);
 	 */
 	Packet.provideDeck = function() {
 		var p = new Packet();
-		for (var suit = 1; suit &lt; 5; suit++) {
-			for (var value = 1; value &lt; 14; value++) {
+		for (var suit = 1; suit < 5; suit++) {
+			for (var value = 1; value < 14; value++) {
 				p.add(new Card(suit, value));
 			}
 		}
@@ -594,18 +505,18 @@ inherits(Packet, Entities);
 	 * pile から1枚ずつ hands (Packet の配列) に均等に配ります
 	 *
 	 * @param	{Packet}	pile	配る元の Packet
-	 * @param	{Array.&lt;Packet>}	hands	配り先の Packet の配列
+	 * @param	{Array.<Packet>}	hands	配り先の Packet の配列
 	 * @param	{number}	begin	配りはじめる hand の番号
 	 */
 	Packet.deal = function(pile, hands, begin) {
 		if (begin===void 0) begin = 0;
 		
 		var n = hands.length;
-		if (begin &lt; 0 || begin >= n)
+		if (begin < 0 || begin >= n)
 			throw new Error("deal で begin の値が不正です:"+begin);
 		
 		var c = pile.children.length;
-		for (var i = 0; i &lt; c; i++) {
+		for (var i = 0; i < c; i++) {
 			var card = pile.pull();
 			hands[ (i+begin) % n ].add(card);
 		}
@@ -648,7 +559,7 @@ inherits(Field, Entities);
 	/** override */
 	Field.prototype.draw = function() {
 		this._drawBackground_();
-		for (var i = 0; i &lt; this.children.length; i++) {
+		for (var i = 0; i < this.children.length; i++) {
 			this.children[i].draw(this.ctx);
 		}
 		this._drawSpotlight_();
@@ -664,7 +575,7 @@ inherits(Field, Entities);
 		//
 		var r = this.getRect();
 		var step = r.h / 40;
-		for (var i = 0; i &lt; 40; i++) {
+		for (var i = 0; i < 40; i++) {
 			this.ctx.fillStyle = 'rgb(' + (40+i/2) + ','+(80+i)+',30)'; // 緑
 			this.ctx.fillRect(r.x, r.y+Math.floor(i*step), r.w, r.h+Math.floor(step+1));
 		}
@@ -825,7 +736,7 @@ inherits(Card, Entity); // 継承
 	/**
 	 * この Entity の位置、大きさを取得します。
 	 * @override
-	 * @return		{Object} {x: &lt;&lt;x座標>>, y: &lt;&lt;y座標>>, w: &lt;&lt;幅>>, h: &lt;&lt;高さ>>
+	 * @return		{Object} {x: <<x座標>>, y: <<y座標>>, w: <<幅>>, h: <<高さ>>
 	 */
 	Card.prototype.getRect = function() {
 		return {
@@ -891,12 +802,12 @@ var CardImageHolder = function() {
 }
 	/**
 	 * カード表面のイメージオブジェクトの配列
-	 * @type	{Array.&lt;Image>}
+	 * @type	{Array.<Image>}
 	 */
 	CardImageHolder.IMAGE = [];
 	/**
 	 * カード裏面のイメージオブジェクト配列
-	 * @type	{Array.&lt;Image>}
+	 * @type	{Array.<Image>}
 	 */
 	CardImageHolder.BACK_IMAGE = [];
 	
@@ -908,9 +819,9 @@ var CardImageHolder = function() {
 		if (!path.endsWith('/')) path = path + '/';
 		// カード表面の読み込み
 		var s = ['c', 'd', 'h', 's'];
-		for (var i = 0; i &lt; s.length; i++) {
+		for (var i = 0; i < s.length; i++) {
 			var suit = s[i];
-			for (var value = 1; value &lt; 14; value++) {
+			for (var value = 1; value < 14; value++) {
 				var imgsrc = 'images/'+suit+value+'.gif?'+ new Date().getTime(); // nocache
 				var img = new Image();
 				img.src = imgsrc;
@@ -918,7 +829,7 @@ var CardImageHolder = function() {
 			}
 		}
 		// カード裏面の読み込み
-		for (var i = 0; i &lt; 4; i++) {
+		for (var i = 0; i < 4; i++) {
 			var imgsrc = 'images/back'+i+'.gif?'+ new Date().getTime();
 			var img = new Image();
 			img.src = imgsrc;
@@ -977,7 +888,7 @@ var CardHandLayout = function() {
 			xpos = r.x;
 			ypos = r.y;
 			
-			for (var i = 0; i &lt; n; i++) {
+			for (var i = 0; i < n; i++) {
 				var ent = entities.children[i];
 				ent.setPosition(xpos, ypos);
 				//ent.setSize(Card.XSIZE, Card.YSIZE);
@@ -991,7 +902,7 @@ var CardHandLayout = function() {
 			xpos = r.x;
 			ypos = r.y + (n-1) * Card.XSTEP;
 			
-			for (var i = 0; i &lt; n; i++) {
+			for (var i = 0; i < n; i++) {
 				var ent = entities.children[i];
 				ent.setPosition(xpos, ypos);
 				//ent.setSize(Card.YSIZE, Card.XSIZE);
@@ -1005,7 +916,7 @@ var CardHandLayout = function() {
 			xpos = r.x + (n-1) * Card.XSTEP;
 			ypos = r.y;
 			
-			for (var i = 0; i &lt; n; i++) {
+			for (var i = 0; i < n; i++) {
 				var ent = entities.children[i];
 				ent.setPosition(xpos, ypos);
 				//ent.setSize(Card.XSIZE, Card.YSIZE);
@@ -1019,7 +930,7 @@ var CardHandLayout = function() {
 			xpos = r.x;
 			ypos = r.y;
 			
-			for (var i = 0; i &lt; n; i++) {
+			for (var i = 0; i < n; i++) {
 				var ent = entities.children[i];
 				ent.setPosition(xpos, ypos);
 				//ent.setSize(Card.YSIZE, Card.XSIZE);
@@ -1072,19 +983,19 @@ var CardHandLayout = function() {
  * @author		Yusuke Sasaki
  */
 var Bid = function(kind, level, suit) {
-	if (kind != Bid.PASS &amp;&amp; (level===void 0 || suit===void 0)) {
+	if (kind != Bid.PASS && (level===void 0 || suit===void 0)) {
 		throw new Error("pass でない場合は引数が必要です");
 	}
-	if (kind == Bid.PASS &amp;&amp; (level!==void 0 || level!==void 0))
+	if (kind == Bid.PASS && (level!==void 0 || level!==void 0))
 		throw new Error("pass では引数は1つです");
-	if (kind == Bid.PASS &amp;&amp; level===void 0 &amp;&amp; suit===void 0) {
+	if (kind == Bid.PASS && level===void 0 && suit===void 0) {
 		level = 0; suit = 0; // pass object
 	}
-	if ((kind &lt; Bid.BID)||(kind > Bid.REDOUBLE))
+	if ((kind < Bid.BID)||(kind > Bid.REDOUBLE))
 		throw new Error("Illegal Bid kind : " + kind);
-	if ((level &lt; 0)||(level > 7))
+	if ((level < 0)||(level > 7))
 		throw new Error("Illegal level : " + level);
-	if ((suit &lt; 0)||(suit > Bid.NO_TRUMP))
+	if ((suit < 0)||(suit > Bid.NO_TRUMP))
 		throw new Error("Illegal suit : " + suit);
 /*----------------
  * instance field
@@ -1130,8 +1041,8 @@ var Bid = function(kind, level, suit) {
  * instance methods
  */
 	/**
-	 * 指定されたコントラクトのあとに宣言可能か判定します。&lt;BR>
-	 * 例) [1C] &lt; [1D] &lt; [2C] &lt; [2CX] &lt; [2CXX] となります。
+	 * 指定されたコントラクトのあとに宣言可能か判定します。<BR>
+	 * 例) [1C] < [1D] < [2C] < [2CX] < [2CXX] となります。
 	 * [pass] は常に可能(true)です。
 	 * @param	{Bid} contract 判定先となるコントラクト
 	 */
@@ -1144,7 +1055,7 @@ var Bid = function(kind, level, suit) {
 		case Bid.BID:
 			if (contract == null) return true;
 			if (this.level > contract.level) return true;
-			if (this.level &lt; contract.level) return false;
+			if (this.level < contract.level) return false;
 			if (this.suit > contract.suit) return true;
 			return false;
 			
@@ -1224,8 +1135,8 @@ var DummyHandLayout = function() {
 		// サイズ計算用
 		//
 		var maxCount = -1;
-		for (var i = 0; i &lt; 4; i++) {
-			if (maxCount &lt; count[i]) maxCount = count[i];
+		for (var i = 0; i < 4; i++) {
+			if (maxCount < count[i]) maxCount = count[i];
 		}
 		
 		//
@@ -1239,9 +1150,9 @@ var DummyHandLayout = function() {
 			 xpos = r.x + 3 * (Card.XSIZE + 3);;
 			
 			// それぞれのカードの配置を行う
-			for (var i = 0; i &lt; 4; i++) {
+			for (var i = 0; i < 4; i++) {
 				ypos = r.y + (maxCount-1)*Card.YSTEP;
-				for (var j = 0; j &lt; count[i]; j++) {
+				for (var j = 0; j < count[i]; j++) {
 					var ent = packet.children[n++];
 					ent.setPosition(xpos, ypos);
 					ent.setDirection(dir);
@@ -1255,10 +1166,10 @@ var DummyHandLayout = function() {
 		case Entity.RIGHT_VIEW:
 			ypos = r.y;
 			
-			for (var i = 0; i &lt; 4; i++) {
+			for (var i = 0; i < 4; i++) {
 				xpos = r.x + (maxCount-1)*Card.YSTEP;
 				
-				for (var j = 0; j &lt; count[i]; j++) {
+				for (var j = 0; j < count[i]; j++) {
 					var ent = packet.children[n++];
 					ent.setPosition(xpos, ypos);
 					ent.setDirection(dir);
@@ -1273,9 +1184,9 @@ var DummyHandLayout = function() {
 			xpos = r.x;
 			
 			// それぞれのカードの配置を行う
-			for (var i = 0; i &lt; 4; i++) {
+			for (var i = 0; i < 4; i++) {
 				ypos = r.y;
-				for (var j = 0; j &lt; count[i]; j++) {
+				for (var j = 0; j < count[i]; j++) {
 					var ent = packet.children[n++];
 					ent.setPosition(xpos, ypos);
 					ent.setDirection(dir);
@@ -1289,9 +1200,9 @@ var DummyHandLayout = function() {
 		case Entity.LEFT_VIEW:
 			ypos = r.y + 3 * (Card.XSIZE + 3);
 			
-			for (var i = 0; i &lt; 4; i++) {
+			for (var i = 0; i < 4; i++) {
 				xpos = r.x;
-				for (var j = 0; j &lt; count[i]; j++) {
+				for (var j = 0; j < count[i]; j++) {
 					var ent = packet.children[n++];
 					ent.setPosition(xpos, ypos);
 					ent.setDirection(dir);
@@ -1318,7 +1229,7 @@ var DummyHandLayout = function() {
 		var lastSuit = -1;
 		var suit = -1;
 		
-		for (var i = 0; i &lt; packet.children.length; i++) {
+		for (var i = 0; i < packet.children.length; i++) {
 			var card = packet.children[i];
 			count[4 - suitOrder[card.suit]]++;
 		}
@@ -1341,8 +1252,8 @@ var DummyHandLayout = function() {
 		// サイズ計算用
 		//
 		var maxCount = -1;
-		for (var i = 0; i &lt; 4; i++) {
-			if (maxCount &lt; count[i]) maxCount = count[i];
+		for (var i = 0; i < 4; i++) {
+			if (maxCount < count[i]) maxCount = count[i];
 		}
 		switch (packet.direction) {
 		
@@ -1381,7 +1292,7 @@ var BiddingHistory = function(dealer) {
 	this.dealer = dealer;
 	/**
 	 * ビッド履歴。配列の大きさはビッドの回数を示します。
-	 * @type	{Array.&lt;Bid>}
+	 * @type	{Array.<Bid>}
 	 */
 	this.bid = [];
 	/**
@@ -1445,20 +1356,20 @@ var BiddingHistory = function(dealer) {
 			if (this.contract.kind != Bid.BID) return false;
 			if ( (this.contract.suit != b.suit)||
 				(this.contract.level != b.level) ) return false;
-			if (((this.declarer ^ this.bid.length ^ this.dealer) &amp; 1) != 1) return false;
+			if (((this.declarer ^ this.bid.length ^ this.dealer) & 1) != 1) return false;
 			break;
 		
 		case Bid.REDOUBLE:
 			if (this.contract.kind != Bid.DOUBLE) return false;
 			if ( (this.contract.suit != b.suit)||
 				(this.contract.level != b.level) ) return false;
-			if (((this.declarer ^ this.bid.length ^ this.dealer) &amp; 1) != 0) return false;
+			if (((this.declarer ^ this.bid.length ^ this.dealer) & 1) != 0) return false;
 			break;
 			
 		}
 		
 		// レベルによる判定
-		if ((b.kind != Bid.PASS)&amp;&amp;
+		if ((b.kind != Bid.PASS)&&
 			(!b.isBiddableOver(this.contract))) return false;
 		
 		return true;
@@ -1487,8 +1398,8 @@ var BiddingHistory = function(dealer) {
 				if (this.bid[i].kind == Bid.PASS) passCount++;
 				else break;
 			}
-			if (passCount &lt; 3) break;
-			if ((passCount == 3)&amp;&amp;(this.contract == null)) break;
+			if (passCount < 3) break;
+			if ((passCount == 3)&&(this.contract == null)) break;
 			
 			// Pass out ?
 			this.finished = true;
@@ -1508,9 +1419,9 @@ var BiddingHistory = function(dealer) {
 			
 			// declarer を見つける.
 			var n;
-			for (n = (1 - (this.bid.length &amp; 1)); n &lt; this.bid.length; n += 2) {
+			for (n = (1 - (this.bid.length & 1)); n < this.bid.length; n += 2) {
 				var b = this.bid[n];
-				if ((b.kind == Bid.BID)&amp;&amp;
+				if ((b.kind == Bid.BID)&&
 					(b.suit == newBid.suit)) break;
 			}
 			this.declarer = (n + this.dealer)%4;
@@ -1542,9 +1453,9 @@ var BiddingHistory = function(dealer) {
 		
 		// declarer を見つける
 		var n;
-		for (n = (1 - (lastBidCount &amp; 1)); n &lt; lastBidCount; n += 2) {
+		for (n = (1 - (lastBidCount & 1)); n < lastBidCount; n += 2) {
 			var b = this.bid[n];
-			if ((b.kind == Bid.BID)&amp;&amp;
+			if ((b.kind == Bid.BID)&&
 				(b.suit == this.contract.suit)) break;
 		}
 		this.declarer = (n + this.dealer)%4;
@@ -1555,7 +1466,7 @@ var BiddingHistory = function(dealer) {
 	 * 配列の添字 0 をディーラーのビッドとして以降座席順に格納されています。
 	 * 現時点まででビッドされた回数分の要素を含みます。
 	 *
-	 * @return		{Array.&lt;Bid>} すべてのビッド
+	 * @return		{Array.<Bid>} すべてのビッド
 	 */
 	BiddingHistory.prototype.getAllBids = function() {
 		var result = this.bid.slice(0, this.bid.length);
@@ -1579,7 +1490,7 @@ var BiddingHistory = function(dealer) {
 	BiddingHistory.prototype.setContract = function(contract, declarer) {
 		if ( (this.bid.length != 0)||(this.finished) )
 			throw new Error("すでにビッドされているためコントラクトを指定できません。");
-		if ( (declarer &lt; BiddingHistory.NORTH)
+		if ( (declarer < BiddingHistory.NORTH)
 			||(declarer > BiddingHistory.WEST) )
 			throw new Error("declarer の値が不正です。");
 		
@@ -1613,15 +1524,15 @@ var BiddingHistory = function(dealer) {
 	 * @override
 	 */
 	BiddingHistory.prototype.toString = function() {
-		if ( (this.bid.length == 0)&amp;&amp;(this.finished) )
+		if ( (this.bid.length == 0)&&(this.finished) )
 			return "Bidding Sequence Unknown";
 		var result = "   N       E       S       W\n";
-		for (var i = 0; i &lt; this.dealer; i++) {
+		for (var i = 0; i < this.dealer; i++) {
 			result += "        ";
 		}
 		var seat = this.dealer;
 		
-		for (var i = 0; i &lt; this.bid.length; i++) {
+		for (var i = 0; i < this.bid.length; i++) {
 			result += this.bid[i].toString();
 			seat++;
 			if (seat == 4) {
@@ -1655,7 +1566,7 @@ var TrickLayout = function() {
 		
 		var d = (4 + leader - direction) % 4;
 		
-		for (var i = 0; i &lt; size; i++) {
+		for (var i = 0; i < size; i++) {
 			var ent = trick.children[i];
 			
 			switch ( (i+d)%4 ) {
@@ -1788,12 +1699,12 @@ inherits(Trick, Packet);
 		this.winnerCard = this.children[0];
 		this.winner = 0;
 		var starter = winnerCard.suit;
-		for (var i = 1; i &lt; this.children.length; i++) {
+		for (var i = 1; i < this.children.length; i++) {
 			var c = this.children[i];
 			if (this.winnerCard.suit == this.trump) {
 				// NO_TRUMP のときはここにこない
 				if ((c.suit == this.trump)
-						&amp;&amp;(this.winnerCard.value != Card.ACE)) {
+						&&(this.winnerCard.value != Card.ACE)) {
 					if ((c.value > this.winnerCard.value)||
 						(c.value == Card.ACE)) {
 						this.winnerCard = c;
@@ -1806,7 +1717,7 @@ inherits(Trick, Packet);
 					this.winnerCard = c;
 					this.winner = i;
 				} else if ((c.suit == starter)
-							&amp;&amp;(this.winnerCard.value != Card.ACE)) {
+							&&(this.winnerCard.value != Card.ACE)) {
 					if ((c.value > this.winnerCard.value)
 							||(c.value == Card.ACE)) {
 						this.winnerCard = c;
@@ -1845,12 +1756,12 @@ var PlayHistory = function(src) {
 	} else {
 		/**
 		 * プレイ中のハンド
-		 * @type	{Array.&lt;Packet>}
+		 * @type	{Array.<Packet>}
 		 */
 		this.hand = []; // Packet[4]
 		/**
 		 * プレイ中のトリック。要素数は 13 以下。
-		 * @type	{Array.&lt;Trick>}
+		 * @type	{Array.<Trick>}
 		 */
 		this.trick = []; // Trick[13]
 		/**
@@ -1885,13 +1796,13 @@ var PlayHistory = function(src) {
 	 * @param		{Packet} hand 設定するハンド
 	 */
 	PlayHistory.prototype.setHand = function(hand) {
-		if ( (this.trick[0])&amp;&amp;(this.trick[0].children.length > 0) )
+		if ( (this.trick[0])&&(this.trick[0].children.length > 0) )
 			throw new Error("すでにプレイが開始されているため" +
 											" setHand は行えません。");
 		if (hand.length != 4)
 			throw new Error("４人分のハンドが指定されていません。");
 		
-		for (var i = 0; i &lt; 4; i++) {
+		for (var i = 0; i < 4; i++) {
 			if (hand[i].children.length != 13)
 				throw new Error("ハンド"+i
 							+"のカード枚数が異常です。13枚指定して下さい。");
@@ -1961,7 +1872,7 @@ var PlayHistory = function(src) {
 		if (!tr.isFinished()) return;
 		
 		this.trickCount++;
-		if (this.trickCount &lt; 13) {
+		if (this.trickCount < 13) {
 			this.trick[this.trickCount] = new Trick(tr.winner, this.trump);
 		}
 	}
@@ -1998,7 +1909,7 @@ var PlayHistory = function(src) {
 	
 	/**
 	 * すべてのトリックを取得します。
-	 * @return	{Array.&lt;Trick>} トリックすべて(null のことがあります)
+	 * @return	{Array.<Trick>} トリックすべて(null のことがあります)
 	 */
 	PlayHistory.prototype.getAllTricks = function() {
 		if (this.trick.length == 0) return null;
@@ -2014,7 +1925,7 @@ var PlayHistory = function(src) {
 	 * @return	{boolean} プレイが終了しているか
 	 */
 	PlayHistory.prototype.isFinished = function() {
-		return ( (this.trickCount == 13) &amp;&amp; (this.trick[12].children.length == 4) );
+		return ( (this.trickCount == 13) && (this.trick[12].children.length == 4) );
 	}
 	
 	/**
@@ -2035,7 +1946,7 @@ var PlayHistory = function(src) {
 	PlayHistory.prototype.undo = function() {
 		if (this.trick.length == 0)
 			throw new Error("初期状態のため、undo() できません");
-		if ((this.trickCount == 0)&amp;&amp;(this.trick[0].children.length == 0))
+		if ((this.trickCount == 0)&&(this.trick[0].children.length == 0))
 			throw new Error("初期状態にあるため、undo() できません");
 		
 		if (this.trickCount == 13) {
@@ -2056,7 +1967,7 @@ var PlayHistory = function(src) {
 		this.hand[seatToBePushbacked].arrange();
 		
 		// 一番はじめにもどすための特殊処理( reset() 相当の処理 )
-		if ((this.trickCount == 0)&amp;&amp;(this.trick.length == 0)) {
+		if ((this.trickCount == 0)&&(this.trick.length == 0)) {
 			// setContract 以前の状態まで戻す
 			this.hand = [];
 			this.trick = [];
@@ -2078,13 +1989,13 @@ var PlayHistory = function(src) {
 		
 		result += "\n";
 		
-		if (this.trickCount &lt; 13) result += this.trick[this.trickCount];
+		if (this.trickCount < 13) result += this.trick[this.trickCount];
 		
 		result += "\n\n";
 		for (var i = this.trickCount-1; i >= 0; i--) {
-			if (i &lt; 13) {
+			if (i < 13) {
 				result +="[";
-				if (i &lt; 10) result += " ";
+				if (i < 10) result += " ";
 				result += i;
 				result += "]"+this.trick[i];
 				result += "  win="+this.trick[i].winnerCard;
@@ -2134,7 +2045,7 @@ inherits(TableGui, Entity);
 		
 		// コントラクトがあれば、左上に表示する
 		if (contract != null) {
-			ctx.font = 'bold 16px, Serif';
+			ctx.font = 'bold 16px Serif';
 			var kind = contract.kind;
 			var contractStr;
 			if (kind == Bid.PASS) {
@@ -2160,7 +2071,7 @@ inherits(TableGui, Entity);
 		this._fillTextWithShade_(ctx, vulStr[this.board.vul], 18, 65);
 		
 		// タイトル
-		ctx.font = 'italic bold 14px, Serif';
+		ctx.font = 'italic bold 14px Serif';
 		this._fillTextWithShade_(ctx, this.board.name, 18, 44);
 		
 		// 線
@@ -2206,11 +2117,11 @@ inherits(TableGui, Entity);
 		// VULを示す赤線
 		var vul = this.board.vul;
 		ctx.fillStyle = 'rgb(170, 0, 0)'; // 暗めの赤
-		if ( (vul &amp; Board.VUL_NS) != 0) {
+		if ( (vul & Board.VUL_NS) != 0) {
 			ctx.fillRect(228, 148, 184, 32);
 			ctx.fillRect(228, 300, 184, 32);
 		}
-		if ( (vul &amp; Board.VUL_EW) != 0) {
+		if ( (vul & Board.VUL_EW) != 0) {
 			ctx.fillRect(228, 148, 32, 184);
 			ctx.fillRect(380, 148, 32, 184);
 		}
@@ -2357,7 +2268,7 @@ var BoardLayout = function() {
 		//
 		
 		if (board.getHand() != null) {
-			for (var i = 0; i &lt; 4; i++) {
+			for (var i = 0; i < 4; i++) {
 				var ent = board.getHand()[i];
 				if (ent == null) continue;
 				ent.setDirection((10 - i - d )%4);
@@ -2386,7 +2297,7 @@ var BoardLayout = function() {
 					throw new InternalError();
 				}
 				ent.setPosition(x + xx, y + yy);
-				if (ent.layout!==void 0 &amp;&amp; ent.layout!=null)
+				if (ent.layout!==void 0 && ent.layout!=null)
 					ent.layout.layout(ent);
 			}
 		}
@@ -2435,8 +2346,9 @@ var Board = function(dealerOrNum, vul) {
 	this.openCards = new Packet();
 	
 	this.direction = Entity.UPRIGHT;
+	this.setSize(Board.WIDTH, Board.HEIGHT);
 	
-	// handGui は {Array.&lt;Packet>} playHist.hand を使う
+	// handGui は {Array.<Packet>} playHist.hand を使う
 	/**
 	 * 中央部分に表示されるトリック
 	 * @type {Trick}
@@ -2513,21 +2425,20 @@ inherits(Board, Entities);
 		this.add(this.winnerGui);
 		
 		var i = 0;
-		for (; i &lt; 4; i++) {
+		for (; i < 4; i++) {
 			this.add(this.playHist.hand[i]);
 		}
 		
 		this.trickGui = this.getTrick();
 		if (this.trickGui != null) this.add(this.trickGui);
 		
-		//this.layout = new BoardLayout();
-		// layout 処理
+		this.layout = new BoardLayout();
 	}
 	
 	/**
 	 * カードを配って BIDDING 状態に移行します。
 	 *
-	 * @param	{Array.&lt;Packet>} hand 初期ハンド指定(ない場合、新規カードを配る)
+	 * @param	{Array.<Packet>} hand 初期ハンド指定(ない場合、新規カードを配る)
 	 *								整数を指定したら乱数シードの意味
 	 */
 	Board.prototype.deal = function(handOrSeed) {
@@ -2539,7 +2450,7 @@ inherits(Board, Entities);
 			// hand が指定されていないときは新規カードを配る
 			var seed = handOrSeed;
 			hand = []; // new Packet[4];
-			for (var i = 0; i &lt; 4; i++) hand[i] = new Packet();
+			for (var i = 0; i < 4; i++) hand[i] = new Packet();
 			
 			var pile = Packet.provideDeck();
 			this.openCards = new Packet();
@@ -2549,12 +2460,12 @@ inherits(Board, Entities);
 			pile.shuffle(seed); // hand is void0 or number
 			
 			Packet.deal(pile, hand);
-			for (var i = 0; i &lt; 4; i++) hand[i].arrange();
+			for (var i = 0; i < 4; i++) hand[i].arrange();
 		} else {
 			// hand 指定があればそれを使う
 			hand = handOrSeed;
 			// カードを裏向きにしておく
-			for (var i = 0; i &lt; hand.length; i++) {
+			for (var i = 0; i < hand.length; i++) {
 				hand[i].turn(false);
 				hand[i].arrange();
 			}
@@ -2606,7 +2517,7 @@ inherits(Board, Entities);
 		
 		case Board.BIDDING:
 			if (play.kind===void 0 || play.level===void 0 || play.suit===void 0) //! instanceof Bid
-				throw new Error("ビッドしなければなりません。" + play.kind + play.level + play.suit);
+				throw new Error("ビッドしなければなりません。" + play);
 			this.bidding.play(play);
 			if (this.bidding.finished) {
 				if (this.getContract().kind == Bid.PASS) {
@@ -2634,6 +2545,12 @@ inherits(Board, Entities);
 			
 			if (this.playHist.isFinished()) status = Board.SCORING;
 			else this.status = Board.PLAYING;
+			
+			// TrickAnimation 処理
+			//
+			// 未実装(2018/8/17)
+			//
+			
 			break;
 			
 		case Board.DEALING:
@@ -2699,7 +2616,7 @@ inherits(Board, Entities);
 			this.openCards.pull(lastPlay);
 			
 			// undo() の結果、OPENING になる場合
-			if ((this.getTricks() == 0)&amp;&amp;(this.playHist.getTrick() == null)) {
+			if ((this.getTricks() == 0)&&(this.playHist.getTrick() == null)) {
 				// O.L.にもどる
 				this._dummyClose_();
 				this.status = Board.OPENING;
@@ -2947,7 +2864,7 @@ inherits(Board, Entities);
 	/**
 	 * プレイされた過去のトリックすべてを取得します。
 	 * 本処理は、PlayHistory.getAllTricks() へ委譲しています。
-	 * @return	{Array.&lt;Trick>} 全トリック
+	 * @return	{Array.<Trick>} 全トリック
 	 * @see		PlayHistory#getAllTricks()
 	 */
 	Board.prototype.getAllTricks = function() {
@@ -2964,7 +2881,7 @@ inherits(Board, Entities);
 		if ( (seat == Board.NORTH)||(seat == Board.SOUTH) ) mask = 1;
 		else mask = 2;
 		
-		if ((this.vul &amp; mask) > 0) return true;
+		if ((this.vul & mask) > 0) return true;
 		return false;
 	}
 	
@@ -3071,7 +2988,7 @@ inherits(Board, Entities);
 		
 		var trick = this.getAllTricks();
 		var nesw = [];
-		for (var i = 0; i &lt; 4; i++) {
+		for (var i = 0; i < 4; i++) {
 			nesw[i] = "";
 			nesw[i] = nesw[i] + "NESW".substring(i,i+1) + " ";
 			if (this.getTricks() > 0) {
@@ -3081,17 +2998,17 @@ inherits(Board, Entities);
 			}
 		}
 		
-		for (var i = 0; i &lt; this.getTricks(); i++) {
+		for (var i = 0; i < this.getTricks(); i++) {
 			var leaderSeat = trick[i].leader;
 			var winnerSeat = trick[i].winner;
-			for (var j = 0; j &lt; 4; j++) {
+			for (var j = 0; j < 4; j++) {
 				var seat = (j + leaderSeat) % 4;
 				nesw[seat] = nesw[seat] + trick[i].children[j].toString().substring(1);
 				if (seat == winnerSeat) nesw[seat] = nesw[seat] + '+';
 				else nesw[seat] = nesw[seat] + " ";
 			}
 		}
-		for (var i = 0; i &lt; 4; i++) {
+		for (var i = 0; i < 4; i++) {
 			s = s + nesw[i] + nl;
 		}
 		if (this.status == Board.SCORING) {
@@ -3118,7 +3035,7 @@ inherits(Board, Entities);
 	/**
 	 * ハンド文字列を生成します。
 	 * @private
-	 * @param	{Array.&lt;Packet>} hand ハンド
+	 * @param	{Array.<Packet>} hand ハンド
 	 * @param	{number}	seat 座席番号
 	 * @param	{number}	suit	スーツ
 	 * @return	{string}	ハンド文字列
@@ -3128,7 +3045,7 @@ inherits(Board, Entities);
 		var oneSuit = hand[seat].subpacket(suit);
 		oneSuit.arrange();
 		var size = oneSuit.children.length;
-		for (var i = 0; i &lt; size; i++) {
+		for (var i = 0; i < size; i++) {
 			var c = oneSuit.children[i];
 			if ((c.isHead == true)||(openCards.indexOf(c)>=0)) {
 				s = s + c.toString().substring(2);
@@ -3149,9 +3066,9 @@ inherits(Board, Entities);
 		var declarer = this.getDeclarer();
 		
 		// winner を数える(Board にあったほうが便利)
-		for (var i = 0; i &lt; tr.length; i++) {
+		for (var i = 0; i < tr.length; i++) {
 			var winner = tr[i].winner;
-			if ( ((winner ^ declarer) &amp; 1) == 0 ) win++;
+			if ( ((winner ^ declarer) & 1) == 0 ) win++;
 		}
 		
 		return win;
@@ -3166,27 +3083,27 @@ inherits(Board, Entities);
 	 * 追加して結果を求めています。
 	 * 
 	 * @param		{Board} board	オリジナルハンドを求めたい Board
-	 * @return		{Array.&lt;Packet>} オリジナルハンドの配列(添字には Board.NORTH などを指定)
+	 * @return		{Array.<Packet>} オリジナルハンドの配列(添字には Board.NORTH などを指定)
 	 */
 	Board.calculateOriginalHand = function(board) {
 		var result = []; //Packet[4];
-		for (var i = 0; i &lt; 4; i++) result[i] = new Packet();
+		for (var i = 0; i < 4; i++) result[i] = new Packet();
 		
 		// 今もっているハンドをコピー
 		var original = board.getHand();
-		for (var i = 0; i &lt; original.length; i++) {
-			for (var j = 0; j &lt; original[i].children.length; j++) {
+		for (var i = 0; i < original.length; i++) {
+			for (var j = 0; j < original[i].children.length; j++) {
 				result[i].add(original[i].children[j]);
 			}
 		}
 		
 		// プレイされたハンドをコピー
 		var trick = board.getAllTricks();
-		for (var i = 0; i &lt; trick.length; i++) {
+		for (var i = 0; i < trick.length; i++) {
 			var tr = trick[i];
 			if (tr == null) break;
 			var seat = tr.leader;
-			for (var j = 0; j &lt; tr.children.length; j++) {
+			for (var j = 0; j < tr.children.length; j++) {
 				result[seat].add(tr.children[j]);
 				seat++;
 				seat = (seat % 4);
@@ -3194,30 +3111,8 @@ inherits(Board, Entities);
 		}
 		
 		// 並べ替え
-		for (var i = 0; i &lt; 4; i++) {
+		for (var i = 0; i < 4; i++) {
 			result[i].arrange();
 		}
 		return result;
 	}
-</code></pre>
-  </article>
-</section>
-
-    
-
-
-  </div>
-
-  <br class="clear">
-
-  <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
-  </footer>
-
-  <script src="scripts/linenumber.js"></script>
-  <script src="scripts/pagelocation.js"></script>
-
-  
-  
-</body>
-</html>

@@ -1,0 +1,22 @@
+{
+  "name": "card",
+  "version": "1.0.0",
+  "description": "ys.game.card migration",
+  "main": "Card.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm run karma",
+    "karma": "node_modules/.bin/karma start"
+  },
+  "author": "Yusuke Sasaki",
+  "license": "ISC",
+  "dependencies": {
+    "karma": "^5.0.9",
+    "karma-jasmine": "^3.3.1"
+  },
+  "devDependencies": {
+    "karma-chrome-launcher": "^3.1.0"
+  }
+}

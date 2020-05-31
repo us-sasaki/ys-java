@@ -1,10 +1,6 @@
 /**
  * @fileOverview ブリッジシミュレーターのソースです。
  */
-var inherits = function(childCtor, parentCtor) {
-  Object.setPrototypeOf(childCtor.prototype, parentCtor.prototype);
-};
-
 /**
  * ReproducibleRandom class 定義
  * @classdesc 乱数 for test アルゴリズムは XorShift
@@ -12,20 +8,26 @@ var inherits = function(childCtor, parentCtor) {
  * @constructor
  * @param	{number} seed 乱数シード
  */
-var ReproducibleRandom = function(seed) {
-	if (seed===void 0) seed = Math.floor(Math.random() * 0x7FFFFFFF);
-	this.x = 123456789;
-	this.y = 362436069;
-	this.z = 521288629;
-	this.w = seed;
-}
+class ReproducibleRandom {
+	x;
+	y;
+	z;
+	w;
+
+	constructor(seed) {
+		if (seed===void 0) seed = Math.floor(Math.random() * 0x7FFFFFFF);
+		this.x = 123456789;
+		this.y = 362436069;
+		this.z = 521288629;
+		this.w = seed;
+	}
 
 	/**
 	 * 整数値を返却する
 	 * @return	{number} 乱数値
 	 */
-	ReproducibleRandom.prototype.next = function() {
-		var t = this.x ^ (this.x << 11);
+	next() {
+		const t = this.x ^ (this.x << 11);
 	    this.x = this.y; this.y = this.z; this.z = this.w;
 	    return this.w = (this.w ^ (this.w >>> 19)) ^ (t ^ (t >>> 8)); 
 	}
@@ -36,10 +38,11 @@ var ReproducibleRandom = function(seed) {
 	 * @param	{number} max 最大値(含む)
 	 * @return	{number} min～max の乱数値
 	 */
-	ReproducibleRandom.prototype.nextInt = function(min, max) {
-		var r = Math.abs(this.next());
+	nextInt(min, max) {
+		const r = Math.abs(this.next());
 		return min + (r % (max + 1 - min));
 	}
+}
 
 /**
  * NaturalCardOrder class 定義
@@ -48,51 +51,56 @@ var ReproducibleRandom = function(seed) {
  * @constructor
  * @param	{number}	trump	トランプスートを示します。{@link Card}
  */
-var NaturalCardOrder = function(trump) {
+class NaturalCardOrder {
+	suitOrder;
 
-/*----------------
- * instance field
- */
-	switch (trump) {
-	case Card.HEART:
-		/**
-		 * スートの順位を表します。数値配列で、0,クラブ,ダイヤ,ハード,
-		 * スペードの順に優先度を示す数値が格納されます。(大きい方が優先)
-		 * @type	{Array} 
-		 */
-		this.suitOrder = NaturalCardOrder.SUIT_ORDER_HEART;
-		break;
-	case Card.DIAMOND:
-		this.suitOrder = NaturalCardOrder.SUIT_ORDER_DIAMOND;
-		break;
-	case Card.CLUB:
-		this.suitOrder = NaturalCardOrder.SUIT_ORDER_CLUB;
-		break;
-	case Card.SPADE:
-	default:
-		this.suitOrder = NaturalCardOrder.SUIT_ORDER_SPADE;
-	}
-}
 /*--------------
  * static field
  */
+
 	/** Spade > Heart > Club > Diamondの順 */
-	NaturalCardOrder.SUIT_ORDER_SPADE = [ 0, 2, 1, 3, 4 ];
+	static SUIT_ORDER_SPADE = [ 0, 2, 1, 3, 4 ];
 	
 	/** Heart > Club > Diamond > Spadeの順 */
-	NaturalCardOrder.SUIT_ORDER_HEART = [ 0, 3, 2, 4, 1 ];
+	static SUIT_ORDER_HEART = [ 0, 3, 2, 4, 1 ];
 	
 	/** Diamond > Spade > Heart > Clubの順 */
-	NaturalCardOrder.SUIT_ORDER_DIAMOND = [ 0, 1, 4, 2, 3];
+	static SUIT_ORDER_DIAMOND = [ 0, 1, 4, 2, 3];
 	
 	/** Club > Diamond > Spade > Heartの順 */
-	NaturalCardOrder.SUIT_ORDER_CLUB = [ 0, 4, 3, 1, 2];
+	static SUIT_ORDER_CLUB = [ 0, 4, 3, 1, 2];
 	
 	/** ACE が一番強く(大きく)、2 が一番弱い(小さい)並び順 */
-	NaturalCardOrder.VALUE_ORDER = [ 15, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+	static VALUE_ORDER = [ 15, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 	
 	/** 2 が一番強く(大きく)、ACE が一番弱い(小さい)並び順 */
-	NaturalCardOrder.REVERSE_VALUE_ORDER = [ 1,   2,15,14,13,12,11,10, 9, 8, 7 ,  6,  5,  4];
+	static REVERSE_VALUE_ORDER = [ 1,   2,15,14,13,12,11,10, 9, 8, 7 ,  6,  5,  4];
+
+/*-------------
+ * constructor
+ */
+	constructor(trump) {
+		switch (trump) {
+		case Card.HEART:
+			/**
+			 * スートの順位を表します。数値配列で、0,クラブ,ダイヤ,ハード,
+			 * スペードの順に優先度を示す数値が格納されます。(大きい方が優先)
+			 * @type	{Array} 
+			 */
+			this.suitOrder = NaturalCardOrder.SUIT_ORDER_HEART;
+			break;
+		case Card.DIAMOND:
+			this.suitOrder = NaturalCardOrder.SUIT_ORDER_DIAMOND;
+			break;
+		case Card.CLUB:
+			this.suitOrder = NaturalCardOrder.SUIT_ORDER_CLUB;
+			break;
+		case Card.SPADE:
+		default:
+			this.suitOrder = NaturalCardOrder.SUIT_ORDER_SPADE;
+		}
+	}
+
 
 /*------------------
  * instance methods
@@ -106,52 +114,59 @@ var NaturalCardOrder = function(trump) {
 	 *    カード1 = カード2 なら 0、
 	 *    カード1 < カード2 なら -1 を返却します。
 	 */
-	NaturalCardOrder.prototype.compare = function(a, b) {
+	compare(a, b) {
 		if ( a.suit == b.suit && a.value == b.value ) return 0;
 		
-		var suitA = this.suitOrder[a.suit];
-		var suitB = this.suitOrder[b.suit];
+		const suitA = this.suitOrder[a.suit];
+		const suitB = this.suitOrder[b.suit];
 		if (suitA > suitB) return 1;
 		if (suitA < suitB) return -1;
 
-		var valueA = NaturalCardOrder.VALUE_ORDER[a.value];
-		var valueB = NaturalCardOrder.VALUE_ORDER[b.value];
+		const valueA = NaturalCardOrder.VALUE_ORDER[a.value];
+		const valueB = NaturalCardOrder.VALUE_ORDER[b.value];
 		if (valueA > valueB) return 1;
 		return -1;
 	}
+}
 
 /**
  * Entity class 定義
  * @classdesc Entity は canvas 上に描画されるオブジェクトを表します。
  * @constructor
  */
-var Entity = function() {
+class Entity {
 
-/*----------------
- * instance field
- */
 	/** 描画上、コンテナとなる Entity (parent)
 	 * @type {Entities}
 	 */
-	this.parent = undefined;
-	/** この Entity の幅(pixel) */
-	this.w = 0;
-	/** この Entity の高さ(pixel) */
-	this.h = 0;
+	parent;
 	/** この Entity の x 座標(右が正、pixel) */
-	this.x = 0;
+	x;
 	/** この Entity の y 座標(下が正、pixel) */
-	this.y = 0;
+	y;
+	/** この Entity の幅(pixel) */
+	w;
+	/** この Entity の高さ(pixel) */
+	h;
 	/**
 	 * この Entity の向き(0..upright 1..right view 2..upside down 3..left view)
 	 * @type {number}
 	 */
-	this.direction = 0; // upright
+	direction;
 	/** この Entity を表示するか
 	 * @type {boolean}
 	 */
-	this.isVisible = true;
-}
+	isVisible;
+
+	constructor() {
+		this.parent = undefined;
+		this.w = 0;
+		this.h = 0;
+		this.x = 0;
+		this.y = 0;
+		this.direction = 0; // upright
+		this.isVisible = true;
+	}
 /*------------------
  * static constants
  */
@@ -159,22 +174,22 @@ var Entity = function() {
 	 * 下のプレイヤーから見て直立
 	 * @const {number}
 	 */
-	Entity.UPRIGHT = 0; 
+	static UPRIGHT = 0; 
 	/**
 	 * 右のプレイヤーから見て直立
 	 * @const {number}
 	 */
-	Entity.RIGHT_VIEW = 1;
+	static RIGHT_VIEW = 1;
 	/**
 	 * 上のプレイヤーから見て直立
 	 * @const {number}
 	 */
-	Entity.UPSIDE_DOWN = 2;
+	static UPSIDE_DOWN = 2;
 	/**
 	 * 左のプレイヤーから見て直立
 	 * @const {number}
 	 */
-	Entity.LEFT_VIEW = 3;
+	static LEFT_VIEW = 3;
 
 /*------------------
  * instance methods
@@ -184,7 +199,7 @@ var Entity = function() {
 	 * このメソッドは親オブジェクトからのみ呼ばれます。
 	 * @param	{Entities} parent 親オブジェクト
 	 */
-	Entity.prototype.setParent = function(parent) {
+	setParent(parent) {
 		this.parent = parent;
 	}
 	/**
@@ -192,7 +207,7 @@ var Entity = function() {
 	 * @param	{number} w 幅
 	 * @param	{number} h 高さ
 	 */
-	Entity.prototype.setSize = function(w, h) {
+	setSize(w, h) {
 		this.w = w;
 		this.h = h;
 	}
@@ -202,7 +217,7 @@ var Entity = function() {
 	 * @param	{number} x x座標
 	 * @param	{number} y y座標
 	 */
-	Entity.prototype.setPosition = function(x, y) {
+	setPosition(x, y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -210,9 +225,10 @@ var Entity = function() {
 	/**
 	 * この Entity の向き(0-3)を指定します。
 	 * this.direction への設定です。
+	 * 
 	 * @param	{number} dir 向き(0-3)
 	 */
-	Entity.prototype.setDirection = function(dir) {
+	setDirection(dir) {
 		if (dir!=0 && dir!=1 && dir!=2 && dir!=3)
 			throw new Error("setDirection で direction の値が不正です:"+dir);
 		this.direction = dir;
@@ -220,9 +236,10 @@ var Entity = function() {
 	
 	/**
 	 * この Entity の位置、大きさを取得します。
+	 * 
 	 * @return	{object} {x: x座標, y: y座標, w: 幅, h: 高さ}
 	 */
-	Entity.prototype.getRect = function() {
+	getRect() {
 		return {
 			x: this.x,
 			y: this.y,
@@ -235,11 +252,13 @@ var Entity = function() {
 	 * このメソッドは親オブジェクトからのみ呼ばれます。
 	 * 子クラスでは isVisible が false のとき描画しないようにする必要があります
 	 * Entity での実装はエラーのスローです。
+	 * 
 	 * @param	{CanvasContext} ctx canvas.getContext('2d') で取得されるコンテキスト
 	 */
-	Entity.prototype.draw = function(ctx) {
+	draw(ctx) {
 		throw new Error("not implemented");
 	}
+}
 
 /**
  * Entities class 定義
@@ -247,27 +266,27 @@ var Entity = function() {
  * @constructor
  * @extends	{Entity}
  */
-var Entities = function() {
+class Entities extends Entity {
 
-/*----------------
- * instance field
- */
+	/**
+	 * 子要素を描画する際のレイアウトオブジェクト。
+	 * @type	{Layout}
+	 */
+	//layout = new CardHandLayout();
+
 	/**
 	 * 子要素を格納します。子要素数は、this.children.length で取得できます。<br>
 	 * <strong>直接書き込みは行わず、add を利用して下さい。</strong>
 	 * @type	{Array.<Entity>}
 	 * @see	#add
 	 */
-	this.children = [];
-	Entity.call(this);
-	/**
-	 * 子要素を描画する際のレイアウトオブジェクト。
-	 * @type	{Layout}
-	 */
-	//this.layout = new CardHandLayout();
-	this.setSize(0, 0);
-}
-inherits(Entities, Entity);
+	children;
+
+	constructor() {
+		super();
+		this.children = [];
+		this.setSize(0, 0);
+	}
 
 /*------------------
  * instance methods
@@ -277,7 +296,7 @@ inherits(Entities, Entity);
 	 * また、このオブジェクトに layout が設定している場合、layoutします。
 	 * @param	{Entity} child 追加対象の Entity
 	 */
-	Entities.prototype.add = function(child) {
+	add(child) {
 		if (this.children.indexOf(child) >= 0) {
 			return;
 		}
@@ -293,13 +312,16 @@ inherits(Entities, Entity);
 	 * @param		{number} index	引くオブジェクトの番号(省略した場合、
 	 *								最後の要素)
 	 */
-	Entities.prototype.pull = function(index) {
+	pull(index) {
 		if (index===void 0) index = this.children.length - 1;
 		
 		if (index < 0 || index >= this.children.length)
 			throw new Error("pull で指定された index が不正です:"+index);
-		var child = this.children[index];
+		const child = this.children[index];
+		//console.log("index="+index);
+		//console.log("child="+child.toString()+" index="+index);
 		this.children.splice(index, 1); // 削除
+		//console.log("child="+child.toString()+" index="+index);
 		child.setParent(null);
 		return child;
 	}
@@ -308,7 +330,7 @@ inherits(Entities, Entity);
 	 * 向きを設定します。
 	 * @override
 	 */
-	Entities.prototype.setDirection = function(direction) {
+	setDirection(direction) {
 		this.direction = direction;
 		this.children.forEach( function(child) {
 			child.setDirection(direction);
@@ -319,7 +341,7 @@ inherits(Entities, Entity);
 	 * layout によりこのオブジェクトのサイズを変更後、返却します。
 	 * @return	{object} x, y, w, h を含むオブジェクト
 	 */
-	Entities.prototype.getRect = function() {
+	getRect() {
 		if (this.layout != null) {
 			var d = this.layout.layoutSize(this);
 			this.w = d.w;
@@ -334,7 +356,7 @@ inherits(Entities, Entity);
 	 * layout によりこのオブジェクトのサイズを変更後、返却します。
 	 * @return	{object} w, h を含むオブジェクト
 	 */
-	Entities.prototype.getSize = function() {
+	getSize() {
 		if (this.layout != null) {
 			var d = this.layout.layoutSize(this);
 			this.w = d.w;
@@ -349,12 +371,13 @@ inherits(Entities, Entity);
 	 * このメソッドは親オブジェクトからのみ呼ばれます。
 	 * @override
 	 */
-	Entities.prototype.draw = function(ctx) {
+	draw(ctx) {
 		if (this.layout != null) this.layout.layout(this);
 		this.children.forEach( function(child) {
 			child.draw(ctx);
 		});
 	}
+}
 
 /**
  * Packet class 定義
@@ -365,16 +388,19 @@ inherits(Entities, Entity);
  * @constructor
  * @extends Entities
  */
-var Packet = function() {
+class Packet extends Entities {
 
 /*----------------
  * instance field
  */
-	Entities.call(this);
-	this.layout = new CardHandLayout();
-	this.cardOrder = new NaturalCardOrder(); // スペードスート
-}
-inherits(Packet, Entities);
+	layout;
+	cardOrder;
+
+	constructor() {
+		super();
+		this.layout = new CardHandLayout();
+		this.cardOrder = new NaturalCardOrder(); // スペードスート
+	}
 
 /*------------------
  * instance methods
@@ -383,14 +409,14 @@ inherits(Packet, Entities);
 	 * 所属しているカードをシャッフルします。
 	 * 利用する乱数は ReproducibleRandom です。
 	 */
-	Packet.prototype.shuffle = function(seed) {
+	shuffle(seed) {
 		if (this.children.length == 0) return;
 		
-		var rnd = new ReproducibleRandom(seed); // seed
-		var tmp = []; // Card
-		var size = this.children.length;
-		for (var i = 0; i < size; i++) {
-			var index = rnd.nextInt(0, this.children.length-1);
+		const rnd = new ReproducibleRandom(seed); // seed
+		const tmp = []; // Card
+		const size = this.children.length;
+		for (let i = 0; i < size; i++) {
+			const index = rnd.nextInt(0, this.children.length-1);
 			tmp.push(this.children[index]); // 取得
 			this.children.splice(index,1); // 削除
 		}
@@ -400,8 +426,8 @@ inherits(Packet, Entities);
 	/**
 	 * カードを設定されている CardOrder に従って降順に並べ替えます。
 	 */
-	Packet.prototype.arrange = function() {
-		var co = this.cardOrder;
+	arrange() {
+		const co = this.cardOrder;
 		this.children.sort( function(a,b) { return co.compare(b, a); } );
 	}
 	
@@ -410,9 +436,9 @@ inherits(Packet, Entities);
 	 * @param	{number} suit	スート
 	 * @return	{number} スートの枚数
 	 */
-	Packet.prototype.countSuit = function(suit) {
-		var c = 0;
-		for (var i = 0; i < this.children.length; i++) {
+	countSuit(suit) {
+		let c = 0;
+		for (let i = 0; i < this.children.length; i++) {
 			if (this.children[i].suit == suit) c++;
 		}
 		return c;
@@ -423,10 +449,10 @@ inherits(Packet, Entities);
 	 * @param	{number} value	バリュー
 	 * @return	{number} 枚数
 	 */
-	Packet.prototype.countValue = function(value) {
-		var c = 0;
-		var size = this.children.length;
-		for (var i = 0; i < size; i++) {
+	countValue(value) {
+		let c = 0;
+		const size = this.children.length;
+		for (let i = 0; i < size; i++) {
 			if (this.children[i].value == value) c++;
 		}
 		return c;
@@ -437,11 +463,11 @@ inherits(Packet, Entities);
 	 * @param	{number} suit	スート
 	 * @return	{Packet}	指定されたスートからなる Packet
 	 */
-	Packet.prototype.subpacket = function(suit) {
-		var result = new Packet();
-		var size = this.children.length;
-		for (var i = 0; i < size; i++) {
-			var card = this.children[i];
+	subpacket(suit) {
+		const result = new Packet();
+		const size = this.children.length;
+		for (let i = 0; i < size; i++) {
+			const card = this.children[i];
 			if (card.suit == suit) result.add(card);
 		}
 		return result;
@@ -451,8 +477,8 @@ inherits(Packet, Entities);
 	 * 含まれるカードの表裏を設定します。
 	 * @param	{boolean} head	表にする場合 true、裏にする場合 false
 	 */
-	Packet.prototype.turn = function(head) {
-		for (var i = 0; i < this.children.length; i++) {
+	turn(head) {
+		for (let i = 0; i < this.children.length; i++) {
 			this.children.isHead = head;
 		}
 	}
@@ -462,23 +488,46 @@ inherits(Packet, Entities);
 	 * @param	{Packet} target	差をとる対象
 	 * @return	{Packet} this - target
 	 */
-	Packet.prototype.sub = function(target) {
-		var result = new Packet();
+	sub(target) {
+		const result = new Packet();
 		
-		for (var i = 0; i < this.children.length; i++) {
-			var c = this.children[i];
+		for (let i = 0; i < this.children.length; i++) {
+			const c = this.children[i];
 			if (target.children.indexOf(c) == -1) result.add(c);
 		}
 		return result;
+	}
+
+	/**
+	 * インデックスまたはカードを指定してこの Packet からひきます
+	 * 
+	 * @param {number/Card} indexOrCard 
+	 */
+	pull(indexOrCard) {
+		if (typeof indexOrCard === 'number' || indexOrCard === void 0) return super.pull(indexOrCard);
+		return super.pull(this._indexOf_(indexOrCard));
+	}
+
+	/**
+	 * 指定された Card の index を返却します。存在しない場合、 -1 を返却します。
+	 * @param {Card} card 
+	 * @return	{number} index
+	 */
+	_indexOf_(card) {
+		for (let i = 0; i < this.children.length; i++) {
+			if (this.children[i].suit === card.suit &&
+				 this.children[i].value === card.value) return i;
+		}
+		return -1;
 	}
 	
 	/**
 	 * @override
 	 */
-	Packet.prototype.toString = function() {
-		var s = "";
-		var size = this.children.length;
-		for (var i = 0; i < size; i++) {
+	toString() {
+		let s = "";
+		const size = this.children.length;
+		for (let i = 0; i < size; i++) {
 			s += this.children[i].toString();
 		}
 		return "{" + s + "}";
@@ -491,10 +540,10 @@ inherits(Packet, Entities);
 	 * JOKER を含まない１揃いのカードを返却します。(4 x 13 = 52 枚)
 	 * @return	{Packet} 52枚のカードセット
 	 */
-	Packet.provideDeck = function() {
-		var p = new Packet();
-		for (var suit = 1; suit < 5; suit++) {
-			for (var value = 1; value < 14; value++) {
+	static provideDeck() {
+		const p = new Packet();
+		for (let suit = 1; suit < 5; suit++) {
+			for (let value = 1; value < 14; value++) {
 				p.add(new Card(suit, value));
 			}
 		}
@@ -508,20 +557,20 @@ inherits(Packet, Entities);
 	 * @param	{Array.<Packet>}	hands	配り先の Packet の配列
 	 * @param	{number}	begin	配りはじめる hand の番号
 	 */
-	Packet.deal = function(pile, hands, begin) {
+	static deal(pile, hands, begin) {
 		if (begin===void 0) begin = 0;
 		
-		var n = hands.length;
+		const n = hands.length;
 		if (begin < 0 || begin >= n)
 			throw new Error("deal で begin の値が不正です:"+begin);
 		
-		var c = pile.children.length;
-		for (var i = 0; i < c; i++) {
-			var card = pile.pull();
+		const c = pile.children.length;
+		for (let i = 0; i < c; i++) {
+			const card = pile.pull();
 			hands[ (i+begin) % n ].add(card);
 		}
 	}
-
+}
 
 /**
  * Field class 定義
@@ -529,37 +578,38 @@ inherits(Packet, Entities);
  * @constructor
  * @extends	Entities
  */
-var Field = function(canvasId) {
-
-/*----------------
- * instance field
- */
-	Entities.call(this);
+class Field extends Entities {
 	/** html 内の canvas 要素 */
-	this.canvas = document.getElementById(canvasId);
-	this.setSize(canvas.clientWidth, canvas.clientHeight);
+	canvas;
 	/** canvas の 2D context */
-	this.ctx = canvas.getContext('2d');
+	ctx;
 	/** spot light の位置 (0-3) */
-	this.spot = 0;
-	
-	this.layout = null; // pos/size は初期値のまま
-}
-inherits(Field, Entities);
+	spot;
+
+	constructor(canvasId) {
+		super();
+		this.canvas = document.getElementById(canvasId);
+		this.setSize(canvas.clientWidth, canvas.clientHeight);
+		this.ctx = canvas.getContext('2d');
+		this.spot = 0;
+		
+		this.layout = null; // pos/size は初期値のまま
+	}
+
 
 /*------------------
  * instance methods
  */
 	/** @override */
-	Field.prototype.getRect = function() {
+	getRect() {
 		//var d = this.layout.layoutSize(this);
 		
 		return { x:this.x, y:this.y, w:this.w, h:this.h };
 	}
 	/** override */
-	Field.prototype.draw = function() {
+	draw() {
 		this._drawBackground_();
-		for (var i = 0; i < this.children.length; i++) {
+		for (let i = 0; i < this.children.length; i++) {
 			this.children[i].draw(this.ctx);
 		}
 		this._drawSpotlight_();
@@ -569,13 +619,13 @@ inherits(Field, Entities);
 	 * 背景を描画します(緑基調、下が明るい)
 	 * @private
 	 */
-	Field.prototype._drawBackground_ = function() {
+	_drawBackground_() {
 		//
 		// バック(緑のグラデーション)
 		//
-		var r = this.getRect();
-		var step = r.h / 40;
-		for (var i = 0; i < 40; i++) {
+		const r = this.getRect();
+		const step = r.h / 40;
+		for (let i = 0; i < 40; i++) {
 			this.ctx.fillStyle = 'rgb(' + (40+i/2) + ','+(80+i)+',30)'; // 緑
 			this.ctx.fillRect(r.x, r.y+Math.floor(i*step), r.w, r.h+Math.floor(step+1));
 		}
@@ -585,17 +635,17 @@ inherits(Field, Entities);
 	 * スポットライトを描画します(黄白色)
 	 * @private
 	 */
-	Field.prototype._drawSpotlight_ = function() {
+	_drawSpotlight_() {
 		//
 		// 順番を示すスポットライト
 		//
-		var r = this.getRect();
-		var spot = this.spot;
-		var direction = this.direction;
+		const r = this.getRect();
+		const spot = this.spot;
+		const direction = this.direction;
 		if (spot == -1) return;
 		
-		var d = (spot + direction)%4;
-		var x, y;
+		const d = (spot + direction)%4;
+		let x, y;
 		
 		switch (d) {
 		
@@ -618,7 +668,7 @@ inherits(Field, Entities);
 			
 		}
 		
-		for (var radius = 95; radius > 0; radius -=4) {
+		for (let radius = 95; radius > 0; radius -=4) {
 			this.ctx.fillStyle = 'rgba(255,255,192,'+((95.0-radius)/1000)+')'; // 明るい黄色(透明度つき)
 			this.ctx.beginPath();
 			this.ctx.arc(x, y, radius, 0, 2*Math.PI, false);
@@ -631,13 +681,14 @@ inherits(Field, Entities);
 	 * https://developer.mozilla.org/en-US/docs/Web/Events
 	 * を見ること。
 	 */
-	Field.prototype.addEventListener = function(type, listener, options) {
+	addEventListener(type, listener, options) {
 		this.canvas.addEventListener(type, listener, options);
 	}
 	
-	Field.prototype.removeEventListener = function(type, listener, options) {
+	removeEventListener(type, listener, options) {
 		this.canvas.addEventListener(type, listener, options);
 	}
+}
 	
 /**
  * Card class 定義
@@ -647,61 +698,66 @@ inherits(Field, Entities);
  * @constructor
  * @extends Entity
  */
-var Card = function(suit, value) {
-
-/*----------------
- * instance field
- */
-	Entity.call(this);
-	this.setSize(Card.XSIZE, Card.YSIZE);
-	/**
-	 * このカードのスートを表す 0～4 の数値。スート定数を参照。
-	 * @type	{Number}
-	 */
-	this.suit = suit;
-	
-	/**
-	 * このカードのバリューを表す数値。1(ACE)～13(KING) の値をとる。
-	 * @type	{Number}
-	 */
-	this.value = value;
-	
-	/**
-	 * このカードが表向きかどうかを保持。
-	 * @type	{Boolean}
-	 */
-	this.isHead = true;
-}
-inherits(Card, Entity); // 継承
+class Card extends Entity {
 
 /*---------------
  * static fields
  */
-	Card.XSIZE = 59;
-	Card.YSIZE = 87;
-	Card.XSTEP = 14;
-	Card.YSTEP = 16;
-	
+	static XSIZE = 59;
+	static YSIZE = 87;
+	static XSTEP = 14;
+	static YSTEP = 16;
+
 	/** suit 値用の定数 */
-	Card.JOKER = 0; // 利用されない(JOKER は value も同一値)
+	static JOKER = 0; // 利用されない(JOKER は value も同一値)
 	/** スペードを示す定数(4) */
-	Card.SPADE = 4;
+	static SPADE = 4;
 	/** ハートを示す定数(3) */
-	Card.HEART = 3;
+	static HEART = 3;
 	/** ダイヤを示す定数(2) */
-	Card.DIAMOND = 2;
+	static DIAMOND = 2;
 	/** クラブを示す定数(1) */
-	Card.CLUB = 1;
-	
+	static CLUB = 1;
+
 	/** ACE を表す value 値(1) */
-	Card.ACE = 1;
+	static ACE = 1;
 	/** JACK を表す value 値(11) */
-	Card.JACK = 11;
+	static JACK = 11;
 	/** QUEEN を表す value 値(12) */
-	Card.QUEEN = 12;
+	static QUEEN = 12;
 	/** KING を表す value 値(13) */
-	Card.KING = 13;
-	
+	static KING = 13;
+
+
+	/**
+	 * このカードのスートを表す 0～4 の数値。スート定数を参照。
+	 * @type	{Number}
+	 */
+	suit;
+
+	/**
+	 * このカードのバリューを表す数値。1(ACE)～13(KING) の値をとる。
+	 * @type	{Number}
+	 */
+	value;
+
+	/**
+	 * このカードが表向きかどうかを保持。
+	 * @type	{Boolean}
+	 */
+	isHead;
+
+/*-------------
+ * constructor
+ */
+	constructor(suit, value) {
+		super();
+		this.setSize(Card.XSIZE, Card.YSIZE);
+		this.suit = suit;
+		this.value = value;
+		this.isHead = true;
+	}
+
 /*------------------
  * instance methods
  */
@@ -710,10 +766,10 @@ inherits(Card, Entity); // 継承
 	 * @param	{Object} ctx	2Dグラフィックコンテキスト
 	 * @override
 	 */
-	Card.prototype.draw = function(ctx) {
+	draw(ctx) {
 		if (!this.isVisible) return;
-		var x,y, c,s;
-		var r = this.getRect();
+		let x,y, c,s;
+		const r = this.getRect();
 		switch (this.direction) {
 		case 1:
 			c = 0; s = 1;	x = r.y;		y = -r.x - r.h; break;
@@ -724,7 +780,7 @@ inherits(Card, Entity); // 継承
 		default:
 			c = 1; s = 0;	x = r.x;		y = r.y; break;
 		}
-		var img;
+		let img;
 		if (this.isHead) img = CardImageHolder.getImage(this.suit, this.value);
 		else img = cardImageHolder.getBackImage();
 		
@@ -738,7 +794,7 @@ inherits(Card, Entity); // 継承
 	 * @override
 	 * @return		{Object} {x: <<x座標>>, y: <<y座標>>, w: <<幅>>, h: <<高さ>>
 	 */
-	Card.prototype.getRect = function() {
+	getRect() {
 		return {
 			x: this.x,
 			y: this.y,
@@ -750,8 +806,8 @@ inherits(Card, Entity); // 継承
 	 * Card の文字列表現を得ます。
 	 * @return	{string}	このカードの文字列表現
 	 */
-	Card.prototype.toString = function() {
-		var s;
+	toString() {
+		let s;
 		if (this.isHead) s = "/"; else s = "_";
 		switch (this.suit) {
 			case Card.SPADE:
@@ -792,50 +848,56 @@ inherits(Card, Entity); // 継承
 		}
 		return s; // + "]";
 	}
+}
 
 /**
  * CardImageHolder class
  * @classdesc カードのグラフィックを取得する static メソッドを提供します。
  * @constructor
  */
-var CardImageHolder = function() {
-}
+class CardImageHolder {
+	constructor() {
+		throw new Error("can not instantiate CardImageHolder");
+	}
+
 	/**
 	 * カード表面のイメージオブジェクトの配列
 	 * @type	{Array.<Image>}
 	 */
-	CardImageHolder.IMAGE = [];
+	static IMAGE = [];
 	/**
 	 * カード裏面のイメージオブジェクト配列
 	 * @type	{Array.<Image>}
 	 */
-	CardImageHolder.BACK_IMAGE = [];
+	static BACK_IMAGE = [];
 	
 	/**
 	 * カードイメージを読み込みます。
 	 */
-	CardImageHolder.loadImages = function(path) {
+	static loadImages(path) {
 		if (path===void 0) path = 'images/';
 		if (!path.endsWith('/')) path = path + '/';
 		// カード表面の読み込み
-		var s = ['c', 'd', 'h', 's'];
-		for (var i = 0; i < s.length; i++) {
-			var suit = s[i];
-			for (var value = 1; value < 14; value++) {
-				var imgsrc = 'images/'+suit+value+'.gif?'+ new Date().getTime(); // nocache
-				var img = new Image();
+		const s = ['c', 'd', 'h', 's'];
+		for (let i = 0; i < s.length; i++) {
+			const suit = s[i];
+			for (let value = 1; value < 14; value++) {
+				const imgsrc = 'images/'+suit+value+'.gif?'+ new Date().getTime(); // nocache
+				const img = new Image();
 				img.src = imgsrc;
 				CardImageHolder.IMAGE.push(img);
 			}
 		}
 		// カード裏面の読み込み
-		for (var i = 0; i < 4; i++) {
-			var imgsrc = 'images/back'+i+'.gif?'+ new Date().getTime();
-			var img = new Image();
+		for (let i = 0; i < 4; i++) {
+			const imgsrc = 'images/back'+i+'.gif?'+ new Date().getTime();
+			const img = new Image();
 			img.src = imgsrc;
 			CardImageHolder.BACK_IMAGE.push(img);
 		}
 	}
+	// execute loadImages(static initializer)
+	static _loaded = CardImageHolder.loadImages();
 	
 	/**
 	 * カードの表面イメージを取得します。
@@ -843,28 +905,24 @@ var CardImageHolder = function() {
 	 * @param	suit	スート(1,2,3,4)
 	 * @param	value	値(1-13)
 	 */
-	CardImageHolder.getImage = function(suit, value) {
-		var s = (suit-1)*13 + (value-1);
+	static getImage(suit, value) {
+		const s = (suit-1)*13 + (value-1);
 		return CardImageHolder.IMAGE[s];
 	}
 	
 	/**
 	 * カードの裏面イメージを取得します。
 	 */
-	
-	CardImageHolder.getBackImage = function() {
+	static getBackImage() {
 		return CardImageHolder.BACK_IMAGE[0];
 	}
-	
-// execute loadImages(static initializer)
-CardImageHolder.loadImages();
+}
 	
 /**
  * CardHandLayout class 定義
  * @constructor
  */
-var CardHandLayout = function() {
-}
+class CardHandLayout {
 
 /*------------------
  * instance methods
@@ -873,13 +931,13 @@ var CardHandLayout = function() {
 	 * 通常のハンドのレイアウトを施します。
 	 * @param	{Entities} entities レイアウトを行う対象 Entities
 	 */
-	CardHandLayout.prototype.layout = function(entities) {
-		var xpos, ypos, n;
+	layout(entities) {
+		let xpos, ypos, n;
 		
 		n = entities.children.length;
 		
-		var direction = entities.direction;
-		var r = entities.getRect();
+		const direction = entities.direction;
+		const r = entities.getRect();
 		
 		switch (direction) {
 		
@@ -888,8 +946,8 @@ var CardHandLayout = function() {
 			xpos = r.x;
 			ypos = r.y;
 			
-			for (var i = 0; i < n; i++) {
-				var ent = entities.children[i];
+			for (let i = 0; i < n; i++) {
+				const ent = entities.children[i];
 				ent.setPosition(xpos, ypos);
 				//ent.setSize(Card.XSIZE, Card.YSIZE);
 				xpos += Card.XSTEP;
@@ -902,8 +960,8 @@ var CardHandLayout = function() {
 			xpos = r.x;
 			ypos = r.y + (n-1) * Card.XSTEP;
 			
-			for (var i = 0; i < n; i++) {
-				var ent = entities.children[i];
+			for (let i = 0; i < n; i++) {
+				const ent = entities.children[i];
 				ent.setPosition(xpos, ypos);
 				//ent.setSize(Card.YSIZE, Card.XSIZE);
 				ypos -= Card.XSTEP;
@@ -916,8 +974,8 @@ var CardHandLayout = function() {
 			xpos = r.x + (n-1) * Card.XSTEP;
 			ypos = r.y;
 			
-			for (var i = 0; i < n; i++) {
-				var ent = entities.children[i];
+			for (let i = 0; i < n; i++) {
+				const ent = entities.children[i];
 				ent.setPosition(xpos, ypos);
 				//ent.setSize(Card.XSIZE, Card.YSIZE);
 				xpos -= Card.XSTEP;
@@ -930,8 +988,8 @@ var CardHandLayout = function() {
 			xpos = r.x;
 			ypos = r.y;
 			
-			for (var i = 0; i < n; i++) {
-				var ent = entities.children[i];
+			for (let i = 0; i < n; i++) {
+				const ent = entities.children[i];
 				ent.setPosition(xpos, ypos);
 				//ent.setSize(Card.YSIZE, Card.XSIZE);
 				ypos += Card.XSTEP;
@@ -948,12 +1006,12 @@ var CardHandLayout = function() {
 	 * 実際のレイアウトは変更せず、レイアウトした場合の大きさを計算します。
 	 * @param	{Entities} entities 計算対象の Entities
 	 */
-	CardHandLayout.prototype.layoutSize = function(entities) {
-		var n = entities.children.length;
+	layoutSize(entities) {
+		const n = entities.children.length;
 		
 		if (n == 0) return { w: 0, h: 0 };
 		
-		var direction = entities.direction;
+		const direction = entities.direction;
 		
 		switch (direction) {
 		
@@ -969,6 +1027,7 @@ var CardHandLayout = function() {
 			throw new Error("direction の値が不正です：" + direction);
 		}
 	}
+}
 
 /**
  * Bid class定義
@@ -982,60 +1041,65 @@ var CardHandLayout = function() {
  * @version		8, July 2018
  * @author		Yusuke Sasaki
  */
-var Bid = function(kind, level, suit) {
-	if (kind != Bid.PASS && (level===void 0 || suit===void 0)) {
-		throw new Error("pass でない場合は引数が必要です");
-	}
-	if (kind == Bid.PASS && (level!==void 0 || level!==void 0))
-		throw new Error("pass では引数は1つです");
-	if (kind == Bid.PASS && level===void 0 && suit===void 0) {
-		level = 0; suit = 0; // pass object
-	}
-	if ((kind < Bid.BID)||(kind > Bid.REDOUBLE))
-		throw new Error("Illegal Bid kind : " + kind);
-	if ((level < 0)||(level > 7))
-		throw new Error("Illegal level : " + level);
-	if ((suit < 0)||(suit > Bid.NO_TRUMP))
-		throw new Error("Illegal suit : " + suit);
-/*----------------
- * instance field
- */
-	/** ビッドの種類 */
-	this.kind  = kind;
-	/** ビッドのレベル */
-	this.level = level;
-	/** ビッドスート */
-	this.suit  = suit;
-}
+class Bid {
+
 /*------------------
  * static constants
  */
 	/** kind (Bid) を表す定数. */
-	Bid.BID			= 0;
+	static BID			= 0;
 	
 	/** kind (Pass) を表す定数. */
-	Bid.PASS		= 1;
+	static PASS		= 1;
 	
 	/** kind (Double) を表す定数. */
-	Bid.DOUBLE		= 2;
+	static DOUBLE		= 2;
 	
 	/** kind (Redouble) を表す定数. */
-	Bid.REDOUBLE	= 3;
+	static REDOUBLE	= 3;
 	
 	/** bid suit (club) を表す定数(=1). */
-	Bid.CLUB		= Card.CLUB;	// = 1;
+	static CLUB		= Card.CLUB;	// = 1;
 	
 	/** bid suit (diamond) を表す定数(=2). */
-	Bid.DIAMOND		= Card.DIAMOND;	// = 2;
+	static DIAMOND		= Card.DIAMOND;	// = 2;
 	
 	/** bid suit (heart) を表す定数(=3). */
-	Bid.HEART		= Card.HEART;	// = 3;
+	static HEART		= Card.HEART;	// = 3;
 	
 	/** bid suit (spade) を表す定数(=4). */
-	Bid.SPADE		= Card.SPADE;	// = 4;
+	static SPADE		= Card.SPADE;	// = 4;
 	
 	/** bid suit (no trump) を表す定数(=5). */
-	Bid.NO_TRUMP	= 5;
+	static NO_TRUMP	= 5;
+
+	/** ビッドの種類 */
+	kind;
+	/** ビッドのレベル */
+	level;
+	/** ビッドスート */
+	suit;
+
+	constructor(kind, level, suit) {
+		if (kind != Bid.PASS && (level===void 0 || suit===void 0)) {
+			throw new Error("pass でない場合は引数が必要です");
+		}
+		if (kind == Bid.PASS && (level!==void 0 || level!==void 0))
+			throw new Error("pass では引数は1つです");
+		if (kind == Bid.PASS && level===void 0 && suit===void 0) {
+			level = 0; suit = 0; // pass object
+		}
+		if ((kind < Bid.BID)||(kind > Bid.REDOUBLE))
+			throw new Error("Illegal Bid kind : " + kind);
+		if ((level < 0)||(level > 7))
+			throw new Error("Illegal level : " + level);
+		if ((suit < 0)||(suit > Bid.NO_TRUMP))
+			throw new Error("Illegal suit : " + suit);
+		this.kind  = kind;
+		this.level = level;
+		this.suit  = suit;
+	}
+
 	
 /*------------------
  * instance methods
@@ -1046,7 +1110,7 @@ var Bid = function(kind, level, suit) {
 	 * [pass] は常に可能(true)です。
 	 * @param	{Bid} contract 判定先となるコントラクト
 	 */
-	Bid.prototype.isBiddableOver = function(contract) {
+	isBiddableOver(contract) {
 		switch (this.kind) {
 		
 		case Bid.PASS:
@@ -1084,7 +1148,7 @@ var Bid = function(kind, level, suit) {
 	/**
 	 * @override
 	 */
-	Bid.prototype.toString = function() {
+	toString() {
 		switch (this.kind) {
 		case Bid.BID:
 			return "[" + this.level + " " +
@@ -1104,6 +1168,7 @@ var Bid = function(kind, level, suit) {
 			return "[? bid ]";
 		}
 	}
+}
 	
 /**
  * DummyHandLayout class 定義
@@ -1113,8 +1178,9 @@ var Bid = function(kind, level, suit) {
  * 			arrange() されていることを想定して処理されます。
  * @constructor
  */
-var DummyHandLayout = function() {
-}
+class DummyHandLayout {
+	constructor() {
+	}
 
 /*------------------
  * instance methods
@@ -1123,26 +1189,26 @@ var DummyHandLayout = function() {
 	 * ダミーハンドのレイアウトを施します。
 	 * @param	{Entities} entities レイアウトを行う対象 Entities
 	 */
-	DummyHandLayout.prototype.layout = function(packet) {
-		var co = packet.cardOrder; // targeting NaturalCardOrder
-		var suitOrder = co.suitOrder;
+	layout(packet) {
+		const co = packet.cardOrder; // targeting NaturalCardOrder
+		const suitOrder = co.suitOrder;
 		
-		var count = this._countSuits_(packet, suitOrder);
+		const count = this._countSuits_(packet, suitOrder);
 		
 		if (count[0] + count[1] + count[2] + count[3] == 0) return;
 		
 		//
 		// サイズ計算用
 		//
-		var maxCount = -1;
-		for (var i = 0; i < 4; i++) {
+		let maxCount = -1;
+		for (let i = 0; i < 4; i++) {
 			if (maxCount < count[i]) maxCount = count[i];
 		}
 		
 		//
-		var xpos, ypos, n = 0;
-		var dir = ( packet.direction + 2 ) % 4;
-		var r = packet.getRect();
+		let xpos, ypos, n = 0;
+		const dir = ( packet.direction + 2 ) % 4;
+		const r = packet.getRect();
 		
 		switch (packet.direction) {
 		
@@ -1150,10 +1216,10 @@ var DummyHandLayout = function() {
 			 xpos = r.x + 3 * (Card.XSIZE + 3);;
 			
 			// それぞれのカードの配置を行う
-			for (var i = 0; i < 4; i++) {
+			for (let i = 0; i < 4; i++) {
 				ypos = r.y + (maxCount-1)*Card.YSTEP;
-				for (var j = 0; j < count[i]; j++) {
-					var ent = packet.children[n++];
+				for (let j = 0; j < count[i]; j++) {
+					const ent = packet.children[n++];
 					ent.setPosition(xpos, ypos);
 					ent.setDirection(dir);
 					ypos -= Card.YSTEP;
@@ -1166,11 +1232,11 @@ var DummyHandLayout = function() {
 		case Entity.RIGHT_VIEW:
 			ypos = r.y;
 			
-			for (var i = 0; i < 4; i++) {
+			for (let i = 0; i < 4; i++) {
 				xpos = r.x + (maxCount-1)*Card.YSTEP;
 				
-				for (var j = 0; j < count[i]; j++) {
-					var ent = packet.children[n++];
+				for (let j = 0; j < count[i]; j++) {
+					const ent = packet.children[n++];
 					ent.setPosition(xpos, ypos);
 					ent.setDirection(dir);
 					xpos -= Card.YSTEP;
@@ -1184,10 +1250,10 @@ var DummyHandLayout = function() {
 			xpos = r.x;
 			
 			// それぞれのカードの配置を行う
-			for (var i = 0; i < 4; i++) {
+			for (let i = 0; i < 4; i++) {
 				ypos = r.y;
-				for (var j = 0; j < count[i]; j++) {
-					var ent = packet.children[n++];
+				for (let j = 0; j < count[i]; j++) {
+					const ent = packet.children[n++];
 					ent.setPosition(xpos, ypos);
 					ent.setDirection(dir);
 					ypos += Card.YSTEP;
@@ -1200,10 +1266,10 @@ var DummyHandLayout = function() {
 		case Entity.LEFT_VIEW:
 			ypos = r.y + 3 * (Card.XSIZE + 3);
 			
-			for (var i = 0; i < 4; i++) {
+			for (let i = 0; i < 4; i++) {
 				xpos = r.x;
-				for (var j = 0; j < count[i]; j++) {
-					var ent = packet.children[n++];
+				for (let j = 0; j < count[i]; j++) {
+					const ent = packet.children[n++];
 					ent.setPosition(xpos, ypos);
 					ent.setDirection(dir);
 					xpos += Card.YSTEP;
@@ -1222,15 +1288,12 @@ var DummyHandLayout = function() {
 	 * それぞれのスートの枚数を数える.
 	 * @private
 	 */
-	DummyHandLayout.prototype._countSuits_ = function(packet, suitOrder) {
+	_countSuits_(packet, suitOrder) {
 		// それぞれのスートの枚数を数える
-		var count = [0, 0, 0, 0];
+		const count = [0, 0, 0, 0];
 		
-		var lastSuit = -1;
-		var suit = -1;
-		
-		for (var i = 0; i < packet.children.length; i++) {
-			var card = packet.children[i];
+		for (let i = 0; i < packet.children.length; i++) {
+			let card = packet.children[i];
 			count[4 - suitOrder[card.suit]]++;
 		}
 		
@@ -1242,17 +1305,17 @@ var DummyHandLayout = function() {
 	 * @param	{Entities} entities 計算対象の Entities
 	 * @return	{object} w, h を含むオブジェクト
 	 */
-	DummyHandLayout.prototype.layoutSize = function(packet) {
-		var co = packet.cardOrder;
-		var suitOrder = co.suitOrder;
+	layoutSize(packet) {
+		const co = packet.cardOrder;
+		const suitOrder = co.suitOrder;
 		
-		var count = this._countSuits_(packet, suitOrder);
+		const count = this._countSuits_(packet, suitOrder);
 		
 		//
 		// サイズ計算用
 		//
-		var maxCount = -1;
-		for (var i = 0; i < 4; i++) {
+		let maxCount = -1;
+		for (let i = 0; i < 4; i++) {
 			if (maxCount < count[i]) maxCount = count[i];
 		}
 		switch (packet.direction) {
@@ -1269,6 +1332,7 @@ var DummyHandLayout = function() {
 			throw new Error("Direction が不正です");
 		}
 	}
+}
 
 /**
  * BiddingHistory class 定義
@@ -1280,45 +1344,48 @@ var DummyHandLayout = function() {
  * @version		8, July 2018
  * @author		Yusuke Sasaki
  */
-var BiddingHistory = function(dealer) {
+class BiddingHistory {
+	/**
+	 * 座席定数
+	 */
+	static NORTH = 0;
+	static EAST = 1;
+	static SOUTH = 2;
+	static WEST = 3;
 
-/*----------------
- * instance field
- */
 	/**
 	 * ディーラーの座席番号(0-3)
 	 * @type	{number}
 	 */
-	this.dealer = dealer;
+	dealer;
 	/**
 	 * ビッド履歴。配列の大きさはビッドの回数を示します。
 	 * @type	{Array.<Bid>}
 	 */
-	this.bid = [];
+	bid;
 	/**
 	 * 現時点のコントラクト。最終コントラクトとは限りません。
 	 * @type	{Bid}
 	 */
-	this.contract = null;
+	contract;
 	/**
 	 * 現時点のディクレアラー。最終ディクレアラーとは限りません。
 	 * @type	{number}
 	 */
-	this.declarer = -1;
+	declarer;
 	/**
 	 * コントラクトが終了している場合、true
 	 * @type	{boolean}
 	 */
-	this.finished = false;
-}
+	finished;
 
-	/**
-	 * 座席定数
-	 */
-	BiddingHistory.NORTH = 0;
-	BiddingHistory.EAST = 1;
-	BiddingHistory.SOUTH = 2;
-	BiddingHistory.WEST = 3;
+	constructor(dealer) {
+		this.dealer = dealer;
+		this.bid = [];
+		this.contract = null;
+		this.declarer = -1;
+		this.finished = false;
+	}
 
 /*------------------
  * instance methods
@@ -1330,7 +1397,7 @@ var BiddingHistory = function(dealer) {
 	 * @param		{Bid} b テストするビッド
 	 * @return		{boolean} 許可されるビッドか
 	 */
-	BiddingHistory.prototype.allows = function(b) { // b is Bid
+	allows(b) { // b is Bid
 		if (this.finished) return false;
 		
 		if (this.contract == null) {
@@ -1377,11 +1444,11 @@ var BiddingHistory = function(dealer) {
 	
 	/**
 	 * ビッドを行い，ビッディングシーケンスを進めます。
-	 * 不可能なビッドを行おうとすると、IllegalPlayException がスローされます。
+	 * 不可能なビッドを行おうとすると、Error がスローされます。
 	 *
 	 * @param		{Bid} newBid 新たに行うビッド
 	 */
-	BiddingHistory.prototype.play = function(newBid) {
+	play(newBid) {
 		// ビッドできるかのチェックを行う.
 		if (!this.allows(newBid))
 			throw new Error("Illegal bid:" + newBid.toString());
@@ -1418,22 +1485,21 @@ var BiddingHistory = function(dealer) {
 			this.contract = newBid;
 			
 			// declarer を見つける.
-			var n;
+			let n;
 			for (n = (1 - (this.bid.length & 1)); n < this.bid.length; n += 2) {
-				var b = this.bid[n];
+				const b = this.bid[n];
 				if ((b.kind == Bid.BID)&&
 					(b.suit == newBid.suit)) break;
 			}
 			this.declarer = (n + this.dealer)%4;
 			break;
 		}
-		
 	}
 	
 	/**
 	 * 1手元に戻します。
 	 */
-	BiddingHistory.prototype.undo = function() {
+	undo() {
 		if (this.bid.length == 0)
 			throw new Error("ビッドされていないので、undo() できません");
 		this.contract	= null;
@@ -1442,8 +1508,8 @@ var BiddingHistory = function(dealer) {
 		this.finished	= false;
 		
 		// contract を見つける
-		var lastBidCount = 0;
-		for (var i = this.bid.length-1; i >= 0; i--) {
+		let lastBidCount = 0;
+		for (let i = this.bid.length-1; i >= 0; i--) {
 			if (this.bid[i].kind == Bid.BID) {
 				this.contract = this.bid[i];
 				lastBidCount = i+1;
@@ -1452,9 +1518,9 @@ var BiddingHistory = function(dealer) {
 		}
 		
 		// declarer を見つける
-		var n;
+		let n;
 		for (n = (1 - (lastBidCount & 1)); n < lastBidCount; n += 2) {
-			var b = this.bid[n];
+			const b = this.bid[n];
 			if ((b.kind == Bid.BID)&&
 				(b.suit == this.contract.suit)) break;
 		}
@@ -1468,7 +1534,7 @@ var BiddingHistory = function(dealer) {
 	 *
 	 * @return		{Array.<Bid>} すべてのビッド
 	 */
-	BiddingHistory.prototype.getAllBids = function() {
+	getAllBids() {
 		var result = this.bid.slice(0, this.bid.length);
 		return result;
 	}
@@ -1478,7 +1544,7 @@ var BiddingHistory = function(dealer) {
 	 *
 	 * @return		{number} 席番号
 	 */
-	BiddingHistory.prototype.getTurn = function() {
+	getTurn() {
 		return (this.dealer + this.bid.length) % 4;
 	}
 	
@@ -1487,7 +1553,7 @@ var BiddingHistory = function(dealer) {
 	 * @param	{Bid} contract コントラクト
 	 * @param	{number} ディクレアラーの座席番号
 	 */
-	BiddingHistory.prototype.setContract = function(contract, declarer) {
+	setContract(contract, declarer) {
 		if ( (this.bid.length != 0)||(this.finished) )
 			throw new Error("すでにビッドされているためコントラクトを指定できません。");
 		if ( (declarer < BiddingHistory.NORTH)
@@ -1503,7 +1569,7 @@ var BiddingHistory = function(dealer) {
 	 * ビッド履歴を初期化します。
 	 * @param	{number} dealer ディーラー。省略した場合、変更しません。
 	 */
-	BiddingHistory.prototype.reset = function(dealer) {
+	reset(dealer) {
 		if (dealer!==void 0) { // 引数がある場合
 			this.dealer = dealer;
 			this.reset();
@@ -1523,16 +1589,16 @@ var BiddingHistory = function(dealer) {
 	 * 文字列表現を得る.
 	 * @override
 	 */
-	BiddingHistory.prototype.toString = function() {
+	toString() {
 		if ( (this.bid.length == 0)&&(this.finished) )
 			return "Bidding Sequence Unknown";
-		var result = "   N       E       S       W\n";
+		let result = "   N       E       S       W\n";
 		for (var i = 0; i < this.dealer; i++) {
 			result += "        ";
 		}
-		var seat = this.dealer;
+		let seat = this.dealer;
 		
-		for (var i = 0; i < this.bid.length; i++) {
+		for (let i = 0; i < this.bid.length; i++) {
 			result += this.bid[i].toString();
 			seat++;
 			if (seat == 4) {
@@ -1542,32 +1608,34 @@ var BiddingHistory = function(dealer) {
 		}
 		return result + "\n";
 	}
+}
 
 /**
  * TrickLayout class 定義
  * @constructor
  */
-var TrickLayout = function() {
-}
+class TrickLayout {
+	constructor() {
+	}
 
 	/**
 	 * TrickLayout では、target のサイズを変更しません。
 	 * @param	{Trick} target レイアウト対象の Trick
 	 */
-	TrickLayout.prototype.layout = function(target) {
-		var trick = target;
-		var direction	= trick.direction;
-		var leader		= trick.leader;
-		var size		= trick.children.length;
-		var x = trick.x;
-		var y = trick.y;
-		var w = trick.w;
-		var h = trick.h;
+	layout(target) {
+		const trick = target;
+		const direction	= trick.direction;
+		const leader = trick.leader;
+		const size = trick.children.length;
+		const x = trick.x;
+		const y = trick.y;
+		const w = trick.w;
+		const h = trick.h;
 		
-		var d = (4 + leader - direction) % 4;
+		const d = (4 + leader - direction) % 4;
 		
-		for (var i = 0; i < size; i++) {
-			var ent = trick.children[i];
+		for (let i = 0; i < size; i++) {
+			const ent = trick.children[i];
 			
 			switch ( (i+d)%4 ) {
 			
@@ -1581,7 +1649,7 @@ var TrickLayout = function() {
 				ent.setPosition(x + (w - ent.w)/2, y + (h - ent.h) );
 				break;
 			case 3: // 左
-				ent.setPosition(xpos, ypos + (h - ent.h)/2);
+				ent.setPosition(x, y + (h - ent.h)/2);
 				break;
 			default:
 				throw new Error();
@@ -1594,9 +1662,10 @@ var TrickLayout = function() {
 	 * @param	{Trick} target 計算対象の Trick
 	 * @return	{object} w, h を含むオブジェクト
 	 */
-	TrickLayout.prototype.layoutSize = function(target) {
+	layoutSize(target) {
 		return {w: target.w, h: target.h };
 	}
+}
 	
 /**
  * Trick class 定義
@@ -1611,44 +1680,46 @@ var TrickLayout = function() {
  * @param	{number} trump trumpスート
  * @extends Packet
  */
-var Trick = function(leader, trump) {
-
-/*----------------
- * instance field
+class Trick extends Packet {
+/*--------------
+ * class fields
  */
-	Packet.call(this);
+	static WIDTH  = 300;
+	static HEIGHT = 200;
+
 	/**
 	 * リーダーを示す数値
 	 * @type {Number}
 	 */
-	this.leader = leader;
+	leader;
 	/**
 	 * ウィナーを示す数値
 	 * @type {Number}
 	 */
-	this.winner = -1;
+	winner;
 	/**
 	 * ウィナーカード
 	 * @type {Card}
 	 */
-	this.winnerCard = null;
+	winnerCard;
 	/**
 	 * トランプスート
 	 * @type {Number}
 	 */
-	this.trump = trump;
+	trump;
 	
-	this.direction = Entity.UPRIGHT;
-	this.setSize(Trick.WIDTH, Trick.HEIGHT);
-	this.layout = new TrickLayout();
-}
-inherits(Trick, Packet);
+	constructor(leader, trump) {
+		super();
+		this.leader = leader;
+		this.winner = -1;
+		this.winnerCard = null;
+		this.trump = trump;
+		
+		this.direction = Entity.UPRIGHT;
+		this.setSize(Trick.WIDTH, Trick.HEIGHT);
+		this.layout = new TrickLayout();
+	}
 
-/*--------------
- * class fields
- */
-	Trick.WIDTH  = 300;
-	Trick.HEIGHT = 200;
 
 /*------------------
  * instance methods
@@ -1658,7 +1729,7 @@ inherits(Trick, Packet);
 	 * NESW の順である. Dummy が返ることもある.
 	 * @return	{number} 次の番の座席定数
 	 */
-	Trick.prototype.getTurn = function() {
+	getTurn() {
 		return ((this.children.length + this.leader) % 4);
 	}
 	
@@ -1667,7 +1738,7 @@ inherits(Trick, Packet);
 	 * 終っている場合、winner, winnerCard の値が有効となる。
 	 * @return	{boolean} このトリックが終わっているか
 	 */
-	Trick.prototype.isFinished = function() {
+	isFinished() {
 		return ( this.children.length == 4 );
 	}
 	
@@ -1676,11 +1747,11 @@ inherits(Trick, Packet);
 	 * @param	{Card} card		追加するカード
 	 * @override
 	 */
-	Trick.prototype.add = function(card) {
+	add(card) {
 		if (this.isFinished())
 			throw new Error("終了した Trick に対して add(Card) できません。");
 		
-		Packet.prototype.add.call(this, card); // super.add(card);
+		super.add(card);
 		
 		if (this.children.length == 4) this._setWinner_();
 	}
@@ -1689,7 +1760,7 @@ inherits(Trick, Packet);
 	 * Winner を lead, trump などから決定します。
 	 * @private
 	 */
-	Trick.prototype._setWinner_ = function() {
+	_setWinner_() {
 		if ( this.children.length  == 0) {
 			this.winnerCard = null;
 			return;
@@ -1698,9 +1769,9 @@ inherits(Trick, Packet);
 		// winner をセットする
 		this.winnerCard = this.children[0];
 		this.winner = 0;
-		var starter = winnerCard.suit;
-		for (var i = 1; i < this.children.length; i++) {
-			var c = this.children[i];
+		const starter = this.winnerCard.suit;
+		for (let i = 1; i < this.children.length; i++) {
+			const c = this.children[i];
 			if (this.winnerCard.suit == this.trump) {
 				// NO_TRUMP のときはここにこない
 				if ((c.suit == this.trump)
@@ -1713,7 +1784,7 @@ inherits(Trick, Packet);
 				}
 			} else {
 				// winner のスーツは場のスーツ
-				if (c.suit == trump) {
+				if (c.suit == this.trump) {
 					this.winnerCard = c;
 					this.winner = i;
 				} else if ((c.suit == starter)
@@ -1727,7 +1798,8 @@ inherits(Trick, Packet);
 			}
 		}
 	}
-	
+}
+
 /**
  * PlayHistory class 定義
  *
@@ -1741,50 +1813,53 @@ inherits(Trick, Packet);
  * @param		{PlayHistory} src コピー元のオブジェクト。
  *								省略時は新規オブジェクトを生成します。
  */
-var PlayHistory = function(src) {
-
-/*----------------
- * instance field
- */
-	if (src!==void 0) {
-		// 代入するのみ(意味は？)
-		this.hand = src.hand;
-		this.trick = src.trick;
-		/** 現在まででプレイされているトリック数(プレイ中は含まない) */
-		this.trickCount = src.trickCount;
-		this.trump = src.trump;
-	} else {
-		/**
-		 * プレイ中のハンド
-		 * @type	{Array.<Packet>}
-		 */
-		this.hand = []; // Packet[4]
-		/**
-		 * プレイ中のトリック。要素数は 13 以下。
-		 * @type	{Array.<Trick>}
-		 */
-		this.trick = []; // Trick[13]
-		/**
-		 * 現在まででプレイされているトリック数(プレイ中は含まない)
-		 * @type	{number}
-		 */
-		this.trickCount = 0;
-		/**
-		 * トランプスート
-		 * @type	{number}
-		 */
-		this.trump = -1;
-	}
-}
-
+class PlayHistory {
 	/**
 	 * 座席定数
 	 */
-	PlayHistory.NORTH = BiddingHistory.NORTH;
-	PlayHistory.EAST = BiddingHistory.EAST;
-	PlayHistory.SOUTH = BiddingHistory.SOUTH;
-	PlayHistory.WEST = BiddingHistory.WEST;
-	PlayHistory.SEAT_STRING = [ "North", "East", "South", "West" ];
+	static NORTH = BiddingHistory.NORTH;
+	static EAST = BiddingHistory.EAST;
+	static SOUTH = BiddingHistory.SOUTH;
+	static WEST = BiddingHistory.WEST;
+	static SEAT_STRING = [ "North", "East", "South", "West" ];
+
+	/**
+	 * プレイ中のハンド
+	 * @type	{Array.<Packet>}
+	 */
+	hand;
+	/**
+	 * プレイ中のトリック。要素数は 13 以下。
+	 * @type	{Array.<Trick>}
+	 */
+	trick;
+	/**
+	 * 現在まででプレイされているトリック数(プレイ中は含まない)
+	 * @type	{number}
+	 */
+	trickCount;
+	/**
+	 * トランプスート
+	 * @type	{number}
+	 */
+	trump;
+
+	constructor(src) {
+		if (src!==void 0) {
+			// 代入するのみ(意味は？)
+			this.hand = src.hand;
+			this.trick = src.trick;
+			/** 現在まででプレイされているトリック数(プレイ中は含まない) */
+			this.trickCount = src.trickCount;
+			this.trump = src.trump;
+		} else {
+			this.hand = []; // Packet[4]
+			this.trick = []; // Trick[13]
+			this.trickCount = 0;
+			this.trump = -1;
+		}
+	}
+
 
 /*------------------
  * instance methods
@@ -1795,14 +1870,14 @@ var PlayHistory = function(src) {
 	 *
 	 * @param		{Packet} hand 設定するハンド
 	 */
-	PlayHistory.prototype.setHand = function(hand) {
+	setHand(hand) {
 		if ( (this.trick[0])&&(this.trick[0].children.length > 0) )
 			throw new Error("すでにプレイが開始されているため" +
 											" setHand は行えません。");
 		if (hand.length != 4)
 			throw new Error("４人分のハンドが指定されていません。");
 		
-		for (var i = 0; i < 4; i++) {
+		for (let i = 0; i < 4; i++) {
 			if (hand[i].children.length != 13)
 				throw new Error("ハンド"+i
 							+"のカード枚数が異常です。13枚指定して下さい。");
@@ -1819,7 +1894,7 @@ var PlayHistory = function(src) {
 	 * @param	{number} trump	トランプスーツ
 	 * @see		Card
 	 */
-	PlayHistory.prototype.setContract = function(leader, trump) {
+	setContract(leader, trump) {
 		if (this.trump != -1)
 			throw new Error("一度指定されたコントラクトを変更できません。");
 		this.trump = trump;
@@ -1835,7 +1910,7 @@ var PlayHistory = function(src) {
 	 * @param		{Card} p プレイ可能か判定したいカード
 	 * @return		{boolean} プレイできるかどうか
 	 */
-	PlayHistory.prototype.allows = function(p) {
+	allows(p) {
 		var turn = this.trick[this.trickCount].getTurn();
 		
 		// hand[turn] が指定されたカード持っていない場合 false
@@ -1858,7 +1933,7 @@ var PlayHistory = function(src) {
 	 *
 	 * @param		{Card} p		プレイするカード
 	 */
-	PlayHistory.prototype.play = function(p) {
+	play(p) {
 		if (!this.allows(p))
 			throw new Error(p.toString() + "は現在プレイできません。");
 		
@@ -1881,7 +1956,7 @@ var PlayHistory = function(src) {
 	 * 誰の番かを返します。
 	 * @return	{number} 座席番号
 	 */
-	PlayHistory.prototype.getTurn = function() {
+	getTurn() {
 		return this.trick[this.trickCount].getTurn();
 	}
 	
@@ -1890,7 +1965,7 @@ var PlayHistory = function(src) {
 	 * プレイ中のトリックについてはカウントされない。
 	 * @return	{number} this.trickCount を返します。
 	 */
-	PlayHistory.prototype.getTricks = function() {
+	getTricks() {
 		return this.trickCount;
 	}
 	
@@ -1901,7 +1976,7 @@ var PlayHistory = function(src) {
 	 * @param	{number} index ラウンド
 	 * @return	{Trick} トリック
 	 */
-	PlayHistory.prototype.getTrick = function(index) {
+	getTrick(index) {
 		if (index!==void 0) return this.trick[index];
 		if (this.trickCount == 13) return this.trick[12];
 		return this.trick[this.trickCount];
@@ -1911,7 +1986,7 @@ var PlayHistory = function(src) {
 	 * すべてのトリックを取得します。
 	 * @return	{Array.<Trick>} トリックすべて(null のことがあります)
 	 */
-	PlayHistory.prototype.getAllTricks = function() {
+	getAllTricks() {
 		if (this.trick.length == 0) return null;
 		if (this.hand[0] == null) return null;
 		
@@ -1924,14 +1999,14 @@ var PlayHistory = function(src) {
 	 * プレイが終了しているかを判定します。
 	 * @return	{boolean} プレイが終了しているか
 	 */
-	PlayHistory.prototype.isFinished = function() {
+	isFinished() {
 		return ( (this.trickCount == 13) && (this.trick[12].children.length == 4) );
 	}
 	
 	/**
 	 * この PlayHistory を初期化します。
 	 */
-	PlayHistory.prototype.reset = function() {
+	reset() {
 		this.hand = [];
 		this.trick = [];
 		this.trickCount	= 0;
@@ -1943,7 +2018,7 @@ var PlayHistory = function(src) {
 	 * 初期状態では、Error をスローします。
 	 * @return	{Card} 最後にプレイされたカード
 	 */
-	PlayHistory.prototype.undo = function() {
+	undo() {
 		if (this.trick.length == 0)
 			throw new Error("初期状態のため、undo() できません");
 		if ((this.trickCount == 0)&&(this.trick[0].children.length == 0))
@@ -1979,8 +2054,8 @@ var PlayHistory = function(src) {
 	/**
 	 * @override
 	 */
-	PlayHistory.prototype.toString = function() {
-		var result = "";
+	toString() {
+		let result = "";
 		
 		result += "N : " + this.hand[PlayHistory.NORTH]	+ "\n";
 		result += "E : " + this.hand[PlayHistory.EAST]		+ "\n";
@@ -2005,26 +2080,29 @@ var PlayHistory = function(src) {
 		
 		return result;
 	}
+}
 	
 /**
  * TableGui class 定義
  * @constructor
  * @extends Entity
  */
-var TableGui = function(board) {
-	Entity.call(this);
-	
-	this.board = board;
-	this.setSize(TableGui.WIDTH, TableGui.HEIGHT);
-}
-inherits(TableGui, Entity);
+class TableGui extends Entity {
 
 /*------------------
  * static constants
  */
-	TableGui.WIDTH = 640;
-	TableGui.HEIGHT = 480;
-	
+	static WIDTH = 640;
+	static HEIGHT = 480;
+
+	board;
+
+	constructor(board) {
+		super();
+		this.board = board;
+		this.setSize(TableGui.WIDTH, TableGui.HEIGHT);
+	}
+
 /*------------------
  * instance methods
  */
@@ -2033,9 +2111,9 @@ inherits(TableGui, Entity);
 	 * @private
 	 * @param	{Context} ctx Canvas のグラフィックコンテキスト
 	 */
-	TableGui.prototype._drawContract_ = function(ctx) {
-		var DIRECTIONS = ["North","East","South","West"];
-		var contract = this.board.getContract();
+	_drawContract_(ctx) {
+		const DIRECTIONS = ["North","East","South","West"];
+		const contract = this.board.getContract();
 		
 		// 枠
 		ctx.fillStyle = 'rgb(0,32,0)'; // back color
@@ -2046,13 +2124,13 @@ inherits(TableGui, Entity);
 		// コントラクトがあれば、左上に表示する
 		if (contract != null) {
 			ctx.font = 'bold 16px Serif';
-			var kind = contract.kind;
-			var contractStr;
+			const kind = contract.kind;
+			let contractStr;
 			if (kind == Bid.PASS) {
 				contractStr = "Pass Out";
 			} else {
 				contractStr = "Contract " + contract.level;
-				var i = contract.suit-1;
+				const i = contract.suit-1;
 				contractStr += " C D H SNT".substring(i*2, i*2+2);
 				contractStr += ["", "p.o.", "X", "XX"][kind];
 				contractStr += " by ";
@@ -2090,7 +2168,7 @@ inherits(TableGui, Entity);
 	 * @param	{number} x x座標
 	 * @param	{number} y y座標
 	 */
-	TableGui.prototype._fillTextWithShade_ = function(ctx, str, x, y) {
+	_fillTextWithShade_(ctx, str, x, y) {
 		ctx.fillStyle = 'rgb(0,0,96)'; // navy (影)
 		ctx.fillText(str, x+2, y+2);
 		ctx.fillStyle = 'rgb(255,255,255)'; // white
@@ -2102,7 +2180,7 @@ inherits(TableGui, Entity);
 	 * @private
 	 * @param	{Context} ctx Canvas のグラフィックコンテキスト
 	 */
-	TableGui.prototype._drawDirection_ = function(ctx) {
+	_drawDirection_(ctx) {
 		//
 		// 真ん中の NESW
 		//
@@ -2115,7 +2193,7 @@ inherits(TableGui, Entity);
 		ctx.fillRect(220, 332, 200, 8);
 		
 		// VULを示す赤線
-		var vul = this.board.vul;
+		const vul = this.board.vul;
 		ctx.fillStyle = 'rgb(170, 0, 0)'; // 暗めの赤
 		if ( (vul & Board.VUL_NS) != 0) {
 			ctx.fillRect(228, 148, 184, 32);
@@ -2134,55 +2212,56 @@ inherits(TableGui, Entity);
 		ctx.drawString("S", 314, 326);
 		ctx.drawString("W", 238, 250);
 	}
-	
 /*-----------
  * overrides
  */
 	/**
 	 * @override
 	 */
-	TableGui.prototype.draw = function(ctx) {
+	draw(ctx) {
 		this._drawContract_(ctx);
 		this._drawDirection_(ctx);
 	}
-	
+}
+
 /**
  * WinnerCard class 定義
  * @constructor
  * @extends Entity
  */
-var WinnerCard = function(win) {
-	Entity.call(this);
-	this.win = win;
-	
-	this.setSize(WinnerGui.SHORTER_EDGE, WinnerGui.LONGER_EDGE);
-	if (win) {
-		this.direction = Entity.UPRIGHT;
-	} else {
-		this.direction = Entity.RIGHT_VIEW;
-	}
-}
-inherits(WinnerCard, Entity);
+class WinnerCard extends Entity {
 
 /*------------------
  * static constants
  */
-	WinnerCard.WIN = true;
-	WinnerCard.LOSE = false;
-	WinnerCard.LONGER_EDGE = 48;
-	WinnerCard.SHORTER_EDGE = 32;
-	WinnerCard.SLIDE_STEP = 8;
-	
+	static WIN = true;
+	static LOSE = false;
+	static LONGER_EDGE = 48;
+	static SHORTER_EDGE = 32;
+	static SLIDE_STEP = 8;
+
+	constructor(win) {
+		super();
+		this.win = win;
+		
+		this.setSize(WinnerGui.SHORTER_EDGE, WinnerGui.LONGER_EDGE);
+		if (win) {
+			this.direction = Entity.UPRIGHT;
+		} else {
+			this.direction = Entity.RIGHT_VIEW;
+		}
+	}
+
 /*-----------
  * overrides
  */
 	/**
 	 * @override
 	 */
-	WinnerCard.prototype.draw = function(ctx) {
+	draw(ctx) {
 		if (!this.isVisible) return;
-		var x,y, c,s;
-		var r = this.getRect();
+		let x,y, c,s;
+		const r = this.getRect();
 		switch (this.direction) {
 		case 1:
 			c = 0; s = 1;	x = r.y;		y = -r.x - r.h; break;
@@ -2193,28 +2272,28 @@ inherits(WinnerCard, Entity);
 		default:
 			c = 1; s = 0;	x = r.x;		y = r.y; break;
 		}
-		var img = CardImageHolder.getBackImage();
+		const img = CardImageHolder.getBackImage();
 		
 		ctx.setTransform(c, s, -s, c, 0, 0);
 		ctx.drawImage(img, x, y, this.w, this.h);
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 	}
+}
 
 /**
  * WinnerGui class 定義
  * @constructor
  * @extends Entities
  */
-var WinnerGui = function() {
-	Entities.call(this);
-	
-	this.card = []; // WinnerCard[]
-	this.count = 0;
-	this.layout = null;
-	this.setSize(WinnerCard.SLIDE_STEP * 12 + WinnerCard.LONGER_EDGE,
-					WinnerCard.LONGER_EDGE);
-}
-inherits(WinnerGui, Entities);
+class WinnerGui extends Entities {
+	constructor() {
+		super();
+		this.card = []; // WinnerCard[]
+		this.count = 0;
+		this.layout = null;
+		this.setSize(WinnerCard.SLIDE_STEP * 12 + WinnerCard.LONGER_EDGE,
+						WinnerCard.LONGER_EDGE);
+	}
 
 /*------------------
  * instance methods
@@ -2222,39 +2301,42 @@ inherits(WinnerGui, Entities);
 	/**
 	 * @override 
 	 */
-	WinnerGui.prototype.add = function(win) {
+	add(win) {
 		if (typeof win != "boolean")
 			throw new Error("Winner Gui の add は boolean 値のみです");
 		card[this.count] = new WinnerCard(win);
 		card[this.count].setPosition(this.x + this.count * WinnerCard.SLIDE_STEP,
 					(win)?this.y:(this.y + WinnerCard.LONGER_EDGE / 4));
-		Entity.prototype.add.call(this, card[count]);
+		super.add(card[count]); // 正しいか？
 		count++;
 	}
+}
 
 /**
  * BoardLayout class 定義
  * @classdesc	Board のレイアウトです。
  * @constructor
  */
-var BoardLayout = function() {
-}
+class BoardLayout {
 	/** ハンドの表示位置関連 */
-	BoardLayout.SIDE_MARGIN = 40;
-	BoardLayout.VSIDE_MARGIN = 20;
+	static SIDE_MARGIN = 40;
+	static VSIDE_MARGIN = 20;
 	
 	/** トリックの表示位置 */
-	BoardLayout.TRICK_X = (TableGui.WIDTH - Trick.WIDTH)/2;
-	BoardLayout.TRICK_Y = (TableGui.HEIGHT - Trick.HEIGHT)/2;
+	static TRICK_X = (TableGui.WIDTH - Trick.WIDTH)/2;
+	static TRICK_Y = (TableGui.HEIGHT - Trick.HEIGHT)/2;
 	
 	/** ウィナー表示位置 */
-	BoardLayout.WINNER_X = 460;
-	BoardLayout.WINNER_Y = 400;
+	static WINNER_X = 460;
+	static WINNER_Y = 400;
+	
+	constructor() {
+	}
 
 /*------------------
  * instance methods
  */
-	BoardLayout.prototype.layout = function(target) {
+	layout(target) {
 		if (target.bidding===void 0 || target.playHist===void 0)
 			throw new Error("BoardLayout は Board 専用です:"+target);
 		
@@ -2303,11 +2385,12 @@ var BoardLayout = function() {
 		}
 	}
 	
-	BoardLayout.prototype.layoutSize = function(target) {
+	layoutSize(target) {
 		if (target.bidding===void 0 || target.playHist===void 0)
 			throw new Error("BoardLayout は Board 専用です:"+target);
 		return {w:target.w, h:target.h};
 	}
+}
 
 /**
  * Board class 定義
@@ -2321,43 +2404,7 @@ var BoardLayout = function() {
  * @param	{number} vul ディーラーを指定したときはバルを指定する。
  * @extends	Entities
  */
-var Board = function(dealerOrNum, vul) {
-	if (dealerOrNum===void 0) throw new Error("Board() には引数が必要です");
-	
-	Entities.call(this);
-	
-	// vul が undefined の場合、dealerOrNum は num
-	if (vul===void 0) {
-		vul = Board.VUL[(dealerOrNum - 1)%16];
-		dealerOrNum = (dealerOrNum - 1)%4;
-	}
-	var dealer = dealerOrNum;
-	// new Board(Board) は未実装
-	
-/*----------------
- * instance field
- */
-	this.bidding = new BiddingHistory(dealer);
-	this.playHist = new PlayHistory();
-	this.vul = vul;
-	this.status = Board.DEALING;
-	this.name = "Bridge Board";
-	/** 既知のカードで、思考ルーチンで利用することを期待 */
-	this.openCards = new Packet();
-	
-	this.direction = Entity.UPRIGHT;
-	this.setSize(Board.WIDTH, Board.HEIGHT);
-	
-	// handGui は {Array.<Packet>} playHist.hand を使う
-	/**
-	 * 中央部分に表示されるトリック
-	 * @type {Trick}
-	 */
-	this.trickGui = null;
-	this.winnerGui = null;
-	this.tableGui = null;
-}
-inherits(Board, Entities);
+class Board extends Entities {
 
 /*------------------
  * static constants
@@ -2365,49 +2412,87 @@ inherits(Board, Entities);
 	/**
 	 * 座席定数
 	 */
-	Board.NORTH = PlayHistory.NORTH;
-	Board.EAST = PlayHistory.EAST;
-	Board.SOUTH = PlayHistory.SOUTH;
-	Board.WEST = PlayHistory.WEST;
+	static NORTH = PlayHistory.NORTH;
+	static EAST = PlayHistory.EAST;
+	static SOUTH = PlayHistory.SOUTH;
+	static WEST = PlayHistory.WEST;
 	
-	Board.STATUS_STRING = [ "Dealing", "Bid", "Opening Lead", "Playing", "Scoring" ];
-	Board.VUL_STRING = [ "neither", "N-S", "E-W", "both" ];
-	Board.SEAT_STRING = PlayHistory.SEAT_STRING;
+	static STATUS_STRING = [ "Dealing", "Bid", "Opening Lead", "Playing", "Scoring" ];
+	static VUL_STRING = [ "neither", "N-S", "E-W", "both" ];
+	static SEAT_STRING = PlayHistory.SEAT_STRING;
 	
 	/**
 	 * vul 値として使用される定数です。
 	 */
-	Board.VUL_NEITHER = 0;
-	Board.VUL_NS = 1;
-	Board.VUL_EW = 2;
-	Board.VUL_BOTH = 3;
+	static VUL_NEITHER = 0;
+	static VUL_NS = 1;
+	static VUL_EW = 2;
+	static VUL_BOTH = 3;
 	
-	Board.VUL = [ 0,1,2,3, 1,2,3,0, 2,3,0,1, 3,0,1,2 ];
+	static VUL = [ 0,1,2,3, 1,2,3,0, 2,3,0,1, 3,0,1,2 ];
 	
-	Board.WIDTH = 640;
-	Board.HEIGHT = 480;
+	static WIDTH = 640;
+	static HEIGHT = 480;
 	
 	/**
 	 * Status を示す定数です。
 	 */
 	// ボードが新規に作成され、まだプレイヤーにカードがディールされていない
-	Board.DEALING = 0;
+	static DEALING = 0;
 	// ビッドが行われている状態
-	Board.BIDDING = 1;
+	static BIDDING = 1;
 	// オープニングリード待ち
-	Board.OPENING = 2;
+	static OPENING = 2;
 	// プレイ中
-	Board.PLAYING = 3;
+	static PLAYING = 3;
 	// ボード終了
-	Board.SCORING = 4;
+	static SCORING = 4;
 	
 	/**
 	 * プレイ順番を示す定数です。
 	 */
-	Board.LEAD = 0;
-	Board.SECOND = 1;
-	Board.THIRD = 2;
-	Board.FORTH = 3;
+	static LEAD = 0;
+	static SECOND = 1;
+	static THIRD = 2;
+	static FORTH = 3;
+
+	/**
+	 * ボード番号(1-16)、または dealer, vul を指定して Board を作成します
+	 * @param {number} dealerOrNum ボード番号(1-16)、または dealer (0-3)
+	 * @param {number} vul 
+	 */
+	constructor(dealerOrNum, vul) {
+		super();
+		if (dealerOrNum===void 0) throw new Error("Board() には引数が必要です");
+		
+		// vul が undefined の場合、dealerOrNum は num
+		if (vul===void 0) {
+			vul = Board.VUL[(dealerOrNum - 1)%16];
+			dealerOrNum = (dealerOrNum - 1)%4;
+		}
+		const dealer = dealerOrNum;
+		// new Board(Board) は未実装
+		
+		this.bidding = new BiddingHistory(dealer);
+		this.playHist = new PlayHistory();
+		this.vul = vul;
+		this.status = Board.DEALING;
+		this.name = "Bridge Board";
+		/** 既知のカードで、思考ルーチンで利用することを期待 */
+		this.openCards = new Packet();
+		
+		this.direction = Entity.UPRIGHT;
+		this.setSize(Board.WIDTH, Board.HEIGHT);
+		
+		// handGui は {Array.<Packet>} playHist.hand を使う
+		/**
+		 * 中央部分に表示されるトリック
+		 * @type {Trick}
+		 */
+		this.trickGui = null;
+		this.winnerGui = null;
+		this.tableGui = null;
+	}
 
 /*------------------
  * instance methods
@@ -2417,14 +2502,14 @@ inherits(Board, Entities);
 	 * 内部的に行います。
 	 * @private
 	 */
-	Board.prototype._setBoardGui_ = function() {
+	_setBoardGui_() {
 		this.tableGui = new TableGui(this);
 		this.add(this.tableGui);
 		
 		this.winnerGui = new WinnerGui();
 		this.add(this.winnerGui);
 		
-		var i = 0;
+		let i = 0;
 		for (; i < 4; i++) {
 			this.add(this.playHist.hand[i]);
 		}
@@ -2441,18 +2526,18 @@ inherits(Board, Entities);
 	 * @param	{Array.<Packet>} hand 初期ハンド指定(ない場合、新規カードを配る)
 	 *								整数を指定したら乱数シードの意味
 	 */
-	Board.prototype.deal = function(handOrSeed) {
+	deal(handOrSeed) {
 		if (this.status != Board.DEALING)
 			throw new Error("deal() は DEALING 状態のみで実行可能です。");
 		
-		var hand;
+		let hand;
 		if (handOrSeed===void 0 || !isNaN(handOrSeed) ) {
 			// hand が指定されていないときは新規カードを配る
-			var seed = handOrSeed;
+			const seed = handOrSeed;
 			hand = []; // new Packet[4];
-			for (var i = 0; i < 4; i++) hand[i] = new Packet();
+			for (let i = 0; i < 4; i++) hand[i] = new Packet();
 			
-			var pile = Packet.provideDeck();
+			const pile = Packet.provideDeck();
 			this.openCards = new Packet();
 			
 			// カードを裏向きにして配る
@@ -2460,12 +2545,12 @@ inherits(Board, Entities);
 			pile.shuffle(seed); // hand is void0 or number
 			
 			Packet.deal(pile, hand);
-			for (var i = 0; i < 4; i++) hand[i].arrange();
+			for (let i = 0; i < 4; i++) hand[i].arrange();
 		} else {
 			// hand 指定があればそれを使う
 			hand = handOrSeed;
 			// カードを裏向きにしておく
-			for (var i = 0; i < hand.length; i++) {
+			for (let i = 0; i < hand.length; i++) {
 				hand[i].turn(false);
 				hand[i].arrange();
 			}
@@ -2479,7 +2564,7 @@ inherits(Board, Entities);
 		this._setBoardGui_();
 		
 		// 下に表示されるハンドを表向きにする
-		var turned = this.getHand( (this.direction + 2) % 4 );
+		const turned = this.getHand( (this.direction + 2) % 4 );
 		turned.turn(true);
 	}
 	
@@ -2488,7 +2573,7 @@ inherits(Board, Entities);
 	 *
 	 * @param		{PlayHistory} playHistory 設定したい playHistory
 	 */
-	Board.prototype.setPlayHistory = function(playHistory) {
+	setPlayHistory(playHistory) {
 		this.playHist = playHistory;
 	}
 	
@@ -2497,7 +2582,7 @@ inherits(Board, Entities);
 	 * @param	{Bid} contract コントラクト
 	 * @param	{number} declarer ディクレアラーの座席定数
 	 */
-	Board.prototype.setContract = function(contract, declarer) {
+	setContract(contract, declarer) {
 		this.bidding.setContract(contract, declarer);
 		this.playHist.setContract((this.getDeclarer() + 1)%4, this.getTrump() );
 		this.status = Board.OPENING;
@@ -2510,7 +2595,7 @@ inherits(Board, Entities);
 	 * @param	{Card} play CardオブジェクトまたはBidオブジェクトを指定
 	 * @see	Bid
 	 */
-	Board.prototype.play = function(play) {
+	play(play) {
 		if (!this.allows(play))
 			throw new Error(play.toString() + "は行えません。");
 		switch (this.status) {
@@ -2578,7 +2663,7 @@ inherits(Board, Entities);
 	 *                                       +------->SCORING
 	 *                                       last play
 	 */
-	Board.prototype.undo = function() {
+	undo() {
 		switch (this.status) {
 		case Board.DEALING:
 			throw new Error("DEALING 状態で undo() はできません");
@@ -2610,8 +2695,8 @@ inherits(Board, Entities);
 			//
 			// まず、PlayHistory を undo() する
 			//
-			var lastPlay = this.playHist.undo(); // PLAYING なので、Exception はでないはず
-			var turn = this.playHist.getTurn();
+			const lastPlay = this.playHist.undo(); // PLAYING なので、Exception はでないはず
+			const turn = this.playHist.getTurn();
 			if (turn != this.getDummy()) lastPlay.isHead = false;
 			this.openCards.pull(lastPlay);
 			
@@ -2631,7 +2716,7 @@ inherits(Board, Entities);
 	/**
 	 * ビッド終了後に、トランプスートが左に来るように並び替えます。
 	 */
-	Board.prototype._reorderHand_ = function() {
+	_reorderHand_() {
 		var order; // CardOrder / stateless object
 		
 		switch (this.getTrump()) {
@@ -2659,8 +2744,8 @@ inherits(Board, Entities);
 	 * オープニングリードの後に呼ばれ、ダミーの手を表向きに変更します。
 	 * また、場に出ているカードにダミーハンドを追加します。
 	 */
-	Board.prototype._dummyOpen_ = function() {
-		var dummy = this.getHand(this.getDummy());
+	_dummyOpen_() {
+		const dummy = this.getHand(this.getDummy());
 		dummy.turn(true);
 		this.openCards.add(dummy);
 	}
@@ -2669,12 +2754,12 @@ inherits(Board, Entities);
 	 * undo() 時に Opening Lead 状態にもどすための処理を行います。
 	 * ダミーの手を裏向きに変更します。
 	 */
-	Board.prototype._dummyClose_ = function() {
-		var dummy = this.getHand(this.getDummy());
-		this.dummy.turn(false);
+	_dummyClose_() {
+		const dummy = this.getHand(this.getDummy());
+		dummy.turn(false);
 		this.openCards.sub(dummy);
 		
-		if (openCards.size() != 0) throw new InternalError("openCards 枚数に矛盾があります");
+		if (this.openCards.children.length != 0) throw new Error("openCards 枚数に矛盾があります");
 	}
 	
 /*------------------------------
@@ -2686,7 +2771,7 @@ inherits(Board, Entities);
 	 * @param		{Object} play Object は Bid または Play
 	 * @return		{boolean} true：可能    false:不可能
 	 */
-	Board.prototype.allows = function(play) {
+	allows(play) {
 		switch (this.status) {
 		
 		case Board.BIDDING:
@@ -2712,7 +2797,7 @@ inherits(Board, Entities);
 	 *
 	 * @return		{number} プレイ順を示す定数
 	 */
-	Board.prototype.getPlayOrder = function() {
+	getPlayOrder() {
 		switch (this.status) {
 		
 		case Board.OPENING:
@@ -2736,7 +2821,7 @@ inherits(Board, Entities);
 	 *
 	 * @return	{number} 誰の番かを示す座席定数。
 	 */
-	Board.prototype.getTurn = function() {
+	getTurn() {
 		switch (this.status) {
 		
 		case Board.BIDDING:
@@ -2763,8 +2848,8 @@ inherits(Board, Entities);
 	 *
 	 * @param	{number} 現在のプレイ順のプレイヤー座席番号
 	 */
-	Board.prototype.getPlayer = function() {
-		var seat = this.getTurn();
+	getPlayer() {
+		const seat = this.getTurn();
 		
 		switch (this.status) {
 		
@@ -2789,7 +2874,7 @@ inherits(Board, Entities);
 	 *
 	 * @return	{Bid} コントラクト
 	 */
-	Board.prototype.getContract = function() {
+	getContract() {
 		return this.bidding.contract;
 	}
 	
@@ -2798,8 +2883,8 @@ inherits(Board, Entities);
 	 * ビッドがまだ行われていない場合、-1 が返ります。
 	 * @return	{number}	トランプスーツ
 	 */
-	Board.prototype.getTrump = function() {
-		var contract = this.getContract();
+	getTrump() {
+		const contract = this.getContract();
 		if (contract == null) return -1;
 		return contract.suit;
 	}
@@ -2809,7 +2894,7 @@ inherits(Board, Entities);
 	 * ビッドがまだ行われていない場合、-1 が返る。
 	 * @return	{number}	ディクレアラーの座席番号
 	 */
-	Board.prototype.getDeclarer = function() {
+	getDeclarer() {
 		return this.bidding.declarer;
 	}
 	
@@ -2818,8 +2903,8 @@ inherits(Board, Entities);
 	 * ビッドがまだ行われていない場合、-1 が返る。
 	 * @return	{number} ダミーの座席番号
 	 */
-	Board.prototype.getDummy = function() {
-		var dec = this.bidding.declarer;
+	getDummy() {
+		const dec = this.bidding.declarer;
 		if (dec == -1) return -1;
 		return (dec + 2) % 4;
 	}
@@ -2829,7 +2914,7 @@ inherits(Board, Entities);
 	 * ビッドがまだ行われていない場合、-1 が返る。
 	 * @return	{number}	ディーラーの座席番号
 	 */
-	Board.prototype.getDealer = function() {
+	getDealer() {
 		return this.bidding.dealer;
 	}
 	
@@ -2838,7 +2923,7 @@ inherits(Board, Entities);
 	 * @param	{number} seat	座席番号。無指定の場合 Packet[] が返る。
 	 * @return	{Packet} ハンド。seat を指定しない場合 Packet[]
 	 */
-	Board.prototype.getHand = function(seat) {
+	getHand(seat) {
 		if (seat!==void 0) {
 			return this.playHist.hand[seat];
 		}
@@ -2849,7 +2934,7 @@ inherits(Board, Entities);
 	 * 現在までにプレイされたトリック数を取得する。
 	 * @return	{number}	プレイされたトリック数
 	 */
-	Board.prototype.getTricks = function() {
+	getTricks() {
 		return this.playHist.getTricks();
 	}
 	
@@ -2857,7 +2942,7 @@ inherits(Board, Entities);
 	 * 現在場に出ているトリックを取得する。
 	 * @return	{Trick} 現在のトリック
 	 */
-	Board.prototype.getTrick = function() {
+	getTrick() {
 		return this.playHist.getTrick();
 	}
 	
@@ -2867,7 +2952,7 @@ inherits(Board, Entities);
 	 * @return	{Array.<Trick>} 全トリック
 	 * @see		PlayHistory#getAllTricks()
 	 */
-	Board.prototype.getAllTricks = function() {
+	getAllTricks() {
 		return this.playHist.getAllTricks();
 	}
 	
@@ -2876,8 +2961,8 @@ inherits(Board, Entities);
 	 * @param	{number}	seat	座席番号
 	 * @return	{number} VUL を示す定数
 	 */
-	Board.prototype.isVul = function(seat) {
-		var mask = 0;
+	isVul(seat) {
+		let mask = 0;
 		if ( (seat == Board.NORTH)||(seat == Board.SOUTH) ) mask = 1;
 		else mask = 2;
 		
@@ -2890,8 +2975,8 @@ inherits(Board, Entities);
 	 * @return	{string} 文字列表現
 	 * @override
 	 */
-	Board.prototype.toString = function() {
-		var result = "---------- Board Information ----------";
+	toString() {
+		let result = "---------- Board Information ----------";
 		result += "\n  [    Status     ]  : " + Board.STATUS_STRING[this.status];
 		result += "\n  [ Vulnerability ]  : " + Board.VUL_STRING[this.vul];
 		result += "\n  [    Dealer     ]  : " + Board.SEAT_STRING[this.getDealer()];
@@ -2911,7 +2996,7 @@ inherits(Board, Entities);
 	 * @param	{number} numOrDealer ボード番号またはディーラーの座席番号
 	 * @param	{vul} バル。無指定のとき numOrDealer はボード番号と見なす。
 	 */
-	Board.prototype.reset = function(numOrDealer, vul) {
+	reset(numOrDealer, vul) {
 		var dealer;
 		if (vul===void 0) {
 			vul = Board.VUL[(numOrDealer - 1)%16];
@@ -2928,12 +3013,12 @@ inherits(Board, Entities);
 	
 	/**
 	 * 人間が見やすいテキスト表現に変換します。
-	 * スコア計算は未実装です。
+	 * Contract 決定前の表示、スコア計算は未実装です。
 	 * @return	{string} このボードのテキスト表現
 	 */
-	Board.prototype.toText = function() {
-		var s;
-		var nl = "\n";
+	toText() {
+		let s;
+		const nl = "\n";
 		
 		s = s + this.name+ nl
 				+ "----- コントラクト -----" + nl
@@ -3040,7 +3125,7 @@ inherits(Board, Entities);
 	 * @param	{number}	suit	スーツ
 	 * @return	{string}	ハンド文字列
 	 */
-	Board.prototype._getHandString_ = function(hand, seat, suit) {
+	_getHandString_(hand, seat, suit) {
 		var s = "CDHS".substring(suit-1, suit)+":";
 		var oneSuit = hand[seat].subpacket(suit);
 		oneSuit.arrange();
@@ -3058,7 +3143,7 @@ inherits(Board, Entities);
 	 * @private
 	 * @return	{number}	ウィナーの数
 	 */
-	Board.prototype._countWinners_ = function() {
+	_countWinners_() {
 		var tr = this.getAllTricks(); // Trick[]
 		if (tr == null) return 0;
 		
@@ -3085,7 +3170,7 @@ inherits(Board, Entities);
 	 * @param		{Board} board	オリジナルハンドを求めたい Board
 	 * @return		{Array.<Packet>} オリジナルハンドの配列(添字には Board.NORTH などを指定)
 	 */
-	Board.calculateOriginalHand = function(board) {
+	static calculateOriginalHand(board) {
 		var result = []; //Packet[4];
 		for (var i = 0; i < 4; i++) result[i] = new Packet();
 		
@@ -3116,3 +3201,4 @@ inherits(Board, Entities);
 		}
 		return result;
 	}
+}
