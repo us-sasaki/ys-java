@@ -270,8 +270,42 @@ describe("Board Test", () => {
 	it("Board new", () => {
 		expect(new Board(1)).toBeDefined();
 	});
+	it("Board new with dealer and vul", () => {
+		for (let seat = 0; seat < 4; seat ++) {
+			for (let vul = 0; vul < 4; vul++) {
+				const b = new Board(seat, vul);
+				expect(b).toBeDefined();
+				expect(b.getDealer()).toBe(seat);
+				expect(b.vul).toBe(vul);
+			}
+		}
+	});
 	it("Board sequence", () => {
-		const board = new Board(1);
-		console.log(board.toString());
+		const b = new Board(1); // dealer North, none vul
+
+		// ÉnÉìÉhê›íË
+		b.deal(11);
+
+		// bid
+		b.play(new Bid(Bid.PASS));
+		b.play(new Bid(Bid.PASS));
+		b.play(new Bid(Bid.PASS));
+		b.play(new Bid(Bid.BID, 1, Bid.NO_TRUMP)); // balanced 15-17
+		b.play(new Bid(Bid.PASS));
+		b.play(new Bid(Bid.BID, 2, Bid.CLUB)); // stayman
+		b.play(new Bid(Bid.PASS));
+		b.play(new Bid(Bid.BID, 2, Bid.HEART)); // heart 4+
+		b.play(new Bid(Bid.PASS));
+		b.play(new Bid(Bid.BID, 2, Bid.NO_TRUMP)); // heart 3-
+		b.play(new Bid(Bid.PASS));
+		b.play(new Bid(Bid.PASS)); // minimum and no 4 spades
+		b.play(new Bid(Bid.PASS));
+
+		// opening lead
+//		console.log(b.getHand(b.getTurn()).toString());
+		b.play(new Card(Card.SPADE, 7));
+
+		console.log(b.toString());
+
 	});
 });

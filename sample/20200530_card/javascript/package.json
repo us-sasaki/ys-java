@@ -13,6 +13,7 @@
   "author": "Yusuke Sasaki",
   "license": "ISC",
   "dependencies": {
+    "braintree-jsdoc-template": "^3.3.0",
     "karma": "^5.0.9",
     "karma-jasmine": "^3.3.1"
   },

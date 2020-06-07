@@ -2772,6 +2772,7 @@ class Board extends Entities {
 	 * @return		{boolean} true：可能    false:不可能
 	 */
 	allows(play) {
+console.log("allows(play):" + play.toString());
 		switch (this.status) {
 		
 		case Board.BIDDING:
@@ -2779,6 +2780,9 @@ class Board extends Entities {
 			
 		case Board.OPENING:
 		case Board.PLAYING:
+console.log("allows::playing: "+play.toString());
+console.log("playhist:"+this.playHist.toString());
+console.log("playhist allows? :"+this.playHist.allows(play));
 			return this.playHist.allows(play);
 			
 		case Board.DEALING:
@@ -2997,7 +3001,7 @@ class Board extends Entities {
 	 * @param	{vul} バル。無指定のとき numOrDealer はボード番号と見なす。
 	 */
 	reset(numOrDealer, vul) {
-		var dealer;
+		let dealer;
 		if (vul===void 0) {
 			vul = Board.VUL[(numOrDealer - 1)%16];
 			dealer = (numOrDealer - 1)%4;
@@ -3028,17 +3032,17 @@ class Board extends Entities {
 				+ nl + nl
 				+ "----- オリジナルハンド -----" + nl;
 		
-		var hands = Board.calculateOriginalHand(this);
+		const hands = Board.calculateOriginalHand(this);
 		
 		// NORTH
-		for (var suit = 4; suit >= 1; suit--) {
+		for (let suit = 4; suit >= 1; suit--) {
 			s = s + "               "
 					+ this._getHandString_(hands, 0, suit)+nl;
 		}
 		
 		// WEST, EAST
-		for (var suit = 4; suit >= 1; suit--) {
-			var wstr = this._getHandString_(hands, 3, suit) + "               ";
+		for (let suit = 4; suit >= 1; suit--) {
+			let wstr = this._getHandString_(hands, 3, suit) + "               ";
 			wstr = wstr.substring(0, 15);
 			s = s + wstr;
 			switch (suit) {
@@ -3056,7 +3060,7 @@ class Board extends Entities {
 			s = s + this._getHandString_(hands, 1, suit) + nl;
 		}
 		// SOUTH
-		for (var suit = 4; suit >= 1; suit--) {
+		for (let suit = 4; suit >= 1; suit--) {
 			s = s + "               ";
 						+ getHandString(hands, 2, suit) + nl;
 		}
@@ -3071,37 +3075,37 @@ class Board extends Entities {
 		
 				+"    1  2  3  4  5  6  7  8  9 10 11 12 13" + nl;
 		
-		var trick = this.getAllTricks();
-		var nesw = [];
-		for (var i = 0; i < 4; i++) {
+		const trick = this.getAllTricks();
+		const nesw = [];
+		for (let i = 0; i < 4; i++) {
 			nesw[i] = "";
 			nesw[i] = nesw[i] + "NESW".substring(i,i+1) + " ";
 			if (this.getTricks() > 0) {
-				var leaderSeat = trick[0].leader;
+				const leaderSeat = trick[0].leader;
 				if (i == leaderSeat) nesw[i] = nesw[i] + "-";
 				else nesw[i] = nesw[i] + " ";
 			}
 		}
 		
-		for (var i = 0; i < this.getTricks(); i++) {
-			var leaderSeat = trick[i].leader;
-			var winnerSeat = trick[i].winner;
-			for (var j = 0; j < 4; j++) {
-				var seat = (j + leaderSeat) % 4;
+		for (let i = 0; i < this.getTricks(); i++) {
+			const leaderSeat = trick[i].leader;
+			const winnerSeat = trick[i].winner;
+			for (let j = 0; j < 4; j++) {
+				const seat = (j + leaderSeat) % 4;
 				nesw[seat] = nesw[seat] + trick[i].children[j].toString().substring(1);
 				if (seat == winnerSeat) nesw[seat] = nesw[seat] + '+';
 				else nesw[seat] = nesw[seat] + " ";
 			}
 		}
-		for (var i = 0; i < 4; i++) {
+		for (let i = 0; i < 4; i++) {
 			s = s + nesw[i] + nl;
 		}
 		if (this.status == Board.SCORING) {
 			s = s + nl+ "----- 結果 -----"+nl;
 			// メイク数
-			var win		= this._countWinners_();
-			var up		= win - this.getContract().level - 6;
-			var make	= win - 6;
+			const win	= this._countWinners_();
+			const up	= win - this.getContract().level - 6;
+			const make	= win - 6;
 			
 			if (up >= 0) {
 				// メイク
@@ -3171,24 +3175,24 @@ class Board extends Entities {
 	 * @return		{Array.<Packet>} オリジナルハンドの配列(添字には Board.NORTH などを指定)
 	 */
 	static calculateOriginalHand(board) {
-		var result = []; //Packet[4];
-		for (var i = 0; i < 4; i++) result[i] = new Packet();
+		const result = []; //Packet[4];
+		for (let i = 0; i < 4; i++) result[i] = new Packet();
 		
 		// 今もっているハンドをコピー
-		var original = board.getHand();
-		for (var i = 0; i < original.length; i++) {
-			for (var j = 0; j < original[i].children.length; j++) {
+		const original = board.getHand();
+		for (let i = 0; i < original.length; i++) {
+			for (let j = 0; j < original[i].children.length; j++) {
 				result[i].add(original[i].children[j]);
 			}
 		}
 		
 		// プレイされたハンドをコピー
-		var trick = board.getAllTricks();
-		for (var i = 0; i < trick.length; i++) {
-			var tr = trick[i];
+		const trick = board.getAllTricks();
+		for (let i = 0; i < trick.length; i++) {
+			const tr = trick[i];
 			if (tr == null) break;
-			var seat = tr.leader;
-			for (var j = 0; j < tr.children.length; j++) {
+			let seat = tr.leader;
+			for (let j = 0; j < tr.children.length; j++) {
 				result[seat].add(tr.children[j]);
 				seat++;
 				seat = (seat % 4);
@@ -3196,7 +3200,7 @@ class Board extends Entities {
 		}
 		
 		// 並べ替え
-		for (var i = 0; i < 4; i++) {
+		for (let i = 0; i < 4; i++) {
 			result[i].arrange();
 		}
 		return result;
