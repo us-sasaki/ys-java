@@ -520,6 +520,30 @@ class Packet extends Entities {
 		}
 		return -1;
 	}
+
+	/**
+	 * 指定された Card と同種のカードを含んでいる場合、この Packet の持つそのカード
+	 * への参照を返却します。
+	 * @param	{number/Card}	suitOrCard	suit または Card 種別
+	 * @param	{number}		value		value (suit を指定した場合)
+	 * @returns	{Card}	指定された種別のカードへの参照、この Packet が保持していない場合 null
+	 */
+	peek(suitOrCard, value) {
+		let suit;
+		if (typeof suitOrCard === 'number' && value!==void 0 && typeof value === 'number') {
+			suit = suitOrCard;
+		} else if (value === void 0) {
+			suit = suitOrCard.suit;
+			value = suitOrCard.value;
+		} else {
+			throw new Error("suirOrCard には Card を指定するか、value とともにカード種別を指定してください。");
+		}
+		for (let i = 0; i < this.children.length; i++) {
+			if (this.children[i].suit === suit &&
+				 this.children[i].value === value) return this.children[i];
+		}
+		return null;
+	}
 	
 	/**
 	 * @override
@@ -1768,7 +1792,7 @@ class Trick extends Packet {
 		
 		// winner をセットする
 		this.winnerCard = this.children[0];
-		this.winner = 0;
+		this.winner = this.leader;
 		const starter = this.winnerCard.suit;
 		for (let i = 1; i < this.children.length; i++) {
 			const c = this.children[i];
@@ -1779,25 +1803,51 @@ class Trick extends Packet {
 					if ((c.value > this.winnerCard.value)||
 						(c.value == Card.ACE)) {
 						this.winnerCard = c;
-						this.winner = i;
+						this.winner = ( i + this.leader ) % 4;
 					}
 				}
 			} else {
 				// winner のスーツは場のスーツ
 				if (c.suit == this.trump) {
 					this.winnerCard = c;
-					this.winner = i;
+					this.winner = ( i + this.leader ) % 4;
 				} else if ((c.suit == starter)
 							&&(this.winnerCard.value != Card.ACE)) {
 					if ((c.value > this.winnerCard.value)
 							||(c.value == Card.ACE)) {
 						this.winnerCard = c;
-						this.winner = i;
+						this.winner = ( i + this.leader ) % 4;
 					}
 				}
 			}
 		}
 	}
+
+	/**
+	 * winner の座席番号を取得します。
+	 * @returns		{number}	winner の座席番号
+	 */
+	getWinner() {
+		if (winnerCard == null) this._setWinner_();
+		return this.winner;
+	}
+	/**
+	 * Winner カードを得る.
+	 * まだプレイ中であった場合、null が返る仕様であったが、途中での winner も
+	 * 返却するように変更された。(2002/8/29)
+	 *
+	 * @returns	{Card}	winnerカード
+	 */
+	getWinnerCard() {
+		if (winnerCard == null) this._setWinner_();
+		return this.winnerCard;
+	}
+	
+	toString() {
+		const result = "Leader:" + Board.SEAT_STRING[this.leader];
+		return result + super.toString();
+	}
+
 }
 
 /**
@@ -1911,15 +1961,16 @@ class PlayHistory {
 	 * @return		{boolean} プレイできるかどうか
 	 */
 	allows(p) {
-		var turn = this.trick[this.trickCount].getTurn();
+		const turn = this.trick[this.trickCount].getTurn();
 		
 		// hand[turn] が指定されたカード持っていない場合 false
-		if (this.hand[turn].children.indexOf(p) == -1) return false;
+		const card = this.hand[turn].peek(p);
+		if (card == null) return false;
 		
 		// スートフォローに従っているか
-		var lead = this.trick[this.trickCount].children[0];
+		const lead = this.trick[this.trickCount].children[0];
 		if (lead===void 0) return true;
-		var suit = lead.suit;
+		const suit = lead.suit;
 		if (suit == p.suit) return true;
 		// 持っていない場合
 		if (this.hand[turn].countSuit(suit) == 0) return true;
@@ -1937,7 +1988,7 @@ class PlayHistory {
 		if (!this.allows(p))
 			throw new Error(p.toString() + "は現在プレイできません。");
 		
-		var turn = this.trick[this.trickCount].getTurn();
+		const turn = this.trick[this.trickCount].getTurn();
 		
 		var drawn = this.hand[turn].pull(p);
 		drawn.isHead = true;
@@ -1990,7 +2041,7 @@ class PlayHistory {
 		if (this.trick.length == 0) return null;
 		if (this.hand[0] == null) return null;
 		
-		var n = this.trickCount + 1;
+		let n = this.trickCount + 1;
 		if (this.trickCount == 13) n--;
 		return this.trick.slice(0, this.trick.length);
 	}
@@ -2000,7 +2051,7 @@ class PlayHistory {
 	 * @return	{boolean} プレイが終了しているか
 	 */
 	isFinished() {
-		return ( (this.trickCount == 13) && (this.trick[12].children.length == 4) );
+		return ( (this.trickCount == 13) && (this.trick[12].isFinished()) );
 	}
 	
 	/**
@@ -2626,9 +2677,8 @@ class Board extends Entities {
 			this.playHist.play(play);
 			this.openCards.add(play);
 			
-			if (this.status == Board.OPENING) this.dummyOpen();
-			
-			if (this.playHist.isFinished()) status = Board.SCORING;
+			if (this.status == Board.OPENING) this._dummyOpen_();
+			if (this.playHist.isFinished()) this.status = Board.SCORING;
 			else this.status = Board.PLAYING;
 			
 			// TrickAnimation 処理
@@ -2717,7 +2767,7 @@ class Board extends Entities {
 	 * ビッド終了後に、トランプスートが左に来るように並び替えます。
 	 */
 	_reorderHand_() {
-		var order; // CardOrder / stateless object
+		let order; // CardOrder / stateless object
 		
 		switch (this.getTrump()) {
 		case Bid.HEART:
@@ -2772,7 +2822,6 @@ class Board extends Entities {
 	 * @return		{boolean} true：可能    false:不可能
 	 */
 	allows(play) {
-console.log("allows(play):" + play.toString());
 		switch (this.status) {
 		
 		case Board.BIDDING:
@@ -2780,9 +2829,6 @@ console.log("allows(play):" + play.toString());
 			
 		case Board.OPENING:
 		case Board.PLAYING:
-console.log("allows::playing: "+play.toString());
-console.log("playhist:"+this.playHist.toString());
-console.log("playhist allows? :"+this.playHist.allows(play));
 			return this.playHist.allows(play);
 			
 		case Board.DEALING:
@@ -3028,7 +3074,7 @@ console.log("playhist allows? :"+this.playHist.allows(play));
 				+ "----- コントラクト -----" + nl
 				+ "contract：" + this.getContract().toString()
 				+ " by " + Board.SEAT_STRING[this.getDeclarer()] + nl
-				+ "vul     ：" + Board.VUL_STRING[this.getVulnerability()]
+				+ "vul     ：" + Board.VUL_STRING[this.vul]
 				+ nl + nl
 				+ "----- オリジナルハンド -----" + nl;
 		
@@ -3061,8 +3107,8 @@ console.log("playhist allows? :"+this.playHist.allows(play));
 		}
 		// SOUTH
 		for (let suit = 4; suit >= 1; suit--) {
-			s = s + "               ";
-						+ getHandString(hands, 2, suit) + nl;
+			s = s + "               "
+						+ this._getHandString_(hands, 2, suit) + nl;
 		}
 		
 		// ビッド経過

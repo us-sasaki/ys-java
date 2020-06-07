@@ -236,6 +236,7 @@ describe("PlayHistory Test", () => {
 	});
 });
 
+
 describe("TableGui Test", () => {
 	it("TableGui new", () => {
 		expect(new TableGui()).toBeDefined();
@@ -281,6 +282,7 @@ describe("Board Test", () => {
 		}
 	});
 	it("Board sequence", () => {
+console.log("----------------------- board test -------------------------");
 		const b = new Board(1); // dealer North, none vul
 
 		// ƒnƒ“ƒhÝ’è
@@ -301,11 +303,77 @@ describe("Board Test", () => {
 		b.play(new Bid(Bid.PASS)); // minimum and no 4 spades
 		b.play(new Bid(Bid.PASS));
 
+console.log("----------------------- play -------------------------");
 		// opening lead
-//		console.log(b.getHand(b.getTurn()).toString());
-		b.play(new Card(Card.SPADE, 7));
+		console.log("getHand(getTurn()): "+b.getHand(b.getTurn()).toString());
+		b.play(new Card(Card.SPADE, 7)); // N
+		b.play(new Card(Card.SPADE, 2)); // E
+		b.play(new Card(Card.SPADE, Card.KING)); // S win
+		b.play(new Card(Card.SPADE, 4)); // W
+		console.log(b.toString());
+		// trick 2
+		b.play(new Card(Card.SPADE, 10)); // S
+		b.play(new Card(Card.SPADE, Card.JACK)); // W
+		b.play(new Card(Card.SPADE, Card.QUEEN)); // N win
+		b.play(new Card(Card.SPADE, 5)); // E duck
+		// trick 3
+		b.play(new Card(Card.SPADE, 9)); // N
+		b.play(new Card(Card.SPADE, Card.ACE)); // E win
+		b.play(new Card(Card.SPADE, 6)); // S
+		b.play(new Card(Card.HEART, 6)); // W
+		// trick 4
+		b.play(new Card(Card.DIAMOND, 2)); // E
+		b.play(new Card(Card.DIAMOND, 5)); // S
+		b.play(new Card(Card.DIAMOND, 10)); // W
+		b.play(new Card(Card.DIAMOND, Card.QUEEN)); // N win
+		// trick 5
+		b.play(new Card(Card.SPADE, 8)); // N win
+		b.play(new Card(Card.SPADE, 3)); // E
+		b.play(new Card(Card.HEART, 5)); // S com-on
+		b.play(new Card(Card.CLUB, 4)); // W
+		// trick 6
+		b.play(new Card(Card.HEART, 3)); // N
+		b.play(new Card(Card.HEART, 4)); // E
+		b.play(new Card(Card.HEART, Card.QUEEN)); // S win
+		b.play(new Card(Card.HEART, 8)); // W
+		// trick 7
+		b.play(new Card(Card.CLUB, Card.JACK)); // S
+		b.play(new Card(Card.CLUB, Card.QUEEN)); // W finesse
+		b.play(new Card(Card.CLUB, Card.KING)); // N win
+		b.play(new Card(Card.CLUB, 3)); // E
+		// trick 8
+		b.play(new Card(Card.CLUB, 6)); // N
+		b.play(new Card(Card.CLUB, 9)); // E
+		b.play(new Card(Card.CLUB, 10)); // S
+		b.play(new Card(Card.CLUB, Card.ACE)); // W win
+		// trick 9
+		b.play(new Card(Card.DIAMOND, Card.ACE)); // W win
+		b.play(new Card(Card.DIAMOND, 6)); // N
+		b.play(new Card(Card.DIAMOND, 7)); // E
+		b.play(new Card(Card.DIAMOND, Card.JACK)); // S
+		// trick 10
+		b.play(new Card(Card.DIAMOND, Card.KING)); // W win
+		b.play(new Card(Card.DIAMOND, 9)); // N
+		b.play(new Card(Card.DIAMOND, 4)); // E
+		b.play(new Card(Card.HEART, 2)); // S
+		// trick 11
+		b.play(new Card(Card.DIAMOND, 8)); // W win
+		b.play(new Card(Card.CLUB, 2)); // N
+		b.play(new Card(Card.DIAMOND, 3)); // E
+		b.play(new Card(Card.HEART, 9)); // S
+		// trick 12
+		b.play(new Card(Card.HEART, Card.JACK)); // W
+		b.play(new Card(Card.CLUB, 8)); // N
+		b.play(new Card(Card.HEART, Card.ACE)); // E win
+		b.play(new Card(Card.HEART, Card.KING)); // S
+		// trick 13
+		b.play(new Card(Card.HEART, 7)); // E
+		b.play(new Card(Card.CLUB, 5)); // S
+		b.play(new Card(Card.HEART, 10)); // W
+		b.play(new Card(Card.CLUB, 7)); // N
 
 		console.log(b.toString());
+//		console.log(b.toText());
 
 	});
 });
