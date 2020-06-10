@@ -264,6 +264,123 @@ describe("BoardLayout Test", () => {
 	});
 });
 
+/**
+ * テスト用のボードを生成します。以降の sequence はこのボードに対して実行することを
+ * 想定しています。
+ * @returns		{Board}	テスト用のボード 
+ */
+const createTestBoard = () => {
+	return new Board(1);
+};
+
+/**
+ * テスト用のdealを行います。後続のビッド、プレイはこのディールでなければなりません。
+ * @param {Board} b deal を行う Board
+ */
+const dealSequence = (b) => {
+	b.deal(11);
+};
+
+/**
+ * ビッドを行います。1NT open から staymann を経て
+ * 2NT double by West のコントラクトとなります。
+ * 
+ * @param {Board} b ビッドを行う Board
+ */
+const bidSequence = (b) => {
+	b.play(new Bid(Bid.PASS));
+	b.play(new Bid(Bid.PASS));
+	b.play(new Bid(Bid.PASS));
+	b.play(new Bid(Bid.BID, 1, Bid.NO_TRUMP)); // balanced 15-17
+	b.play(new Bid(Bid.PASS));
+	b.play(new Bid(Bid.BID, 2, Bid.CLUB)); // stayman
+	b.play(new Bid(Bid.PASS));
+	b.play(new Bid(Bid.BID, 2, Bid.HEART)); // heart 4+
+	b.play(new Bid(Bid.PASS));
+	b.play(new Bid(Bid.BID, 2, Bid.NO_TRUMP)); // heart 3-
+	b.play(new Bid(Bid.PASS));
+	b.play(new Bid(Bid.PASS)); // minimum and no 4 spades
+	b.play(new Bid(Bid.PASS));
+};
+
+/**
+ * テスト用のオープニングリードを行います。
+ * @param {Board}} b オープニングリードを行う Board
+ */
+const openingSequence = (b) => {
+	b.play(new Card(Card.SPADE, 7)); // N
+}
+
+/**
+ * テスト用のプレイを行います。
+ * @param {Board} b プレイを行う Board
+ */
+const playSequence = (b) => {
+	b.play(new Card(Card.SPADE, 2)); // E
+	b.play(new Card(Card.SPADE, Card.KING)); // S win
+	b.play(new Card(Card.SPADE, 4)); // W
+	// trick 2
+	b.play(new Card(Card.SPADE, 10)); // S
+	b.play(new Card(Card.SPADE, Card.JACK)); // W
+	b.play(new Card(Card.SPADE, Card.QUEEN)); // N win
+	b.play(new Card(Card.SPADE, 5)); // E duck
+	// trick 3
+	b.play(new Card(Card.SPADE, 9)); // N
+	b.play(new Card(Card.SPADE, Card.ACE)); // E win
+	b.play(new Card(Card.SPADE, 6)); // S
+	b.play(new Card(Card.HEART, 6)); // W
+	// trick 4
+	b.play(new Card(Card.DIAMOND, 2)); // E
+	b.play(new Card(Card.DIAMOND, 5)); // S
+	b.play(new Card(Card.DIAMOND, 10)); // W
+	b.play(new Card(Card.DIAMOND, Card.QUEEN)); // N win
+	// trick 5
+	b.play(new Card(Card.SPADE, 8)); // N win
+	b.play(new Card(Card.SPADE, 3)); // E
+	b.play(new Card(Card.HEART, 5)); // S com-on
+	b.play(new Card(Card.CLUB, 4)); // W
+	// trick 6
+	b.play(new Card(Card.HEART, 3)); // N
+	b.play(new Card(Card.HEART, 4)); // E
+	b.play(new Card(Card.HEART, Card.QUEEN)); // S win
+	b.play(new Card(Card.HEART, 8)); // W
+	// trick 7
+	b.play(new Card(Card.CLUB, Card.JACK)); // S
+	b.play(new Card(Card.CLUB, Card.QUEEN)); // W finesse
+	b.play(new Card(Card.CLUB, Card.KING)); // N win
+	b.play(new Card(Card.CLUB, 3)); // E
+	// trick 8
+	b.play(new Card(Card.CLUB, 6)); // N
+	b.play(new Card(Card.CLUB, 9)); // E
+	b.play(new Card(Card.CLUB, 10)); // S
+	b.play(new Card(Card.CLUB, Card.ACE)); // W win
+	// trick 9
+	b.play(new Card(Card.DIAMOND, Card.ACE)); // W win
+	b.play(new Card(Card.DIAMOND, 6)); // N
+	b.play(new Card(Card.DIAMOND, 7)); // E
+	b.play(new Card(Card.DIAMOND, Card.JACK)); // S
+	// trick 10
+	b.play(new Card(Card.DIAMOND, Card.KING)); // W win
+	b.play(new Card(Card.DIAMOND, 9)); // N
+	b.play(new Card(Card.DIAMOND, 4)); // E
+	b.play(new Card(Card.HEART, 2)); // S
+	// trick 11
+	b.play(new Card(Card.DIAMOND, 8)); // W win
+	b.play(new Card(Card.CLUB, 2)); // N
+	b.play(new Card(Card.DIAMOND, 3)); // E
+	b.play(new Card(Card.HEART, 9)); // S
+	// trick 12
+	b.play(new Card(Card.HEART, Card.JACK)); // W
+	b.play(new Card(Card.CLUB, 8)); // N
+	b.play(new Card(Card.HEART, Card.ACE)); // E win
+	b.play(new Card(Card.HEART, Card.KING)); // S
+	// trick 13
+	b.play(new Card(Card.HEART, 7)); // E
+	b.play(new Card(Card.CLUB, 5)); // S
+	b.play(new Card(Card.HEART, 10)); // W
+	b.play(new Card(Card.CLUB, 7)); // N
+}
+
 describe("Board Test", () => {
 	it("Board static constants", () => {
 		expect(Board.LEAD).toBeDefined();
@@ -281,99 +398,128 @@ describe("Board Test", () => {
 			}
 		}
 	});
-	it("Board sequence", () => {
-console.log("----------------------- board test -------------------------");
-		const b = new Board(1); // dealer North, none vul
-
+	it("Board sequence new board", () => {
+		const b = createTestBoard(); // dealer North, none vul
+		expect(b.getDealer()).toBe(Board.NORTH);
+		expect(b.vul).toBe(Board.VUL_NEITHER);
+		expect(b.status).toBe(Board.DEALING);
+	});
+	it("Board sequence deal", () => {
+		const b = createTestBoard();
 		// ハンド設定
-		b.deal(11);
-
+		dealSequence(b);
+		expect(b.status).toBe(Board.BIDDING);
+		expect(b.getContract()).toBeNull();
+	});
+	it("Board sequence bid", () => {
+		const b = createTestBoard();
+		dealSequence(b);
 		// bid
-		b.play(new Bid(Bid.PASS));
-		b.play(new Bid(Bid.PASS));
-		b.play(new Bid(Bid.PASS));
-		b.play(new Bid(Bid.BID, 1, Bid.NO_TRUMP)); // balanced 15-17
-		b.play(new Bid(Bid.PASS));
-		b.play(new Bid(Bid.BID, 2, Bid.CLUB)); // stayman
-		b.play(new Bid(Bid.PASS));
-		b.play(new Bid(Bid.BID, 2, Bid.HEART)); // heart 4+
-		b.play(new Bid(Bid.PASS));
-		b.play(new Bid(Bid.BID, 2, Bid.NO_TRUMP)); // heart 3-
-		b.play(new Bid(Bid.PASS));
-		b.play(new Bid(Bid.PASS)); // minimum and no 4 spades
-		b.play(new Bid(Bid.PASS));
-
-console.log("----------------------- play -------------------------");
+		bidSequence(b);
+		expect(b.status).toBe(Board.OPENING);
+		expect(b.getContract()).toBeDefined();
+		expect(b.getContract().level).toBe(2);
+		expect(b.getContract().suit).toBe(Bid.NO_TRUMP);
+		expect(b.getDeclarer()).toBe(Board.WEST);
+		expect(b.getDealer()).toBe(Board.NORTH);
+	});
+	it("Board sequence opening", () => {
+		const b = createTestBoard();
+		dealSequence(b);
+		bidSequence(b);
 		// opening lead
-		console.log("getHand(getTurn()): "+b.getHand(b.getTurn()).toString());
-		b.play(new Card(Card.SPADE, 7)); // N
-		b.play(new Card(Card.SPADE, 2)); // E
-		b.play(new Card(Card.SPADE, Card.KING)); // S win
-		b.play(new Card(Card.SPADE, 4)); // W
-		console.log(b.toString());
-		// trick 2
-		b.play(new Card(Card.SPADE, 10)); // S
-		b.play(new Card(Card.SPADE, Card.JACK)); // W
-		b.play(new Card(Card.SPADE, Card.QUEEN)); // N win
-		b.play(new Card(Card.SPADE, 5)); // E duck
-		// trick 3
-		b.play(new Card(Card.SPADE, 9)); // N
-		b.play(new Card(Card.SPADE, Card.ACE)); // E win
-		b.play(new Card(Card.SPADE, 6)); // S
-		b.play(new Card(Card.HEART, 6)); // W
-		// trick 4
-		b.play(new Card(Card.DIAMOND, 2)); // E
-		b.play(new Card(Card.DIAMOND, 5)); // S
-		b.play(new Card(Card.DIAMOND, 10)); // W
-		b.play(new Card(Card.DIAMOND, Card.QUEEN)); // N win
-		// trick 5
-		b.play(new Card(Card.SPADE, 8)); // N win
-		b.play(new Card(Card.SPADE, 3)); // E
-		b.play(new Card(Card.HEART, 5)); // S com-on
-		b.play(new Card(Card.CLUB, 4)); // W
-		// trick 6
-		b.play(new Card(Card.HEART, 3)); // N
-		b.play(new Card(Card.HEART, 4)); // E
-		b.play(new Card(Card.HEART, Card.QUEEN)); // S win
-		b.play(new Card(Card.HEART, 8)); // W
-		// trick 7
-		b.play(new Card(Card.CLUB, Card.JACK)); // S
-		b.play(new Card(Card.CLUB, Card.QUEEN)); // W finesse
-		b.play(new Card(Card.CLUB, Card.KING)); // N win
-		b.play(new Card(Card.CLUB, 3)); // E
-		// trick 8
-		b.play(new Card(Card.CLUB, 6)); // N
-		b.play(new Card(Card.CLUB, 9)); // E
-		b.play(new Card(Card.CLUB, 10)); // S
-		b.play(new Card(Card.CLUB, Card.ACE)); // W win
-		// trick 9
-		b.play(new Card(Card.DIAMOND, Card.ACE)); // W win
-		b.play(new Card(Card.DIAMOND, 6)); // N
-		b.play(new Card(Card.DIAMOND, 7)); // E
-		b.play(new Card(Card.DIAMOND, Card.JACK)); // S
-		// trick 10
-		b.play(new Card(Card.DIAMOND, Card.KING)); // W win
-		b.play(new Card(Card.DIAMOND, 9)); // N
-		b.play(new Card(Card.DIAMOND, 4)); // E
-		b.play(new Card(Card.HEART, 2)); // S
-		// trick 11
-		b.play(new Card(Card.DIAMOND, 8)); // W win
-		b.play(new Card(Card.CLUB, 2)); // N
-		b.play(new Card(Card.DIAMOND, 3)); // E
-		b.play(new Card(Card.HEART, 9)); // S
-		// trick 12
-		b.play(new Card(Card.HEART, Card.JACK)); // W
-		b.play(new Card(Card.CLUB, 8)); // N
-		b.play(new Card(Card.HEART, Card.ACE)); // E win
-		b.play(new Card(Card.HEART, Card.KING)); // S
-		// trick 13
-		b.play(new Card(Card.HEART, 7)); // E
-		b.play(new Card(Card.CLUB, 5)); // S
-		b.play(new Card(Card.HEART, 10)); // W
-		b.play(new Card(Card.CLUB, 7)); // N
+		openingSequence(b);
+		expect(b.status).toBe(Board.PLAYING);
+	});
+	it("Board sequence play", () => {
+		const b = createTestBoard();
+		dealSequence(b);
+		bidSequence(b);
+		openingSequence(b);
+		playSequence(b);
+		expect(b.status).toBe(Board.SCORING);
+	});
+	it("Board sequence scoring", () => {
+		const b = createTestBoard();
+		dealSequence(b);
+		bidSequence(b);
+		openingSequence(b);
+		playSequence(b);
 
-		console.log(b.toString());
-//		console.log(b.toText());
+		//console.log(b.toString());
+		//console.log(b.toText());
+		expect(Score.calculate(b, Board.SOUTH)).toBe(50);
 
+	});
+});
+
+describe("BridgeUtils test", () => {
+	it("BridgeUtils constant", () => {
+		expect(BridgeUtils.VALUE_STRING).toBeDefined();
+	});
+	it("BridgeUtils countHonerPoint()", () => {
+		const b = createTestBoard();
+		dealSequence(b);
+		const hand = b.getHand(Board.WEST);
+		expect(BridgeUtils.countHonerPoint(hand, Card.SPADE)).toBe(1);
+		expect(BridgeUtils.countHonerPoint(hand, Card.HEART)).toBe(1);
+		expect(BridgeUtils.countHonerPoint(hand, Card.DIAMOND)).toBe(7);
+		expect(BridgeUtils.countHonerPoint(hand, Card.CLUB)).toBe(6);
+
+	});
+	it("BridgeUtils countHonerPoint() without suit", () => {
+		const b = createTestBoard();
+		dealSequence(b);
+		const hand = b.getHand(Board.NORTH);
+		//console.log(hand.toString());
+		expect(BridgeUtils.countHonerPoint(hand)).toEqual([7, 3, 2, 0, 2]);
+	});
+	it("BridgeUtils countHoners()", () => {
+		const b = createTestBoard();
+		dealSequence(b);
+		const hand = b.getHand(Board.WEST);
+		//console.log(hand.toString());
+		expect(BridgeUtils.countHoners(hand, Card.SPADE)).toBe(1);
+		expect(BridgeUtils.countHoners(hand, Card.HEART)).toBe(2);
+		expect(BridgeUtils.countHoners(hand, Card.DIAMOND)).toBe(3);
+		expect(BridgeUtils.countHoners(hand, Card.CLUB)).toBe(2);
+	});
+	it("BridgeUtils countHoners()", () => {
+		const b = createTestBoard();
+		dealSequence(b);
+		const hand = b.getHand(Board.WEST);
+		//console.log(hand.toString());
+		expect(BridgeUtils.valuePattern(hand, Card.SPADE)).toEqual("J4");
+		expect(BridgeUtils.valuePattern(hand, Card.HEART)).toEqual("JT86");
+		expect(BridgeUtils.valuePattern(hand, Card.DIAMOND)).toEqual("AKT8");
+		expect(BridgeUtils.valuePattern(hand, Card.CLUB)).toEqual("AQ4");
+	});
+	it("BridgeUtils patternMatch()", () => {
+		const b = createTestBoard();
+		dealSequence(b);
+		const hand = b.getHand(Board.WEST);
+		console.log(hand.toString());
+		expect(BridgeUtils.patternMatch(hand, "J*", Card.SPADE)).toBe(true);
+		expect(BridgeUtils.patternMatch(hand, "A*", Card.SPADE)).toBe(false);
+		expect(BridgeUtils.patternMatch(hand, "JT", Card.SPADE)).toBe(false);
+		expect(BridgeUtils.patternMatch(hand, "JT*", Card.HEART)).toBe(true);
+		expect(BridgeUtils.patternMatch(hand, "AKT?", Card.DIAMOND)).toBe(true);
+		expect(BridgeUtils.patternMatch(hand, "AKT??", Card.DIAMOND)).toBe(false);
+		expect(BridgeUtils.patternMatch(hand, "AQ4", Card.CLUB)).toBe(true);
+		expect(BridgeUtils.patternMatch(hand, "???", Card.CLUB)).toBe(true);
+		expect(BridgeUtils.patternMatch(hand, "??", Card.CLUB)).toBe(false);
+	});
+	it("BridgeUtils calculateOriginalHand()", () => {
+		const b = createTestBoard();
+		dealSequence(b);
+		const org = [];
+		for (let i = 0; i < 4; i++) org.push(b.getHand(i).toString());
+		bidSequence(b);
+		openingSequence(b);
+		playSequence(b);
+		const calculated = BridgeUtils.calculateOriginalHand(b);
+		const calcstr = [];
+		calculated.forEach(h => calcstr.push(h.toString()));
+		expect(calcstr).toEqual(org);
 	});
 });

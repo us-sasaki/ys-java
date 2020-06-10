@@ -524,14 +524,16 @@ class Packet extends Entities {
 	/**
 	 * 指定された Card と同種のカードを含んでいる場合、この Packet の持つそのカード
 	 * への参照を返却します。
-	 * @param	{number/Card}	suitOrCard	suit または Card 種別
-	 * @param	{number}		value		value (suit を指定した場合)
+	 * index 指定の peek(index) は、単に packet.children[index] を利用してください。
+	 * 
+	 * @param	{number|Card}	suitOrCard	suit または Card 種別
+	 * @param	{?number}		value		value (suit を指定した場合)
 	 * @returns	{Card}	指定された種別のカードへの参照、この Packet が保持していない場合 null
 	 */
 	peek(suitOrCard, value) {
 		let suit;
 		if (typeof suitOrCard === 'number' && value!==void 0 && typeof value === 'number') {
-			suit = suitOrCard;
+			suit = suitOrCard; // suit
 		} else if (value === void 0) {
 			suit = suitOrCard.suit;
 			value = suitOrCard.value;
@@ -1828,7 +1830,7 @@ class Trick extends Packet {
 	 * @returns		{number}	winner の座席番号
 	 */
 	getWinner() {
-		if (winnerCard == null) this._setWinner_();
+		if (this.winnerCard == null) this._setWinner_();
 		return this.winner;
 	}
 	/**
@@ -1857,7 +1859,6 @@ class Trick extends Packet {
  * 				の状態、ルールをパックします。
  * 				本クラスは Board オブジェクトに保持され、プレイ部分の実処理を
  * 				行います。
- * @constructor
  * @version		10, July 2018
  * @author		Yusuke Sasaki
  * @param		{PlayHistory} src コピー元のオブジェクト。
@@ -3070,7 +3071,7 @@ class Board extends Entities {
 		let s;
 		const nl = "\n";
 		
-		s = s + this.name+ nl
+		s = this.name + nl
 				+ "----- コントラクト -----" + nl
 				+ "contract：" + this.getContract().toString()
 				+ " by " + Board.SEAT_STRING[this.getDeclarer()] + nl
@@ -3161,8 +3162,8 @@ class Board extends Entities {
 				s = s + (-up) + "ダウン  ";
 			}
 			
-			s = s + "("+win+"トリック)\nN-S側のスコア："; //+Score.calculate(this, SOUTH));
-			s = s + nl;
+			s = s + "("+win+"トリック)"+nl;
+			s = s +" N-S側のスコア：" + Score.calculate(this, Board.SOUTH) + nl;
 		}
 		return s;
 	}
@@ -3251,4 +3252,463 @@ class Board extends Entities {
 		}
 		return result;
 	}
+}
+
+/**
+ * @classdesc このクラスはコントラクトブリッジにおいてスコアを算出します。
+ * 			当面、デュプリケート方式による算出をおこないますが、将来
+ * 			ラバー、マッチポイントなどへの機能拡張を行いたいとおもっています。
+ *
+ */
+class Score {
+	static VUL_BONUSES		= [1250, 2000, 500, 50];
+	static NONVUL_BONUSES	= [800, 1300, 300, 50];
+	
+	/**
+	 * 与えられたボード、席における点数を計算します。
+	 * 与えられたボードが終了していない場合、IllegalStatusException
+	 * がスローされます。
+	 *
+	 * @param	{Board} board		計算対象のボード
+	 * @param	{number} seat		計算を行う座席(Board.NORTH など)
+	 * @return	得点
+	 */
+	static calculate(board, seat) {
+		if (board.status != Board.SCORING)
+			throw new Error("ボードはまだ終了していないため、点数の計算はできません。");
+		
+		if ( (seat < 0)||(seat > 3) )
+			throw new Error("指定された座席番号"+seat+"は無効です。");
+		
+		const vul = board.vul;
+		const contract = board.getContract();
+		if (contract.kind === Bid.PASS) return 0; // Passed-Out Board
+		const declarer	= board.getDeclarer();
+		
+		return Score._calcImpl_(contract, Score.countWinners(board), declarer, seat, vul);
+	}
+	
+	/**
+	 * 与えられたボードにおいてディクレアラー側のとったトリック数をカウントします。
+	 *
+	 * @param {Board} board		ウィナーを数える対象となるボード
+	 */
+	static countWinners(board) {
+		return BridgeUtils.countDeclarerSideWinners(board);
+	}
+	
+	/**
+	 * 
+	 * @param {Bid} contract コントラクト
+	 * @param {number} win ウィナーの数
+	 * @param {number} declarer ディクレアラー
+	 * @param {number} seat 座席番号
+	 * @param {number} vul バルネラビリティ
+	 */
+//	static calculate(contract, win, declarer, seat, vul) {
+//		return Score._calcImpl_(contract, win, declarer, seat, vul);
+//	}
+	
+	/**
+	 * 
+	 * @param {Bid} contract 
+	 * @param {number} win 
+	 * @param {number} declarer 
+	 * @param {number} seat 
+	 * @param {number} vul 
+	 */
+	static _calcImpl_(contract, win, declarer, seat, vul) {
+		const make = win - 6;
+		const up = win - contract.level - 6;
+		
+		let score = 0;
+		if (up >= 0) {
+			//
+			// コントラクトに対する基本点計算
+			//
+			let trickScore = 0;
+			switch (contract.suit) {
+			
+			case Bid.NO_TRUMP:
+				trickScore = 30;
+				break;
+			
+			case Bid.SPADE:
+			case Bid.HEART:
+				trickScore = 30;
+				break;
+			
+			case Bid.DIAMOND:
+			case Bid.CLUB:
+				trickScore = 20;
+				break;
+			
+			default:
+				throw new Error("コントラクトのスーツが不正です");
+			}
+			trickScore = trickScore * contract.level;
+			if (contract.suit === Bid.NO_TRUMP) trickScore+=10;
+			
+			//
+			// ダブルの時の修正
+			//
+			if (contract.kind == Bid.DOUBLE) trickScore *= 2;
+			if (contract.kind == Bid.REDOUBLE) trickScore *= 4;
+			
+			//
+			// アップトリック
+			//
+			let uptrickBonus = 0;
+			switch (contract.suit) {
+			
+			case Bid.NO_TRUMP:
+				uptrickBonus = 30;
+				break;
+			
+			case Bid.SPADE:
+			case Bid.HEART:
+				uptrickBonus = 30;
+				break;
+			
+			case Bid.DIAMOND:
+			case Bid.CLUB:
+				uptrickBonus = 20;
+				break;
+			
+			default:
+				throw new Error("コントラクトのスーツが不正です");
+			}
+			
+			// ダブルの時の修正
+			if (contract.kind == Bid.DOUBLE) {
+				if (_isVul_(vul, declarer)) score = trickScore + 200 * up;
+				else score = trickScore + 100 * up;
+			} else if (contract.getKind() == Bid.REDOUBLE) {
+				if (_isVul_(vul, declarer)) score = trickScore + 400 * up;
+				else score = trickScore + 200 * up;
+			} else score = trickScore + uptrickBonus * up;
+			
+			// ゲーム、スラムボーナス
+			let bonuses;
+			
+			if (_isVul_(vul, declarer)) {
+				// バルの場合
+				bonuses = Score.VUL_BONUSES;
+			}
+			else {
+				// ノンバルの場合
+				bonuses = Score.NONVUL_BONUSES;
+			}
+			// ダブルメイクのボーナス
+			if (contract.kind === Bid.DOUBLE) score += 50;
+			else if (contract.kind == Bid.REDOUBLE) score += 100;
+			
+			const level = contract.level;
+			if (level == 6) score += bonuses[0]; // Small Slum
+			else if (level == 7) score += bonuses[1]; // Grand Slum
+			else if (trickScore >= 100) score += bonuses[2]; // Game
+			else score += bonuses[3];	// partial
+			
+			if ( ((declarer ^ seat) & 1) === 1 ) {
+				score = -score;
+			}
+		}
+		else {
+			const down = -up;
+			
+			if (contract.kind == Bid.BID) {
+				if (!Score._isVul_(vul, declarer)) score = -50 * down;
+				else score = -100 * down;
+			}
+			else if (contract.kind == Bid.DOUBLE) {
+				if (!Score._isVul_(vul, seat)) {
+					for (let i = 0; down > 0; i++) {
+						if (i === 0) score -= 100;
+						else if ( (i > 0)&&(i < 3) ) score -= 200;
+						else score -= 300;
+						down--;
+					}
+				}
+				else {
+					for (let i = 0; down > 0; i++) {
+						if (i == 0) score -= 200;
+						else score -= 300;
+						down--;
+					}
+				}
+			}
+			else if (contract.kind == Bid.REDOUBLE) {
+				if (!Score._isVul_(vul, declarer)) {
+					for (let i = 0; down > 0; i++) {
+						if (i == 0) score -= 200;
+						else if ( (i > 0)&&(i < 3) ) score -= 400;
+						else score -= 600;
+						down--;
+					}
+				}
+				else {
+					for (let i = 0; down > 0; i++) {
+						if (i == 0) score -= 400;
+						else score -= 600;
+						down--;
+					}
+				}
+			}
+			
+			if ( ((declarer ^ seat) & 1) == 1 ) {
+				score = -score;
+			}
+		}
+		
+		return score;
+	}
+	
+	static _isVul_(vul, seat) {
+		let mask;
+		if ( (seat == Board.NORTH)||(seat == Board.SOUTH) ) mask = 1;
+		else mask = 2;
+		
+		if ((vul & mask) > 0) return true;
+		return false;
+	}
+}
+
+/**
+ * @classdesc ブリッジ固有の概念に関する各種便利 static 関数を提供します。
+ */
+class BridgeUtils {
+	static VALUE_STRING = "jA23456789TJQK";
+	/**
+	 * 指定されたハンドにおいて、指定スーツのアナーの点をカウントします。
+	 * アナー点は、A:4 K:3 Q:2 J:1 で計算します。
+	 *
+	 * @param		{Packet} hand		アナー点計算の対象となるハンド
+	 * @param		{?number} suit		カウントしたいスートの指定
+	 * @return		{number | number[]} アナー点(0から10の間),
+	 * 					numberを省略した場合、アナー点に関する情報
+	 * 					配列の添字０に全体点、添字 Card.CLUB(=1), ……, Card.SPADE(=4)に
+	 * 					各スーツの点数が格納されます。
+	 */
+	static countHonerPoint(hand, suit) {
+		if (suit !== void 0) {
+			let result = 0;
+			const oneSuit = hand.subpacket(suit);
+			
+			if (oneSuit.countValue(Card.ACE  ) > 0) result += 4;
+			if (oneSuit.countValue(Card.KING ) > 0) result += 3;
+			if (oneSuit.countValue(Card.QUEEN) > 0) result += 2;
+			if (oneSuit.countValue(Card.JACK ) > 0) result += 1;
+			
+			return result;
+		}
+		let result = [0,0,0,0,0];
+		for (let suit = 1; suit < 5; suit++) {
+			result[suit] = BridgeUtils.countHonerPoint(hand, suit);
+			result[0] += result[suit];
+		}
+		return result;
+	}
+	
+	/**
+	 * 指定されたハンドでのアナーの枚数をカウントします。
+	 * ただし、アナーが１枚でもあるスートについては、10 もアナーとみなします。
+	 * 
+	 * @param	{Packet} hand
+	 * @param	{number} suit
+	 * @returns	{number} アナーの枚数
+	 */
+	static countHoners(hand, suit) {
+		let result = 0;
+		const oneSuit = hand.subpacket(suit);
+		
+		if (oneSuit.countValue(Card.ACE  ) > 0) result++;
+		if (oneSuit.countValue(Card.KING ) > 0) result++;
+		if (oneSuit.countValue(Card.QUEEN) > 0) result++;
+		if (oneSuit.countValue(Card.JACK ) > 0) result++;
+		if ((oneSuit.countValue(10) > 0)&&(result > 0)) result++;
+		
+		return result;
+	}
+	
+	/**
+	 * 指定されたハンドの指定されたスートについて、そのバリューを文字列にします。
+	 * AKQ52 のように降順に変換されます。
+	 * 
+	 * @param	{Packet}	hand	ハンド情報
+	 * @param	{number}	suit	スート
+	 * @returns	{string}	AKQ52 のような文字列
+	 */
+	static valuePattern(hand, suit) {
+		const p = hand.subpacket(suit);
+		p.arrange();
+		
+		let s = "";
+		for (let i = 0; i < p.children.length; i++) {
+			const v = p.children[i].value;
+			switch (v) {
+			case Card.ACE:		s += 'A'; break;
+			case Card.KING:		s += 'K'; break;
+			case Card.QUEEN:	s += 'Q'; break;
+			case Card.JACK:		s += 'J'; break;
+			case 10:			s += 'T'; break;
+			default:			s += v; break;
+			}
+		}
+		
+		return s;
+	}
+	
+	/**
+	 * 指定されたハンドが指定されたハンドパターンに適合するかの判定を行います。
+	 * 本メソッドで指定するハンドパターンは valuePattern() の形式に準拠しますが、
+	 * ワイルドカードを使用することができます。ワイルドカードとして、以下の文字
+	 * が使用できます。ただし、ハンドパターンは降順に記述する必要があります。<BR>
+	 *<BR>
+	 * x...2-9 のいずれか１枚 <BR>
+	 * X...2-T のいずれか１枚 <BR>
+	 * ?...いずれか１枚 <BR>
+	 * *...いずれか０枚以上(現在末尾でしか正しく機能しません) <BR>
+	 *
+	 * @param	{Packet}	hand	ハンド
+	 * @param	{string}	pattern	パターン文字列
+	 * @param	{number}	suit
+	 * @returns	{boolean}	パターンに適合するか(true/false)
+	 */
+	static patternMatch(hand, pattern, suit) {
+		const handpat = BridgeUtils.valuePattern(hand, suit);
+		for (let i = 0; i < handpat.length; i++) {
+			if (i == pattern.length) return false;
+			const conditionLetter = pattern.charAt(i);
+			const target = handpat.charAt(i);
+			
+			switch (conditionLetter) {
+			
+			case 'x':
+				if ((target >= '2')&&(target <= '9')) break;
+				return false;
+			case 'X':
+				if ( ((target >= '2')&&(target <= '9'))||(target == 'T') ) break;
+				return false;
+			case '?':
+				break;
+			case '*':
+				return true; // 手抜き
+			default:
+				if ( conditionLetter == target ) break;
+				return false;
+			}
+		}
+		if (pattern.length == handpat.length) return true;
+		if ( (pattern.length == handpat.length + 1)&&(pattern.endsWith("*")) ) return true;
+		return false;
+	}
+	
+	/**
+	 * 与えられたボードにおけるオリジナルハンドを計算します。
+	 * 本メソッドでは、現在持っているハンドにこれまでのトリックのカードを
+	 * 追加して結果を求めているため、指定 Board に unspecified Card が含まれて
+	 * いた場合、結果には unspecified Card が含まれることとなります。
+	 * 
+	 * @param		{Board} board	オリジナルハンドを求めたい Board
+	 *
+	 * @returns		{Packet[]}		オリジナルハンドの配列(添字には Board.NORTH などを指定)
+	 */
+	static calculateOriginalHand(board) {
+		const result = [];
+		for (let i = 0; i < 4; i++) result.push(new Packet());
+		
+		// 今もっているハンドをコピー
+		const original = board.getHand();
+		for (let i = 0; i < original.length; i++) {
+			for (let j = 0; j < original[i].children.length; j++) {
+				result[i].add(original[i].children[j]);
+			}
+		}
+		
+		// プレイされたハンドをコピー
+		const tricks = board.getAllTricks();
+		for (let i = 0; i < tricks.length; i++) {
+			const tr = tricks[i];
+			if (tr == null) break;
+			let seat = tr.leader;
+			for (let j = 0; j < tr.children.length; j++) {
+				result[seat].add(tr.children[j]);
+				seat++;
+				seat = (seat % 4);
+			}
+		}
+		
+		// 並べ替え
+		for (let i = 0; i < 4; i++) {
+			result[i].arrange();
+		}
+		return result;
+	}
+	
+	/**
+	 * 与えられたボードにおいてディクレアラー側のとったトリック数をカウントします。
+	 *
+	 * @param		{Board} board		ウィナーを数える対象となるボード
+	 * @returns		{number} ディクレアラー側のとったトリック数
+	 */
+	static countDeclarerSideWinners(board) {
+		const tr = board.getAllTricks();
+		if (tr == null) return 0;
+		
+		let win = 0;
+		const declarer = board.getDeclarer();
+		
+		for (let i = 0; i < tr.length; i++) {
+			if (tr[i] == null) break;
+			if (!tr[i].isFinished()) break;
+			const winner = tr[i].getWinner();
+			if ( ((winner ^ declarer) & 1) == 0 ) win++;
+		}
+		
+		return win;
+	}
+	
+	/**
+	 * 与えられたボードにおいてディフェンダー側のとったトリック数をカウントします。
+	 *
+	 * @param		{Board} board		ウィナーを数える対象となるボード
+	 * @returns		{number} ディフェンダー側のとったトリック数
+	 */
+	static countDefenderSideWinners(board) {
+		return board.getTricks() - BridgeUtils.countDeclarerSideWinners(board);
+	}
+	
+	/**
+	 * スート定数の文字列表現を返却します
+	 *
+	 * @param		{number} suit	スート定数
+	 * @return		{string} スートの文字列表現(* S H D C Jo)
+	 * 
+	 */
+	static suitString(suit) {
+		switch (suit) {
+			case Card.SPADE:
+				return "S";
+			case Card.HEART:
+				return "H";
+			case Card.DIAMOND:
+				return "D";
+			case Card.CLUB:
+				return "C";
+			default:
+				return "Jo";
+		}
+	}
+	
+	/**
+	 * バリュー定数の文字列表現を返却します
+	 *
+	 * @param	{number} value	バリュー定数
+	 * @returns	{string}	バリューの文字列表現(AKQJT98765432)
+	 *
+	 */
+	static valueString(value) {
+		return BridgeUtils.VALUE_STRING.charAt(value);
+	}
+	
 }
