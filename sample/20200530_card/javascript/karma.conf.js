@@ -17,7 +17,9 @@ module.exports = function(config) {
     files: [
       //'images/*.gif',
       'Card.js',
-      'Card.Spec.js'
+      'Player.js',
+      'Card.Spec.js',
+      'Player.Spec.js'
     ],
 
 

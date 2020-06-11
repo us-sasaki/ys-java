@@ -101,7 +101,6 @@ class NaturalCardOrder {
 		}
 	}
 
-
 /*------------------
  * instance methods
  */
@@ -269,15 +268,9 @@ class Entity {
 class Entities extends Entity {
 
 	/**
-	 * 子要素を描画する際のレイアウトオブジェクト。
-	 * @type	{Layout}
-	 */
-	//layout = new CardHandLayout();
-
-	/**
 	 * 子要素を格納します。子要素数は、this.children.length で取得できます。<br>
 	 * <strong>直接書き込みは行わず、add を利用して下さい。</strong>
-	 * @type	{Array.<Entity>}
+	 * @type	{Entity[]}
 	 * @see	#add
 	 */
 	children;
@@ -408,6 +401,7 @@ class Packet extends Entities {
 	/**
 	 * 所属しているカードをシャッフルします。
 	 * 利用する乱数は ReproducibleRandom です。
+	 * @param		{number} seed	乱数の種
 	 */
 	shuffle(seed) {
 		if (this.children.length == 0) return;
@@ -3381,24 +3375,17 @@ class Score {
 			
 			// ダブルの時の修正
 			if (contract.kind == Bid.DOUBLE) {
-				if (_isVul_(vul, declarer)) score = trickScore + 200 * up;
+				if (Score._isVul_(vul, declarer)) score = trickScore + 200 * up;
 				else score = trickScore + 100 * up;
-			} else if (contract.getKind() == Bid.REDOUBLE) {
-				if (_isVul_(vul, declarer)) score = trickScore + 400 * up;
+			} else if (contract.kind == Bid.REDOUBLE) {
+				if (Score._isVul_(vul, declarer)) score = trickScore + 400 * up;
 				else score = trickScore + 200 * up;
 			} else score = trickScore + uptrickBonus * up;
 			
 			// ゲーム、スラムボーナス
-			let bonuses;
-			
-			if (_isVul_(vul, declarer)) {
-				// バルの場合
-				bonuses = Score.VUL_BONUSES;
-			}
-			else {
-				// ノンバルの場合
-				bonuses = Score.NONVUL_BONUSES;
-			}
+			const bonuses = (Score._isVul_(vul, declarer))?
+								Score.VUL_BONUSES : Score.NONVUL_BONUSES;
+
 			// ダブルメイクのボーナス
 			if (contract.kind === Bid.DOUBLE) score += 50;
 			else if (contract.kind == Bid.REDOUBLE) score += 100;
@@ -3545,16 +3532,8 @@ class BridgeUtils {
 		let s = "";
 		for (let i = 0; i < p.children.length; i++) {
 			const v = p.children[i].value;
-			switch (v) {
-			case Card.ACE:		s += 'A'; break;
-			case Card.KING:		s += 'K'; break;
-			case Card.QUEEN:	s += 'Q'; break;
-			case Card.JACK:		s += 'J'; break;
-			case 10:			s += 'T'; break;
-			default:			s += v; break;
-			}
+			s += BridgeUtils.VALUE_STRING.charAt(v);
 		}
-		
 		return s;
 	}
 	
@@ -3687,14 +3666,10 @@ class BridgeUtils {
 	 */
 	static suitString(suit) {
 		switch (suit) {
-			case Card.SPADE:
-				return "S";
-			case Card.HEART:
-				return "H";
-			case Card.DIAMOND:
-				return "D";
-			case Card.CLUB:
-				return "C";
+			case Card.SPADE: return "S";
+			case Card.HEART: return "H";
+			case Card.DIAMOND: return "D";
+			case Card.CLUB: return "C";
 			default:
 				return "Jo";
 		}
