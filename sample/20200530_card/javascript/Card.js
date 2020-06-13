@@ -382,6 +382,31 @@ class Entities extends Entity {
 			child.draw(ctx);
 		});
 	}
+	/**
+	 * 指定された位置を表示位置として占有している Entity を取得します。
+	 * このメソッドでは、上に位置するものを優先して返却します。
+	 * Entities が返却されることはありません。
+	 *
+	 * @param	{number} x		表示位置 X
+	 * @param	{number} y		表示位置 Y
+	 * @returns	{Entity} その位置に表示している Entity
+	 */
+	getEntityAt(x, y) {
+		let n;
+		for (n = this.children.length - 1; n >= 0; n--) {
+			const bounds = this.children[n].getRect();
+			if (x >= bounds.x && x <= (bounds.x + bounds.w) &&
+				y >= bounds.y && y <= (bounds.y + bounds.w)) {
+				if (this.children[n].children) { // in case of Entities
+					const ent = this.children[n].getEntityAt(x, y);
+					if (ent != null) return ent;
+				} else {
+					return this.children[n];
+				}
+			}
+		}
+		return null;
+	}
 }
 
 /**
@@ -719,6 +744,27 @@ class Field extends Entities {
 	
 	removeEventListener(type, listener, options) {
 		this.canvas.addEventListener(type, listener, options);
+	}
+
+	/**
+	 * カードがクリックされるのを検出します。
+	 * クリック位置は MouseEvent の offsetX, offsetY で検出します。
+	 * @returns	{Card} クリックされた Card オブジェクト
+	 */
+	async waitCardSelect() {
+		const listener = (e) => {
+			//console.log("client("+e.clientX+","+e.clientY+")");
+			//console.log("offset("+e.offsetX+","+e.offsetY+")");
+			const x = e.offsetX;
+			const y = e.offsetY;
+			const ent = this.getEntityAt(x, y);
+			if (ent == null) return;
+			if (!ent.suit) return; // instanceof Card
+			const selectedCard = ent;
+			console.log('selected ' + selectedCard.toString());
+			this.canvas.removeEventListener('click', listener);
+		};
+		this.canvas.addEventListener('click', listener);
 	}
 }
 	

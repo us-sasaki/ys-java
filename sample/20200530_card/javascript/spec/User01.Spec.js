@@ -9,6 +9,9 @@ onload = function() {
 	field.add(board);
 	
 	field.draw();
+	( async () => {
+		const card = await field.waitCardSelect();
+	} )();
 }
 
 
