@@ -6,7 +6,7 @@ describe("ReproducibleRandom Test", () => {
 	});
 	it("ReproducibleRandom value", () => {
 		expect(new ReproducibleRandom(1).next()).toEqual(-638953871);
-	})
+	});
 });
 
 describe("NaturalCardOrder Test", () => {
@@ -309,7 +309,7 @@ const bidSequence = (b) => {
  */
 const openingSequence = (b) => {
 	b.play(new Card(Card.SPADE, 7)); // N
-}
+};
 
 /**
  * テスト用のプレイを行います。
@@ -379,7 +379,7 @@ const playSequence = (b) => {
 	b.play(new Card(Card.CLUB, 5)); // S
 	b.play(new Card(Card.HEART, 10)); // W
 	b.play(new Card(Card.CLUB, 7)); // N
-}
+};
 
 describe("Board Test", () => {
 	it("Board static constants", () => {

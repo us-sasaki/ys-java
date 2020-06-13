@@ -13,9 +13,11 @@ class ReproducibleRandom {
 	y;
 	z;
 	w;
-
 	constructor(seed) {
 		if (seed===void 0) seed = Math.floor(Math.random() * 0x7FFFFFFF);
+		/**
+		 * @type {number} x
+		 */
 		this.x = 123456789;
 		this.y = 362436069;
 		this.z = 521288629;
@@ -209,6 +211,16 @@ class Entity {
 	setSize(w, h) {
 		this.w = w;
 		this.h = h;
+	}
+
+	/**
+	 * この Entity のサイズを返却します。w, h を持つ object が返却されます。
+	 * Entities ではこのメソッドがオーバーライドされ、設定されている
+	 * layout に基づいたサイズが再計算され、返却されます。
+	 * @returns		{object}	w:width, h:height
+	 */
+	getSize() {
+		return {w: this.w, h: this.h};
 	}
 	/**
 	 * 位置を指定します。左上が(0,0)で右下座標系です。
@@ -593,7 +605,7 @@ class Packet extends Entities {
 }
 
 /**
- * Field class 定義
+ * Field class 定義。Java 版の BridgeField に相当。
  * @classdesc カードなどが描画されるブラウザ上の画面領域
  * @constructor
  * @extends	Entities
@@ -895,6 +907,7 @@ class CardImageHolder {
 	 * カードイメージを読み込みます。
 	 */
 	static loadImages(path) {
+		if (CardImageHolder._loaded) return;
 		if (path===void 0) path = 'images/';
 		if (!path.endsWith('/')) path = path + '/';
 		// カード表面の読み込み
@@ -902,7 +915,7 @@ class CardImageHolder {
 		for (let i = 0; i < s.length; i++) {
 			const suit = s[i];
 			for (let value = 1; value < 14; value++) {
-				const imgsrc = 'images/'+suit+value+'.gif?'+ new Date().getTime(); // nocache
+				const imgsrc = path+suit+value+'.gif?'+ new Date().getTime(); // nocache
 				const img = new Image();
 				img.src = imgsrc;
 				CardImageHolder.IMAGE.push(img);
@@ -910,11 +923,12 @@ class CardImageHolder {
 		}
 		// カード裏面の読み込み
 		for (let i = 0; i < 4; i++) {
-			const imgsrc = 'images/back'+i+'.gif?'+ new Date().getTime();
+			const imgsrc = path+'back'+i+'.gif?'+ new Date().getTime();
 			const img = new Image();
 			img.src = imgsrc;
 			CardImageHolder.BACK_IMAGE.push(img);
 		}
+		return 1;
 	}
 	// execute loadImages(static initializer)
 	static _loaded = CardImageHolder.loadImages();
@@ -2167,9 +2181,9 @@ class TableGui extends Entity {
 		ctx.fillStyle = 'rgb(0,160,0)'; // field color
 		ctx.fillRect(10,24,172,72);
 		
+			ctx.font = 'bold 16px Serif';
 		// コントラクトがあれば、左上に表示する
 		if (contract != null) {
-			ctx.font = 'bold 16px Serif';
 			const kind = contract.kind;
 			let contractStr;
 			if (kind == Bid.PASS) {
@@ -2186,12 +2200,12 @@ class TableGui extends Entity {
 			
 		} else {
 			// ディーラー
-			var dealerStr = "Dlr";
+			let dealerStr = "ディーラー ";
 			dealerStr += DIRECTIONS[this.board.getDealer()];
 			this._fillTextWithShade_(ctx, dealerStr, 18, 83);
 		}
 		// バル
-		var vulStr = ["Vul: Neither", "Vul: N-S", "Vul: E-W", "Vul: Both"];
+		const vulStr = ["Vul: Neither", "Vul: N-S", "Vul: E-W", "Vul: Both"];
 		this._fillTextWithShade_(ctx, vulStr[this.board.vul], 18, 65);
 		
 		// タイトル
@@ -2199,11 +2213,13 @@ class TableGui extends Entity {
 		this._fillTextWithShade_(ctx, this.board.name, 18, 44);
 		
 		// 線
-		ctx.beginPath();
-		ctx.moveTo(18, 48);
-		ctx.lineTo(170, 48);
-		ctx.closePath();
-		ctx.stroke();
+		ctx.fillStyle = 'white';
+		//ctx.beginPath();
+		//ctx.moveTo(18, 48);
+		//ctx.lineTo(170, 48);
+		//ctx.closePath();
+		//ctx.stroke();
+		ctx.fillRect(18,48,152,1);
 	}
 	
 	/**
@@ -2252,11 +2268,11 @@ class TableGui extends Entity {
 		
 		// N E S W の文字
 		ctx.fillStyle = 'rgb(224,255,224)'; // 白っぽい緑
-		ctx.font = 'normal 28px, SanSerif';
-		ctx.drawString("N", 314, 178);
-		ctx.drawString("E", 384, 250);
-		ctx.drawString("S", 314, 326);
-		ctx.drawString("W", 238, 250);
+		ctx.font = 'normal 28px SanSerif';
+		ctx.fillText("N", 314, 178);
+		ctx.fillText("E", 384, 250);
+		ctx.fillText("S", 314, 326);
+		ctx.fillText("W", 238, 250);
 	}
 /*-----------
  * overrides
@@ -2382,55 +2398,62 @@ class BoardLayout {
 /*------------------
  * instance methods
  */
+	/**
+	 * 
+	 * @param {Board} target layout対象となる Board
+	 */
 	layout(target) {
 		if (target.bidding===void 0 || target.playHist===void 0)
 			throw new Error("BoardLayout は Board 専用です:"+target);
 		
-		var board = target;
-		var d = board.direction;
-		var x = board.x;
-		var y = board.y;
+		const board = target;
+		const d = board.direction;
+		const x = board.x;
+		const y = board.y;
 		
 		//
 		// ハンドの位置指定
 		//
 		
 		if (board.getHand() != null) {
-			for (var i = 0; i < 4; i++) {
-				var ent = board.getHand()[i];
+			for (let i = 0; i < 4; i++) {
+				const ent = board.getHand()[i];
 				if (ent == null) continue;
 				ent.setDirection((10 - i - d )%4);
-				//var lsize = ent.getSize();	// 大きさを計算させる
+				const lsize = ent.getSize();	// 大きさを計算させる
 				
-				var xx, yy;
+				let xx, yy;
 				
 				switch ( (i+d)%4 ) {
 				case 0:		// 上のハンド
-					xx = (board.w - ent.w) / 2;
+					xx = Math.floor((board.w - lsize.w) / 2);
 					yy = BoardLayout.VSIDE_MARGIN;
 					break;
 				case 1:		// 右のハンド
-					xx = board.w - ent.w - BoardLayout.SIDE_MARGIN;
-					yy = (board.h - ent.h) / 2;
+					xx = board.w - lsize.w - BoardLayout.SIDE_MARGIN;
+					yy = Math.floor((board.h - lsize.h) / 2);
 					break;
 				case 2:		// 下のハンド
-					xx = (board.w - ent.w) / 2;
-					yy = board.h - ent.h - BoardLayout.VSIDE_MARGIN;
+					xx = Math.floor((board.w - lsize.w) / 2);
+					yy = board.h - lsize.h - BoardLayout.VSIDE_MARGIN;
 					break;
 				case 3:		// 左のハンド
 					xx = BoardLayout.SIDE_MARGIN;
-					yy = (board.h - ent.h) / 2;
+					yy = Math.floor((board.h - lsize.h) / 2);
 					break;
 				default:
 					throw new InternalError();
 				}
 				ent.setPosition(x + xx, y + yy);
-				if (ent.layout!==void 0 && ent.layout!=null)
-					ent.layout.layout(ent);
+				if (ent.layout) ent.layout.layout(ent);
 			}
 		}
 	}
 	
+	/**
+	 * 
+	 * @param {Board} target layout 対象の Board
+	 */
 	layoutSize(target) {
 		if (target.bidding===void 0 || target.playHist===void 0)
 			throw new Error("BoardLayout は Board 専用です:"+target);
@@ -2501,6 +2524,20 @@ class Board extends Entities {
 	static SECOND = 1;
 	static THIRD = 2;
 	static FORTH = 3;
+
+	/**
+	 *  この Board の BiddingHistory
+	 *  @type {BiddingHistory}
+	 */
+	bidding;
+	/** この Board の PlayHistory @type {PlayHistory} */
+	playHist;
+	/** vulnerability @type {number} */
+	vul;
+	/** status(DEALING/BIDDING/OPENING/PLAYING/SCORING) @type {number} */
+	status;
+	/** タイトル @type {string} */
+	name;
 
 	/**
 	 * ボード番号(1-16)、または dealer, vul を指定して Board を作成します
@@ -2965,8 +3002,8 @@ class Board extends Entities {
 	
 	/**
 	 * ハンドの情報を取得する。UnspecifiedCardが含まれることもある。
-	 * @param	{number} seat	座席番号。無指定の場合 Packet[] が返る。
-	 * @return	{Packet} ハンド。seat を指定しない場合 Packet[]
+	 * @param	{?number} seat	座席番号。無指定の場合 Packet[] が返る。
+	 * @returns	{Packet|Packet[]} ハンド。seat を指定しない場合 Packet[]
 	 */
 	getHand(seat) {
 		if (seat!==void 0) {

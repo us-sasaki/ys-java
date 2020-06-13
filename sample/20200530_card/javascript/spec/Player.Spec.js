@@ -14,7 +14,7 @@ function helperAsync(runAsync) {
     runAsync().then(done, e => {
       fail(e);
       done();
-    })
+    });
   };
 }
 

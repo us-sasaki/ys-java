@@ -20,6 +20,7 @@ onload = function() {
 	
 	// provideDeck()
 	var pack2 = Packet.provideDeck();
+	pack2.layout = new CardHandLayout();
 	pack2.shuffle();
 	pack2.arrange();
 	field.add(pack2);

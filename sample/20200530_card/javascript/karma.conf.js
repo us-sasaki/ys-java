@@ -15,14 +15,22 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      //'images/*.gif',
+      //'images/*.gif*',
       'Card.js',
       'Player.js',
-      'Card.Spec.js',
-      'Player.Spec.js'
+      'spec/Card.Spec.js',
+      'spec/Player.Spec.js',
+      { pattern: 'images/*.gif',
+      	watched: false,
+      	served: true,
+      	included: false
+      }
     ],
-
-
+    
+    proxies: {
+    	'/images/': '/base/images/'
+    },
+    
     // list of files / patterns to exclude
     exclude: [
     ],
@@ -37,7 +45,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['spec'],
 
 
     // web server port
