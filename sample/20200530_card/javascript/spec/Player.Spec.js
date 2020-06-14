@@ -6,7 +6,7 @@ describe("Player Test", () => {
 
 /**
  * async 関数テスト用
- * @param {()=>Promise)} runAsync 
+ * @param {AsyncFunc} runAsync 
  */
 function helperAsync(runAsync) {
   // doneを使って対応する
@@ -17,6 +17,10 @@ function helperAsync(runAsync) {
     });
   };
 }
+/**
+ * @callback AsyncFunc
+ * @returns   {Promise}   テストしたい処理ブロックを包含する Promise
+ */
 
 describe("RandomPlayer Test", () => {
 	it("RandomPlayer new", () => {
@@ -42,7 +46,7 @@ describe("RandomPlayer Test", () => {
             const play = await p.play();
             b.play(play);
         }
-        console.log(b.toText());
+        //console.log(b.toText());
     }));
 
 });

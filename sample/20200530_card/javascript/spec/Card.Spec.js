@@ -498,7 +498,7 @@ describe("BridgeUtils test", () => {
 		const b = createTestBoard();
 		dealSequence(b);
 		const hand = b.getHand(Board.WEST);
-		console.log(hand.toString());
+		//console.log(hand.toString());
 		expect(BridgeUtils.patternMatch(hand, "J*", Card.SPADE)).toBe(true);
 		expect(BridgeUtils.patternMatch(hand, "A*", Card.SPADE)).toBe(false);
 		expect(BridgeUtils.patternMatch(hand, "JT", Card.SPADE)).toBe(false);
@@ -513,7 +513,10 @@ describe("BridgeUtils test", () => {
 		const b = createTestBoard();
 		dealSequence(b);
 		const org = [];
-		for (let i = 0; i < 4; i++) org.push(b.getHand(i).toString());
+		for (let i = 0; i < 4; i++) {
+			b.getHand(i).turn(true);
+			org.push(b.getHand(i).toString());
+		}
 		bidSequence(b);
 		openingSequence(b);
 		playSequence(b);

@@ -16,7 +16,7 @@ class ReproducibleRandom {
 	constructor(seed) {
 		if (seed===void 0) seed = Math.floor(Math.random() * 0x7FFFFFFF);
 		/**
-		 * @type {number} x
+		 * @type {number}
 		 */
 		this.x = 123456789;
 		this.y = 362436069;
@@ -242,6 +242,11 @@ class Entity {
 	setDirection(dir) {
 		if (dir!=0 && dir!=1 && dir!=2 && dir!=3)
 			throw new Error("setDirection で direction の値が不正です:"+dir);
+		if (( (this.direction ^ dir) & 1) > 0) {
+			const tmp = this.w;
+			this.w = this.h;
+			this.h = tmp;
+		}
 		this.direction = dir;
 	}
 	
@@ -299,14 +304,16 @@ class Entities extends Entity {
 	/**
 	 * 子オブジェクトを追加します。子オブジェクトの親として自分を設定します。
 	 * また、このオブジェクトに layout が設定している場合、layoutします。
-	 * @param	{Entity} child 追加対象の Entity
+	 * @param	{Entity|Entities} entity	追加対象の Entity または Entities
 	 */
-	add(child) {
-		if (this.children.indexOf(child) >= 0) {
-			return;
-		}
-		child.setParent(this);
-		this.children.push(child);
+	add(entity) {
+		//if (entity instanceof Entities) {
+		//	entity.children.forEach( (e) => {this.add(e);});
+		//} else {
+			if (this.children.indexOf(entity) >= 0) return;
+			entity.setParent(this);
+			this.children.push(entity);
+		//}
 		if (this.layout != null) this.layout.layout(this);
 	}
 	
@@ -314,14 +321,21 @@ class Entities extends Entity {
 	 * 指定された子オブジェクトを引きます。ひかれたオブジェクトはこの
 	 * オブジェクトの要素でなくなります。(parent が null になります)
 	 *
-	 * @param		{number} index	引くオブジェクトの番号(省略した場合、
+	 * @param	{number|Entity} indexOrEntity	引くオブジェクトの番号(省略した場合、
 	 *								最後の要素)
+	 * @returns	{?Entity}	引かれた子オブジェクト(引かれなかった場合 null)
 	 */
-	pull(index) {
-		if (index===void 0) index = this.children.length - 1;
-		
-		if (index < 0 || index >= this.children.length)
-			throw new Error("pull で指定された index が不正です:"+index);
+	pull(indexOrEntity) {
+		if (indexOrEntity===void 0) indexOrEntity = this.children.length - 1;
+		let index;
+		if (indexOrEntity instanceof Entity) {
+			index = this.children.indexOf(indexOrEntity);
+			if (index === -1) return null;
+		} else {
+			index = indexOrEntity;
+			if (index < 0 || index >= this.children.length)
+				throw new Error("pull で指定された index が不正です:"+index);
+		}
 		const child = this.children[index];
 		//console.log("index="+index);
 		//console.log("child="+child.toString()+" index="+index);
@@ -332,12 +346,13 @@ class Entities extends Entity {
 	}
 	
 	/**
-	 * 向きを設定します。
+	 * 向きを設定します。子の向きも変更します。
 	 * @override
+	 * @param	{number} direction	向き定数
 	 */
 	setDirection(direction) {
 		this.direction = direction;
-		this.children.forEach( function(child) {
+		this.children.forEach( (child) => {
 			child.setDirection(direction);
 		});
 	}
@@ -348,7 +363,7 @@ class Entities extends Entity {
 	 */
 	getRect() {
 		if (this.layout != null) {
-			var d = this.layout.layoutSize(this);
+			const d = this.layout.layoutSize(this);
 			this.w = d.w;
 			this.h = d.h;
 		}
@@ -363,13 +378,20 @@ class Entities extends Entity {
 	 */
 	getSize() {
 		if (this.layout != null) {
-			var d = this.layout.layoutSize(this);
+			const d = this.layout.layoutSize(this);
 			this.w = d.w;
 			this.h = d.h;
 		}
 		return { w: this.w, h: this.h };
 	}
 	
+	/**
+	 * レイアウトを持っている場合、レイアウトします。
+	 */
+	selfLayout() {
+		if (this.layout) this.layout.layout(this);
+	}
+
 	/**
 	 * この Entity を描画します。
 	 * 描画前に設定されている layout があればレイアウトが再計算されます。
@@ -378,7 +400,7 @@ class Entities extends Entity {
 	 */
 	draw(ctx) {
 		if (this.layout != null) this.layout.layout(this);
-		this.children.forEach( function(child) {
+		this.children.forEach( (child) => {
 			child.draw(ctx);
 		});
 	}
@@ -392,14 +414,18 @@ class Entities extends Entity {
 	 * @returns	{Entity} その位置に表示している Entity
 	 */
 	getEntityAt(x, y) {
+		//console.log('getEntityAt('+x+','+y+')');
 		let n;
 		for (n = this.children.length - 1; n >= 0; n--) {
 			const bounds = this.children[n].getRect();
+			//console.log('checking '+this.children[n].toString()+'('+bounds.x+','+bounds.y+')-('+(bounds.x+bounds.w)+','+(bounds.y+bounds.h)+') dir='+this.children[n].direction);
 			if (x >= bounds.x && x <= (bounds.x + bounds.w) &&
-				y >= bounds.y && y <= (bounds.y + bounds.w)) {
-				if (this.children[n].children) { // in case of Entities
+				y >= bounds.y && y <= (bounds.y + bounds.h)) {
+				if (this.children[n] instanceof Entities) {
+					//console.log('recursive call getEntityAt() for '+this.children[n].toString());
 					const ent = this.children[n].getEntityAt(x, y);
-					if (ent != null) return ent;
+					//console.log('ent='+((ent)?ent.toString():'null'));
+					if (ent) return ent;
 				} else {
 					return this.children[n];
 				}
@@ -510,7 +536,7 @@ class Packet extends Entities {
 	 */
 	turn(head) {
 		for (let i = 0; i < this.children.length; i++) {
-			this.children.isHead = head;
+			this.children[i].isHead = head;
 		}
 	}
 	
@@ -536,7 +562,7 @@ class Packet extends Entities {
 	 */
 	pull(indexOrCard) {
 		if (typeof indexOrCard === 'number' || indexOrCard === void 0) return super.pull(indexOrCard);
-		return super.pull(this._indexOf_(indexOrCard));
+		return super.pull(this.indexOf(indexOrCard));
 	}
 
 	/**
@@ -544,7 +570,7 @@ class Packet extends Entities {
 	 * @param {Card} card 
 	 * @return	{number} index
 	 */
-	_indexOf_(card) {
+	indexOf(card) {
 		for (let i = 0; i < this.children.length; i++) {
 			if (this.children[i].suit === card.suit &&
 				 this.children[i].value === card.value) return i;
@@ -747,24 +773,50 @@ class Field extends Entities {
 	}
 
 	/**
-	 * カードがクリックされるのを検出します。
+	 * カードがクリックされるのを検出する async 関数です。
 	 * クリック位置は MouseEvent の offsetX, offsetY で検出します。
-	 * @returns	{Card} クリックされた Card オブジェクト
+	 * @async
+	 * @returns	{Card} クリックされた Card オブジェクト。
 	 */
-	async waitCardSelect() {
-		const listener = (e) => {
-			//console.log("client("+e.clientX+","+e.clientY+")");
-			//console.log("offset("+e.offsetX+","+e.offsetY+")");
-			const x = e.offsetX;
-			const y = e.offsetY;
-			const ent = this.getEntityAt(x, y);
-			if (ent == null) return;
-			if (!ent.suit) return; // instanceof Card
-			const selectedCard = ent;
-			console.log('selected ' + selectedCard.toString());
-			this.canvas.removeEventListener('click', listener);
-		};
-		this.canvas.addEventListener('click', listener);
+	waitCardSelect() {
+		return new Promise( (res) => {
+			//
+			const listener = (e) => {
+				const x = e.offsetX;
+				const y = e.offsetY;
+				const ent = this.getEntityAt(x, y);
+				if (ent && (ent instanceof Card)) { // Card
+					const selectedCard = ent;
+					console.log('selected ' + selectedCard.toString());
+					this.canvas.removeEventListener('click', listener);
+					res(selectedCard);
+				}
+			};
+			this.canvas.addEventListener('click', listener);
+		});
+	}
+
+	/**
+	 * どこかがクリックされるまで待つ async 関数です。
+	 * @async
+	 */
+	waitClick() {
+		return new Promise( (res) => {
+			const listener = () => {
+				this.canvas.removeEventListener('click', listener);
+				res();
+			};
+			this.canvas.addEventListener('click', listener);
+		});
+	}
+
+	/**
+	 * 指定時間(msec)待つ async 関数です。
+	 * @async
+	 * @param {number} millis 
+	 */
+	static async sleep(millis) {
+		return new Promise( (res) => { setTimeout(res, millis);	});
 	}
 }
 	
@@ -850,20 +902,21 @@ class Card extends Entity {
 		const r = this.getRect();
 		switch (this.direction) {
 		case 1:
-			c = 0; s = 1;	x = r.y;		y = -r.x - r.h; break;
+			c = 0; s = 1;	x = r.y;		y = -r.x - r.w; break;
 		case 2:
 			c = -1; s = 0;	x = -r.x - r.w;	y = -r.y - r.h; break;
 		case 3:
-			c = 0; s = -1;	x = -r.y - r.w;	y = r.x; break;
+			c = 0; s = -1;	x = -r.y - r.h;	y = r.x; break;
 		default:
 			c = 1; s = 0;	x = r.x;		y = r.y; break;
 		}
 		let img;
 		if (this.isHead) img = CardImageHolder.getImage(this.suit, this.value);
-		else img = cardImageHolder.getBackImage();
+		else img = CardImageHolder.getBackImage();
 		
 		ctx.setTransform(c, s, -s, c, 0, 0);
-		ctx.drawImage(img, x, y, this.w, this.h);
+		if ((this.direction & 1) === 0) ctx.drawImage(img, x, y, this.w, this.h);
+		else ctx.drawImage(img, x, y, this.h, this.w);
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 	}
 	
@@ -876,8 +929,8 @@ class Card extends Entity {
 		return {
 			x: this.x,
 			y: this.y,
-			w: Card.XSIZE,
-			h: Card.YSIZE };
+			w: this.w, //Card.XSIZE, //this.w,
+			h: this.h }; //Card.YSIZE }; //this.h };
 	}
 	
 	/**
@@ -950,6 +1003,12 @@ class CardImageHolder {
 	static BACK_IMAGE = [];
 	
 	/**
+	 * カード裏面イメージの番号(0-3)
+	 * @type	{number}
+	 */
+	static backImageNumber = 0;
+
+	/**
 	 * カードイメージを読み込みます。
 	 */
 	static loadImages(path) {
@@ -984,6 +1043,7 @@ class CardImageHolder {
 	 *
 	 * @param	suit	スート(1,2,3,4)
 	 * @param	value	値(1-13)
+	 * @returns		{Image}		カード表面イメージ
 	 */
 	static getImage(suit, value) {
 		const s = (suit-1)*13 + (value-1);
@@ -992,10 +1052,20 @@ class CardImageHolder {
 	
 	/**
 	 * カードの裏面イメージを取得します。
+	 * @returns		{Image}		裏面イメージ
 	 */
 	static getBackImage() {
-		return CardImageHolder.BACK_IMAGE[0];
+		return CardImageHolder.BACK_IMAGE[CardImageHolder.backImageNumber];
 	}
+
+	/**
+	 * カードの裏面イメージを切り替えます。
+	 * @param	{number} num	裏面イメージ番号(0-3)
+	 */
+	static setBackImage(num) {
+		CardImageHolder.backImageNumber = num;
+	}
+
 }
 	
 /**
@@ -1189,6 +1259,7 @@ class Bid {
 	 * 例) [1C] < [1D] < [2C] < [2CX] < [2CXX] となります。
 	 * [pass] は常に可能(true)です。
 	 * @param	{Bid} contract 判定先となるコントラクト
+	 * @returns	{boolean} ビッド可能か
 	 */
 	isBiddableOver(contract) {
 		switch (this.kind) {
@@ -1540,8 +1611,8 @@ class BiddingHistory {
 		switch (newBid.kind) {
 		case Bid.PASS:
 			// パスが続いたか
-			var passCount = 0;
-			for (var i = this.bid.length - 1; i >= 0; i--) {
+			let passCount = 0;
+			for (let i = this.bid.length - 1; i >= 0; i--) {
 				if (this.bid[i].kind == Bid.PASS) passCount++;
 				else break;
 			}
@@ -1615,8 +1686,7 @@ class BiddingHistory {
 	 * @return		{Array.<Bid>} すべてのビッド
 	 */
 	getAllBids() {
-		var result = this.bid.slice(0, this.bid.length);
-		return result;
+		return this.bid.slice(0, this.bid.length);
 	}
 	
 	/**
@@ -1673,7 +1743,7 @@ class BiddingHistory {
 		if ( (this.bid.length == 0)&&(this.finished) )
 			return "Bidding Sequence Unknown";
 		let result = "   N       E       S       W\n";
-		for (var i = 0; i < this.dealer; i++) {
+		for (let i = 0; i < this.dealer; i++) {
 			result += "        ";
 		}
 		let seat = this.dealer;
@@ -1720,16 +1790,16 @@ class TrickLayout {
 			switch ( (i+d)%4 ) {
 			
 			case 0: // 上
-				ent.setPosition(x + (w - ent.w)/2, y);
+				ent.setPosition(Math.floor(x + (w - ent.w)/2), y);
 				break;
 			case 1: // 右
-				ent.setPosition(x + (w - ent.w),y + (h - ent.h)/2);
+				ent.setPosition(x + (w - ent.w), Math.floor(y + (h - ent.h)/2));
 				break;
 			case 2: // 下
-				ent.setPosition(x + (w - ent.w)/2, y + (h - ent.h) );
+				ent.setPosition(Math.floor(x + (w - ent.w)/2), y + (h - ent.h) );
 				break;
 			case 3: // 左
-				ent.setPosition(x, y + (h - ent.h)/2);
+				ent.setPosition(x, Math.floor(y + (h - ent.h)/2));
 				break;
 			default:
 				throw new Error();
@@ -2045,9 +2115,9 @@ class PlayHistory {
 		
 		const turn = this.trick[this.trickCount].getTurn();
 		
-		var drawn = this.hand[turn].pull(p);
+		const drawn = this.hand[turn].pull(p);
 		drawn.isHead = true;
-		var tr = this.trick[this.trickCount];
+		const tr = this.trick[this.trickCount];
 		tr.add(drawn);
 		
 		if (!tr.isFinished()) return;
@@ -2083,7 +2153,7 @@ class PlayHistory {
 	 * @return	{Trick} トリック
 	 */
 	getTrick(index) {
-		if (index!==void 0) return this.trick[index];
+		if (index !== void 0) return this.trick[index];
 		if (this.trickCount == 13) return this.trick[12];
 		return this.trick[this.trickCount];
 	}
@@ -2139,10 +2209,10 @@ class PlayHistory {
 		}
 		
 		// だれのハンドに戻すか
-		var seatToBePushbacked = (this.trick[this.trickCount].getTurn() + 3) % 4;
+		const seatToBePushbacked = (this.trick[this.trickCount].getTurn() + 3) % 4;
 		
 		// 最後のプレイを取得する
-		var lastPlay = this.trick[this.trickCount].pull();
+		const lastPlay = this.trick[this.trickCount].pull();
 //		lastPlay.turn(false); // このオブジェクトは Dummy が誰かを知らない
 		this.hand[seatToBePushbacked].add(lastPlay);
 		this.hand[seatToBePushbacked].arrange();
@@ -2173,7 +2243,7 @@ class PlayHistory {
 		if (this.trickCount < 13) result += this.trick[this.trickCount];
 		
 		result += "\n\n";
-		for (var i = this.trickCount-1; i >= 0; i--) {
+		for (let i = this.trickCount-1; i >= 0; i--) {
 			if (i < 13) {
 				result +="[";
 				if (i < 10) result += " ";
@@ -2342,8 +2412,6 @@ class WinnerCard extends Entity {
 /*------------------
  * static constants
  */
-	static WIN = true;
-	static LOSE = false;
 	static LONGER_EDGE = 48;
 	static SHORTER_EDGE = 32;
 	static SLIDE_STEP = 8;
@@ -2365,6 +2433,7 @@ class WinnerCard extends Entity {
  */
 	/**
 	 * @override
+	 * @param	{Context} ctx	グラフィックコンテキスト
 	 */
 	draw(ctx) {
 		if (!this.isVisible) return;
@@ -2372,11 +2441,11 @@ class WinnerCard extends Entity {
 		const r = this.getRect();
 		switch (this.direction) {
 		case 1:
-			c = 0; s = 1;	x = r.y;		y = -r.x - r.h; break;
+			c = 0; s = 1;	x = r.y;		y = -r.x - r.w; break;
 		case 2:
 			c = -1; s = 0;	x = -r.x - r.w;	y = -r.y - r.h; break;
 		case 3:
-			c = 0; s = -1;	x = -r.y - r.w;	y = r.x; break;
+			c = 0; s = -1;	x = -r.y - r.h;	y = r.x; break;
 		default:
 			c = 1; s = 0;	x = r.x;		y = r.y; break;
 		}
@@ -2394,6 +2463,9 @@ class WinnerCard extends Entity {
  * @extends Entities
  */
 class WinnerGui extends Entities {
+	static WIN = true;
+	static LOSE = false;
+
 	constructor() {
 		super();
 		this.card = []; // WinnerCard[]
@@ -2407,16 +2479,17 @@ class WinnerGui extends Entities {
  * instance methods
  */
 	/**
-	 * @override 
+	 * @override
+	 * @param	{boolean} win	勝ち(true)が縦、負け(false)が横
 	 */
 	add(win) {
 		if (typeof win != "boolean")
 			throw new Error("Winner Gui の add は boolean 値のみです");
-		card[this.count] = new WinnerCard(win);
-		card[this.count].setPosition(this.x + this.count * WinnerCard.SLIDE_STEP,
+		this.card[this.count] = new WinnerCard(win);
+		this.card[this.count].setPosition(this.x + this.count * WinnerCard.SLIDE_STEP,
 					(win)?this.y:(this.y + WinnerCard.LONGER_EDGE / 4));
-		super.add(card[count]); // 正しいか？
-		count++;
+		super.add(this.card[this.count]); // 正しいか？
+		this.count++;
 	}
 }
 
@@ -2431,8 +2504,8 @@ class BoardLayout {
 	static VSIDE_MARGIN = 20;
 	
 	/** トリックの表示位置 */
-	static TRICK_X = (TableGui.WIDTH - Trick.WIDTH)/2;
-	static TRICK_Y = (TableGui.HEIGHT - Trick.HEIGHT)/2;
+	static TRICK_X = Math.floor((TableGui.WIDTH - Trick.WIDTH)/2);
+	static TRICK_Y = Math.floor((TableGui.HEIGHT - Trick.HEIGHT)/2);
 	
 	/** ウィナー表示位置 */
 	static WINNER_X = 460;
@@ -2449,9 +2522,8 @@ class BoardLayout {
 	 * @param {Board} target layout対象となる Board
 	 */
 	layout(target) {
-		if (target.bidding===void 0 || target.playHist===void 0)
+		if (!target instanceof Board)
 			throw new Error("BoardLayout は Board 専用です:"+target);
-		
 		const board = target;
 		const d = board.direction;
 		const x = board.x;
@@ -2460,13 +2532,19 @@ class BoardLayout {
 		//
 		// ハンドの位置指定
 		//
+//		console.log('BoardLayout.layout()'+board.getHand());
 		
 		if (board.getHand() != null) {
 			for (let i = 0; i < 4; i++) {
 				const ent = board.getHand()[i];
-				if (ent == null) continue;
+				if (!ent) {
+//					console.log('BoardLayout: ent is null');
+					continue;
+				}
+//				console.log('BoardLayout: ent is not null');
 				ent.setDirection((10 - i - d )%4);
 				const lsize = ent.getSize();	// 大きさを計算させる
+//				console.log('BoardLayout lsize='+JSON.stringify(lsize)+' ent.class.name='+ent.constructor.name);
 				
 				let xx, yy;
 				
@@ -2491,9 +2569,30 @@ class BoardLayout {
 					throw new InternalError();
 				}
 				ent.setPosition(x + xx, y + yy);
+//				console.log('BoardLayout setPosition(x,y)=('+(x+xx)+','+(y+yy)+')');
 				if (ent.layout) ent.layout.layout(ent);
 			}
 		}
+		//
+		// トリックの位置指定
+		//
+		const trick = board.trickGui;
+		
+//		console.log('BoardLayout: trick='+trick);
+		if (trick) {
+			trick.setPosition(x + BoardLayout.TRICK_X, y + BoardLayout.TRICK_Y);
+			trick.layout.layout(trick);
+		}
+		
+		//
+		// ウィナーの位置指定
+		//
+		const winnerGui = board.winnerGui;
+//		console.log('BoardLayout: winnerGui='+winnerGui);
+		if (winnerGui) {
+			winnerGui.setPosition(x + BoardLayout.WINNER_X, y + BoardLayout.WINNER_Y);
+		}
+		
 	}
 	
 	/**
@@ -2501,7 +2600,7 @@ class BoardLayout {
 	 * @param {Board} target layout 対象の Board
 	 */
 	layoutSize(target) {
-		if (target.bidding===void 0 || target.playHist===void 0)
+		if (!target instanceof Board)
 			throw new Error("BoardLayout は Board 専用です:"+target);
 		return {w:target.w, h:target.h};
 	}
@@ -2621,6 +2720,8 @@ class Board extends Entities {
 		this.trickGui = null;
 		this.winnerGui = null;
 		this.tableGui = null;
+
+		this.layout = new BoardLayout();
 	}
 
 /*------------------
@@ -2638,13 +2739,9 @@ class Board extends Entities {
 		this.winnerGui = new WinnerGui();
 		this.add(this.winnerGui);
 		
-		let i = 0;
-		for (; i < 4; i++) {
+		for (let i = 0; i < 4; i++) {
 			this.add(this.playHist.hand[i]);
 		}
-		
-		this.trickGui = this.getTrick();
-		if (this.trickGui != null) this.add(this.trickGui);
 		
 		this.layout = new BoardLayout();
 	}
@@ -2745,6 +2842,10 @@ class Board extends Entities {
 				this.playHist.setContract((this.getDeclarer() + 1)%4, this.getTrump() );
 				
 				this._reorderHand_();
+				this.trickGui = this.getTrick();
+//console.log('Board.play() called '+this.playHist.getTrick());
+				if (this.trickGui) this.add(this.trickGui);
+		
 			}
 			break;
 			
@@ -2759,7 +2860,7 @@ class Board extends Entities {
 			if (this.playHist.isFinished()) this.status = Board.SCORING;
 			else this.status = Board.PLAYING;
 			
-			// TrickAnimation 処理
+			// GUI処理(TrickAnimation) 処理
 			//
 			// 未実装(2018/8/17)
 			//
@@ -2774,6 +2875,58 @@ class Board extends Entities {
 			throw new Error("Board.status が不正な値"
 							+ this.status + "になっています。");
 		}
+	}
+
+	/**
+	 * OPENING/PLAYING状態で、TrickAnimation 付きの play 処理を行います。
+	 * TrickAnimation の終了を待って次の play を進めるようにするため
+	 * async メソッドとする必要があり、別に切り出した。
+	 * JavaScript では設計を MVC とするのが望ましいと思われる。
+	 * @async
+	 * @param {Card} play 
+	 */
+	async playWithGui(play) {
+		if (this.status != Board.OPENING && this.status != Board.PLAYING) {
+			throw new Error("playWithGui() は OPENING/PLAYING ステータスである必要があります");
+		}
+		this.play(play);
+		// TrickAnimation 処理
+		if (!this.trickGui.isFinished()) return;
+
+		let trickGui = this.trickGui;
+		const newTrickGui = this.getTrick(); // 現在のトリック
+
+		const field = this.getField();
+
+		await field.waitClick();
+		// カードを裏返し、ウィナーの向きに揃える
+		const dir = ((trickGui.getWinner() ^ this.direction) & 1) + 2;
+		trickGui.children.forEach( c => {
+console.log('typeof c='+(c.constructor.name));
+			c.isHead = false;
+			c.setDirection(dir);
+		});
+		trickGui.selfLayout();
+		field.draw();
+		await Field.sleep(500);
+
+		this.pull(trickGui);
+		
+		if (( (trickGui.getWinner() ^ this.direction) & 1) == 0)
+			this.winnerGui.add(WinnerGui.WIN);
+		else
+			this.winnerGui.add(WinnerGui.LOSE);
+		
+		//
+		// 次の trickGui を設定
+		//
+		if (trickGui !== newTrickGui) { // 最終トリックのみ == となる
+			trickGui = this.trickGui = newTrickGui;
+			this.add(newTrickGui);
+		}
+		this.selfLayout();
+		if (trickGui != null) trickGui.selfLayout();
+		field.draw();
 	}
 	
 	/**
@@ -3083,6 +3236,19 @@ class Board extends Entities {
 	getAllTricks() {
 		return this.playHist.getAllTricks();
 	}
+
+	/**
+	 * parent を検索し、Field を取得します。
+	 * @returns		{?Field}		この Board の親系列にある Field。ない場合 null。
+	 */
+	getField() {
+		let obj = this;
+		while (true) {
+			if (!obj) return null;
+			obj = obj.parent;
+			if (obj instanceof Field) return obj;
+		}
+	}
 	
 	/**
 	 * 指定された座席がバルであるか判定します。
@@ -3190,8 +3356,8 @@ class Board extends Entities {
 		}
 		
 		// ビッド経過
-//		s.append(bidding.toString());
-//		s.append(nl);
+		s += this.bidding.toString();
+		s += nl;
 		
 		// プレイライン
 		s = s + nl
@@ -3202,12 +3368,11 @@ class Board extends Entities {
 		const trick = this.getAllTricks();
 		const nesw = [];
 		for (let i = 0; i < 4; i++) {
-			nesw[i] = "";
-			nesw[i] = nesw[i] + "NESW".substring(i,i+1) + " ";
+			nesw[i] = "NESW".substring(i,i+1) + " ";
 			if (this.getTricks() > 0) {
 				const leaderSeat = trick[0].leader;
-				if (i == leaderSeat) nesw[i] = nesw[i] + "-";
-				else nesw[i] = nesw[i] + " ";
+				if (i == leaderSeat) nesw[i] += "-";
+				else nesw[i] += " ";
 			}
 		}
 		
@@ -3216,16 +3381,16 @@ class Board extends Entities {
 			const winnerSeat = trick[i].winner;
 			for (let j = 0; j < 4; j++) {
 				const seat = (j + leaderSeat) % 4;
-				nesw[seat] = nesw[seat] + trick[i].children[j].toString().substring(1);
-				if (seat == winnerSeat) nesw[seat] = nesw[seat] + '+';
-				else nesw[seat] = nesw[seat] + " ";
+				nesw[seat] += trick[i].children[j].toString().substring(1);
+				if (seat === winnerSeat) nesw[seat] += '+';
+				else nesw[seat] += " ";
 			}
 		}
 		for (let i = 0; i < 4; i++) {
-			s = s + nesw[i] + nl;
+			s += nesw[i] + nl;
 		}
-		if (this.status == Board.SCORING) {
-			s = s + nl+ "----- 結果 -----"+nl;
+		if (this.status === Board.SCORING) {
+			s += nl+ "----- 結果 -----"+nl;
 			// メイク数
 			const win	= this._countWinners_();
 			const up	= win - this.getContract().level - 6;
@@ -3233,14 +3398,14 @@ class Board extends Entities {
 			
 			if (up >= 0) {
 				// メイク
-				s = s + make + "メイク  ";
+				s += make + "メイク  ";
 			} else {
 				// ダウン
-				s = s + (-up) + "ダウン  ";
+				s += (-up) + "ダウン  ";
 			}
 			
-			s = s + "("+win+"トリック)"+nl;
-			s = s +" N-S側のスコア：" + Score.calculate(this, Board.SOUTH) + nl;
+			s += "("+win+"トリック)"+nl;
+			s += " N-S側のスコア：" + Score.calculate(this, Board.SOUTH) + nl;
 		}
 		return s;
 	}
@@ -3254,13 +3419,13 @@ class Board extends Entities {
 	 * @return	{string}	ハンド文字列
 	 */
 	_getHandString_(hand, seat, suit) {
-		var s = "CDHS".substring(suit-1, suit)+":";
-		var oneSuit = hand[seat].subpacket(suit);
+		let s = "CDHS".substring(suit-1, suit)+":";
+		const oneSuit = hand[seat].subpacket(suit);
 		oneSuit.arrange();
-		var size = oneSuit.children.length;
-		for (var i = 0; i < size; i++) {
-			var c = oneSuit.children[i];
-			if ((c.isHead == true)||(openCards.indexOf(c)>=0)) {
+		const size = oneSuit.children.length;
+		for (let i = 0; i < size; i++) {
+			const c = oneSuit.children[i];
+			if ((c.isHead == true)||(this.openCards.indexOf(c)>=0)) {
 				s = s + c.toString().substring(2);
 			}
 		}
@@ -3272,16 +3437,15 @@ class Board extends Entities {
 	 * @return	{number}	ウィナーの数
 	 */
 	_countWinners_() {
-		var tr = this.getAllTricks(); // Trick[]
+		const tr = this.getAllTricks(); // Trick[]
 		if (tr == null) return 0;
 		
-		var win = 0;
-		var declarer = this.getDeclarer();
+		let win = 0;
+		const declarer = this.getDeclarer();
 		
 		// winner を数える(Board にあったほうが便利)
-		for (var i = 0; i < tr.length; i++) {
-			var winner = tr[i].winner;
-			if ( ((winner ^ declarer) & 1) == 0 ) win++;
+		for (let i = 0; i < tr.length; i++) {
+			if ( ((tr[i].winner ^ declarer) & 1) == 0 ) win++;
 		}
 		
 		return win;
