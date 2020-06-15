@@ -1,45 +1,45 @@
 /**
- * Player ‚Í Bid, ‚Ü‚½‚Í Play‚ğs‚¤å‘Ì‚Å‚·B
- * GUI‚É˜A“®‚µ‚½lAƒRƒ“ƒsƒ…[ƒ^ƒAƒ‹ƒSƒŠƒYƒ€‚È‚Ç‚ª“–‚Ä‚Í‚Ü‚è‚Ü‚·B
- * Player ‚ÍAŠeX‚P‚Â‚ÌBoard‚Æ˜A“®‚µ‚Ä‚¢‚éBBoardManager‚Ì‚à‚Âmaster board
- * ‚Æ‚Ì®‡«‚ÍA¡‚Ì‚Æ‚±‚ëPlayer‚Ì‚ ‚è‚¦‚È‚¢ƒvƒŒƒC‚ğŒ_‹@‚Æ‚µ‚ÄC•œ‚³‚ê‚éB
- * «—ˆ“I‚É‚Í Board ‚Ìó‘Ô•ÏXƒƒ\ƒbƒh“à‚Å hashCode ‚ğ—p‚¢‚ÄŒŸ’m‚µ‚½‚¢B
+ * Player ã¯ Bid, ã¾ãŸã¯ Playã‚’è¡Œã†ä¸»ä½“ã§ã™ã€‚
+ * GUIã«é€£å‹•ã—ãŸäººã€ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ãªã©ãŒå½“ã¦ã¯ã¾ã‚Šã¾ã™ã€‚
+ * Player ã¯ã€å„ã€…ï¼‘ã¤ã®Boardã¨é€£å‹•ã—ã¦ã„ã‚‹ã€‚BoardManagerã®ã‚‚ã¤master board
+ * ã¨ã®æ•´åˆæ€§ã¯ã€ä»Šã®ã¨ã“ã‚Playerã®ã‚ã‚Šãˆãªã„ãƒ—ãƒ¬ã‚¤ã‚’å¥‘æ©Ÿã¨ã—ã¦ä¿®å¾©ã•ã‚Œã‚‹ã€‚
+ * å°†æ¥çš„ã«ã¯ Board ã®çŠ¶æ…‹å¤‰æ›´ãƒ¡ã‚½ãƒƒãƒ‰å†…ã§ hashCode ã‚’ç”¨ã„ã¦éšæ™‚æ¤œçŸ¥ã—ãŸã„ã€‚
  *
  * @version		making		12, June 2020
  * @author		Yusuke Sasaki
  */
 class Player {
-	/** ƒŠ[ƒh‚Ì‡”Ô‚ğ¦‚·’è”‚ÅAƒŠ[ƒ_[i‚P”Ô–Új‚ğ¦‚µ‚Ü‚·B */
+	/** ãƒªãƒ¼ãƒ‰ã®é †ç•ªã‚’ç¤ºã™å®šæ•°ã§ã€ãƒªãƒ¼ãƒ€ãƒ¼ï¼ˆï¼‘ç•ªç›®ï¼‰ã‚’ç¤ºã—ã¾ã™ã€‚ */
 	static LEAD		= Board.LEAD;
 	
-	/** ƒŠ[ƒh‚Ì‡”Ô‚ğ¦‚·’è”‚ÅAƒZƒJƒ“ƒhƒnƒ“ƒhi‚Q”Ô–Új‚ğ¦‚µ‚Ü‚·B */
+	/** ãƒªãƒ¼ãƒ‰ã®é †ç•ªã‚’ç¤ºã™å®šæ•°ã§ã€ã‚»ã‚«ãƒ³ãƒ‰ãƒãƒ³ãƒ‰ï¼ˆï¼’ç•ªç›®ï¼‰ã‚’ç¤ºã—ã¾ã™ã€‚ */
 	static SECOND	= Board.SECOND;
 	
-	/** ƒŠ[ƒh‚Ì‡”Ô‚ğ¦‚·’è”‚ÅAƒT[ƒhƒnƒ“ƒhi‚R”Ô–Új‚ğ¦‚µ‚Ü‚·B */
+	/** ãƒªãƒ¼ãƒ‰ã®é †ç•ªã‚’ç¤ºã™å®šæ•°ã§ã€ã‚µãƒ¼ãƒ‰ãƒãƒ³ãƒ‰ï¼ˆï¼“ç•ªç›®ï¼‰ã‚’ç¤ºã—ã¾ã™ã€‚ */
 	static THIRD	= Board.THIRD;
 	
-	/** ƒŠ[ƒh‚Ì‡”Ô‚ğ¦‚·’è”‚ÅAƒtƒH[ƒXƒnƒ“ƒhi‚S”Ô–Új‚ğ¦‚µ‚Ü‚·B */
+	/** ãƒªãƒ¼ãƒ‰ã®é †ç•ªã‚’ç¤ºã™å®šæ•°ã§ã€ãƒ•ã‚©ãƒ¼ã‚¹ãƒãƒ³ãƒ‰ï¼ˆï¼”ç•ªç›®ï¼‰ã‚’ç¤ºã—ã¾ã™ã€‚ */
 	static FORTH	= Board.FORTH;
 	
-	/** ƒvƒŒƒCƒ„[‚Ì‘Š‘ÎˆÊ’u‚ğ¦‚·’è”(=0)‚ÅA©•ª‚ÌˆÊ’u‚ğ¦‚µ‚Ü‚·B */
+	/** ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç›¸å¯¾ä½ç½®ã‚’ç¤ºã™å®šæ•°(=0)ã§ã€è‡ªåˆ†ã®ä½ç½®ã‚’ç¤ºã—ã¾ã™ã€‚ */
 	static ME		= 0;
 	
-	/** ƒvƒŒƒCƒ„[‚Ì‘Š‘ÎˆÊ’u‚ğ¦‚·’è”(=1)‚ÅA©•ª‚Ì¶‚ÌÈ(left hand)‚ğ¦‚µ‚Ü‚·B */
+	/** ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç›¸å¯¾ä½ç½®ã‚’ç¤ºã™å®šæ•°(=1)ã§ã€è‡ªåˆ†ã®å·¦ã®å¸­(left hand)ã‚’ç¤ºã—ã¾ã™ã€‚ */
 	static LEFT		= 1;
 	
-	/** ƒvƒŒƒCƒ„[‚Ì‘Š‘ÎˆÊ’u‚ğ¦‚·’è”(=2)‚ÅAƒp[ƒgƒi[‚ÌˆÊ’u‚ğ¦‚µ‚Ü‚·B */
+	/** ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç›¸å¯¾ä½ç½®ã‚’ç¤ºã™å®šæ•°(=2)ã§ã€ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®ä½ç½®ã‚’ç¤ºã—ã¾ã™ã€‚ */
 	static PARTNER	= 2;
 	
-	/** ƒvƒŒƒCƒ„[‚Ì‘Š‘ÎˆÊ’u‚ğ¦‚·’è”(=3)‚ÅA©•ª‚Ì‰E‚ÌÈ(right hand)‚ğ¦‚µ‚Ü‚·B */
+	/** ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç›¸å¯¾ä½ç½®ã‚’ç¤ºã™å®šæ•°(=3)ã§ã€è‡ªåˆ†ã®å³ã®å¸­(right hand)ã‚’ç¤ºã—ã¾ã™ã€‚ */
 	static RIGHT	= 3;
 	
 	/**
-	 * @type	{Board}	ƒ{[ƒh
+	 * @type	{Board}	ãƒœãƒ¼ãƒ‰
 	 */
 	myBoard;
 
 	/**
-	 * @type	{number} ÀÈ’è”
+	 * @type	{number} åº§å¸­å®šæ•°
 	 */
 	mySeat;
 	
@@ -47,27 +47,27 @@ class Player {
  * instance methods
  */
 	/**
-	 * ‚±‚ÌƒvƒŒƒCƒ„[‚ªQÆ‚·‚éƒ{[ƒh‚ğİ’è‚µ‚Ü‚·B
-	 * Œp³ƒNƒ‰ƒX‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚È‚Ç‚Åg—p‚µ‚Ü‚·B
-	 * ã‘‚«‰Â”\‚Å‚·B
-	 * @param	{Board} board	ƒvƒŒƒCƒ„[‚ªQÆ‚·‚éƒ{[ƒh
+	 * ã“ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå‚ç…§ã™ã‚‹ãƒœãƒ¼ãƒ‰ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * ç¶™æ‰¿ã‚¯ãƒ©ã‚¹ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãªã©ã§ä½¿ç”¨ã—ã¾ã™ã€‚
+	 * ä¸Šæ›¸ãå¯èƒ½ã§ã™ã€‚
+	 * @param	{Board} board	ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå‚ç…§ã™ã‚‹ãƒœãƒ¼ãƒ‰
 	 */
 	setBoard(board) {
 		this.myBoard = board;
 	}
 	
 	/**
-	 * ‚±‚ÌƒvƒŒƒCƒ„[‚ÌÀ‚Á‚Ä‚¢‚éêŠ(Board.NORTH‚È‚Ç)‚ğw’è‚µ‚Ü‚·B
-	 * @param	{number} seat	ƒvƒŒƒCƒ„[‚ÌÀ‚Á‚Ä‚¢‚éêŠ(ÀÈ’è”)
+	 * ã“ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åº§ã£ã¦ã„ã‚‹å ´æ‰€(Board.NORTHãªã©)ã‚’æŒ‡å®šã—ã¾ã™ã€‚
+	 * @param	{number} seat	ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åº§ã£ã¦ã„ã‚‹å ´æ‰€(åº§å¸­å®šæ•°)
 	 */
 	setMySeat(seat) {
 		this.mySeat = seat;
 	}
 	
 	/**
-	 * ãˆÊƒvƒƒOƒ‰ƒ€‚©‚çƒR[ƒ‹‚³‚ê‚éƒƒ\ƒbƒh‚ÅA
-	 * ‚±‚ÌƒvƒŒƒCƒ„[‚ÌƒrƒbƒhAƒvƒŒƒC‚ğ•Ô‹p‚µ‚Ü‚·B
-	 * @returns		{Bid|Card}	ƒvƒŒƒC“à—e
+	 * ä¸Šä½ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‹ã‚‰ã‚³ãƒ¼ãƒ«ã•ã‚Œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã§ã€
+	 * ã“ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ“ãƒƒãƒ‰ã€ãƒ—ãƒ¬ã‚¤ã‚’è¿”å´ã—ã¾ã™ã€‚
+	 * @returns		{Bid|Card}	ãƒ—ãƒ¬ã‚¤å†…å®¹
 	 */
 	async play() {
 		switch (this.myBoard.status) {
@@ -87,7 +87,7 @@ class Player {
 			
 		case Board.DEALING:
 		case Board.SCORING:
-			throw new Error("Player.play() ‚ª DEALING/SCORING ó‘Ô‚Ìƒ{[ƒh‚ÅŒÄ‚Î‚ê‚Ü‚µ‚½");
+			throw new Error("Player.play() ãŒ DEALING/SCORING çŠ¶æ…‹ã®ãƒœãƒ¼ãƒ‰ã§å‘¼ã°ã‚Œã¾ã—ãŸ");
 			
 		default:
 			throw new Error("play() internal error");
@@ -95,55 +95,55 @@ class Player {
 	}
 	
 /*
- * ƒTƒuƒNƒ‰ƒX‚É’ñ‹Ÿ‚·‚é•Ö—˜ŠÖ”
+ * ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã«æä¾›ã™ã‚‹ä¾¿åˆ©é–¢æ•°
  */
 	/**
-	 * ƒp[ƒgƒi[‚ÌÀ‚Á‚Ä‚¢‚éêŠ(Board.NORTH‚È‚Ç‚ÌÀÈ’è”)‚ğ•Ô‹p‚µ‚Ü‚·B
+	 * ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®åº§ã£ã¦ã„ã‚‹å ´æ‰€(Board.NORTHãªã©ã®åº§å¸­å®šæ•°)ã‚’è¿”å´ã—ã¾ã™ã€‚
 	 *
-	 * @returns		{number}	ƒp[ƒgƒi[‚ÌÀÈ”Ô†
+	 * @returns		{number}	ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®åº§å¸­ç•ªå·
 	 */
 	getPartnerSeat() {
 		return (this.mySeat + 2) % 4;
 	}
 	
 	/**
-	 * ‚±‚ÌƒvƒŒƒCƒ„[‚Ì‚à‚Âƒnƒ“ƒh‚ğ•Ô‹p‚µ‚Ü‚·B
-	 * @returns		{Packet}	‚±‚ÌƒvƒŒƒCƒ„[‚Ìƒnƒ“ƒh
+	 * ã“ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚‚ã¤ãƒãƒ³ãƒ‰ã‚’è¿”å´ã—ã¾ã™ã€‚
+	 * @returns		{Packet}	ã“ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒãƒ³ãƒ‰
 	 */
 	getMyHand() {
 		return this.myBoard.getHand(this.mySeat);
 	}
 	
 	/**
-	 * Œ»İƒvƒŒƒC‡”Ô‚Æ‚È‚Á‚Ä‚¢‚éƒnƒ“ƒh‚ğæ“¾‚µ‚Ü‚·B
-	 * ‚±‚ÌƒvƒŒƒCƒ„[‚ªƒfƒBƒNƒŒƒAƒ‰[‚Ìê‡A‚±‚Ìƒƒ\ƒbƒh‚ğg—p‚·‚é‚±‚Æ‚Å
-	 * ƒvƒŒƒC‘ÎÛ‚Æ‚È‚Á‚Ä‚¢‚é©•ªA‚Ü‚½‚Íƒ_ƒ~[‚Ì‚¢‚¸‚ê‚©‚Ìƒnƒ“ƒh‚ªæ“¾‚Å‚«‚Ü‚·B
-	 * @returns		{Packet}	Œ»İƒvƒŒƒC”Ô‚Æ‚È‚Á‚Ä‚¢‚éƒvƒŒƒCƒ„[‚Ìƒnƒ“ƒh
+	 * ç¾åœ¨ãƒ—ãƒ¬ã‚¤é †ç•ªã¨ãªã£ã¦ã„ã‚‹ãƒãƒ³ãƒ‰ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * ã“ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒãƒ‡ã‚£ã‚¯ãƒ¬ã‚¢ãƒ©ãƒ¼ã®å ´åˆã€ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ä½¿ç”¨ã™ã‚‹ã“ã¨ã§
+	 * ãƒ—ãƒ¬ã‚¤å¯¾è±¡ã¨ãªã£ã¦ã„ã‚‹è‡ªåˆ†ã€ã¾ãŸã¯ãƒ€ãƒŸãƒ¼ã®ã„ãšã‚Œã‹ã®ãƒãƒ³ãƒ‰ãŒå–å¾—ã§ãã¾ã™ã€‚
+	 * @returns		{Packet}	ç¾åœ¨ãƒ—ãƒ¬ã‚¤ç•ªã¨ãªã£ã¦ã„ã‚‹ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒãƒ³ãƒ‰
 	 */
 	getHand() {
 		return this.myBoard.getHand(this.myBoard.getTurn());
 	}
 	
 	/**
-	 * @returns		{Packet}	ƒ_ƒ~[‚Ìƒnƒ“ƒh
+	 * @returns		{Packet}	ãƒ€ãƒŸãƒ¼ã®ãƒãƒ³ãƒ‰
 	 */
 	getDummyHand() {
 		return this.myBoard.getHand(this.myBoard.getDummy());
 	}
 	
 	/**
-	 * Œ»İê‚Éo‚Ä‚¢‚éƒJ[ƒh‚ğæ“¾‚µ‚Ü‚·B
-	 * @returns		{Trick}	Œ»İê‚Éo‚Ä‚¢‚éƒJ[ƒh
+	 * ç¾åœ¨å ´ã«å‡ºã¦ã„ã‚‹ã‚«ãƒ¼ãƒ‰ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @returns		{Trick}	ç¾åœ¨å ´ã«å‡ºã¦ã„ã‚‹ã‚«ãƒ¼ãƒ‰
 	 */
 	getTrick() {
 		return this.myBoard.getTrick();
 	}
 	
 	/**
-	 * ƒŠ[ƒh‚³‚ê‚½ƒJ[ƒh‚ğæ“¾‚µ‚Ü‚·B
-	 * ©•ª‚ªƒŠ[ƒh‚ğs‚¤”Ô‚Å‚ ‚Á‚½ê‡‚âABoard ‚Ìó‘Ô‚ª Board.PLAYING
-	 * ‚Å‚È‚©‚Á‚½ê‡Anull ‚ª•Ô‹p‚³‚ê‚Ü‚·B
-	 * @returns		{Card} ƒŠ[ƒh‚³‚ê‚½ƒJ[ƒh
+	 * ãƒªãƒ¼ãƒ‰ã•ã‚ŒãŸã‚«ãƒ¼ãƒ‰ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * è‡ªåˆ†ãŒãƒªãƒ¼ãƒ‰ã‚’è¡Œã†ç•ªã§ã‚ã£ãŸå ´åˆã‚„ã€Board ã®çŠ¶æ…‹ãŒ Board.PLAYING
+	 * ã§ãªã‹ã£ãŸå ´åˆã€null ãŒè¿”å´ã•ã‚Œã¾ã™ã€‚
+	 * @returns		{Card} ãƒªãƒ¼ãƒ‰ã•ã‚ŒãŸã‚«ãƒ¼ãƒ‰
 	 */
 	getLead() {
 		const o = this.getPlayOrder();
@@ -152,20 +152,20 @@ class Player {
 	}
 	
 	/**
-	 * Œ»İ‚ÌƒvƒŒƒC‡(lead, 2nd, 3rd, 4th)‚ğ•Ô‚µ‚Ü‚·B
-	 * Board ‚Ìó‘Ô‚ª Board.OPENING, Board.PLAYING ˆÈŠO‚Ìê‡A -1 ‚ª•Ô‹p‚³‚ê‚Ü‚·B
+	 * ç¾åœ¨ã®ãƒ—ãƒ¬ã‚¤é †(lead, 2nd, 3rd, 4th)ã‚’è¿”ã—ã¾ã™ã€‚
+	 * Board ã®çŠ¶æ…‹ãŒ Board.OPENING, Board.PLAYING ä»¥å¤–ã®å ´åˆã€ -1 ãŒè¿”å´ã•ã‚Œã¾ã™ã€‚
 	 *
-	 * @returns		{number} ƒvƒŒƒC‡‚ğ¦‚·’è”(LEAD, SECOND, THIRD, FORTH)
+	 * @returns		{number} ãƒ—ãƒ¬ã‚¤é †ã‚’ç¤ºã™å®šæ•°(LEAD, SECOND, THIRD, FORTH)
 	 */
 	getPlayOrder() {
 		return this.myBoard.getPlayOrder();
 	}
 	
 	/**
-	 * ƒ_ƒ~[‚Ì©•ª‚©‚ç‚Ì‘Š‘ÎˆÊ’u‚ğ•Ô‚µ‚Ü‚·B
-	 * ƒ_ƒ~[‚ª‚Ü‚¾Œˆ’è‚µ‚Ä‚¢‚È‚¢ê‡AError ‚ªƒXƒ[‚³‚ê‚Ü‚·B
+	 * ãƒ€ãƒŸãƒ¼ã®è‡ªåˆ†ã‹ã‚‰ã®ç›¸å¯¾ä½ç½®ã‚’è¿”ã—ã¾ã™ã€‚
+	 * ãƒ€ãƒŸãƒ¼ãŒã¾ã æ±ºå®šã—ã¦ã„ãªã„å ´åˆã€Error ãŒã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 *
-	 * @returns		{number} ƒ_ƒ~[‚Ì‘Š‘ÎˆÊ’u
+	 * @returns		{number} ãƒ€ãƒŸãƒ¼ã®ç›¸å¯¾ä½ç½®
 	 * @see			ME
 	 * @see			LEFT
 	 * @see			PARTNER
@@ -174,16 +174,16 @@ class Player {
 	getDummyPosition() {
 		const dummySeat = this.myBoard.getDummy();
 		if (dummySeat == -1)
-			throw new Error("‚Ü‚¾ƒRƒ“ƒgƒ‰ƒNƒg‚ªŒˆ’è‚µ‚Ä‚¢‚Ü‚¹‚ñ");
+			throw new Error("ã¾ã ã‚³ãƒ³ãƒˆãƒ©ã‚¯ãƒˆãŒæ±ºå®šã—ã¦ã„ã¾ã›ã‚“");
 		
 		return (dummySeat - this.mySeat + 4) % 4;
 	}
 	
 	/**
-	 * Leader ‚Ì©•ª‚©‚ç‚Ì‘Š‘ÎˆÊ’u‚ğ•Ô‚µ‚Ü‚·B
-	 * ƒvƒŒƒC‚Ìó‘Ô‚Å‚È‚¢‚Æ‚«AIllegalStatusException ‚ªƒXƒ[‚³‚ê‚Ü‚·B
+	 * Leader ã®è‡ªåˆ†ã‹ã‚‰ã®ç›¸å¯¾ä½ç½®ã‚’è¿”ã—ã¾ã™ã€‚
+	 * ãƒ—ãƒ¬ã‚¤ã®çŠ¶æ…‹ã§ãªã„ã¨ãã€IllegalStatusException ãŒã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 *
-	 * @returns		{number} Leader‚Ì‘Š‘ÎˆÊ’u
+	 * @returns		{number} Leaderã®ç›¸å¯¾ä½ç½®
 	 * @see			ME
 	 * @see			LEFT
 	 * @see			PARTNER
@@ -192,9 +192,9 @@ class Player {
 	getLeaderPosition() {
 		if ( (this.myBoard.status != Board.OPENING) &&
 				(this.myBoard.getStatus() != Board.PLAYING) )
-			throw new Error("ƒvƒŒƒC‚ªŠJn‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+			throw new Error("ãƒ—ãƒ¬ã‚¤ãŒé–‹å§‹ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 		if (this.myBoard.status == Board.SCORING)
-			throw new Error("ƒ{[ƒh‚Í‚·‚Å‚ÉI—¹‚µ‚Ä‚¢‚Ü‚·");
+			throw new Error("ãƒœãƒ¼ãƒ‰ã¯ã™ã§ã«çµ‚äº†ã—ã¦ã„ã¾ã™");
 		
 		const t = this.myBoard.getTrick();
 		return (t.leader - this.mySeat + 4) % 4;
@@ -210,8 +210,8 @@ class Player {
 
 
 /**
- * ‰Â”\‚ÈƒvƒŒƒC‚ğƒ‰ƒ“ƒ_ƒ€‚És‚¤ƒRƒ“ƒsƒ…[ƒ^ƒvƒŒƒCƒ„[‚Å‚·B
- * ƒrƒbƒh‚Í‚Â‚Ë‚ÉƒpƒX‚µ‚Ü‚·BƒfƒBƒNƒŒƒAƒ‰[‚Æ‚µ‚Ä‚àƒvƒŒƒC‚Å‚«‚Ü‚·B
+ * å¯èƒ½ãªãƒ—ãƒ¬ã‚¤ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«è¡Œã†ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã§ã™ã€‚
+ * ãƒ“ãƒƒãƒ‰ã¯ã¤ã­ã«ãƒ‘ã‚¹ã—ã¾ã™ã€‚ãƒ‡ã‚£ã‚¯ãƒ¬ã‚¢ãƒ©ãƒ¼ã¨ã—ã¦ã‚‚ãƒ—ãƒ¬ã‚¤ã§ãã¾ã™ã€‚
  *
  * @version		making		12, June 2020
  * @author		Yusuke Sasaki
@@ -235,35 +235,35 @@ class RandomPlayer extends Player {
  * implements
  */
 	/**
-	 * ƒpƒX‚µ‚Ü‚·B
+	 * ãƒ‘ã‚¹ã—ã¾ã™ã€‚
 	 *
-	 * @return		ƒpƒX
+	 * @return		ãƒ‘ã‚¹
 	 */
 	async bid() {
 		return new Bid(Bid.PASS, 0, 0);
 	}
 	
 	/**
-	 * ‰Â”\‚ÈƒvƒŒƒC‚ğƒ‰ƒ“ƒ_ƒ€‚É‘I‘ğ‚µA•Ô‹p‚µ‚Ü‚·B
+	 * å¯èƒ½ãªãƒ—ãƒ¬ã‚¤ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«é¸æŠã—ã€è¿”å´ã—ã¾ã™ã€‚
 	 *
-	 * @return		ƒ‰ƒ“ƒ_ƒ€‚ÈƒvƒŒƒC
+	 * @return		ãƒ©ãƒ³ãƒ€ãƒ ãªãƒ—ãƒ¬ã‚¤
 	 */
 	async draw() {
 		const board = this.myBoard;
 		const hand = this.getHand();
 		
-		// ƒvƒŒƒC‚·‚×‚«ƒnƒ“ƒh‚ğ¬‚º‚é
+		// ãƒ—ãƒ¬ã‚¤ã™ã¹ããƒãƒ³ãƒ‰ã‚’æ··ãœã‚‹
 		hand.shuffle();
 		let played = null;
 		
-		// ¬‚º‚ç‚ê‚½ƒnƒ“ƒh‚Ì‰º‚©‚ç‡‚ÉƒvƒŒƒC‰Â”\‚ÈƒJ[ƒh‚ğŒŸõ‚·‚é
+		// æ··ãœã‚‰ã‚ŒãŸãƒãƒ³ãƒ‰ã®ä¸‹ã‹ã‚‰é †ã«ãƒ—ãƒ¬ã‚¤å¯èƒ½ãªã‚«ãƒ¼ãƒ‰ã‚’æ¤œç´¢ã™ã‚‹
 		for (let i = 0; i < hand.children.length; i++) {
 			played = hand.children[i];
 			if (board.allows(played)) break;
 		}
 		if (played == null) throw new Error();
 		
-		// ƒnƒ“ƒh‚ğ–ß‚µ‚Ä‚¨‚­
+		// ãƒãƒ³ãƒ‰ã‚’æˆ»ã—ã¦ãŠã
 		hand.arrange();
 		
 		return played;
