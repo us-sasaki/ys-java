@@ -386,4 +386,10 @@ public class ManagedObject extends C8yData {
 	 */
 	//public C8y_IsBinary c8y_IsBinary;
 	
+	/**
+	 * 竹村さんが言っていた、位置トラッキングする際の fragment
+	 * 実際はなくても問題ない。付与した場合の効果は不明。
+	 */
+	//public JsonObject c8y_MotionTracking;
+	
 }
