@@ -154,7 +154,8 @@ class Entity {
 	 * @type {number}
 	 */
 	direction;
-	/** この Entity を表示するか
+	/**
+	 *  この Entity を表示するか
 	 * @type {boolean}
 	 */
 	isVisible;
@@ -2404,8 +2405,6 @@ class TableGui extends Entity {
 
 /**
  * WinnerCard class 定義
- * @constructor
- * @extends Entity
  */
 class WinnerCard extends Entity {
 
@@ -2459,8 +2458,6 @@ class WinnerCard extends Entity {
 
 /**
  * WinnerGui class 定義
- * @constructor
- * @extends Entities
  */
 class WinnerGui extends Entities {
 	static WIN = true;
