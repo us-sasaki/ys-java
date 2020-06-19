@@ -233,6 +233,18 @@ class Entity {
 		this.x = x;
 		this.y = y;
 	}
+
+	/**
+	 * 位置と大きさを設定します。
+	 * @param {number} x x座標
+	 * @param {number} y y座標
+	 * @param {number} w 幅
+	 * @param {number} h 高さ
+	 */
+	setBounds(x, y, w, h) {
+		this.setPosition(x, y);
+		this.setSize(w, h);
+	}
 	
 	/**
 	 * この Entity の向き(0-3)を指定します。
@@ -557,24 +569,40 @@ class Packet extends Entities {
 	}
 
 	/**
-	 * インデックスまたはカードを指定してこの Packet からひきます
+	 * インデックスまたはカードを指定してこの Packet からひきます。
+	 * 引数を省略した場合、一番最後のカードを引きます。
 	 * 
-	 * @param {number/Card} indexOrCard 
+	 * @param {number|Card} indexOrCardOrSuit インデックスまたは Card または suit
+	 * @param {number} value カードの数字、これを指定した場合第一パラメータは suit
+	 * @returns		{Card} 引いたカード
 	 */
-	pull(indexOrCard) {
-		if (typeof indexOrCard === 'number' || indexOrCard === void 0) return super.pull(indexOrCard);
-		return super.pull(this.indexOf(indexOrCard));
+	pull(indexOrCardOrSuit, value) {
+		if (value === void 0) {
+			if (typeof indexOrCardOrSuit === 'number' || indexOrCardOrSuit === void 0)
+				return super.pull(indexOrCardOrSuit);
+			return super.pull(this.indexOf(indexOrCardOrSuit));
+		}
+		return super.pull(this.indexOf(indexOrCardOrSuit, value));
 	}
 
 	/**
 	 * 指定された Card の index を返却します。存在しない場合、 -1 を返却します。
-	 * @param {Card} card 
+	 * @param {Card|number} cardOrSuit Card または suit
+	 * @param	{number} value カードの数字
 	 * @return	{number} index
 	 */
-	indexOf(card) {
+	indexOf(cardOrSuit, value) {
+		let suit;
+		if (value === void 0) {
+			suit = cardOrSuit.suit;
+			value = cardOrSuit.value;
+		} else {
+			suit = cardOrSuit;
+		}
+
 		for (let i = 0; i < this.children.length; i++) {
-			if (this.children[i].suit === card.suit &&
-				 this.children[i].value === card.value) return i;
+			if (this.children[i].suit === suit &&
+				 this.children[i].value === value) return i;
 		}
 		return -1;
 	}
@@ -761,19 +789,6 @@ class Field extends Entities {
 	}
 	
 	/**
-	 * Event type は
-	 * https://developer.mozilla.org/en-US/docs/Web/Events
-	 * を見ること。
-	 */
-	addEventListener(type, listener, options) {
-		this.canvas.addEventListener(type, listener, options);
-	}
-	
-	removeEventListener(type, listener, options) {
-		this.canvas.addEventListener(type, listener, options);
-	}
-
-	/**
 	 * カードがクリックされるのを検出する async 関数です。
 	 * クリック位置は MouseEvent の offsetX, offsetY で検出します。
 	 * @async
@@ -799,15 +814,23 @@ class Field extends Entities {
 
 	/**
 	 * どこかがクリックされるまで待つ async 関数です。
+	 * millis を指定することで、最大待ち時間を設定できます。
 	 * @async
+	 * @returns		クリックされた場合 true
 	 */
-	waitClick() {
+	waitClick(millis) {
 		return new Promise( (res) => {
 			const listener = () => {
 				this.canvas.removeEventListener('click', listener);
-				res();
+				res(true);
 			};
 			this.canvas.addEventListener('click', listener);
+			if (millis) {
+				setTimeout( () => {
+					this.canvas.removeEventListener('click', listener);
+					res(false);
+				}, millis);
+			}
 		});
 	}
 
@@ -818,6 +841,79 @@ class Field extends Entities {
 	 */
 	static async sleep(millis) {
 		return new Promise( (res) => { setTimeout(res, millis);	});
+	}
+}
+
+/**
+ * Canvas 上のボタンです。
+ * 一度だけ生成、追加されることを期待しています。
+ * field.canvas への event listner を削除しません。
+ */
+class Button extends Entity {
+	listener;
+
+	/**
+	 * ボタンを生成します。
+	 * @param {Field} field ブリッジの Field
+	 * @param {string} caption ボタンに表示する文字列
+	 */
+	constructor(field, caption) {
+		super();
+		this.field = field;
+		this.caption = caption;
+		const canvas = field.canvas;
+		canvas.addEventListener('mousemove', (evt) => this.onMouseMove(evt), false);
+		canvas.addEventListener('click', (evt) => this.onClick(evt), false);
+		canvas.addEventListener('mouseDown', (evt) => this.onMouseDown(evt), false);
+		this.baseColor = 'rgb(240,240,240)';
+		this.color = this.baseColor;
+	}
+
+/*------------------
+ * instance methods
+ */
+	setListener(listener) {
+		this.listener = listener;
+	}
+
+	_isInternal_(x, y) {
+		return (this.x <= x && x <= (this.x + this.w) &&
+			this.y <= y && y <= (this.y + this.h));
+	}
+
+	onMouseMove(evt) {
+		if (!this.isVisible) return;
+		if (this._isInternal_(evt.offsetX, evt.offsetY)) {
+			this.color = 'rgb(128,128,128)';
+		} else {
+			this.color = 'rgb(240,240,240)';
+		}
+		this.field.draw();
+	}
+
+	onMouseDown(evt) {
+		if (!this.isVisible) return;
+		if (!this._isInternal_(evt.offsetX, evt.offsetY)) return;
+		this.color = 'rgb(100,100,100)';
+		this.field.draw();
+	}
+	onClick(evt) {
+		if (!this.isVisible) return;
+		if (!this._isInternal_(evt.offsetX, evt.offsetY)) return;
+		//this.color = 'rgb(240,240,240)';
+		this.field.draw();
+		if (this.listener) this.listener();
+	}
+
+	draw(ctx) {
+		if (!this.isVisible) return;
+		const r = this.getRect();
+		ctx.fillStyle = this.color; //'rgb(0,32,0)'; // back color
+		ctx.fillRect(r.x, r.y, r.w, r.h);
+		ctx.font = 'normal 13px SanSerif';
+		ctx.fillStyle = 'rgb(64,64,64)'; // white
+		const tm = ctx.measureText(this.caption);
+		ctx.fillText(this.caption, r.x + Math.floor((r.w - tm.width)/2), r.y + 16);
 	}
 }
 	
@@ -1301,24 +1397,12 @@ class Bid {
 	 * @override
 	 */
 	toString() {
-		switch (this.kind) {
-		case Bid.BID:
-			return "[" + this.level + " " +
-					" C D H SNT".substring(this.suit*2-2, this.suit*2) + "  ]";
-		case Bid.PASS:
-			return "[pass  ]";
-		
-		case Bid.DOUBLE:
-			return "[" + this.level + " " +
-					" C D H SNT".substring(this.suit*2-2, this.suit*2) + "X ]";
-		
-		case Bid.REDOUBLE:
-			return "[" + this.level + " " +
-					" C D H SNT".substring(this.suit*2-2, this.suit*2) + "XX]";
-			
-		default:
-			return "[? bid ]";
-		}
+		if (this.kind === Bid.PASS) return "[pass  ]";
+		let trailer = "  ]";
+		if (this.kind === Bid.DOUBLE) trailer = "X ]";
+		else if (this.kind === Bid.REDOUBLE) trailer = "XX]";
+		return "[" + this.level + " " +
+				" C D H SNT".substring(this.suit*2-2, this.suit*2) + trailer;
 	}
 }
 	
@@ -1328,7 +1412,6 @@ class Bid {
  * @classdesc ダミーハンドのレイアウトです。
  * 			のレイアウトは、対象となる Packet が NaturalCardOrder で
  * 			arrange() されていることを想定して処理されます。
- * @constructor
  */
 class DummyHandLayout {
 	constructor() {
@@ -1966,7 +2049,7 @@ class Trick extends Packet {
 	 * @returns	{Card}	winnerカード
 	 */
 	getWinnerCard() {
-		if (winnerCard == null) this._setWinner_();
+		if (this.winnerCard == null) this._setWinner_();
 		return this.winnerCard;
 	}
 	
@@ -2419,7 +2502,7 @@ class WinnerCard extends Entity {
 		super();
 		this.win = win;
 		
-		this.setSize(WinnerGui.SHORTER_EDGE, WinnerGui.LONGER_EDGE);
+		this.setSize(WinnerCard.SHORTER_EDGE, WinnerCard.LONGER_EDGE);
 		if (win) {
 			this.direction = Entity.UPRIGHT;
 		} else {
@@ -2435,9 +2518,11 @@ class WinnerCard extends Entity {
 	 * @param	{Context} ctx	グラフィックコンテキスト
 	 */
 	draw(ctx) {
+//console.log('WinnerCard.draw() called');
 		if (!this.isVisible) return;
 		let x,y, c,s;
 		const r = this.getRect();
+//console.log('WinnerCard getRect()='+JSON.stringify(r));
 		switch (this.direction) {
 		case 1:
 			c = 0; s = 1;	x = r.y;		y = -r.x - r.w; break;
@@ -2450,6 +2535,7 @@ class WinnerCard extends Entity {
 		}
 		const img = CardImageHolder.getBackImage();
 		
+//console.log('WinnerCard x='+x+' y='+y+' c='+c+' s='+s);
 		ctx.setTransform(c, s, -s, c, 0, 0);
 		ctx.drawImage(img, x, y, this.w, this.h);
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -2887,19 +2973,33 @@ class Board extends Entities {
 			throw new Error("playWithGui() は OPENING/PLAYING ステータスである必要があります");
 		}
 		this.play(play);
-		// TrickAnimation 処理
-		if (!this.trickGui.isFinished()) return;
+		const field = this.getField();
+		if (!this.trickGui.isFinished()) {
+			field.draw();
+			return;
+		}
 
+		// TrickAnimation 処理
 		let trickGui = this.trickGui;
 		const newTrickGui = this.getTrick(); // 現在のトリック
 
-		const field = this.getField();
+		field.draw();
+		// ウィナーを点滅させる
+		const toBlink = this.trickGui.getWinnerCard();
+		let i = 0;
+		for (; i < 12; i++) {
+			const clicked = await field.waitClick(300);
+			if (clicked) break;
+			toBlink.isVisible = !toBlink.isVisible;
+			field.draw();
+		}
+		if (i == 12) await Field.sleep(300);
+		toBlink.isVisible = true;
 
-		await field.waitClick();
 		// カードを裏返し、ウィナーの向きに揃える
 		const dir = ((trickGui.getWinner() ^ this.direction) & 1) + 2;
 		trickGui.children.forEach( c => {
-console.log('typeof c='+(c.constructor.name));
+//console.log('typeof c='+(c.constructor.name));
 			c.isHead = false;
 			c.setDirection(dir);
 		});

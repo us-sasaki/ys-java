@@ -41,3 +41,4 @@ karma.conf.js の files array に以下エントリを入れる。
 ```
 
 位置は`files` 内ではなくルート
+
