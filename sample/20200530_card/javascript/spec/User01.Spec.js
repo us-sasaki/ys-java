@@ -1,7 +1,8 @@
 'use strict';
 
 const startBridge = function() {
-	//window.alert(problem);
+
+//window.alert(problem);
 	// another test code
 	const field = new Field('canvas');
 	const board = new Board(3);
