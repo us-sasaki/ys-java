@@ -685,7 +685,20 @@ class Packet extends Entities {
 }
 
 /**
+ * Quit ボタンを押し、メインループが中断されたことを示す例外です。
+ * ブリッジの中で、ブロックするメソッド(async)は、Quit ボタンを押した際に
+ * 即座にブロックを解除し、この例外をスローすることが求められます。
+ * 
+ */
+class QuitInterruptException {
+	//
+}
+
+/**
  * Field class 定義。Java 版の BridgeField に相当。
+ * 実際の canvas への描画の他、クリック検出、一時停止など、表示、入力、
+ * async メソッドを持ちます。
+ * 
  * @classdesc カードなどが描画されるブラウザ上の画面領域
  * @constructor
  * @extends	Entities
@@ -852,6 +865,10 @@ class Field extends Entities {
 class Button extends Entity {
 	listener;
 
+	static BASE_COLOR = 'rgb(240,240,240)';
+	static OVER_COLOR = 'rgb(128,128,128)';
+	static PRESS_COLOR = 'rgb(100,100,100)';
+
 	/**
 	 * ボタンを生成します。
 	 * @param {Field} field ブリッジの Field
@@ -864,47 +881,89 @@ class Button extends Entity {
 		const canvas = field.canvas;
 		canvas.addEventListener('mousemove', (evt) => this.onMouseMove(evt), false);
 		canvas.addEventListener('click', (evt) => this.onClick(evt), false);
-		canvas.addEventListener('mouseDown', (evt) => this.onMouseDown(evt), false);
-		this.baseColor = 'rgb(240,240,240)';
+		canvas.addEventListener('mousedown', (evt) => this.onMouseDown(evt), false);
+		canvas.addEventListener('mouseup', (evt) => this.onMouseUp(evt), false);
+		this.baseColor = Button.BASE_COLOR;
 		this.color = this.baseColor;
+		this.pressed = 0;
 	}
 
 /*------------------
  * instance methods
  */
+	/**
+	 * クリック時のハンドラーを設定します。
+	 * @param {Function} listener onClick 時に呼ばれる関数 void → void
+	 */
 	setListener(listener) {
 		this.listener = listener;
 	}
 
+	/**
+	 * 指定された座標がこのボタンの内側にあるかを判定します。
+	 * @private
+	 * @param {number} x 判定する x 座標
+	 * @param {number} y 判定する y 座標
+	 */
 	_isInternal_(x, y) {
 		return (this.x <= x && x <= (this.x + this.w) &&
 			this.y <= y && y <= (this.y + this.h));
 	}
 
+	/**
+	 * マウス移動を検知したときのハンドラ
+	 * @param {MouseEvent} evt イベントオブジェクト
+	 */
 	onMouseMove(evt) {
 		if (!this.isVisible) return;
 		if (this._isInternal_(evt.offsetX, evt.offsetY)) {
-			this.color = 'rgb(128,128,128)';
+			this.color = Button.OVER_COLOR;
 		} else {
-			this.color = 'rgb(240,240,240)';
+			this.color = Button.BASE_COLOR;
 		}
+		this.pressed = 0;
 		this.field.draw();
 	}
 
+	/**
+	 * マウスボタン押下したときのハンドラ
+	 * @param {MouseEvent} evt イベントオブジェクト
+	 */
 	onMouseDown(evt) {
 		if (!this.isVisible) return;
 		if (!this._isInternal_(evt.offsetX, evt.offsetY)) return;
-		this.color = 'rgb(100,100,100)';
+		this.color = Button.PRESS_COLOR;
+		this.pressed = 1;
 		this.field.draw();
 	}
+	
+	/**
+	 * マウスボタンを離したときのハンドラ
+	 * @param {MouseEvent} evt イベントオブジェクト
+	 */
+	onMouseUp(evt) {
+		if (!this.isVisible) return;
+		if (!this._isInternal_(evt.offsetX, evt.offsetY)) return;
+		this.color = Button.OVER_COLOR;
+		this.pressed = 0;
+		this.field.draw();
+	}
+
+	/**
+	 * クリック時のハンドラ
+	 * @param {MouseEvent} evt イベントオブジェクト
+	 */
 	onClick(evt) {
 		if (!this.isVisible) return;
 		if (!this._isInternal_(evt.offsetX, evt.offsetY)) return;
-		//this.color = 'rgb(240,240,240)';
 		this.field.draw();
 		if (this.listener) this.listener();
 	}
 
+	/**
+	 * このボタンを描画します
+	 * @param {Context} ctx グラフィックコンテキスト
+	 */
 	draw(ctx) {
 		if (!this.isVisible) return;
 		const r = this.getRect();
@@ -913,7 +972,9 @@ class Button extends Entity {
 		ctx.font = 'normal 13px SanSerif';
 		ctx.fillStyle = 'rgb(64,64,64)'; // white
 		const tm = ctx.measureText(this.caption);
-		ctx.fillText(this.caption, r.x + Math.floor((r.w - tm.width)/2), r.y + 16);
+		ctx.fillText(this.caption,
+			this.pressed + r.x + Math.floor((r.w - tm.width)/2),
+			this.pressed + r.y + 16);
 	}
 }
 	

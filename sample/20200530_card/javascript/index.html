@@ -7,47 +7,45 @@
     <title>ブリッジシミュレーター</title>
 </head>
 <body>
+    <div id="selectDialog">
     <div id="modal-overlay"></div>
-    <table width="100%" height="100%" id="mainTable">
-        <tr>
-            <td>
-                <div id="modal-content">
-                    <select name="select">
-                        <option value="問題1">ブリッジの問題(1)</option>
-                        <option value="問題2">問題(2)</option>
-                        <option value="問題3">問題(3)</option>
-                        <option value="問題4">問題(4)</option>
-                    </select>
-                    <input type="button" value="開始する">
+    <div id="modal-content">
+        <table class="full">
+            <tr><td>ブリッジシミュレーター</td></tr>
+            <tr><td>
+                <table class="full"><tr><td>
+                <select name="select">
+                    <option value="問題1">ブリッジの問題(1)</option>
+                    <option value="問題2">とりあえず名前の長い問題(2)</option>
+                    <option value="問題3">問題(3)</option>
+                    <option value="問題4">問題(4)</option>
+                </select>
+                </td>
+                <td><input type="button" value="開始する"></td></tr>
+                </table>
+            </td></tr>
+            <tr><td><input type="button" value="今のプレイを自動再生する"></td></tr>
+            <tr><td><input type="button" value="同じハンドをもう一度プレイする"></td></tr>
+        </table>
+    </div>
+    </div>
+    <canvas id="canvas" width="640" height="480"></canvas>
 
-                </div>
-                <table width=100%"><tr><td width=100>
-                    <!-- ここからモーダルウィンドウ -->
-                    <!-- <a id="modal-open" class="button-link">選択</a> -->
-                    <!-- ここまでモーダルウィンドウ -->
-                </td></tr></table>
-            </td>
-        </tr>
-        <tr>
-            <td width="640" height="480">
-                <canvas id="canvas" width="640" height="480"></canvas>
-            </td>
-        </tr>
-    </table>
-    <script type="text/javascript">
-        const problem = [
-            {
-                title: "タイトル",
-                description: "説明文章",
-                contract: "4SX",
-                n: "C:AKQ",
-                e: "C:JT9",
-                s: "C:876",
-                w: "C:543"
-            }
-        ];
-    </script>
     <script type="text/javascript" src="Card.js"></script>
     <script type="text/javascript" src="spec/User01.Spec.js"></script>
+    <script type="text/javascript">
+const problem = [
+    {
+        title: "タイトル",
+        description: "説明文章",
+        contract: "4SX",
+        n: "C:AKQ",
+        e: "C:JT9",
+        s: "C:876",
+        w: "C:543"
+    }
+];
+window.onload = startBridge;
+    </script>
 </body>
 </html>

@@ -585,5 +585,74 @@ class Problem {
 			}
 		}
 	}
+}
 
+/**
+ * ゲーム選択ダイアログを生成します。
+ * このクラスは bridge.css とともに使う必要があります。
+ */
+class SelectDialog {
+	startButton;
+	videoButton;
+	sameHandButton;
+
+	/**
+	 * document に、ダイアログを追加します。
+	 * @param	{string}	selectDialogId	html内のダイアログ追加用 div 要素の id
+	 */
+	constructor(selectDialogId) {
+		const sd = document.getElementById(selectDialogId);
+		// overlay 追加
+		const overlay = document.createElement('div');
+		overlay.setAttribute('id', 'modal-overlay');
+		sd.appendChild(overlay);
+		// content 追加
+		const content = document.createElement('div');
+		content.setAttribute('id', 'modal-content');
+		// content に select dialog 要素追加
+		const outerTable = document.createElement('table');
+		outerTable.setAttribute('class', 'full');
+		// １行目　タイトル
+		const r1 = document.createElement('tr');
+		r1.appendChild(document.createElement('td')).innerHTML = 'ブリッジシミュレーター';
+		outerTable.appendChild(r1);
+		// ２行目　プルダウンと開始ボタンのテーブル
+		const innerTable = document.createElement('table');
+		innerTable.setAttribute('class','full');
+		const ir = document.createElement('tr');
+		const pulldown = ir.appendChild(document.createElement('td')).appendChild(document.createElement('select'));
+
+		const title = ['ブリッジの問題(1)', 'とりあえず名前の長い問題(2)', '問題(3)', '問題(4)'];
+		for (let i = 0; i < title.length; i++) {
+			const opt = document.createElement('option');
+			opt.setAttribute('value', 'prob'+(i+1));
+			opt.innerHTML = title[i];
+			pulldown.appendChild(opt);
+		}
+		this.startButton = document.createElement('input');
+		this.startButton.setAttribute('type', 'button');
+		this.startButton.setAttribute('value', '開始する');
+		ir.appendChild(document.createElement('td')).appendChild(this.startButton);
+		innerTable.appendChild(ir);
+
+		const r2 = document.createElement('tr');
+		r2.appendChild(document.createElement('td')).appendChild(innerTable);
+		outerTable.appendChild(r2);
+		// ３行目　プレイ自動再生
+		const r3 = document.createElement('tr');
+		const i1 = document.createElement('input');
+		i1.setAttribute('type', 'button');
+		i1.setAttribute('value', '今のプレイを自動再生する');
+		r3.appendChild(document.createElement('td')).appendChild(i1);
+		outerTable.appendChild(r3);
+		// ４行目　同じハンド
+		const r4 = document.createElement('tr');
+		const i2 = document.createElement('input');
+		i2.setAttribute('type', 'button');
+		i2.setAttribute('value', '同じハンドをもう一度プレイする');
+		r4.appendChild(document.createElement('td')).appendChild(i1);
+		outerTable.appendChild(r4);
+
+		content.appendChild(outerTable);
+	}
 }

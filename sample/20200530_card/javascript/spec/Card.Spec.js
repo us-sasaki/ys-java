@@ -37,6 +37,20 @@ describe("Packet Test", () => {
 	it("Packet new", () => {
 		expect(new Packet()).toBeDefined();
 	});
+	it("Packet provideDeck()", () => {
+		const p = Packet.provideDeck();
+		expect(p.children.length).toBe(52);
+	});
+	it("Packet countSuit()", () => {
+		const p = Packet.provideDeck();
+		expect(p.countSuit(Card.DIAMOND)).toBe(13);
+	});
+	it("Packet countValue()", () => {
+		expect(Packet.provideDeck().countValue(Card.ACE)).toBe(4);
+	});
+	it("Packet subpacket()", () => {
+		expect(Packet.provideDeck().subpacket(Card.CLUB).children.length).toBe(13);
+	});
 });
 
 describe("Card Test", () => {

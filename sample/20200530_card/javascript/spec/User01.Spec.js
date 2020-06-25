@@ -1,8 +1,6 @@
 'use strict';
 
-
-
-onload = function() {
+const startBridge = function() {
 	//window.alert(problem);
 	// another test code
 	const field = new Field('canvas');
