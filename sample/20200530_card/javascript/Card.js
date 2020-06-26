@@ -9,15 +9,16 @@
  * @param	{number} seed 乱数シード
  */
 class ReproducibleRandom {
+	/** @type {number} */
 	x;
+	/** @type {number} */
 	y;
+	/** @type {number} */
 	z;
+	/** @type {number} */
 	w;
 	constructor(seed) {
 		if (seed===void 0) seed = Math.floor(Math.random() * 0x7FFFFFFF);
-		/**
-		 * @type {number}
-		 */
 		this.x = 123456789;
 		this.y = 362436069;
 		this.z = 521288629;
@@ -320,13 +321,9 @@ class Entities extends Entity {
 	 * @param	{Entity|Entities} entity	追加対象の Entity または Entities
 	 */
 	add(entity) {
-		//if (entity instanceof Entities) {
-		//	entity.children.forEach( (e) => {this.add(e);});
-		//} else {
-			if (this.children.indexOf(entity) >= 0) return;
-			entity.setParent(this);
-			this.children.push(entity);
-		//}
+		if (this.children.indexOf(entity) >= 0) return;
+		entity.setParent(this);
+		this.children.push(entity);
 		if (this.layout != null) this.layout.layout(this);
 	}
 	
@@ -350,10 +347,7 @@ class Entities extends Entity {
 				throw new Error("pull で指定された index が不正です:"+index);
 		}
 		const child = this.children[index];
-		//console.log("index="+index);
-		//console.log("child="+child.toString()+" index="+index);
 		this.children.splice(index, 1); // 削除
-		//console.log("child="+child.toString()+" index="+index);
 		child.setParent(null);
 		return child;
 	}
@@ -970,7 +964,7 @@ class Button extends Entity {
 		ctx.fillStyle = this.color; //'rgb(0,32,0)'; // back color
 		ctx.fillRect(r.x, r.y, r.w, r.h);
 		ctx.font = 'normal 13px SanSerif';
-		ctx.fillStyle = 'rgb(64,64,64)'; // white
+		ctx.fillStyle = 'rgb(64,64,64)'; // gray
 		const tm = ctx.measureText(this.caption);
 		ctx.fillText(this.caption,
 			this.pressed + r.x + Math.floor((r.w - tm.width)/2),
@@ -1149,21 +1143,14 @@ class CardImageHolder {
 		throw new Error("can not instantiate CardImageHolder");
 	}
 
-	/**
-	 * カード表面のイメージオブジェクトの配列
-	 * @type	{Array.<Image>}
-	 */
+	/** @type	{Image[]} カード表面のイメージオブジェクトの配列 */
 	static IMAGE = [];
-	/**
-	 * カード裏面のイメージオブジェクト配列
-	 * @type	{Array.<Image>}
-	 */
+	/** @type	{Image[]} カード裏面のイメージオブジェクト配列 */
 	static BACK_IMAGE = [];
+	/** @type	{Image[]} すみれ画像(3つ) */
+	static SUMIRE = [];
 	
-	/**
-	 * カード裏面イメージの番号(0-3)
-	 * @type	{number}
-	 */
+	/** @type	{number} カード裏面イメージの番号(0-3) */
 	static backImageNumber = 0;
 
 	/**
@@ -1191,7 +1178,13 @@ class CardImageHolder {
 			img.src = imgsrc;
 			CardImageHolder.BACK_IMAGE.push(img);
 		}
-		return 1;
+		// すみれ画像の読み込み
+		for (let i = 0; i < 3; i++) {
+			const imgsrc = path+'sumire'+i+'.gif?'+ new Date().getTime();
+			const img = new Image();
+			img.src = imgsrc;
+			CardImageHolder.SUMIRE.push(img);
+		}
 	}
 	// execute loadImages(static initializer)
 	static _loaded = CardImageHolder.loadImages();

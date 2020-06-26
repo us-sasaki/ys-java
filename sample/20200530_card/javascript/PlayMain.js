@@ -12,7 +12,7 @@ class PlayMain {
     /** @type {number} */ handno;
     /** @type {string} */ contractString;
 	/** @type {Problem[]} */ problem;
-    /** @type {Explanation} */ sumire;
+    /** @type {Sumire} */ sumire;
 	/** @type {Button} */ quit;
     /** @type {Button} */ dd;
 	/** @type {Button} */ textWindow;
@@ -182,16 +182,12 @@ class PlayMain {
 		board.setPosition(0, 0);
 		board.setDirection(0);
 		
-		//
 		// Player 設定
-		//
 		player = new Player[4];
 		player[Board.NORTH] = new RandomPlayer(board, Board.NORTH);
 		player[Board.SOUTH] = new HumanPlayer(board, field, Board.SOUTH);
 		
-		//
 		// Computer Player 設定
-		//
 		if ((prob.getThinker() == null)||(!prob.getThinker().equals("DoubleDummyPlayer"))) {
 			player[Board.EAST ] = new SimplePlayer2(board, Board.EAST);
 			player[Board.WEST ] = new SimplePlayer2(board, Board.WEST, prob.getOpeningLead());
@@ -203,17 +199,13 @@ class PlayMain {
 			player[Board.WEST ] = new NoRufPlayer(board, Board.WEST, prob.getOpeningLead());
 		}
 		
-		//
 		// ディール
-		//
 		Packet[] hand = prob.getHand();
 		
 		board.deal(hand);
 		field.repaint();
 		
-		//
 		// ビッドを行う
-		//
 		board.setContract(prob.getContract(), Board.SOUTH);
 	}
 	
@@ -320,26 +312,14 @@ class PlayMain {
 	
 	/**
 	 * 始めのすみれによる説明を表示する
+	 * 中止ボタン処理が未実装
 	 */
-	protected void explain() throws InterruptedBridgeException {
+	async explain() {
+		const prob = this.problem[this.handno];
 		
-		Problem prob = (Problem)(problem.elementAt(handno));
-		
-		sumire = new Explanation(field, prob.getDescription());
-		contractString = prob.getContractString();
-		
-		field.addEntity(sumire);
-		field.repaint();
-		try {
-			waitClick(); // クリックを待つ。 InterruptedException をスローするかも
-		} catch (InterruptedException e) {
-			if (confirmQuit()) {
-				field.removeEntity(sumire);
-				throw new InterruptedBridgeException();
-			}
-		}
-		field.removeEntity(sumire); // これによってすみれのスレッドも終了する
-		field.repaint();
+		this.sumire = new Sumire(field, prob.description);
+		this.contractString = prob.getContractString();
+		this.sumire.animate(Sumire.NORMAL);
 	}
 	
 	/**
@@ -353,9 +333,7 @@ class PlayMain {
 		}
 		
 		while (true) {
-			//
 			// Spot を指定する
-			//
 			this.field.setSpot(this.board.getTurn());
 			this.field.draw();
 			
@@ -426,11 +404,11 @@ class PlayMain {
 		msg += "("+win+"トリック)\nN-S側のスコア："+Score.calculate(board, Board.SOUTH);
 		msg += "\n \n" + msg2;
 		
-		sumire = new Explanation(field, msg);
+		sumire = new Sumire(field, msg);
 		if (up >= 0) 
-			sumire.animate(Explanation.DELIGHTED);
+			sumire.animate(Sumire.DELIGHTED);
 		else
-			sumire.animate(Explanation.SAD);
+			sumire.animate(Sumire.SAD);
 		field.addEntity(sumire);
 		field.repaint();
 		try {
@@ -624,62 +602,6 @@ class SelectDialog {
 		this.videoButton = document.getElementById('videoButton');
 		this.replayButton = document.getElementById('replayButton');
 	}
-/*	constructor(selectDialogId) {
-		const sd = document.getElementById(selectDialogId);
-		// overlay 追加
-		const overlay = document.createElement('div');
-		overlay.setAttribute('id', 'modal-overlay');
-		sd.appendChild(overlay);
-		// content 追加
-		const content = document.createElement('div');
-		content.setAttribute('id', 'modal-content');
-		// content に select dialog 要素追加
-		const outerTable = document.createElement('table');
-		outerTable.setAttribute('class', 'full');
-		// １行目　タイトル
-		const r1 = document.createElement('tr');
-		r1.appendChild(document.createElement('td')).innerHTML = 'ブリッジシミュレーター';
-		outerTable.appendChild(r1);
-		// ２行目　プルダウンと開始ボタンのテーブル
-		const innerTable = document.createElement('table');
-		innerTable.setAttribute('class','full');
-		const ir = document.createElement('tr');
-		const pulldown = ir.appendChild(document.createElement('td')).appendChild(document.createElement('select'));
-
-		const title = ['ブリッジの問題(1)', 'とりあえず名前の長い問題(2)', '問題(3)', '問題(4)'];
-		for (let i = 0; i < title.length; i++) {
-			const opt = document.createElement('option');
-			opt.setAttribute('value', 'prob'+(i+1));
-			opt.innerHTML = title[i];
-			pulldown.appendChild(opt);
-		}
-		this.startButton = document.createElement('input');
-		this.startButton.setAttribute('type', 'button');
-		this.startButton.setAttribute('value', '開始する');
-		ir.appendChild(document.createElement('td')).appendChild(this.startButton);
-		innerTable.appendChild(ir);
-
-		const r2 = document.createElement('tr');
-		r2.appendChild(document.createElement('td')).appendChild(innerTable);
-		outerTable.appendChild(r2);
-		// ３行目　プレイ自動再生
-		const r3 = document.createElement('tr');
-		const i1 = document.createElement('input');
-		i1.setAttribute('type', 'button');
-		i1.setAttribute('value', '今のプレイを自動再生する');
-		r3.appendChild(document.createElement('td')).appendChild(i1);
-		outerTable.appendChild(r3);
-		// ４行目　同じハンド
-		const r4 = document.createElement('tr');
-		const i2 = document.createElement('input');
-		i2.setAttribute('type', 'button');
-		i2.setAttribute('value', '同じハンドをもう一度プレイする');
-		r4.appendChild(document.createElement('td')).appendChild(i1);
-		outerTable.appendChild(r4);
-
-		content.appendChild(outerTable);
-	}
-*/
 /*------------------
  * instance methods
  */
@@ -714,5 +636,145 @@ class SelectDialog {
 			res(val);
 		}));
 	}
+}
 
+/**
+ * ブリッジシミュレータにおける開始時の説明の絵を生成する Entity です。
+ * この Entity には、コントラクトの内容などの説明書きが表示されます。
+ *
+ */
+class Sumire extends Entity {
+	static NORMAL = 0;
+	static DELIGHTED = 1;
+	static SAD = 2;
+	
+	static FONT = 'normal 14px SanSerif';
+	/** @type {number} 次の行までのステップ */
+	static Y_STEP = 20;
+	static MSG_COLOR = 'rgb(255, 255, 200)';
+	static BACK_COLOR = 'rgba(200, 255, 200, 0.5)';
+	
+	/** @type {Field} */
+	field;
+	/** @type {string[]} */
+	lines;
+	/** @type {number} */
+	picNumber;
+	/** @type {number} */
+	face;
+	
+	/** @type {number} 描画を開始するｘ座標 */
+	x0;
+	/** @type {number} 描画を開始するｙ座標 */
+	y0;
+	
+	
+	/** @type {number} 文字部分の幅 */
+	width;
+	/** @type {number} 文字部分の高さ */
+	height;
+	
+	/** @type {number} ふきだしの幅 */
+	mw;
+	/** @type {number} ふきだしの高さ */
+	mh;
+	
+	/** @type {number[]} ふきだしの頂点x座標 */
+	xp;
+	/** @type {number[]} ふきだしの頂点y座標 */
+	yp;
+	
+/*-------------
+ * Constructor
+ */
+	/**
+	 * 指定したコントラクトであることを説明する Entity を作成します。
+	 * @param	{Field} field field
+	 * @param	{string} msg 表示するメッセージ
+	 */
+	constructor(field, msg) {
+		super();
+		this.field = field;
+		
+		// 与えられた文字列を改行で区切り、配列に変換する
+		this.lines = msg.split('\n');
+		const lines = this.lines.length;
+		
+		// 大きさを決定する
+		const ctx = field.ctx;
+		ctx.font = Sumire.FONT;
+		this.width = 0;
+		
+		for (let i = 0; i < lines; i++) {
+			this.width = Math.max(this.width, ctx.measureText(this.lines[i]));
+		}
+		this.width += 20; // as a margin
+		this.height	= Sumire.Y_STEP * lines + 20;
+		
+		this.setBounds(140, 120, 360, 240);
+		this.x0 = 130 + 40;
+		this.y0 = Math.floor(90 + 12 + Sumire.Y_STEP + 100 - Sumire.Y_STEP * lines * 2 / 3);
+		const msgy0 = Math.floor(100 + 100 - Sumire.Y_STEP * lines * 2 / 3);
+		this.mw = 380 - 40;
+		this.mh = Sumire.Y_STEP * lines + 20;
+		this.xp = [this.x0-20, this.x0-20+this.mw, this.x0-20+this.mw, 410, 405, 390, this.x0-20];
+		this.yp = [msgy0, msgy0, msgy0+this.mh, msgy0+this.mh, msgy0+this.mh+10, msgy0+this.mh, msgy0+this.mh];
+		
+		this.picNumber = 0;
+	}
+	
+/*-----------
+ * Overrides
+ */
+	/**
+	 * @override
+	 * @param {Context} ctx グラフィックコンテキスト
+	 */
+	draw(ctx) {
+		ctx.fillStyle = Sumire.BACK_COLOR;
+		ctx.fillRect(this.x, this.y, this.w, this.h);
+		ctx.strokeStyle = 'rgb(0,0,0)';
+		ctx.fillStyle = Sumire.MSG_COLOR;
+		ctx.beginPath();
+		ctx.moveTo(this.xp[0], this.yp[0]);
+		for (let i = 1; i < this.xp.length; i++) {
+			ctx.lineTo(this.xp[i], this.yp[i]);
+		}
+		ctx.closePath();
+		ctx.fill();
+		ctx.stroke();
+		
+		ctx.fillStyle = 'rgb(0,0,0)';
+		ctx.font = Sumire.FONT;
+		let y = this.y0;
+		
+		for (let i = 0; i < this.lines.length; i++) {
+			ctx.fillText(this.lines[i], this.x0, y);
+			y += Sumire.Y_STEP;
+		}
+		
+		ctx.drawImage(CardImageHolder.SUMIRE[this.picNumber], 400, 260);
+	}
+	
+/*------------------
+ * instance methods
+ */
+	/**
+	 * わらったり、泣いたりのアニメーションを表示し、ブロックします。
+	 * クリックを検知するとアニメーションを解除します。
+	 * @async
+	 * @param　{number} face 顔(1..笑い顔, 2..泣き顔)
+	 */
+	async animate(face) {
+		this.field.add(this);
+		this.face = face;
+		while (true) {
+			this.picNumber ^= this.face;
+			this.field.draw();
+			if (this.picNumber > 0) {
+				if (await this.field.waitClick(500)) break;
+			} else if (await this.field.waitClick(1000)) break;
+		}
+		this.field.pull(this); // remove
+	}
 }
