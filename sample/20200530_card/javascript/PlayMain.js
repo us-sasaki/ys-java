@@ -8,15 +8,14 @@ class PlayMain {
     /** @type {string} */ canvasId;
     /** @type {Field} */ field;
     /** @type {Board} */ board;
-    /** @type {Player[]} */ player;
+    /** @type {Player[]} */ players;
     /** @type {number} */ handno;
     /** @type {string} */ contractString;
-	/** @type {Problem[]} */ problem;
+	/** @type {Problem[]} */ problems;
     /** @type {Sumire} */ sumire;
 	/** @type {Button} */ quit;
     /** @type {Button} */ dd;
 	/** @type {Button} */ textWindow;
-	/** @type {Thread} */ mainThread;
 	/** @type {SelectDialog} */ dialog;
     /** @type {YesNoDialog} */ confirmDialog;
 	/** @type {boolean} */ exitSignal;
@@ -26,7 +25,15 @@ class PlayMain {
 	 */
 	constructor(canvasId) {
 		this.canvasId = canvasId;
-		this.problem = [];
+		this.problems = [];
+
+		this.dialog = new SelectDialog();
+		this.field = new Field(this.canvasId);
+        
+		// ボタン
+		this._placeQuitButton_();
+		this._placeDDButton_();
+		this._placeTextButton_();
 	}
 	
 /*-----------------------------
@@ -63,8 +70,9 @@ class PlayMain {
 	
 	/**
 	 * 中断ボタン(this.quit)を生成、配置します。
+	 * @private
 	 */
-	placeQuitButton() {
+	_placeQuitButton_() {
 		this.quit = new Button(this.field, "中断");
 		this.quit.setBounds(540, 30, 80, 24);
 		this.field.add(this.quit);
@@ -73,8 +81,9 @@ class PlayMain {
 	/**
 	 * ダブルダミーボタン(this.dd)を生成、配置します。
 	 * this.dd には doubleDummy {boolean} プロパティがあります。
+	 * @private
 	 */
-	placeDDButton() {
+	_placeDDButton_() {
 		const dd = new Button(this.field, "ダブルダミー"); // ダブルダミー
 		dd.doubleDummy = false;
 		this.field.add(dd);
@@ -93,114 +102,79 @@ class PlayMain {
 
 	/**
 	 * テキスト表示ボタン(this.textWindow)を生成、配置します。
+	 * @private
 	 */
-	placeTextButton() {
+	_placeTextButton_() {
 		this.textWindow = new Button(this.field, "テキスト表示"); // テキスト表示
 		this.field.add(this.textWindow);
 		this.textWindow.setBounds(540, 86, 80, 24);
 	}
-
-	/**
-	 * BridgeField, Board を初期化します。
-	 */
-	initialize() {
-		this.field = new Field(this.canvasId);
-        
-		// ボタン
-		this.placeQuitButton();
-		this.placeDDButton();
-		this.placeTextButton();
-	}
 	
 	/**
 	 * Board の初期化を行います。
+	 * @async
 	 */
-	start() {
-		//dialog = new SelectDialog(display, board);
-		//for (int i = 0; i < problem.size(); i++) {
-		//	Problem prob = (Problem)(problem.elementAt(i));
-		//	dialog.addChoice(prob.getTitle());
-		//}
+	async start() {
+		for (let i = 0; i < this.problems.length; i++) {
+		const titles = [];
+		this.problems.forEach( prob => titles.push(prob.title));
+		this.dialod.setPulldown(titles);
 		this.field.draw();
-		//try {
-		//	dialog.newHand.select(handno);
-		//} catch (Exception e) {
-		//	handno = -1;
-		//}
-		//dialog.show();
-		//dialog.requestFocus();	// added 2000/8/16
-		//String result = dialog.result; // dialog.dispose() によって result が失われるため
-		const result = "test board";
-		//dialog.disposeDialog();	// ここで行う added 2001/7/15
-		//if (result == null) return;
-		//if (result.equals("disposed")) {
-		//	exitSignal = true;
-		//	return;
-		//}
+		const result = await this.dialog.show();
 		
-		//mainThread = Thread.currentThread();
-		//if ("Video".equals(result)) {
-		//	makeVideohand();
-		//	GuiedPacket east = (GuiedPacket)(board.getHand(Board.EAST));
-		//	east.turn(true);
-		//	GuiedPacket west = (GuiedPacket)(board.getHand(Board.WEST));
-		//	west.turn(true);
-		//	
-		//	this.dd.doubleDummy = true;	// added 02/9/16
-		//	this.dd.caption = "通常に戻す";	// added 02/9/16
-		//	
-		//} else if ("Same Hand".equals(result)) {
-		//	makeLasthand();
-		//} else {
-		//	this.handno = -1;
-		//	for (int i = 0; i < problem.size(); i++) {
-		//		Problem p = (Problem)(problem.elementAt(i));
-		//		
-		//		if (p.getTitle().equals(result)) {
-		//			this.handno = i;
-		//			makeNewhand();
-		//			break;
-		//		}
-		//	}
-		//	if (this.handno == -1) { return; }
-		//}
+		if ("video" ==  result) {
+			this.makeVideohand();
+			const east = this.board.getHand(Board.EAST);
+			east.turn(true);
+			const west = this.board.getHand(Board.WEST);
+			west.turn(true);
+			
+			this.dd.doubleDummy = true;	// added 02/9/16
+			this.dd.caption = "通常に戻す";	// added 02/9/16
+			
+		} else if ("replay" == result) {
+			this.makeLasthand();
+		} else {
+			this.handno = parseInt(result.substring(4));
+			this.makeNewhand();
+		}
 		this.handno = 0;
-		main();
+		this.main();
 	}
 	
 	/**
 	 * ダイアログで新しいハンドを選択したときの処理です。
 	 */
 	makeNewhand() {
-		Problem prob = (Problem)(problem.elementAt(handno));
+		const prob = problems[handno];
 		prob.start();
 		
-		board = new GuiedBoard(new BoardImpl(1));
-		board.setName(prob.getTitle());
+		this.board = new Board(1);
+		this.board.setName(prob.title);
 		
-		field.addEntity(board);
-		board.setPosition(0, 0);
-		board.setDirection(0);
+		this.field.add(this.board);
+		this.board.setPosition(0, 0);
+		this.board.setDirection(0);
 		
 		// Player 設定
-		player = new Player[4];
-		player[Board.NORTH] = new RandomPlayer(board, Board.NORTH);
-		player[Board.SOUTH] = new HumanPlayer(board, field, Board.SOUTH);
+		this.players = [];
+		this.players[Board.NORTH] = new RandomPlayer(board, Board.NORTH);
+		this.players[Board.SOUTH] = new HumanPlayer(board, field, Board.SOUTH);
 		
 		// Computer Player 設定
-		if ((prob.getThinker() == null)||(!prob.getThinker().equals("DoubleDummyPlayer"))) {
-			player[Board.EAST ] = new SimplePlayer2(board, Board.EAST);
-			player[Board.WEST ] = new SimplePlayer2(board, Board.WEST, prob.getOpeningLead());
-		} else if (prob.getThinker().equals("DoubleDummyPlayer")) {
-			player[Board.EAST ] = new ReadAheadPlayer(board, Board.EAST);
-			player[Board.WEST ] = new ReadAheadPlayer(board, Board.WEST, prob.getOpeningLead());
+		if ( !prob.thinker || prob.thinker != "DoubleDummyPlayer") {
+			this.players[Board.EAST ] = new SimplePlayer2(board, Board.EAST);
+			this.players[Board.WEST ] = new SimplePlayer2(board, Board.WEST, prob.openingLead);
+		} else if (prob.thinker == "DoubleDummyPlayer") {
+			this.players[Board.EAST ] = new ReadAheadPlayer(board, Board.EAST);
+			this.players[Board.WEST ] = new ReadAheadPlayer(board, Board.WEST, prob.openingLead);
 		} else {
-			player[Board.EAST ] = new NoRufPlayer(board, Board.EAST);
-			player[Board.WEST ] = new NoRufPlayer(board, Board.WEST, prob.getOpeningLead());
+			this.players[Board.EAST ] = new NoRufPlayer(board, Board.EAST);
+			this.players[Board.WEST ] = new NoRufPlayer(board, Board.WEST, prob.openingLead);
 		}
 		
 		// ディール
-		Packet[] hand = prob.getHand();
+		const hand = prob.createHand();
 		
 		board.deal(hand);
 		field.repaint();
@@ -499,6 +473,7 @@ class Problem {
 	 * @param {string} description 問題の説明
 	 * @param {string} openingLead オープニングリード指定(指定なしは null)
 	 * @param {string} thinker 思考アルゴリズム名
+	 * @returns	{Problem} 問題
 	 */
 	static regular(title, kind, level, denomination, hands, description, openingLead, thinker) {
 		let p = new Problem();
@@ -512,7 +487,7 @@ class Problem {
 		for (let i = 0; i < 4; i++) hs.push(new Packet());
 		
 		const pile = Packet.provideDeck();
-		for (let i = 0; i < 4; i++) draw(pile, hs[i], hands[i]);
+		for (let i = 0; i < 4; i++) Problem.draw(pile, hs[i], hands[i]);
 		
 		// 残りはランダムに配る
 		if (pile.children.length > 0) {
@@ -526,6 +501,23 @@ class Problem {
 			}
 		}
 		hs.forEach( h => h.arrange() );
+		p.hands = hs;
+		return p;
+	}
+
+	/**
+	 * この問題のハンドを生成します。
+	 * (内部的に持つ Packet の shallow copy を作ります)
+	 * @returns	{Packet[]} この問題のハンド
+	 */
+	createHands() {
+		const result = [];
+		for (let i = 0; i < 4; i++) {
+			const h = new Packet();
+			this.hands[i].children.forEach(c => h.add(c));
+			result.push(h);
+		}
+		return result;
 	}
 
 	/**
@@ -534,7 +526,7 @@ class Problem {
 	 * @param	{Packet} hand 設定先のハンド
 	 * @param	{string} str ハンド文字列
 	 */
-	draw(pile, hand, str) {
+	static draw(pile, hand, str) {
 		let suit = Card.SPADE;
 		
 		for (let i = 0; i < str.length; i++) {
@@ -579,25 +571,15 @@ class SelectDialog {
 
 	/**
 	 * document に、ダイアログを追加します。
-	 * @param	{string}	selectDialogId	html内のダイアログ追加用 div 要素の id
 	 */
-	constructor(selectName) {
+	constructor(titles) {
 		this.modalContent = document.getElementById('modal-content');
 		this.modalOverlay = document.getElementById('modal-overlay');
 		if (!this.modalContent || !this.modalOverlay)
 			throw new Error("html error. without modal-content or modal-overlay");
 		const s = document.getElementsByName('select');
-		if (s.length != 1) throw new Error("html doesn't have select:"+selectName);
+		if (s.length != 1) throw new Error("html doesn't have select");
 		this.select = s[0];
-		// select の子要素を削除
-		while (this.select.firstChild) { this.select.removeChild(this.select.firstChild); }
-		const title = ['続ブリッジの問題(1)', '続とりあえず名前の長い問題(2)', '続問題(3)', '続問題(4)'];
-		for (let i = 0; i < title.length; i++) {
-			const opt = document.createElement('option');
-			opt.setAttribute('value', 'prob'+(i+1));
-			opt.innerHTML = title[i];
-			this.select.appendChild(opt);
-		}
 		this.startButton = document.getElementById('startButton');
 		this.videoButton = document.getElementById('videoButton');
 		this.replayButton = document.getElementById('replayButton');
@@ -605,6 +587,21 @@ class SelectDialog {
 /*------------------
  * instance methods
  */
+	/**
+	 * プルダウンに指定された文字列を設定します。
+	 * @param	{string[]} titles プルダウンに設定する文字列
+	 */
+	setPulldown(titles) {
+		// select の子要素を削除
+		while (this.select.firstChild) { this.select.removeChild(this.select.firstChild); }
+		for (let i = 0; i < titles.length; i++) {
+			const opt = document.createElement('option');
+			opt.setAttribute('value', 'prob'+(i+1));
+			opt.innerHTML = titles[i];
+			this.select.appendChild(opt);
+		}
+	}
+
 	/**
 	 * モーダルの選択画面を表示し、ボタン押下を待ちます。
 	 * async としての返り値は文字列で、"prob{num}", "video", "replay" のいずれかです。

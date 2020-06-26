@@ -51,45 +51,47 @@ class ReproducibleRandom {
  * NaturalCardOrder class 定義
  *
  * @classdesc 自然なカードの並び順を表します。
- * @constructor
- * @param	{number}	trump	トランプスートを示します。{@link Card}
  */
 class NaturalCardOrder {
+	/**
+	 * スートの順位を表します。数値配列で、0,クラブ,ダイヤ,ハード,
+	 * スペードの順に優先度を示す数値が格納されます。(大きい方が優先)
+	 * @type	{number[]} 
+	 */
 	suitOrder;
 
 /*--------------
  * static field
  */
 
-	/** Spade > Heart > Club > Diamondの順 */
+	/** @const {number[]} Spade > Heart > Club > Diamondの順 */
 	static SUIT_ORDER_SPADE = [ 0, 2, 1, 3, 4 ];
 	
-	/** Heart > Club > Diamond > Spadeの順 */
+	/** @const {number[]} Heart > Club > Diamond > Spadeの順 */
 	static SUIT_ORDER_HEART = [ 0, 3, 2, 4, 1 ];
 	
-	/** Diamond > Spade > Heart > Clubの順 */
+	/** @const {number[]} Diamond > Spade > Heart > Clubの順 */
 	static SUIT_ORDER_DIAMOND = [ 0, 1, 4, 2, 3];
 	
-	/** Club > Diamond > Spade > Heartの順 */
+	/** @const {number[]} Club > Diamond > Spade > Heartの順 */
 	static SUIT_ORDER_CLUB = [ 0, 4, 3, 1, 2];
 	
-	/** ACE が一番強く(大きく)、2 が一番弱い(小さい)並び順 */
+	/** @const {number[]} ACE が一番強く(大きく)、2 が一番弱い(小さい)並び順 */
 	static VALUE_ORDER = [ 15, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 	
-	/** 2 が一番強く(大きく)、ACE が一番弱い(小さい)並び順 */
+	/** @const {number[]} 2 が一番強く(大きく)、ACE が一番弱い(小さい)並び順 */
 	static REVERSE_VALUE_ORDER = [ 1,   2,15,14,13,12,11,10, 9, 8, 7 ,  6,  5,  4];
 
 /*-------------
  * constructor
  */
+	/**
+	 * @constructor
+	 * @param	{number}	trump	トランプスートを示します。{@link Card}
+	 */
 	constructor(trump) {
 		switch (trump) {
 		case Card.HEART:
-			/**
-			 * スートの順位を表します。数値配列で、0,クラブ,ダイヤ,ハード,
-			 * スペードの順に優先度を示す数値が格納されます。(大きい方が優先)
-			 * @type	{Array} 
-			 */
 			this.suitOrder = NaturalCardOrder.SUIT_ORDER_HEART;
 			break;
 		case Card.DIAMOND:
@@ -142,23 +144,17 @@ class Entity {
 	 * @type {Entities}
 	 */
 	parent;
-	/** この Entity の x 座標(右が正、pixel) */
+	/** @type {number} この Entity の x 座標(右が正、pixel) */
 	x;
-	/** この Entity の y 座標(下が正、pixel) */
+	/** @type {number} この Entity の y 座標(下が正、pixel) */
 	y;
-	/** この Entity の幅(pixel) */
+	/** @type {number} この Entity の幅(pixel) */
 	w;
-	/** この Entity の高さ(pixel) */
+	/** @type {number} この Entity の高さ(pixel) */
 	h;
-	/**
-	 * この Entity の向き(0..upright 1..right view 2..upside down 3..left view)
-	 * @type {number}
-	 */
+	/** @type {number} 向き(0..upright 1..right view 2..upside down 3..left view) */
 	direction;
-	/**
-	 *  この Entity を表示するか
-	 * @type {boolean}
-	 */
+	/** @type {boolean} この Entity を表示するか */
 	isVisible;
 
 	constructor() {
@@ -173,25 +169,13 @@ class Entity {
 /*------------------
  * static constants
  */
-	/**
-	 * 下のプレイヤーから見て直立
-	 * @const {number}
-	 */
+	/** @const {number} 下のプレイヤーから見て直立 */
 	static UPRIGHT = 0; 
-	/**
-	 * 右のプレイヤーから見て直立
-	 * @const {number}
-	 */
+	/** @const {number}  右のプレイヤーから見て直立 */
 	static RIGHT_VIEW = 1;
-	/**
-	 * 上のプレイヤーから見て直立
-	 * @const {number}
-	 */
+	/** @const {number} 上のプレイヤーから見て直立 */
 	static UPSIDE_DOWN = 2;
-	/**
-	 * 左のプレイヤーから見て直立
-	 * @const {number}
-	 */
+	/** @const {number} 左のプレイヤーから見て直立 */
 	static LEFT_VIEW = 3;
 
 /*------------------
@@ -267,14 +251,10 @@ class Entity {
 	/**
 	 * この Entity の位置、大きさを取得します。
 	 * 
-	 * @return	{object} {x: x座標, y: y座標, w: 幅, h: 高さ}
+	 * @return	{object} x: x座標, y: y座標, w: 幅, h: 高さ
 	 */
 	getRect() {
-		return {
-			x: this.x,
-			y: this.y,
-			w: this.w,
-			h: this.h };
+		return {x: this.x, y: this.y, w: this.w, h: this.h };
 	}
 	
 	/**
@@ -293,7 +273,6 @@ class Entity {
 /**
  * Entities class 定義
  * @classdesc Entities は複数の Entity をまとめる容器オブジェクトを表します。
- * @constructor
  * @extends	{Entity}
  */
 class Entities extends Entity {
@@ -306,6 +285,9 @@ class Entities extends Entity {
 	 */
 	children;
 
+	/**
+	 * @constructor
+	 */
 	constructor() {
 		super();
 		this.children = [];

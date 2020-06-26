@@ -217,7 +217,6 @@ class Player {
  * @author		Yusuke Sasaki
  */
 class RandomPlayer extends Player {
-	
 	/**
 	 * 
 	 * @param {?Board} board 
@@ -236,7 +235,6 @@ class RandomPlayer extends Player {
  */
 	/**
 	 * パスします。
-	 *
 	 * @return		パス
 	 */
 	async bid() {
@@ -245,13 +243,11 @@ class RandomPlayer extends Player {
 	
 	/**
 	 * 可能なプレイをランダムに選択し、返却します。
-	 *
 	 * @return		ランダムなプレイ
 	 */
 	async draw() {
 		const board = this.myBoard;
 		const hand = this.getHand();
-		
 		// プレイすべきハンドを混ぜる
 		hand.shuffle();
 		let played = null;
@@ -265,8 +261,6 @@ class RandomPlayer extends Player {
 		
 		// ハンドを戻しておく
 		hand.arrange();
-		
 		return played;
 	}
-	
 }
