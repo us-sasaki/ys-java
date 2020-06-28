@@ -76,7 +76,12 @@ class PlayMain {
 		this.quit = new Button(this.field, "中断");
 		this.quit.setBounds(540, 30, 80, 24);
 		this.field.add(this.quit);
-	}
+		this.quit.setListener( () => {
+			if (window.confirm('このボードを破棄して中断します')) {
+				this.field.interrupt(); // OK 押下
+			}
+		});
+		}
 
 	/**
 	 * ダブルダミーボタン(this.dd)を生成、配置します。
@@ -115,7 +120,6 @@ class PlayMain {
 	 * @async
 	 */
 	async start() {
-		for (let i = 0; i < this.problems.length; i++) {
 		const titles = [];
 		this.problems.forEach( prob => titles.push(prob.title));
 		this.dialod.setPulldown(titles);
@@ -123,44 +127,57 @@ class PlayMain {
 		const result = await this.dialog.show();
 		
 		if ("video" ==  result) {
-			this.makeVideohand();
-			const east = this.board.getHand(Board.EAST);
-			east.turn(true);
-			const west = this.board.getHand(Board.WEST);
-			west.turn(true);
-			
-			this.dd.doubleDummy = true;	// added 02/9/16
-			this.dd.caption = "通常に戻す";	// added 02/9/16
-			
+			this._makeVideohand_();
 		} else if ("replay" == result) {
-			this.makeLasthand();
+			this._makeLasthand_();
 		} else {
 			this.handno = parseInt(result.substring(4));
-			this.makeNewhand();
+			this._makeNewhand_();
 		}
+		// field に board を追加
+		this.field.add(this.board);
+		this.board.setPosition(0, 0);
+		this.board.setDirection(0);
+		this.field.draw();
+		
 		this.handno = 0;
-		this.main();
+		await this.main();
+
+		// field から board を削除
+		this.field.pull(this.board);
+
 	}
 	
 	/**
 	 * ダイアログで新しいハンドを選択したときの処理です。
+	 * @private
 	 */
-	makeNewhand() {
-		const prob = problems[handno];
-		prob.start();
+	_makeNewhand_() {
+		const prob = this.problems[handno];
 		
 		this.board = new Board(1);
 		this.board.setName(prob.title);
 		
-		this.field.add(this.board);
-		this.board.setPosition(0, 0);
-		this.board.setDirection(0);
-		
 		// Player 設定
+		_setPlayers(prob)_
+		
+		// ディール
+		const hands = prob.createHands();
+		
+		this.board.deal(hands);
+		
+		// コントラクト設定を行う
+		this.board.setContract(prob.contract, Board.SOUTH);
+	}
+
+	/**
+	 * プレイにおけるプレイヤーを thinker に基づき設定します。
+	 * @param	{Problem} prob 問題
+	 */
+	_setPlayers_(prob) {
 		this.players = [];
 		this.players[Board.NORTH] = new RandomPlayer(board, Board.NORTH);
 		this.players[Board.SOUTH] = new HumanPlayer(board, field, Board.SOUTH);
-		
 		// Computer Player 設定
 		if ( !prob.thinker || prob.thinker != "DoubleDummyPlayer") {
 			this.players[Board.EAST ] = new SimplePlayer2(board, Board.EAST);
@@ -172,136 +189,83 @@ class PlayMain {
 			this.players[Board.EAST ] = new NoRufPlayer(board, Board.EAST);
 			this.players[Board.WEST ] = new NoRufPlayer(board, Board.WEST, prob.openingLead);
 		}
-		
-		// ディール
-		const hand = prob.createHand();
-		
-		board.deal(hand);
-		field.repaint();
-		
-		// ビッドを行う
-		board.setContract(prob.getContract(), Board.SOUTH);
-	}
-	
-	private void makeVideohand() {
-		Board oldBoard = board;
-		board = new GuiedBoard(new BoardImpl(1));
-		board.setName(oldBoard.getName());
-		
-		field.addEntity(board);
-		board.setPosition(0, 0);
-		board.setDirection(0);
-		
-		//
-		// Player 設定
-		//
-		player = new Player[4];
-		player[Board.NORTH] = new VideoPlayer(board, oldBoard, Board.NORTH);
-		player[Board.EAST ] = new VideoPlayer(board, oldBoard, Board.EAST );
-		player[Board.SOUTH] = new VideoPlayer(board, oldBoard, Board.SOUTH);
-		player[Board.WEST ] = new VideoPlayer(board, oldBoard, Board.WEST );
-		
-		//
-		// ディール
-		//
-		Packet[] hand = BridgeUtils.calculateOriginalHand(oldBoard);
-		
-		board.deal(hand);
-		field.repaint();
-		
-		//
-		// ビッドを行う
-		//
-		board.setContract(oldBoard.getContract(), oldBoard.getDeclarer());
-	}
-	
-	private void makeLasthand() {
-		Problem prob = (Problem)(problem.elementAt(handno));
-		Board oldBoard = board;
-		board = new GuiedBoard(new BoardImpl(1));
-		board.setName(oldBoard.getName());
-		
-		field.addEntity(board);
-		board.setPosition(0, 0);
-		board.setDirection(0);
-		
-		//
-		// Player 設定
-		//
-		player = new Player[4];
-		player[Board.NORTH] = new RandomPlayer(board, Board.NORTH);
-		player[Board.SOUTH] = new HumanPlayer(board, field, Board.SOUTH);
-		
-		//
-		// Computer Player 設定
-		//
-		if ((prob.getThinker() == null)||(!prob.getThinker().equals("DoubleDummyPlayer"))) {
-			player[Board.EAST ] = new SimplePlayer2(board, Board.EAST);
-			player[Board.WEST ] = new SimplePlayer2(board, Board.WEST, prob.getOpeningLead());
-		} else if (prob.getThinker().equals("DoubleDummyPlayer")) {
-			player[Board.EAST ] = new ReadAheadPlayer(board, Board.EAST);
-			player[Board.WEST ] = new ReadAheadPlayer(board, Board.WEST, prob.getOpeningLead());
-		} else {
-			player[Board.EAST ] = new NoRufPlayer(board, Board.EAST);
-			player[Board.WEST ] = new NoRufPlayer(board, Board.WEST, prob.getOpeningLead());
-		}
-		//
-		// ディール
-		//
-		Packet[] hand = BridgeUtils.calculateOriginalHand(oldBoard);
-		
-		board.deal(hand);
-		field.repaint();
-		
-		//
-		// ビッドを行う
-		//
-		board.setContract(oldBoard.getContract(), oldBoard.getDeclarer());
 	}
 	
 	/**
-	 * start()と対になるメソッドで、start()で初期化したリソースの破棄を行います。
-	 * start() と別のスレッドから呼ばれます。
-	 * ダイアログのリソースなど終了処理が必要なものの破棄を行います。
-	 * 上位から明示的にコールすることによってダイアログが残るバグは解消されます。
+	 * 前のプレイを自動再生するプレイヤーを設定します。
+	 * @private
 	 */
-	public void stop() {
-		if (field != null) {
-			field.removeEntity(board);
-		}
-		if (dialog != null) dialog.disposeDialog();
-		if (confirmDialog != null) confirmDialog.disposeDialog();
-		if (player != null) {
-			for (int i = 0; i < player.length; i++) {
-				if ((player[i] != null)&&(player[i] instanceof HumanPlayer)) {
-					((HumanPlayer)player[i]).dispose();
-				}
-			}
-		}
+	_makeVideohand_() {
+		const oldBoard = this.board;
+		this.board = new Board(1);
+		this.board.setName(oldBoard.name);
+		
+		// Player 設定
+		this.players = [];
+		for (let i = 0; i < 4; i++)
+			this.players.push(new VideoPlayer(this.board, oldBoard, i));
+		
+		// ディール
+		const hands = BridgeUtils.calculateOriginalHand(oldBoard);
+		
+		this.board.deal(hands);
+		
+		// コントラクト設定を行う
+		this.board.setContract(oldBoard.getContract(), oldBoard.getDeclarer());
+
+		// ビデオモードはオープン状態
+		const east = this.board.getHand(Board.EAST);
+		east.turn(true);
+		const west = this.board.getHand(Board.WEST);
+		west.turn(true);
+		
+		this.dd.doubleDummy = true;
+		this.dd.caption = "通常に戻す";
+		
 	}
 	
-	public void dispose() {
-		if (field != null) field.dispose();
+	/**
+	 * 前回と同じハンドを設定します。
+	 * @private
+	 */
+	_makeLasthand_() {
+		const prob = problems[handno];
+		const oldBoard = this.board;
+		this.board = new Board(1);
+		this.board.name = oldBoard.name;
+		
+		// Player 設定
+		_setPlayers_(prob);
+
+		// ディール
+		const hands = BridgeUtils.calculateOriginalHand(oldBoard);
+		
+		this.board.deal(hands);
+		
+		// コントラクト設定を行う
+		this.board.setContract(oldBoard.getContract(), oldBoard.getDeclarer());
 	}
 	
 	/**
 	 * 始めのすみれによる説明を表示する
-	 * 中止ボタン処理が未実装
+	 * @async
+	 * @throws	QuitInterruptException 中断が選択された
 	 */
 	async explain() {
 		const prob = this.problem[this.handno];
 		
 		this.sumire = new Sumire(field, prob.description);
 		this.contractString = prob.getContractString();
-		this.sumire.animate(Sumire.NORMAL);
+		await this.sumire.animate(Sumire.NORMAL);
 	}
 	
 	/**
 	 * メインループ
 	 * @async
+	 * @throws	QuitInterruptException 中断が選択された
 	 */
 	async mainLoop() {
-		if (dd.doubleDummy) {
+		if (this.dd.doubleDummy) {
 			this.board.getHand(Board.EAST).turn(true);
 			this.board.getHand(Board.WEST).turn(true);
 		}
@@ -318,136 +282,89 @@ class PlayMain {
 			this.board.play(c);
 			this.field.draw();
 			
-			if (this.board.getStatus() == Board.SCORING) break;
+			if (this.board.status == Board.SCORING) break;
 		}
 	}
 	
 	/**
 	 * 元のハンドの表示、スコアの表示を行う
+	 * @async
+	 * @throws	QuitInterruptException 中断が選択された
 	 */
-	protected void displayScore() throws InterruptedBridgeException {
-		field.removeSpot();
-		field.repaint();
+	async displayScore() {
+		this.field.spot = -1; // spot を消す
+		this.field.draw();
 		
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			if (confirmQuit()) throw new InterruptedBridgeException();
-		}
-		//
+		await this.field.sleep(500);
+
 		// カードをもう一度表示する
-		//
-		Packet[] original = BridgeUtils.calculateOriginalHand(board);
-		for (int i = 0; i < 4; i++) {
-			GuiedPacket hand = (GuiedPacket)(board.getHand(i));
-			for (int j = 0; j < original[i].size(); j++) {
-				Card c = original[i].peek(j);
+		const original = BridgeUtils.calculateOriginalHand(this.board);
+		for (let i = 0; i < 4; i++) {
+			const hand = this.board.getHand(i);
+			for (let j = 0; j < original[i].children.length; j++) {
+				const c = original[i].children[j];
 				c.turn(true);
 				hand.add(c);
 			}
 		}
 
-		board.layout();
-		for (int i = 0; i < 4; i++) {
-			GuiedPacket hand = (GuiedPacket)(board.getHand(i));
-			hand.arrange();
-			hand.layout();
-		}
+		this.board.layout();
+		this.board.getHand().forEach( hand => { hand.arrange(); hand.layout(); });
 		
-		//
 		// スコア表示
-		//
-//		Score score = new Score();
-		String msg = "結果：" + contractString + "  ";
-		String msg2;
+		let msg = "結果：" + this.contractString + "  ";
+		let msg2;
 		// メイク数
-		int win		= BridgeUtils.countDeclarerSideWinners(board);
-		int up		= win - board.getContract().getLevel() - 6;
-		int make	= win - 6;
+		const win = BridgeUtils.countDeclarerSideWinners(this.board);
+		const up = win - this.board.getContract().level - 6;
+		const make = win - 6;
 		
 		if (up >= 0) {
 			// メイク
-			msg += String.valueOf(make) + "メイク";
+			msg += make + "メイク";
 			msg2 = "おめでとう！！";
 		} else {
 			// ダウン
-			msg += String.valueOf(-up) + "ダウン";
+			msg += (-up) + "ダウン";
 			msg2 = "残念。もう一度がんばって！";
 		}
 		
-		msg += "("+win+"トリック)\nN-S側のスコア："+Score.calculate(board, Board.SOUTH);
+		msg += "("+win+"トリック)\nN-S側のスコア："+Score.calculate(this.board, Board.SOUTH);
 		msg += "\n \n" + msg2;
 		
-		sumire = new Sumire(field, msg);
+		this.sumire = new Sumire(field, msg);
 		if (up >= 0) 
-			sumire.animate(Sumire.DELIGHTED);
+			await this.sumire.animate(Sumire.DELIGHTED);
 		else
-			sumire.animate(Sumire.SAD);
-		field.addEntity(sumire);
-		field.repaint();
-		try {
-			waitClick();
-		} catch (InterruptedException e) {
-			if (confirmQuit()) {
-				field.removeEntity(sumire);
-				clearHands();
-				throw new InterruptedBridgeException();
-			}
-		}
-		field.removeEntity(sumire);
-		field.repaint();
-		clearHands();
-	}
-	
-	protected void clearHands() {
-		//
-		// Board の状態を正しいものにするため、ハンドをクリアする
-		//
-		for (int i = 0; i < 4; i++) {
-			Packet hand = board.getHand(i);
-			while (hand.size() > 0) {
-				hand.draw();
-			}
-		}
-	}
-	
-	protected boolean confirmQuit() {
-		try {
-			confirmDialog = new YesNoDialog(
-								field.getCanvas(),
-								"このボードを破棄して中断しますか？");
-			confirmDialog.show();
-			boolean yes = confirmDialog.isYes();
-			confirmDialog.disposeDialog();
-			return yes;
-		} catch (Exception e) {
-//			e.printStackTrace();
-			return true;
-		}
+			await this.sumire.animate(Sumire.SAD);
+		this.field.draw();
+		this.board.getHand().forEach( h => { while (h.children.length > 0) h.pull(); });
 	}
 	
 	/**
 	 * メインメソッドです。
+	 * @async
 	 */
-	main() {
+	async main() {
 		try {
-			explain();
-			mainLoop();
-			displayScore();
-		} catch (InterruptedBridgeException e) {
-			field.removeSpot();
-			field.repaint();
+			await this.explain();
+			await this.mainLoop();
+			await this.displayScore();
+			this.field.pull(this.board);
+		} catch (e) {
+			this.field.spot = -1;
+			this.field.draw();
 		}
 	}
 }
 
 class Problem {
-	/** @type {string} */ title;
-	/** @type {Bid} */ contract;
-	/** @type {Packet[]} */ hands;
-	/** @type {string} */ description;
-	/** @type {string} */ openingLead;
-	/** @type {string} */ thinker;
+	/** @type {string} 問題タイトル */ title;
+	/** @type {Bid} コントラクト */ contract;
+	/** @type {Packet[]} 4人のハンド */ hands;
+	/** @type {string} 問題説明文 */ description;
+	/** @type {string} O.L. */ openingLead;
+	/** @type {string} 思考ルーチン */ thinker;
 
 	/**
 	 * 4  SXX などのコントラクト文字列を返却します。

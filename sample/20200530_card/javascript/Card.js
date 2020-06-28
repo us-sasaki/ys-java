@@ -661,10 +661,9 @@ class Packet extends Entities {
 }
 
 /**
- * Quit ボタンを押し、メインループが中断されたことを示す例外です。
- * ブリッジの中で、ブロックするメソッド(async)は、Quit ボタンを押した際に
+ * Quit ボタンを押し、中断することを選択したことを示す例外です。
+ * ブリッジの中で、ブロックするメソッド(async)は、中断決定時に
  * 即座にブロックを解除し、この例外をスローすることが求められます。
- * 
  */
 class QuitInterruptException {
 	//
@@ -680,19 +679,26 @@ class QuitInterruptException {
  * @extends	Entities
  */
 class Field extends Entities {
-	/** html 内の canvas 要素 */
+	/** @type {Element} html 内の canvas 要素 */
 	canvas;
-	/** canvas の 2D context */
+	/** @type {Canvas} canvas の 2D context */
 	ctx;
-	/** spot light の位置 (0-3) */
+	/** @type {number} spot light の位置 (0-3), -1 は描画しない */
 	spot;
+	/** @type {Function[]} 中断ボタン押下時に割り込み例外をスローするため reject を登録 */
+	rejects;
 
+	/**
+	 * 指定された canvas 名に描画する Field を生成します。
+	 * @param {string} canvasId 
+	 */
 	constructor(canvasId) {
 		super();
 		this.canvas = document.getElementById(canvasId);
 		this.setSize(canvas.clientWidth, canvas.clientHeight);
 		this.ctx = canvas.getContext('2d');
 		this.spot = 0;
+		this.rejects = [];
 		
 		this.layout = null; // pos/size は初期値のまま
 	}
@@ -703,11 +709,9 @@ class Field extends Entities {
  */
 	/** @override */
 	getRect() {
-		//var d = this.layout.layoutSize(this);
-		
 		return { x:this.x, y:this.y, w:this.w, h:this.h };
 	}
-	/** override */
+	/** @override */
 	draw() {
 		this._drawBackground_();
 		for (let i = 0; i < this.children.length; i++) {
@@ -721,9 +725,7 @@ class Field extends Entities {
 	 * @private
 	 */
 	_drawBackground_() {
-		//
 		// バック(緑のグラデーション)
-		//
 		const r = this.getRect();
 		const step = r.h / 40;
 		for (let i = 0; i < 40; i++) {
@@ -734,16 +736,15 @@ class Field extends Entities {
 	
 	/**
 	 * スポットライトを描画します(黄白色)
+	 * spot に座席番号を指定します。-1 では描画しません。
 	 * @private
 	 */
 	_drawSpotlight_() {
-		//
-		// 順番を示すスポットライト
-		//
-		const r = this.getRect();
 		const spot = this.spot;
-		const direction = this.direction;
 		if (spot == -1) return;
+		// 順番を示すスポットライト
+		const r = this.getRect();
+		const direction = this.direction;
 		
 		const d = (spot + direction)%4;
 		let x, y;
@@ -776,7 +777,40 @@ class Field extends Entities {
 			this.ctx.fill();
 		}
 	}
-	
+
+	/**
+	 * ブロック時に中断ボタンによる割り込み(Promiseのreject)を行うための関数を
+	 * 登録します。配列への push を行っていますが、このプログラムでは同時に２つ
+	 * 以上のブロックは発生しないため、多くて１つの要素からなるはずです。
+	 * @param {Function} rej 実行をブロックする Promise での rejectFunction
+	 */
+	addReject(rej) {
+		if (this.rejects.includes(rej)) return;
+		this.rejects.push(rej);
+	}
+
+	/**
+	 * ブロック処理が終了する際、登録していた Promise の reject を削除します。
+	 * @param {Function} rej 実行をブロックする Promise での rejectFunction
+	 */
+	removeReject(rej) {
+		const i = this.rejects.indexOf(rej);
+		if (!this.rejects.includes(rej) == -1) return;
+		this.rejects.splice(i, 1);
+	}
+
+	/**
+	 * 中断ボタン後 OK した際に、すべてのブロックしている async メソッドで
+	 * QuitInterruptException をスローさせます。
+	 * this.rejects は空になります。
+	 */
+	interrupt() {
+		while (this.rejects.length > 0) {
+			const rej = this.rejects.pop();
+			rej(new QuitInterruptException('quit'));
+		}
+	}
+
 	/**
 	 * カードがクリックされるのを検出する async 関数です。
 	 * クリック位置は MouseEvent の offsetX, offsetY で検出します。
@@ -784,8 +818,8 @@ class Field extends Entities {
 	 * @returns	{Card} クリックされた Card オブジェクト。
 	 */
 	waitCardSelect() {
-		return new Promise( (res) => {
-			//
+		return new Promise( (res, rej) => {
+			this.addReject(rej);
 			const listener = (e) => {
 				const x = e.offsetX;
 				const y = e.offsetY;
@@ -794,6 +828,7 @@ class Field extends Entities {
 					const selectedCard = ent;
 					console.log('selected ' + selectedCard.toString());
 					this.canvas.removeEventListener('click', listener);
+					this.removeReject(rej);
 					res(selectedCard);
 				}
 			};
@@ -808,15 +843,18 @@ class Field extends Entities {
 	 * @returns		クリックされた場合 true
 	 */
 	waitClick(millis) {
-		return new Promise( (res) => {
+		return new Promise( (res, rej) => {
+			this.addReject(rej);
 			const listener = () => {
 				this.canvas.removeEventListener('click', listener);
+				this.removeReject(rej);
 				res(true);
 			};
 			this.canvas.addEventListener('click', listener);
 			if (millis) {
 				setTimeout( () => {
 					this.canvas.removeEventListener('click', listener);
+					this.removeReject(rej);
 					res(false);
 				}, millis);
 			}
@@ -828,9 +866,17 @@ class Field extends Entities {
 	 * @async
 	 * @param {number} millis 
 	 */
-	static async sleep(millis) {
-		return new Promise( (res) => { setTimeout(res, millis);	});
+	sleep(millis) {
+		return new Promise( (res, rej) => {
+			this.addReject(rej);
+			setTimeout( () => {
+				this.removeReject(rej);
+				res();
+			}, millis);
+		});
 	}
+
+
 }
 
 /**
@@ -932,6 +978,8 @@ class Button extends Entity {
 	onClick(evt) {
 		if (!this.isVisible) return;
 		if (!this._isInternal_(evt.offsetX, evt.offsetY)) return;
+		this.pressed = 0;
+		this.color = Button.BASE_COLOR;
 		this.field.draw();
 		if (this.listener) this.listener();
 	}
@@ -972,43 +1020,38 @@ class Card extends Entity {
 	static XSTEP = 14;
 	static YSTEP = 16;
 
-	/** suit 値用の定数 */
+	/** @const {number} suit 値用の定数 */
 	static JOKER = 0; // 利用されない(JOKER は value も同一値)
-	/** スペードを示す定数(4) */
+	/** @const {number} スペードを示す定数(4) */
 	static SPADE = 4;
-	/** ハートを示す定数(3) */
+	/** @const {number} ハートを示す定数(3) */
 	static HEART = 3;
-	/** ダイヤを示す定数(2) */
+	/** @const {number} ダイヤを示す定数(2) */
 	static DIAMOND = 2;
-	/** クラブを示す定数(1) */
+	/** @const {number} クラブを示す定数(1) */
 	static CLUB = 1;
 
-	/** ACE を表す value 値(1) */
+	/** @const {number} ACE を表す value 値(1) */
 	static ACE = 1;
-	/** JACK を表す value 値(11) */
+	/** @const {number} JACK を表す value 値(11) */
 	static JACK = 11;
-	/** QUEEN を表す value 値(12) */
+	/** @const {number} QUEEN を表す value 値(12) */
 	static QUEEN = 12;
-	/** KING を表す value 値(13) */
+	/** @const {number} KING を表す value 値(13) */
 	static KING = 13;
 
+	/** @const {string} "JCDHS" のスーツ文字列です */
+	static SUIT_LETTERS = "JCDHS";
+	/** @const {string} "oA23456789TJQK" の値文字列です */
+	static VALUE_LETTERS = "oA23456789TJQK";
 
-	/**
-	 * このカードのスートを表す 0～4 の数値。スート定数を参照。
-	 * @type	{Number}
-	 */
+	/** @type	{Number} このカードのスートを表す 0～4 の数値。スート定数を参照。 */
 	suit;
 
-	/**
-	 * このカードのバリューを表す数値。1(ACE)～13(KING) の値をとる。
-	 * @type	{Number}
-	 */
+	/** @type	{Number} このカードのバリューを表す数値。1(ACE)～13(KING) の値をとる。 */
 	value;
 
-	/**
-	 * このカードが表向きかどうかを保持。
-	 * @type	{Boolean}
-	 */
+	/** @type	{Boolean} このカードが表向きかどうかを保持。 */
 	isHead;
 
 /*-------------
@@ -1027,7 +1070,7 @@ class Card extends Entity {
  */
 	/**
 	 * カードを描画します。
-	 * @param	{Object} ctx	2Dグラフィックコンテキスト
+	 * @param	{Context} ctx	2Dグラフィックコンテキスト
 	 * @override
 	 */
 	draw(ctx) {
@@ -1057,14 +1100,10 @@ class Card extends Entity {
 	/**
 	 * この Entity の位置、大きさを取得します。
 	 * @override
-	 * @return		{Object} {x: <<x座標>>, y: <<y座標>>, w: <<幅>>, h: <<高さ>>
+	 * @return		{Object} x: x座標, y: y座標, w: 幅, h: 高さ
 	 */
 	getRect() {
-		return {
-			x: this.x,
-			y: this.y,
-			w: this.w, //Card.XSIZE, //this.w,
-			h: this.h }; //Card.YSIZE }; //this.h };
+		return {x: this.x, y: this.y, w: this.w, h: this.h };
 	}
 	
 	/**
@@ -1074,62 +1113,25 @@ class Card extends Entity {
 	toString() {
 		let s;
 		if (this.isHead) s = "/"; else s = "_";
-		switch (this.suit) {
-			case Card.SPADE:
-				s += "S";
-				break;
-			case Card.HEART:
-				s += "H";
-				break;
-			case Card.DIAMOND:
-				s += "D";
-				break;
-			case Card.CLUB:
-				s += "C";
-				break;
-			default:
-				s += "Jo";
-		}
-		switch (this.value) {
-			case 0:
-				break;
-			case Card.ACE:
-				s = s + "A";
-				break;
-			case 10:
-				s = s + "T";
-				break;
-			case Card.JACK:
-				s = s + "J";
-				break;
-			case Card.QUEEN:
-				s = s + "Q";
-				break;
-			case Card.KING:
-				s = s + "K";
-				break;
-			default:
-				s = s + this.value;
-		}
-		return s; // + "]";
+		s += Card.SUIT_LETTERS[this.suit] + Card.VALUE_LETTERS[this.value];
+		return s;
 	}
 }
 
 /**
  * CardImageHolder class
  * @classdesc カードのグラフィックを取得する static メソッドを提供します。
- * @constructor
  */
 class CardImageHolder {
 	constructor() {
 		throw new Error("can not instantiate CardImageHolder");
 	}
 
-	/** @type	{Image[]} カード表面のイメージオブジェクトの配列 */
+	/** @const	{Image[]} カード表面のイメージオブジェクトの配列 */
 	static IMAGE = [];
-	/** @type	{Image[]} カード裏面のイメージオブジェクト配列 */
+	/** @const	{Image[]} カード裏面のイメージオブジェクト配列 */
 	static BACK_IMAGE = [];
-	/** @type	{Image[]} すみれ画像(3つ) */
+	/** @const	{Image[]} すみれ画像(3つ) */
 	static SUMIRE = [];
 	
 	/** @type	{number} カード裏面イメージの番号(0-3) */
@@ -1143,7 +1145,7 @@ class CardImageHolder {
 		if (path===void 0) path = 'images/';
 		if (!path.endsWith('/')) path = path + '/';
 		// カード表面の読み込み
-		const s = ['c', 'd', 'h', 's'];
+		const s = 'cdhs';
 		for (let i = 0; i < s.length; i++) {
 			const suit = s[i];
 			for (let value = 1; value < 14; value++) {
@@ -1203,7 +1205,6 @@ class CardImageHolder {
 	
 /**
  * CardHandLayout class 定義
- * @constructor
  */
 class CardHandLayout {
 
@@ -1316,7 +1317,6 @@ class CardHandLayout {
  * Bid class定義
  *
  * @classdesc ビッド、またはコントラクトを表現するクラスです。
- * @constructor
  * @param	{number} kind	ビッド種類(Bid.PASS, Bid.BID, Bid.DOUBLE,
  * 							Bid.REDOUBLE)
  * @param	{number} level	ビッドレベル(1～7)
@@ -1329,38 +1329,38 @@ class Bid {
 /*------------------
  * static constants
  */
-	/** kind (Bid) を表す定数. */
+	/** @const {number} kind (Bid) を表す定数. */
 	static BID			= 0;
 	
-	/** kind (Pass) を表す定数. */
+	/** @const {number} kind (Pass) を表す定数. */
 	static PASS		= 1;
 	
-	/** kind (Double) を表す定数. */
+	/** @const {number} kind (Double) を表す定数. */
 	static DOUBLE		= 2;
 	
-	/** kind (Redouble) を表す定数. */
+	/** @const {number} kind (Redouble) を表す定数. */
 	static REDOUBLE	= 3;
 	
-	/** bid suit (club) を表す定数(=1). */
+	/** @const {number} bid suit (club) を表す定数(=1). */
 	static CLUB		= Card.CLUB;	// = 1;
 	
-	/** bid suit (diamond) を表す定数(=2). */
+	/** @const {number} bid suit (diamond) を表す定数(=2). */
 	static DIAMOND		= Card.DIAMOND;	// = 2;
 	
-	/** bid suit (heart) を表す定数(=3). */
+	/** @const {number} bid suit (heart) を表す定数(=3). */
 	static HEART		= Card.HEART;	// = 3;
 	
-	/** bid suit (spade) を表す定数(=4). */
+	/** @const {number} bid suit (spade) を表す定数(=4). */
 	static SPADE		= Card.SPADE;	// = 4;
 	
-	/** bid suit (no trump) を表す定数(=5). */
+	/** @const {number} bid suit (no trump) を表す定数(=5). */
 	static NO_TRUMP	= 5;
 
-	/** ビッドの種類 */
+	/** @type {number} ビッドの種類 Bid.BID, Bid.PASS, Bid.DOUBLE, Bid.REDOUBLE */
 	kind;
-	/** ビッドのレベル */
+	/** @type {number} ビッドのレベル(1-7) */
 	level;
-	/** ビッドスート */
+	/** @type {number} ビッドスート(Bid.CLUB=Card.CLUB など) */
 	suit;
 
 	constructor(kind, level, suit) {
@@ -1468,9 +1468,7 @@ class DummyHandLayout {
 		
 		if (count[0] + count[1] + count[2] + count[3] == 0) return;
 		
-		//
 		// サイズ計算用
-		//
 		let maxCount = -1;
 		for (let i = 0; i < 4; i++) {
 			if (maxCount < count[i]) maxCount = count[i];
@@ -1610,44 +1608,29 @@ class DummyHandLayout {
  *
  * @classdesc Board の機能のうち、オークションに関係する部分の実際の処理を
  * 受け持つクラスです。
- * @constructor
  * @param	{number} dealer ディーラーの座席番号(0-3)
  * @version		8, July 2018
  * @author		Yusuke Sasaki
  */
 class BiddingHistory {
-	/**
-	 * 座席定数
-	 */
+	/** @type {number} north を表す座席定数(=0) */
 	static NORTH = 0;
+	/** @type {number} east を表す座席定数(=1) */
 	static EAST = 1;
+	/** @type {number} south を表す座席定数(=2) */
 	static SOUTH = 2;
+	/** @type {number} west を表す座席定数(=3) */
 	static WEST = 3;
 
-	/**
-	 * ディーラーの座席番号(0-3)
-	 * @type	{number}
-	 */
+	/** @type	{number} ディーラーの座席番号(0-3) */
 	dealer;
-	/**
-	 * ビッド履歴。配列の大きさはビッドの回数を示します。
-	 * @type	{Array.<Bid>}
-	 */
+	/** @type	{Bid[]} ビッド履歴。配列の大きさはビッドの回数を示します。 */
 	bid;
-	/**
-	 * 現時点のコントラクト。最終コントラクトとは限りません。
-	 * @type	{Bid}
-	 */
+	/** @type	{Bid} 現時点のコントラクト。最終コントラクトとは限りません。 */
 	contract;
-	/**
-	 * 現時点のディクレアラー。最終ディクレアラーとは限りません。
-	 * @type	{number}
-	 */
+	/** @type	{number} 現時点のディクレアラー。最終ディクレアラーとは限りません。 */
 	declarer;
-	/**
-	 * コントラクトが終了している場合、true
-	 * @type	{boolean}
-	 */
+	/** @type	{boolean} コントラクトが終了している場合、true */
 	finished;
 
 	constructor(dealer) {
@@ -1882,7 +1865,6 @@ class BiddingHistory {
 
 /**
  * TrickLayout class 定義
- * @constructor
  */
 class TrickLayout {
 	constructor() {
@@ -1945,7 +1927,6 @@ class TrickLayout {
  * の判定を行う。
  * hand に関する情報は保持しない。
  * constructor で Trick(Trick) は未実装。(GuiedTrick にはある)
- * @constructor
  * @param	{number} leader leader の座席番号
  * @param	{number} trump trumpスート
  * @extends Packet
@@ -1954,28 +1935,18 @@ class Trick extends Packet {
 /*--------------
  * class fields
  */
+	/** @const {number} トリックの幅 */
 	static WIDTH  = 300;
+	/** @const {number} トリックの高さ */
 	static HEIGHT = 200;
 
-	/**
-	 * リーダーを示す数値
-	 * @type {Number}
-	 */
+	/** @type {number} リーダーを示す数値 */
 	leader;
-	/**
-	 * ウィナーを示す数値
-	 * @type {Number}
-	 */
+	/** @type {number} ウィナーを示す数値 */
 	winner;
-	/**
-	 * ウィナーカード
-	 * @type {Card}
-	 */
+	/** @type {Card} ウィナーカード */
 	winnerCard;
-	/**
-	 * トランプスート
-	 * @type {Number}
-	 */
+	/** @type {number} トランプスート */
 	trump;
 	
 	constructor(leader, trump) {
@@ -2109,34 +2080,24 @@ class Trick extends Packet {
  *								省略時は新規オブジェクトを生成します。
  */
 class PlayHistory {
-	/**
-	 * 座席定数
-	 */
+	/** @const {number} 座席定数 */
 	static NORTH = BiddingHistory.NORTH;
+	/** @const {number} 座席定数 */
 	static EAST = BiddingHistory.EAST;
+	/** @const {number} 座席定数 */
 	static SOUTH = BiddingHistory.SOUTH;
+	/** @const {number} 座席定数 */
 	static WEST = BiddingHistory.WEST;
+	/** @const {string[]} 座席名("North" など) */
 	static SEAT_STRING = [ "North", "East", "South", "West" ];
 
-	/**
-	 * プレイ中のハンド
-	 * @type	{Array.<Packet>}
-	 */
+	/** @type	{Packet[]} プレイ中のハンド */
 	hand;
-	/**
-	 * プレイ中のトリック。要素数は 13 以下。
-	 * @type	{Array.<Trick>}
-	 */
+	/** @type	{Trick[]} プレイ中のトリック。要素数は 13 以下。 */
 	trick;
-	/**
-	 * 現在まででプレイされているトリック数(プレイ中は含まない)
-	 * @type	{number}
-	 */
+	/** @type	{number} 現在まででプレイされているトリック数(プレイ中は含まない) */
 	trickCount;
-	/**
-	 * トランプスート
-	 * @type	{number}
-	 */
+	/** @type	{number} トランプスート */
 	trump;
 
 	constructor(src) {
@@ -2333,7 +2294,6 @@ class PlayHistory {
 		
 		// 最後のプレイを取得する
 		const lastPlay = this.trick[this.trickCount].pull();
-//		lastPlay.turn(false); // このオブジェクトは Dummy が誰かを知らない
 		this.hand[seatToBePushbacked].add(lastPlay);
 		this.hand[seatToBePushbacked].arrange();
 		
@@ -2380,7 +2340,6 @@ class PlayHistory {
 	
 /**
  * TableGui class 定義
- * @constructor
  * @extends Entity
  */
 class TableGui extends Entity {
@@ -2391,6 +2350,7 @@ class TableGui extends Entity {
 	static WIDTH = 640;
 	static HEIGHT = 480;
 
+	/** @type {Board} 属している Board */
 	board;
 
 	constructor(board) {
@@ -2554,11 +2514,9 @@ class WinnerCard extends Entity {
 	 * @param	{Context} ctx	グラフィックコンテキスト
 	 */
 	draw(ctx) {
-//console.log('WinnerCard.draw() called');
 		if (!this.isVisible) return;
 		let x,y, c,s;
 		const r = this.getRect();
-//console.log('WinnerCard getRect()='+JSON.stringify(r));
 		switch (this.direction) {
 		case 1:
 			c = 0; s = 1;	x = r.y;		y = -r.x - r.w; break;
@@ -2571,7 +2529,6 @@ class WinnerCard extends Entity {
 		}
 		const img = CardImageHolder.getBackImage();
 		
-//console.log('WinnerCard x='+x+' y='+y+' c='+c+' s='+s);
 		ctx.setTransform(c, s, -s, c, 0, 0);
 		ctx.drawImage(img, x, y, this.w, this.h);
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -2648,22 +2605,16 @@ class BoardLayout {
 		const x = board.x;
 		const y = board.y;
 		
-		//
 		// ハンドの位置指定
-		//
-//		console.log('BoardLayout.layout()'+board.getHand());
 		
 		if (board.getHand() != null) {
 			for (let i = 0; i < 4; i++) {
 				const ent = board.getHand()[i];
 				if (!ent) {
-//					console.log('BoardLayout: ent is null');
 					continue;
 				}
-//				console.log('BoardLayout: ent is not null');
 				ent.setDirection((10 - i - d )%4);
 				const lsize = ent.getSize();	// 大きさを計算させる
-//				console.log('BoardLayout lsize='+JSON.stringify(lsize)+' ent.class.name='+ent.constructor.name);
 				
 				let xx, yy;
 				
@@ -2688,30 +2639,22 @@ class BoardLayout {
 					throw new InternalError();
 				}
 				ent.setPosition(x + xx, y + yy);
-//				console.log('BoardLayout setPosition(x,y)=('+(x+xx)+','+(y+yy)+')');
 				if (ent.layout) ent.layout.layout(ent);
 			}
 		}
-		//
 		// トリックの位置指定
-		//
 		const trick = board.trickGui;
 		
-//		console.log('BoardLayout: trick='+trick);
 		if (trick) {
 			trick.setPosition(x + BoardLayout.TRICK_X, y + BoardLayout.TRICK_Y);
 			trick.layout.layout(trick);
 		}
 		
-		//
 		// ウィナーの位置指定
-		//
 		const winnerGui = board.winnerGui;
-//		console.log('BoardLayout: winnerGui='+winnerGui);
 		if (winnerGui) {
 			winnerGui.setPosition(x + BoardLayout.WINNER_X, y + BoardLayout.WINNER_Y);
 		}
-		
 	}
 	
 	/**
@@ -2732,7 +2675,6 @@ class BoardLayout {
  * 		受動的なオブジェクトで、BoardManagerに対しては状態変化を起こす
  * 		メソッドを提供します。
  * 		Playerに対してBoard の情報を提供します。
- * @constructor
  * @param	{number} dealerOrNum ディーラーまたは、ボード番号
  * @param	{number} vul ディーラーを指定したときはバルを指定する。
  * @extends	Entities
@@ -2742,12 +2684,13 @@ class Board extends Entities {
 /*------------------
  * static constants
  */
-	/**
-	 * 座席定数
-	 */
+	/** @type {number} 座席定数 */
 	static NORTH = PlayHistory.NORTH;
+	/** @type {number} 座席定数 */
 	static EAST = PlayHistory.EAST;
+	/** @type {number} 座席定数 */
 	static SOUTH = PlayHistory.SOUTH;
+	/** @type {number} 座席定数 */
 	static WEST = PlayHistory.WEST;
 	
 	static STATUS_STRING = [ "Dealing", "Bid", "Opening Lead", "Playing", "Scoring" ];
@@ -2767,40 +2710,35 @@ class Board extends Entities {
 	static WIDTH = 640;
 	static HEIGHT = 480;
 	
-	/**
-	 * Status を示す定数です。
-	 */
-	// ボードが新規に作成され、まだプレイヤーにカードがディールされていない
+	/** @const {number} ボードが新規作成され、まだカードがディールされていない status */
 	static DEALING = 0;
-	// ビッドが行われている状態
+	/** @const {number} ビッドが行われている status */
 	static BIDDING = 1;
-	// オープニングリード待ち
+	/** @const {number} オープニングリード待ち status */
 	static OPENING = 2;
-	// プレイ中
+	/** @const {number} プレイ中 status */
 	static PLAYING = 3;
-	// ボード終了
+	/** @const {number} ボード終了 status */
 	static SCORING = 4;
 	
-	/**
-	 * プレイ順番を示す定数です。
-	 */
+	/** @const {number} プレイ順番を示す定数です。 */
 	static LEAD = 0;
+	/** @const {number} プレイ順番を示す定数です。 */
 	static SECOND = 1;
+	/** @const {number} プレイ順番を示す定数です。 */
 	static THIRD = 2;
+	/** @const {number} プレイ順番を示す定数です。 */
 	static FORTH = 3;
 
-	/**
-	 *  この Board の BiddingHistory
-	 *  @type {BiddingHistory}
-	 */
+	/** @type {BiddingHistory} この Board の BiddingHistory */
 	bidding;
-	/** この Board の PlayHistory @type {PlayHistory} */
+	/**  @type {PlayHistory} この Board の PlayHistory */
 	playHist;
-	/** vulnerability @type {number} */
+	/** @type {number} vulnerability */
 	vul;
-	/** status(DEALING/BIDDING/OPENING/PLAYING/SCORING) @type {number} */
+	/** @type {number} status(DEALING/BIDDING/OPENING/PLAYING/SCORING) */
 	status;
-	/** タイトル @type {string} */
+	/** @type {string} タイトル */
 	name;
 
 	/**
@@ -2868,7 +2806,7 @@ class Board extends Entities {
 	/**
 	 * カードを配って BIDDING 状態に移行します。
 	 *
-	 * @param	{Array.<Packet>} hand 初期ハンド指定(ない場合、新規カードを配る)
+	 * @param	{?Packet[]|number} handOrSeed 初期ハンド指定(ない場合、新規カードを配る)
 	 *								整数を指定したら乱数シードの意味
 	 */
 	deal(handOrSeed) {
@@ -2951,9 +2889,7 @@ class Board extends Entities {
 			this.bidding.play(play);
 			if (this.bidding.finished) {
 				if (this.getContract().kind == Bid.PASS) {
-					//
 					// Pass out
-					//
 					this.status = Board.SCORING;
 					break;
 				}
@@ -2962,7 +2898,6 @@ class Board extends Entities {
 				
 				this._reorderHand_();
 				this.trickGui = this.getTrick();
-//console.log('Board.play() called '+this.playHist.getTrick());
 				if (this.trickGui) this.add(this.trickGui);
 		
 			}
@@ -2978,11 +2913,6 @@ class Board extends Entities {
 			if (this.status == Board.OPENING) this._dummyOpen_();
 			if (this.playHist.isFinished()) this.status = Board.SCORING;
 			else this.status = Board.PLAYING;
-			
-			// GUI処理(TrickAnimation) 処理
-			//
-			// 未実装(2018/8/17)
-			//
 			
 			break;
 			
@@ -3029,19 +2959,18 @@ class Board extends Entities {
 			toBlink.isVisible = !toBlink.isVisible;
 			field.draw();
 		}
-		if (i == 12) await Field.sleep(300);
+		if (i == 12) await field.sleep(300);
 		toBlink.isVisible = true;
 
 		// カードを裏返し、ウィナーの向きに揃える
 		const dir = ((trickGui.getWinner() ^ this.direction) & 1) + 2;
 		trickGui.children.forEach( c => {
-//console.log('typeof c='+(c.constructor.name));
 			c.isHead = false;
 			c.setDirection(dir);
 		});
 		trickGui.selfLayout();
 		field.draw();
-		await Field.sleep(500);
+		await field.sleep(500);
 
 		this.pull(trickGui);
 		
@@ -3050,9 +2979,7 @@ class Board extends Entities {
 		else
 			this.winnerGui.add(WinnerGui.LOSE);
 		
-		//
 		// 次の trickGui を設定
-		//
 		if (trickGui !== newTrickGui) { // 最終トリックのみ == となる
 			trickGui = this.trickGui = newTrickGui;
 			this.add(newTrickGui);
@@ -3645,7 +3572,7 @@ class Score {
 	 *
 	 * @param	{Board} board		計算対象のボード
 	 * @param	{number} seat		計算を行う座席(Board.NORTH など)
-	 * @return	得点
+	 * @return	{number} 得点
 	 */
 	static calculate(board, seat) {
 		if (board.status != Board.SCORING)
@@ -3673,18 +3600,6 @@ class Score {
 	
 	/**
 	 * 
-	 * @param {Bid} contract コントラクト
-	 * @param {number} win ウィナーの数
-	 * @param {number} declarer ディクレアラー
-	 * @param {number} seat 座席番号
-	 * @param {number} vul バルネラビリティ
-	 */
-//	static calculate(contract, win, declarer, seat, vul) {
-//		return Score._calcImpl_(contract, win, declarer, seat, vul);
-//	}
-	
-	/**
-	 * 
 	 * @param {Bid} contract 
 	 * @param {number} win 
 	 * @param {number} declarer 
@@ -3697,9 +3612,7 @@ class Score {
 		
 		let score = 0;
 		if (up >= 0) {
-			//
 			// コントラクトに対する基本点計算
-			//
 			let trickScore = 0;
 			switch (contract.suit) {
 			
@@ -3723,15 +3636,11 @@ class Score {
 			trickScore = trickScore * contract.level;
 			if (contract.suit === Bid.NO_TRUMP) trickScore+=10;
 			
-			//
 			// ダブルの時の修正
-			//
 			if (contract.kind == Bid.DOUBLE) trickScore *= 2;
 			if (contract.kind == Bid.REDOUBLE) trickScore *= 4;
 			
-			//
 			// アップトリック
-			//
 			let uptrickBonus = 0;
 			switch (contract.suit) {
 			
@@ -3826,7 +3735,6 @@ class Score {
 				score = -score;
 			}
 		}
-		
 		return score;
 	}
 	

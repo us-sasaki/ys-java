@@ -7,19 +7,13 @@
     <title>ブリッジシミュレーター</title>
 </head>
 <body>
-    <div id="selectDialog">
     <div id="modal-overlay"></div>
     <div id="modal-content">
         <table class="full">
             <tr><td>ブリッジシミュレーター</td></tr>
             <tr><td>
                 <table class="full"><tr><td>
-                <select name="select">
-                    <option value="問題1">ブリッジの問題(1)</option>
-                    <option value="問題2">とりあえず名前の長い問題(2)</option>
-                    <option value="問題3">問題(3)</option>
-                    <option value="問題4">問題(4)</option>
-                </select>
+                <select name="select"></select>
                 </td>
                 <td><input type="button" value="開始する" id="startButton"></td></tr>
                 </table>
@@ -27,7 +21,6 @@
             <tr><td><input type="button" value="今のプレイを自動再生する" id="videoButton"></td></tr>
             <tr><td><input type="button" value="同じハンドをもう一度プレイする" id="replayButton"></td></tr>
         </table>
-    </div>
     </div>
     <canvas id="canvas" width="640" height="480"></canvas>
 
@@ -39,7 +32,7 @@ const problem = [
         title: "タイトル",
         description: "説明文章",
         contract: "4SX",
-        n: "C:AKQ",
+        n: "C:AKQ D;987",
         e: "C:JT9",
         s: "C:876",
         w: "C:543"
