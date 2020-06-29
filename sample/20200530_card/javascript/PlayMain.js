@@ -46,7 +46,6 @@ class PlayMain {
 	 */
 	addProblem(p) {
 		if (p.isValid()) this.problems.push(p);
-console.log("problems = "+this.problems[0].description);
 	}
 	
 	/**
@@ -103,7 +102,6 @@ console.log("problems = "+this.problems[0].description);
 	async start() {
 		const titles = [];
 		this.problems.forEach( prob => titles.push(prob.title));
-console.log('titles ='+titles)
 		this.dialog.setPulldown(titles);
 		this.field.draw();
 		const result = await this.dialog.show();
@@ -125,8 +123,8 @@ console.log('titles ='+titles)
 		this.handno = 0;
 		await this.main();
 
-		// field から board を削除
-		this.field.pull(this.board);
+		// field から board を削除 (stop にあったが、不要)
+		//this.field.pull(this.board);
 
 	}
 	
@@ -237,8 +235,6 @@ console.log('titles ='+titles)
 	 * @throws	QuitInterruptException 中断が選択された
 	 */
 	async explain() {
-console.log("explain called:"+this.handno);
-console.log('explain called:' + this.problems[this.handno].description);
 		const prob = this.problems[this.handno];
 		this.sumire = new Sumire(this.field, prob.description);
 		this.contractString = prob.getContractString();
@@ -262,11 +258,8 @@ console.log('explain called:' + this.problems[this.handno].description);
 			this.field.draw();
 			
 			let c = null;
-console.log('c == null');
 			while (c === null) {
-console.log('this.board = '+this.players[this.board.getPlayer()]);
 				c = await this.players[this.board.getPlayer()].play(); // ブロックする
-console.log('c = '+c);
 			}
 			await this.board.playWithGui(c);
 			this.field.draw();
@@ -284,27 +277,22 @@ console.log('c = '+c);
 		this.field.spot = -1; // spot を消す
 		this.field.draw();
 		
-console.log("1!!!!!!!!!!!!!");
 		await this.field.sleep(500);
 
 		// カードをもう一度表示する
 		const original = BridgeUtils.calculateOriginalHand(this.board);
-console.log("12!!!!!!!!!!!!!!!!!!"+original[0]);
 		for (let i = 0; i < 4; i++) {
 			const hand = this.board.getHand(i);
-console.log("hand "+hand.toString());
 			for (let j = 0; j < original[i].children.length; j++) {
 				const c = original[i].children[j];
 				hand.add(c);
 			}
 			hand.turn(true);
 		}
-console.log("2!!!!!!!!!!!!!");
 
 		this.board.selfLayout();
 		this.board.getHand().forEach( hand => { hand.arrange(); hand.selfLayout(); });
-console.log("3!!!!!!!!!!!!!");
-		
+	
 		// スコア表示
 		let msg = "結果：" + this.contractString + "  ";
 		let msg2;
@@ -312,7 +300,6 @@ console.log("3!!!!!!!!!!!!!");
 		const win = BridgeUtils.countDeclarerSideWinners(this.board);
 		const up = win - this.board.getContract().level - 6;
 		const make = win - 6;
-console.log("4!!!!!!!!!!!!!");
 		
 		if (up >= 0) {
 			// メイク
@@ -323,12 +310,10 @@ console.log("4!!!!!!!!!!!!!");
 			msg += (-up) + "ダウン";
 			msg2 = "残念。もう一度がんばって！";
 		}
-console.log("5!!!!!!!!!!!!!");
 		
 		msg += "("+win+"トリック)\nN-S側のスコア："+Score.calculate(this.board, Board.SOUTH);
 		msg += "\n \n" + msg2;
 		
-console.log("6!!!!!!!!!!!!!");
 		this.sumire = new Sumire(this.field, msg);
 		if (up >= 0) 
 			await this.sumire.animate(Sumire.DELIGHTED);
@@ -344,17 +329,17 @@ console.log("6!!!!!!!!!!!!!");
 	 */
 	async main() {
 		try {
-console.log(this.board.toText());
-console.log('explain');
 			await this.explain();
-console.log('mainLoop');
 			await this.mainLoop();
-console.log('displayScore');
 			await this.displayScore();
 			this.field.pull(this.board);
 		} catch (e) {
-			this.field.spot = -1;
-			this.field.draw();
+			if (e instanceof QuitInterruptException) {
+				this.field.spot = -1;
+				this.field.draw();
+			} else {
+				throw e;
+			}
 		}
 	}
 }

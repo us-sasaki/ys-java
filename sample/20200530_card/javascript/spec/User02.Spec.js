@@ -3,16 +3,11 @@
 const startBridge = function() {
 	( async () => {
 		//
-		try {
-			const m = new PlayMain('canvas');
-			const p = problem[0];
-
-			m.addProblem(Problem.regular(p));
+		const m = new PlayMain('canvas');
+		problem.forEach( p => m.addProblem(Problem.regular(p)));
+		
+		while (true) {
 			await m.start();
-		} catch (e) {
-			// catch されていない。なぜか？
-			console.log("error occurred!");
-			throw e;
 		}
 	
 	})();

@@ -3704,7 +3704,7 @@ class Score {
 			}
 		}
 		else {
-			const down = -up;
+			let down = -up;
 			
 			if (contract.kind == Bid.BID) {
 				if (!Score._isVul_(vul, declarer)) score = -50 * down;
