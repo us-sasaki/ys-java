@@ -33,14 +33,10 @@ class Player {
 	/** プレイヤーの相対位置を示す定数(=3)で、自分の右の席(right hand)を示します。 */
 	static RIGHT	= 3;
 	
-	/**
-	 * @type	{Board}	ボード
-	 */
+	/** @type	{Board}	ボード */
 	myBoard;
 
-	/**
-	 * @type	{number} 座席定数
-	 */
+	/** @type	{number} 座席定数 */
 	mySeat;
 	
 /*------------------
@@ -80,7 +76,6 @@ class Player {
 			
 		case Board.OPENING:
 		case Board.PLAYING:
-console.log('RandomPlayer.play()');
 			while (true) {
 				const c = await this.draw();
 				if (this.myBoard.allows(c)) return c;

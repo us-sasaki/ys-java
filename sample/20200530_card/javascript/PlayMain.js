@@ -103,6 +103,11 @@ class PlayMain {
 		const titles = [];
 		this.problems.forEach( prob => titles.push(prob.title));
 		this.dialog.setPulldown(titles);
+		// 前のボードがない場合、リプレイ/ビデオは無効化
+		const disabled = (this.board)?false:true;
+		this.dialog.replayButton.disabled = disabled;
+		this.dialog.videoButton.disabled = disabled || (this.board.status !== Board.SCORING);
+
 		this.field.draw();
 		const result = await this.dialog.show();
 		
@@ -120,11 +125,10 @@ class PlayMain {
 		this.board.setDirection(0);
 		this.field.draw();
 		
-		this.handno = 0;
 		await this.main();
 
-		// field から board を削除 (stop にあったが、不要)
-		//this.field.pull(this.board);
+		// field から board を削除
+		this.field.pull(this.board);
 
 	}
 	

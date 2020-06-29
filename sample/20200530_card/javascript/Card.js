@@ -2377,7 +2377,7 @@ class TableGui extends Entity {
 		ctx.fillStyle = 'rgb(0,160,0)'; // field color
 		ctx.fillRect(10,24,172,72);
 		
-			ctx.font = 'bold 16px Serif';
+			ctx.font = 'bold 14px serif';
 		// コントラクトがあれば、左上に表示する
 		if (contract != null) {
 			const kind = contract.kind;
@@ -2405,7 +2405,7 @@ class TableGui extends Entity {
 		this._fillTextWithShade_(ctx, vulStr[this.board.vul], 18, 65);
 		
 		// タイトル
-		ctx.font = 'italic bold 14px Serif';
+		ctx.font = 'italic bold 13px sans-serif';
 		this._fillTextWithShade_(ctx, this.board.name, 18, 44);
 		
 		// 線
