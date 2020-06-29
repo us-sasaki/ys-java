@@ -1,5 +1,5 @@
 /**
- * ƒAƒhƒzƒbƒN‚ÈƒƒCƒ“ƒvƒƒOƒ‰ƒ€‚Å‚·B‚¾‚ñ‚¾‚ñ–{Ši“I‚É‚È‚Á‚Ä‚«‚Ü‚µ‚½B
+ * ã‚¢ãƒ‰ãƒ›ãƒƒã‚¯ãªãƒ¡ã‚¤ãƒ³ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã§ã™ã€‚ã ã‚“ã ã‚“æœ¬æ ¼çš„ã«ãªã£ã¦ãã¾ã—ãŸã€‚
  *
  * @version		a-release		19, June 2020
  * @author		Yusuke Sasaki
@@ -21,7 +21,7 @@ class PlayMain {
 	/** @type {boolean} */ exitSignal;
 	
 	/**
-	 * PlayMain ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚·B
+	 * PlayMain ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚
 	 */
 	constructor(canvasId) {
 		this.canvasId = canvasId;
@@ -30,66 +30,47 @@ class PlayMain {
 		this.dialog = new SelectDialog();
 		this.field = new Field(this.canvasId);
         
-		// ƒ{ƒ^ƒ“
+		// ãƒœã‚¿ãƒ³
 		this._placeQuitButton_();
 		this._placeDDButton_();
 		this._placeTextButton_();
-	}
-	
-/*-----------------------------
- * implements (ActionListener)
- */
-    /**
-     * dd ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚Æ‚«‚Ìˆ—
-     */
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == quit) {
-			if (mainThread != null) mainThread.interrupt();
-		}
-		
-		// ˆÈ‰ºAadded 03/6/2
-		if (e.getSource() == textWindow) {
-			if (board != null) {
-				TextInfoWindow.getInstance(board.toText());
-			}
-		}
-		// ˆÈãAadded 03/6/2
 	}
 	
 /*------------------
  * instance methods
  */
 	/**
-	 * ‚Í‚¶‚ß‚É•\¦‚³‚ê‚éƒ_ƒCƒAƒƒO‚É–â‘è‚ğ’Ç‰Á‚µ‚Ü‚·B
-	 * valid ‚Å‚È‚¢–â‘è‚Í’Ç‰Á‚³‚ê‚Ü‚¹‚ñB
-     * @param   {Problem} p     ’Ç‰Á‚·‚é–â‘è
+	 * ã¯ã˜ã‚ã«è¡¨ç¤ºã•ã‚Œã‚‹ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã«å•é¡Œã‚’è¿½åŠ ã—ã¾ã™ã€‚
+	 * valid ã§ãªã„å•é¡Œã¯è¿½åŠ ã•ã‚Œã¾ã›ã‚“ã€‚
+     * @param   {Problem} p     è¿½åŠ ã™ã‚‹å•é¡Œ
 	 */
 	addProblem(p) {
-		if (p.isValid()) this.problem.push(p);
+		if (p.isValid()) this.problems.push(p);
+console.log("problems = "+this.problems[0].description);
 	}
 	
 	/**
-	 * ’†’fƒ{ƒ^ƒ“(this.quit)‚ğ¶¬A”z’u‚µ‚Ü‚·B
+	 * ä¸­æ–­ãƒœã‚¿ãƒ³(this.quit)ã‚’ç”Ÿæˆã€é…ç½®ã—ã¾ã™ã€‚
 	 * @private
 	 */
 	_placeQuitButton_() {
-		this.quit = new Button(this.field, "’†’f");
+		this.quit = new Button(this.field, "ä¸­æ–­");
 		this.quit.setBounds(540, 30, 80, 24);
 		this.field.add(this.quit);
 		this.quit.setListener( () => {
-			if (window.confirm('‚±‚Ìƒ{[ƒh‚ğ”jŠü‚µ‚Ä’†’f‚µ‚Ü‚·')) {
-				this.field.interrupt(); // OK ‰Ÿ‰º
+			if (window.confirm('ã“ã®ãƒœãƒ¼ãƒ‰ã‚’ç ´æ£„ã—ã¦ä¸­æ–­ã—ã¾ã™')) {
+				this.field.interrupt(); // OK æŠ¼ä¸‹
 			}
 		});
 		}
 
 	/**
-	 * ƒ_ƒuƒ‹ƒ_ƒ~[ƒ{ƒ^ƒ“(this.dd)‚ğ¶¬A”z’u‚µ‚Ü‚·B
-	 * this.dd ‚É‚Í doubleDummy {boolean} ƒvƒƒpƒeƒB‚ª‚ ‚è‚Ü‚·B
+	 * ãƒ€ãƒ–ãƒ«ãƒ€ãƒŸãƒ¼ãƒœã‚¿ãƒ³(this.dd)ã‚’ç”Ÿæˆã€é…ç½®ã—ã¾ã™ã€‚
+	 * this.dd ã«ã¯ doubleDummy {boolean} ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒã‚ã‚Šã¾ã™ã€‚
 	 * @private
 	 */
 	_placeDDButton_() {
-		const dd = new Button(this.field, "ƒ_ƒuƒ‹ƒ_ƒ~["); // ƒ_ƒuƒ‹ƒ_ƒ~[
+		const dd = new Button(this.field, "ãƒ€ãƒ–ãƒ«ãƒ€ãƒŸãƒ¼"); // ãƒ€ãƒ–ãƒ«ãƒ€ãƒŸãƒ¼
 		dd.doubleDummy = false;
 		this.field.add(dd);
 		dd.setBounds(540, 58, 80, 24);
@@ -97,7 +78,7 @@ class PlayMain {
 			if (this.board.status != Board.PLAYING) return;
 			//
 			dd.doubleDummy = !dd.doubleDummy;
-			dd.caption = dd.doubleDummy?'’Êí‚É–ß‚·':'ƒ_ƒuƒ‹ƒ_ƒ~[';
+			dd.caption = dd.doubleDummy?'é€šå¸¸ã«æˆ»ã™':'ãƒ€ãƒ–ãƒ«ãƒ€ãƒŸãƒ¼';
 			this.board.getHand(Board.EAST).turn(dd.doubleDummy);
 			this.board.getHand(Board.WEST).turn(dd.doubleDummy);
 			this.field.draw();
@@ -106,23 +87,24 @@ class PlayMain {
 	}
 
 	/**
-	 * ƒeƒLƒXƒg•\¦ƒ{ƒ^ƒ“(this.textWindow)‚ğ¶¬A”z’u‚µ‚Ü‚·B
+	 * ãƒ†ã‚­ã‚¹ãƒˆè¡¨ç¤ºãƒœã‚¿ãƒ³(this.textWindow)ã‚’ç”Ÿæˆã€é…ç½®ã—ã¾ã™ã€‚
 	 * @private
 	 */
 	_placeTextButton_() {
-		this.textWindow = new Button(this.field, "ƒeƒLƒXƒg•\¦"); // ƒeƒLƒXƒg•\¦
+		this.textWindow = new Button(this.field, "ãƒ†ã‚­ã‚¹ãƒˆè¡¨ç¤º"); // ãƒ†ã‚­ã‚¹ãƒˆè¡¨ç¤º
 		this.field.add(this.textWindow);
 		this.textWindow.setBounds(540, 86, 80, 24);
 	}
 	
 	/**
-	 * Board ‚Ì‰Šú‰»‚ğs‚¢‚Ü‚·B
+	 * Board ã®åˆæœŸåŒ–ã‚’è¡Œã„ã¾ã™ã€‚
 	 * @async
 	 */
 	async start() {
 		const titles = [];
 		this.problems.forEach( prob => titles.push(prob.title));
-		this.dialod.setPulldown(titles);
+console.log('titles ='+titles)
+		this.dialog.setPulldown(titles);
 		this.field.draw();
 		const result = await this.dialog.show();
 		
@@ -134,7 +116,7 @@ class PlayMain {
 			this.handno = parseInt(result.substring(4));
 			this._makeNewhand_();
 		}
-		// field ‚É board ‚ğ’Ç‰Á
+		// field ã« board ã‚’è¿½åŠ 
 		this.field.add(this.board);
 		this.board.setPosition(0, 0);
 		this.board.setDirection(0);
@@ -143,56 +125,59 @@ class PlayMain {
 		this.handno = 0;
 		await this.main();
 
-		// field ‚©‚ç board ‚ğíœ
+		// field ã‹ã‚‰ board ã‚’å‰Šé™¤
 		this.field.pull(this.board);
 
 	}
 	
 	/**
-	 * ƒ_ƒCƒAƒƒO‚ÅV‚µ‚¢ƒnƒ“ƒh‚ğ‘I‘ğ‚µ‚½‚Æ‚«‚Ìˆ—‚Å‚·B
+	 * ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã§æ–°ã—ã„ãƒãƒ³ãƒ‰ã‚’é¸æŠã—ãŸã¨ãã®å‡¦ç†ã§ã™ã€‚
 	 * @private
 	 */
 	_makeNewhand_() {
-		const prob = this.problems[handno];
+		const prob = this.problems[this.handno];
 		
 		this.board = new Board(1);
-		this.board.setName(prob.title);
+		this.board.name = prob.title;
 		
-		// Player İ’è
-		_setPlayers(prob)_
+		// Player è¨­å®š
+		this._setPlayers_(prob);
 		
-		// ƒfƒB[ƒ‹
+		// ãƒ‡ã‚£ãƒ¼ãƒ«
 		const hands = prob.createHands();
 		
 		this.board.deal(hands);
 		
-		// ƒRƒ“ƒgƒ‰ƒNƒgİ’è‚ğs‚¤
+		// ã‚³ãƒ³ãƒˆãƒ©ã‚¯ãƒˆè¨­å®šã‚’è¡Œã†
 		this.board.setContract(prob.contract, Board.SOUTH);
 	}
 
 	/**
-	 * ƒvƒŒƒC‚É‚¨‚¯‚éƒvƒŒƒCƒ„[‚ğ thinker ‚ÉŠî‚Ã‚«İ’è‚µ‚Ü‚·B
-	 * @param	{Problem} prob –â‘è
+	 * ãƒ—ãƒ¬ã‚¤ã«ãŠã‘ã‚‹ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ thinker ã«åŸºã¥ãè¨­å®šã—ã¾ã™ã€‚
+	 * @param	{Problem} prob å•é¡Œ
 	 */
 	_setPlayers_(prob) {
 		this.players = [];
-		this.players[Board.NORTH] = new RandomPlayer(board, Board.NORTH);
-		this.players[Board.SOUTH] = new HumanPlayer(board, field, Board.SOUTH);
-		// Computer Player İ’è
-		if ( !prob.thinker || prob.thinker != "DoubleDummyPlayer") {
-			this.players[Board.EAST ] = new SimplePlayer2(board, Board.EAST);
-			this.players[Board.WEST ] = new SimplePlayer2(board, Board.WEST, prob.openingLead);
+		this.players[Board.NORTH] = new RandomPlayer(this.board, Board.NORTH);
+		this.players[Board.SOUTH] = new RandomPlayer(this.board, Board.SOUTH); //new HumanPlayer(this.board, this.field, Board.SOUTH);
+		this.players[Board.EAST] = new RandomPlayer(this.board, Board.EAST);
+		this.players[Board.WEST] = new RandomPlayer(this.board, Board.WEST);
+		// Computer Player è¨­å®š
+/*		if ( !prob.thinker || prob.thinker != "DoubleDummyPlayer") {
+			this.players[Board.EAST ] = new SimplePlayer2(this.board, Board.EAST);
+			this.players[Board.WEST ] = new SimplePlayer2(this.board, Board.WEST, prob.openingLead);
 		} else if (prob.thinker == "DoubleDummyPlayer") {
-			this.players[Board.EAST ] = new ReadAheadPlayer(board, Board.EAST);
-			this.players[Board.WEST ] = new ReadAheadPlayer(board, Board.WEST, prob.openingLead);
+			this.players[Board.EAST ] = new ReadAheadPlayer(this.board, Board.EAST);
+			this.players[Board.WEST ] = new ReadAheadPlayer(this.board, Board.WEST, prob.openingLead);
 		} else {
-			this.players[Board.EAST ] = new NoRufPlayer(board, Board.EAST);
-			this.players[Board.WEST ] = new NoRufPlayer(board, Board.WEST, prob.openingLead);
+			this.players[Board.EAST ] = new NoRufPlayer(this.board, Board.EAST);
+			this.players[Board.WEST ] = new NoRufPlayer(this.board, Board.WEST, prob.openingLead);
 		}
+		*/
 	}
 	
 	/**
-	 * ‘O‚ÌƒvƒŒƒC‚ğ©“®Ä¶‚·‚éƒvƒŒƒCƒ„[‚ğİ’è‚µ‚Ü‚·B
+	 * å‰ã®ãƒ—ãƒ¬ã‚¤ã‚’è‡ªå‹•å†ç”Ÿã™ã‚‹ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’è¨­å®šã—ã¾ã™ã€‚
 	 * @private
 	 */
 	_makeVideohand_() {
@@ -200,32 +185,32 @@ class PlayMain {
 		this.board = new Board(1);
 		this.board.setName(oldBoard.name);
 		
-		// Player İ’è
+		// Player è¨­å®š
 		this.players = [];
 		for (let i = 0; i < 4; i++)
 			this.players.push(new VideoPlayer(this.board, oldBoard, i));
 		
-		// ƒfƒB[ƒ‹
+		// ãƒ‡ã‚£ãƒ¼ãƒ«
 		const hands = BridgeUtils.calculateOriginalHand(oldBoard);
 		
 		this.board.deal(hands);
 		
-		// ƒRƒ“ƒgƒ‰ƒNƒgİ’è‚ğs‚¤
+		// ã‚³ãƒ³ãƒˆãƒ©ã‚¯ãƒˆè¨­å®šã‚’è¡Œã†
 		this.board.setContract(oldBoard.getContract(), oldBoard.getDeclarer());
 
-		// ƒrƒfƒIƒ‚[ƒh‚ÍƒI[ƒvƒ“ó‘Ô
+		// ãƒ“ãƒ‡ã‚ªãƒ¢ãƒ¼ãƒ‰ã¯ã‚ªãƒ¼ãƒ—ãƒ³çŠ¶æ…‹
 		const east = this.board.getHand(Board.EAST);
 		east.turn(true);
 		const west = this.board.getHand(Board.WEST);
 		west.turn(true);
 		
 		this.dd.doubleDummy = true;
-		this.dd.caption = "’Êí‚É–ß‚·";
+		this.dd.caption = "é€šå¸¸ã«æˆ»ã™";
 		
 	}
 	
 	/**
-	 * ‘O‰ñ‚Æ“¯‚¶ƒnƒ“ƒh‚ğİ’è‚µ‚Ü‚·B
+	 * å‰å›ã¨åŒã˜ãƒãƒ³ãƒ‰ã‚’è¨­å®šã—ã¾ã™ã€‚
 	 * @private
 	 */
 	_makeLasthand_() {
@@ -234,35 +219,36 @@ class PlayMain {
 		this.board = new Board(1);
 		this.board.name = oldBoard.name;
 		
-		// Player İ’è
+		// Player è¨­å®š
 		_setPlayers_(prob);
 
-		// ƒfƒB[ƒ‹
+		// ãƒ‡ã‚£ãƒ¼ãƒ«
 		const hands = BridgeUtils.calculateOriginalHand(oldBoard);
 		
 		this.board.deal(hands);
 		
-		// ƒRƒ“ƒgƒ‰ƒNƒgİ’è‚ğs‚¤
+		// ã‚³ãƒ³ãƒˆãƒ©ã‚¯ãƒˆè¨­å®šã‚’è¡Œã†
 		this.board.setContract(oldBoard.getContract(), oldBoard.getDeclarer());
 	}
 	
 	/**
-	 * n‚ß‚Ì‚·‚İ‚ê‚É‚æ‚éà–¾‚ğ•\¦‚·‚é
+	 * å§‹ã‚ã®ã™ã¿ã‚Œã«ã‚ˆã‚‹èª¬æ˜ã‚’è¡¨ç¤ºã™ã‚‹
 	 * @async
-	 * @throws	QuitInterruptException ’†’f‚ª‘I‘ğ‚³‚ê‚½
+	 * @throws	QuitInterruptException ä¸­æ–­ãŒé¸æŠã•ã‚ŒãŸ
 	 */
 	async explain() {
-		const prob = this.problem[this.handno];
-		
-		this.sumire = new Sumire(field, prob.description);
+console.log("explain called:"+this.handno);
+console.log('explain called:' + this.problems[this.handno].description);
+		const prob = this.problems[this.handno];
+		this.sumire = new Sumire(this.field, prob.description);
 		this.contractString = prob.getContractString();
 		await this.sumire.animate(Sumire.NORMAL);
 	}
 	
 	/**
-	 * ƒƒCƒ“ƒ‹[ƒv
+	 * ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
 	 * @async
-	 * @throws	QuitInterruptException ’†’f‚ª‘I‘ğ‚³‚ê‚½
+	 * @throws	QuitInterruptException ä¸­æ–­ãŒé¸æŠã•ã‚ŒãŸ
 	 */
 	async mainLoop() {
 		if (this.dd.doubleDummy) {
@@ -271,15 +257,18 @@ class PlayMain {
 		}
 		
 		while (true) {
-			// Spot ‚ğw’è‚·‚é
-			this.field.setSpot(this.board.getTurn());
+			// Spot ã‚’æŒ‡å®šã™ã‚‹
+			this.field.spot = this.board.getTurn();
 			this.field.draw();
 			
 			let c = null;
+console.log('c == null');
 			while (c === null) {
-				c = await player[this.board.getPlayer()].play(); // ƒuƒƒbƒN‚·‚é
+console.log('this.board = '+this.players[this.board.getPlayer()]);
+				c = await this.players[this.board.getPlayer()].play(); // ãƒ–ãƒ­ãƒƒã‚¯ã™ã‚‹
+console.log('c = '+c);
 			}
-			this.board.play(c);
+			await this.board.playWithGui(c);
 			this.field.draw();
 			
 			if (this.board.status == Board.SCORING) break;
@@ -287,52 +276,60 @@ class PlayMain {
 	}
 	
 	/**
-	 * Œ³‚Ìƒnƒ“ƒh‚Ì•\¦AƒXƒRƒA‚Ì•\¦‚ğs‚¤
+	 * å…ƒã®ãƒãƒ³ãƒ‰ã®è¡¨ç¤ºã€ã‚¹ã‚³ã‚¢ã®è¡¨ç¤ºã‚’è¡Œã†
 	 * @async
-	 * @throws	QuitInterruptException ’†’f‚ª‘I‘ğ‚³‚ê‚½
+	 * @throws	QuitInterruptException ä¸­æ–­ãŒé¸æŠã•ã‚ŒãŸ
 	 */
 	async displayScore() {
-		this.field.spot = -1; // spot ‚ğÁ‚·
+		this.field.spot = -1; // spot ã‚’æ¶ˆã™
 		this.field.draw();
 		
+console.log("1!!!!!!!!!!!!!");
 		await this.field.sleep(500);
 
-		// ƒJ[ƒh‚ğ‚à‚¤ˆê“x•\¦‚·‚é
+		// ã‚«ãƒ¼ãƒ‰ã‚’ã‚‚ã†ä¸€åº¦è¡¨ç¤ºã™ã‚‹
 		const original = BridgeUtils.calculateOriginalHand(this.board);
+console.log("12!!!!!!!!!!!!!!!!!!"+original[0]);
 		for (let i = 0; i < 4; i++) {
 			const hand = this.board.getHand(i);
+console.log("hand "+hand.toString());
 			for (let j = 0; j < original[i].children.length; j++) {
 				const c = original[i].children[j];
-				c.turn(true);
 				hand.add(c);
 			}
+			hand.turn(true);
 		}
+console.log("2!!!!!!!!!!!!!");
 
-		this.board.layout();
-		this.board.getHand().forEach( hand => { hand.arrange(); hand.layout(); });
+		this.board.selfLayout();
+		this.board.getHand().forEach( hand => { hand.arrange(); hand.selfLayout(); });
+console.log("3!!!!!!!!!!!!!");
 		
-		// ƒXƒRƒA•\¦
-		let msg = "Œ‹‰ÊF" + this.contractString + "  ";
+		// ã‚¹ã‚³ã‚¢è¡¨ç¤º
+		let msg = "çµæœï¼š" + this.contractString + "  ";
 		let msg2;
-		// ƒƒCƒN”
+		// ãƒ¡ã‚¤ã‚¯æ•°
 		const win = BridgeUtils.countDeclarerSideWinners(this.board);
 		const up = win - this.board.getContract().level - 6;
 		const make = win - 6;
+console.log("4!!!!!!!!!!!!!");
 		
 		if (up >= 0) {
-			// ƒƒCƒN
-			msg += make + "ƒƒCƒN";
-			msg2 = "‚¨‚ß‚Å‚Æ‚¤II";
+			// ãƒ¡ã‚¤ã‚¯
+			msg += make + "ãƒ¡ã‚¤ã‚¯";
+			msg2 = "ãŠã‚ã§ã¨ã†ï¼ï¼";
 		} else {
-			// ƒ_ƒEƒ“
-			msg += (-up) + "ƒ_ƒEƒ“";
-			msg2 = "c”OB‚à‚¤ˆê“x‚ª‚ñ‚Î‚Á‚ÄI";
+			// ãƒ€ã‚¦ãƒ³
+			msg += (-up) + "ãƒ€ã‚¦ãƒ³";
+			msg2 = "æ®‹å¿µã€‚ã‚‚ã†ä¸€åº¦ãŒã‚“ã°ã£ã¦ï¼";
 		}
+console.log("5!!!!!!!!!!!!!");
 		
-		msg += "("+win+"ƒgƒŠƒbƒN)\nN-S‘¤‚ÌƒXƒRƒAF"+Score.calculate(this.board, Board.SOUTH);
+		msg += "("+win+"ãƒˆãƒªãƒƒã‚¯)\nN-Så´ã®ã‚¹ã‚³ã‚¢ï¼š"+Score.calculate(this.board, Board.SOUTH);
 		msg += "\n \n" + msg2;
 		
-		this.sumire = new Sumire(field, msg);
+console.log("6!!!!!!!!!!!!!");
+		this.sumire = new Sumire(this.field, msg);
 		if (up >= 0) 
 			await this.sumire.animate(Sumire.DELIGHTED);
 		else
@@ -342,13 +339,17 @@ class PlayMain {
 	}
 	
 	/**
-	 * ƒƒCƒ“ƒƒ\ƒbƒh‚Å‚·B
+	 * ãƒ¡ã‚¤ãƒ³ãƒ¡ã‚½ãƒƒãƒ‰ã§ã™ã€‚
 	 * @async
 	 */
 	async main() {
 		try {
+console.log(this.board.toText());
+console.log('explain');
 			await this.explain();
+console.log('mainLoop');
 			await this.mainLoop();
+console.log('displayScore');
 			await this.displayScore();
 			this.field.pull(this.board);
 		} catch (e) {
@@ -359,61 +360,72 @@ class PlayMain {
 }
 
 class Problem {
-	/** @type {string} –â‘èƒ^ƒCƒgƒ‹ */ title;
-	/** @type {Bid} ƒRƒ“ƒgƒ‰ƒNƒg */ contract;
-	/** @type {Packet[]} 4l‚Ìƒnƒ“ƒh */ hands;
-	/** @type {string} –â‘èà–¾•¶ */ description;
+	/** @type {string} å•é¡Œã‚¿ã‚¤ãƒˆãƒ« */ title;
+	/** @type {Bid} ã‚³ãƒ³ãƒˆãƒ©ã‚¯ãƒˆ */ contract;
+	/** @type {Packet[]} 4äººã®ãƒãƒ³ãƒ‰ */ hands;
+	/** @type {string} å•é¡Œèª¬æ˜æ–‡ */ description;
 	/** @type {string} O.L. */ openingLead;
-	/** @type {string} vlƒ‹[ƒ`ƒ“ */ thinker;
+	/** @type {string} æ€è€ƒãƒ«ãƒ¼ãƒãƒ³ */ thinker;
 
 	/**
-	 * 4  SXX ‚È‚Ç‚ÌƒRƒ“ƒgƒ‰ƒNƒg•¶š—ñ‚ğ•Ô‹p‚µ‚Ü‚·B
-	 * @returns		{string} ƒRƒ“ƒgƒ‰ƒNƒg•¶š—ñ
+	 * 4  SXX ãªã©ã®ã‚³ãƒ³ãƒˆãƒ©ã‚¯ãƒˆæ–‡å­—åˆ—ã‚’è¿”å´ã—ã¾ã™ã€‚
+	 * @returns		{string} ã‚³ãƒ³ãƒˆãƒ©ã‚¯ãƒˆæ–‡å­—åˆ—
 	 */
 	getContractString() {
 		if (!this.contract) return "null";
 		return this.contract.toString().substring(1, 7);
 	}
 
-	estimateValidity() {
+	isValid() {
 		//
+		return true;
 	}
 
 	/**
-	 * w’è‚³‚ê‚½ƒpƒ‰ƒ[ƒ^‚Å–â‘è‚ğì¬‚µ‚Ü‚·B
+	 * æŒ‡å®šã•ã‚ŒãŸãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã§å•é¡Œã‚’ä½œæˆã—ã¾ã™ã€‚
 	 * 
-	 * @param {string} title –â‘è‚Ì•\‘è
-	 * @param {number} kind ƒrƒbƒhí•Ê(Bid.PASS‚È‚Ç
-	 * @param {number} level ƒrƒbƒhƒŒƒxƒ‹
-	 * @param {number} denomination Bid.DOUBLE, Bid.REDOUBLE ‚È‚Ç
-	 * @param {string[]} hands ƒnƒ“ƒh•¶š—ñ
-	 * @param {string} description –â‘è‚Ìà–¾
-	 * @param {string} openingLead ƒI[ƒvƒjƒ“ƒOƒŠ[ƒhw’è(w’è‚È‚µ‚Í null)
-	 * @param {string} thinker vlƒAƒ‹ƒSƒŠƒYƒ€–¼
-	 * @returns	{Problem} –â‘è
+	 * @param {object} problem {string} title å•é¡Œã®è¡¨é¡Œ,
+	 * {string} contractStr "4SXX" ã®ã‚ˆã†ãªã‚³ãƒ³ãƒˆãƒ©ã‚¯ãƒˆã‚’ç¤ºã™æ–‡å­—åˆ—,
+	 * {string} n, e, s, w hands ãƒãƒ³ãƒ‰æ–‡å­—åˆ—,
+	 * {string} description å•é¡Œã®èª¬æ˜,
+	 * {string} openingLead ã‚ªãƒ¼ãƒ—ãƒ‹ãƒ³ã‚°ãƒªãƒ¼ãƒ‰æŒ‡å®š(æŒ‡å®šãªã—ã¯ undefined or null),
+	 * {string} thinker æ€è€ƒã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ å(æŒ‡å®šãªã—ã¯ undefined or null)
+	 * @returns	{Problem} å•é¡Œ
 	 */
-	static regular(title, kind, level, denomination, hands, description, openingLead, thinker) {
+	static regular(problem) {
 		let p = new Problem();
-		p.title = title;
-		p.description = description;
-		p.openingLead = openingLead;
-		p.thinker = thinker;
-		p.contract = new Bid(kind, level, denomination);
+		p.title = problem.title;
+		p.description = problem.description;
+		p.openingLead = problem.openingLead;
+		p.thinker = problem.thinker;
+		// ã‚³ãƒ³ãƒˆãƒ©ã‚¯ãƒˆæ–‡å­—åˆ—ã®è§£é‡ˆ
+		const level = parseInt(problem.contract[0]);
+		let kind = Bid.BID;
+		if (problem.contract.endsWith("XX")) kind = Bid.REDOUBLE;
+		else if (problem.contract.endsWith("X")) kind = Bid.DOUBLE;
+		const s = problem.contract.substring(1);
+		let suit = Bid.CLUB;
+		if (s.startsWith('D')) suit = Bid.DIAMOND;
+		if (s.startsWith('H')) suit = Bid.HEART;
+		if (s.startsWith('S')) suit = Bid.SPADE;
 
-		hs = [];
+		p.contract = new Bid(kind, level, suit);
+
+		const hs = [];
 		for (let i = 0; i < 4; i++) hs.push(new Packet());
 		
 		const pile = Packet.provideDeck();
+		const hands = [problem.n, problem.e, problem.s, problem.w];
 		for (let i = 0; i < 4; i++) Problem.draw(pile, hs[i], hands[i]);
 		
-		// c‚è‚Íƒ‰ƒ“ƒ_ƒ€‚É”z‚é
+		// æ®‹ã‚Šã¯ãƒ©ãƒ³ãƒ€ãƒ ã«é…ã‚‹
 		if (pile.children.length > 0) {
 			pile.shuffle();
 			for (let i = 0; i < 4; i++) {
 				for (let j = hs[i].children.length; j < 13; j++) {
 					hs[i].add(pile.pull());
-					// “r’†‚Å pile ‚ªs‚«‚é‚±‚Æ‚à‚ ‚é
-					// ‚»‚Ìê‡‚ÍAisValid() ‚Å false ‚ğ•Ô‚·‚±‚Æ‚É‚È‚é
+					// é€”ä¸­ã§ pile ãŒå°½ãã‚‹ã“ã¨ã‚‚ã‚ã‚‹
+					// ãã®å ´åˆã¯ã€isValid() ã§ false ã‚’è¿”ã™ã“ã¨ã«ãªã‚‹
 				}
 			}
 		}
@@ -423,9 +435,9 @@ class Problem {
 	}
 
 	/**
-	 * ‚±‚Ì–â‘è‚Ìƒnƒ“ƒh‚ğ¶¬‚µ‚Ü‚·B
-	 * (“à•”“I‚É‚Â Packet ‚Ì shallow copy ‚ğì‚è‚Ü‚·)
-	 * @returns	{Packet[]} ‚±‚Ì–â‘è‚Ìƒnƒ“ƒh
+	 * ã“ã®å•é¡Œã®ãƒãƒ³ãƒ‰ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+	 * (å†…éƒ¨çš„ã«æŒã¤ Packet ã® shallow copy ã‚’ä½œã‚Šã¾ã™)
+	 * @returns	{Packet[]} ã“ã®å•é¡Œã®ãƒãƒ³ãƒ‰
 	 */
 	createHands() {
 		const result = [];
@@ -438,10 +450,10 @@ class Problem {
 	}
 
 	/**
-	 * •¶š—ñ‚Å—^‚¦‚ç‚ê‚½ƒnƒ“ƒhî•ñ‚ğ‰ğß‚µ‚Ä hand ‚Éİ’è‚µ‚Ü‚·B
-	 * @param	{Packet} pile ƒJ[ƒh‚ÌR
-	 * @param	{Packet} hand İ’èæ‚Ìƒnƒ“ƒh
-	 * @param	{string} str ƒnƒ“ƒh•¶š—ñ
+	 * æ–‡å­—åˆ—ã§ä¸ãˆã‚‰ã‚ŒãŸãƒãƒ³ãƒ‰æƒ…å ±ã‚’è§£é‡ˆã—ã¦ hand ã«è¨­å®šã—ã¾ã™ã€‚
+	 * @param	{Packet} pile ã‚«ãƒ¼ãƒ‰ã®å±±
+	 * @param	{Packet} hand è¨­å®šå…ˆã®ãƒãƒ³ãƒ‰
+	 * @param	{string} str ãƒãƒ³ãƒ‰æ–‡å­—åˆ—
 	 */
 	static draw(pile, hand, str) {
 		let suit = Card.SPADE;
@@ -475,8 +487,8 @@ class Problem {
 }
 
 /**
- * ƒQ[ƒ€‘I‘ğƒ_ƒCƒAƒƒO‚ğ¶¬‚µ‚Ü‚·B
- * ‚±‚ÌƒNƒ‰ƒX‚Í bridge.css ‚Æ‚Æ‚à‚Ég‚¤•K—v‚ª‚ ‚è‚Ü‚·B
+ * ã‚²ãƒ¼ãƒ é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+ * ã“ã®ã‚¯ãƒ©ã‚¹ã¯ bridge.css ã¨ã¨ã‚‚ã«ä½¿ã†å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
  */
 class SelectDialog {
 	modalContent;
@@ -487,7 +499,7 @@ class SelectDialog {
 	replayButton;
 
 	/**
-	 * document ‚ÉAƒ_ƒCƒAƒƒO‚ğ’Ç‰Á‚µ‚Ü‚·B
+	 * document ã«ã€ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¿½åŠ ã—ã¾ã™ã€‚
 	 */
 	constructor(titles) {
 		this.modalContent = document.getElementById('modal-content');
@@ -505,11 +517,11 @@ class SelectDialog {
  * instance methods
  */
 	/**
-	 * ƒvƒ‹ƒ_ƒEƒ“‚Éw’è‚³‚ê‚½•¶š—ñ‚ğİ’è‚µ‚Ü‚·B
-	 * @param	{string[]} titles ƒvƒ‹ƒ_ƒEƒ“‚Éİ’è‚·‚é•¶š—ñ
+	 * ãƒ—ãƒ«ãƒ€ã‚¦ãƒ³ã«æŒ‡å®šã•ã‚ŒãŸæ–‡å­—åˆ—ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param	{string[]} titles ãƒ—ãƒ«ãƒ€ã‚¦ãƒ³ã«è¨­å®šã™ã‚‹æ–‡å­—åˆ—
 	 */
 	setPulldown(titles) {
-		// select ‚Ìq—v‘f‚ğíœ
+		// select ã®å­è¦ç´ ã‚’å‰Šé™¤
 		while (this.select.firstChild) { this.select.removeChild(this.select.firstChild); }
 		for (let i = 0; i < titles.length; i++) {
 			const opt = document.createElement('option');
@@ -520,9 +532,9 @@ class SelectDialog {
 	}
 
 	/**
-	 * ƒ‚[ƒ_ƒ‹‚Ì‘I‘ğ‰æ–Ê‚ğ•\¦‚µAƒ{ƒ^ƒ“‰Ÿ‰º‚ğ‘Ò‚¿‚Ü‚·B
-	 * async ‚Æ‚µ‚Ä‚Ì•Ô‚è’l‚Í•¶š—ñ‚ÅA"prob{num}", "video", "replay" ‚Ì‚¢‚¸‚ê‚©‚Å‚·B
-	 * “¯‚É‘I‘ğ‰æ–Êã‚ÌŠeƒ{ƒ^ƒ“‚Ìƒnƒ“ƒhƒ‰‚ğ“o˜^‚µ‚Ü‚·B
+	 * ãƒ¢ãƒ¼ãƒ€ãƒ«ã®é¸æŠç”»é¢ã‚’è¡¨ç¤ºã—ã€ãƒœã‚¿ãƒ³æŠ¼ä¸‹ã‚’å¾…ã¡ã¾ã™ã€‚
+	 * async ã¨ã—ã¦ã®è¿”ã‚Šå€¤ã¯æ–‡å­—åˆ—ã§ã€"prob{num}", "video", "replay" ã®ã„ãšã‚Œã‹ã§ã™ã€‚
+	 * åŒæ™‚ã«é¸æŠç”»é¢ä¸Šã®å„ãƒœã‚¿ãƒ³ã®ãƒãƒ³ãƒ‰ãƒ©ã‚’ç™»éŒ²ã—ã¾ã™ã€‚
 	 * @async
 	 * @returns	{Promise<string>} "prob{num}", "video", "replay"
 	 */
@@ -532,19 +544,19 @@ class SelectDialog {
 			startListener = () => {	res('prob'+this.select.selectedIndex); };
 			videoListener = () => {	res('video'); };
 			replayListener = () => { res('replay'); };
-				// ƒCƒxƒ“ƒgƒnƒ“ƒhƒ‰‚ğ“o˜^‚µ‚Ä‚¨‚­
+				// ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ©ã‚’ç™»éŒ²ã—ã¦ãŠã
 			this.startButton.addEventListener('click', startListener);
 			this.replayButton.addEventListener('click', replayListener);
 			this.videoButton.addEventListener('click', videoListener);
 
-			// ƒ‚[ƒ_ƒ‹‰æ–Ê‚ğ•\¦‚·‚é
+			// ãƒ¢ãƒ¼ãƒ€ãƒ«ç”»é¢ã‚’è¡¨ç¤ºã™ã‚‹
 			this.modalContent.style.display = 'inline';
 			this.modalOverlay.style.display = 'inline';
 		}).then( (val) => new Promise( (res) => {
 			this.startButton.removeEventListener('click', startListener);
 			this.videoButton.removeEventListener('click', videoListener);
 			this.replayButton.removeEventListener('click', replayListener);
-			// ƒ‚[ƒ_ƒ‹‰æ–Ê‚ğ‰B‚·
+			// ãƒ¢ãƒ¼ãƒ€ãƒ«ç”»é¢ã‚’éš ã™
 			this.modalContent.style.display = 'none';
 			this.modalOverlay.style.display = 'none';
 			res(val);
@@ -553,8 +565,8 @@ class SelectDialog {
 }
 
 /**
- * ƒuƒŠƒbƒWƒVƒ~ƒ…ƒŒ[ƒ^‚É‚¨‚¯‚éŠJn‚Ìà–¾‚ÌŠG‚ğ¶¬‚·‚é Entity ‚Å‚·B
- * ‚±‚Ì Entity ‚É‚ÍAƒRƒ“ƒgƒ‰ƒNƒg‚Ì“à—e‚È‚Ç‚Ìà–¾‘‚«‚ª•\¦‚³‚ê‚Ü‚·B
+ * ãƒ–ãƒªãƒƒã‚¸ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚¿ã«ãŠã‘ã‚‹é–‹å§‹æ™‚ã®èª¬æ˜ã®çµµã‚’ç”Ÿæˆã™ã‚‹ Entity ã§ã™ã€‚
+ * ã“ã® Entity ã«ã¯ã€ã‚³ãƒ³ãƒˆãƒ©ã‚¯ãƒˆã®å†…å®¹ãªã©ã®èª¬æ˜æ›¸ããŒè¡¨ç¤ºã•ã‚Œã¾ã™ã€‚
  *
  */
 class Sumire extends Entity {
@@ -563,7 +575,7 @@ class Sumire extends Entity {
 	static SAD = 2;
 	
 	static FONT = 'normal 14px SanSerif';
-	/** @type {number} Ÿ‚Ìs‚Ü‚Å‚ÌƒXƒeƒbƒv */
+	/** @type {number} æ¬¡ã®è¡Œã¾ã§ã®ã‚¹ãƒ†ãƒƒãƒ— */
 	static Y_STEP = 20;
 	static MSG_COLOR = 'rgb(255, 255, 200)';
 	static BACK_COLOR = 'rgba(200, 255, 200, 0.5)';
@@ -577,44 +589,44 @@ class Sumire extends Entity {
 	/** @type {number} */
 	face;
 	
-	/** @type {number} •`‰æ‚ğŠJn‚·‚é‚˜À•W */
+	/** @type {number} æç”»ã‚’é–‹å§‹ã™ã‚‹ï½˜åº§æ¨™ */
 	x0;
-	/** @type {number} •`‰æ‚ğŠJn‚·‚é‚™À•W */
+	/** @type {number} æç”»ã‚’é–‹å§‹ã™ã‚‹ï½™åº§æ¨™ */
 	y0;
 	
 	
-	/** @type {number} •¶š•”•ª‚Ì• */
+	/** @type {number} æ–‡å­—éƒ¨åˆ†ã®å¹… */
 	width;
-	/** @type {number} •¶š•”•ª‚Ì‚‚³ */
+	/** @type {number} æ–‡å­—éƒ¨åˆ†ã®é«˜ã• */
 	height;
 	
-	/** @type {number} ‚Ó‚«‚¾‚µ‚Ì• */
+	/** @type {number} ãµãã ã—ã®å¹… */
 	mw;
-	/** @type {number} ‚Ó‚«‚¾‚µ‚Ì‚‚³ */
+	/** @type {number} ãµãã ã—ã®é«˜ã• */
 	mh;
 	
-	/** @type {number[]} ‚Ó‚«‚¾‚µ‚Ì’¸“_xÀ•W */
+	/** @type {number[]} ãµãã ã—ã®é ‚ç‚¹xåº§æ¨™ */
 	xp;
-	/** @type {number[]} ‚Ó‚«‚¾‚µ‚Ì’¸“_yÀ•W */
+	/** @type {number[]} ãµãã ã—ã®é ‚ç‚¹yåº§æ¨™ */
 	yp;
 	
 /*-------------
  * Constructor
  */
 	/**
-	 * w’è‚µ‚½ƒRƒ“ƒgƒ‰ƒNƒg‚Å‚ ‚é‚±‚Æ‚ğà–¾‚·‚é Entity ‚ğì¬‚µ‚Ü‚·B
+	 * æŒ‡å®šã—ãŸã‚³ãƒ³ãƒˆãƒ©ã‚¯ãƒˆã§ã‚ã‚‹ã“ã¨ã‚’èª¬æ˜ã™ã‚‹ Entity ã‚’ä½œæˆã—ã¾ã™ã€‚
 	 * @param	{Field} field field
-	 * @param	{string} msg •\¦‚·‚éƒƒbƒZ[ƒW
+	 * @param	{string} msg è¡¨ç¤ºã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	 */
 	constructor(field, msg) {
 		super();
 		this.field = field;
 		
-		// —^‚¦‚ç‚ê‚½•¶š—ñ‚ğ‰üs‚Å‹æØ‚èA”z—ñ‚É•ÏŠ·‚·‚é
+		// ä¸ãˆã‚‰ã‚ŒãŸæ–‡å­—åˆ—ã‚’æ”¹è¡Œã§åŒºåˆ‡ã‚Šã€é…åˆ—ã«å¤‰æ›ã™ã‚‹
 		this.lines = msg.split('\n');
 		const lines = this.lines.length;
 		
-		// ‘å‚«‚³‚ğŒˆ’è‚·‚é
+		// å¤§ãã•ã‚’æ±ºå®šã™ã‚‹
 		const ctx = field.ctx;
 		ctx.font = Sumire.FONT;
 		this.width = 0;
@@ -642,7 +654,7 @@ class Sumire extends Entity {
  */
 	/**
 	 * @override
-	 * @param {Context} ctx ƒOƒ‰ƒtƒBƒbƒNƒRƒ“ƒeƒLƒXƒg
+	 * @param {Context} ctx ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
 	 */
 	draw(ctx) {
 		ctx.fillStyle = Sumire.BACK_COLOR;
@@ -674,10 +686,10 @@ class Sumire extends Entity {
  * instance methods
  */
 	/**
-	 * ‚í‚ç‚Á‚½‚èA‹ƒ‚¢‚½‚è‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•\¦‚µAƒuƒƒbƒN‚µ‚Ü‚·B
-	 * ƒNƒŠƒbƒN‚ğŒŸ’m‚·‚é‚ÆƒAƒjƒ[ƒVƒ‡ƒ“‚ğ‰ğœ‚µ‚Ü‚·B
+	 * ã‚ã‚‰ã£ãŸã‚Šã€æ³£ã„ãŸã‚Šã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¡¨ç¤ºã—ã€ãƒ–ãƒ­ãƒƒã‚¯ã—ã¾ã™ã€‚
+	 * ã‚¯ãƒªãƒƒã‚¯ã‚’æ¤œçŸ¥ã™ã‚‹ã¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è§£é™¤ã—ã¾ã™ã€‚
 	 * @async
-	 * @param@{number} face Šç(1..Î‚¢Šç, 2..‹ƒ‚«Šç)
+	 * @paramã€€{number} face é¡”(1..ç¬‘ã„é¡”, 2..æ³£ãé¡”)
 	 */
 	async animate(face) {
 		this.field.add(this);

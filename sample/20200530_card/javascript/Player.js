@@ -80,6 +80,7 @@ class Player {
 			
 		case Board.OPENING:
 		case Board.PLAYING:
+console.log('RandomPlayer.play()');
 			while (true) {
 				const c = await this.draw();
 				if (this.myBoard.allows(c)) return c;
@@ -219,7 +220,7 @@ class Player {
 class RandomPlayer extends Player {
 	/**
 	 * 
-	 * @param {?Board} board 
+	 * @param {?Board} board
 	 * @param {?number} seat 
 	 */
 	constructor(board, seat) {
@@ -261,6 +262,7 @@ class RandomPlayer extends Player {
 		
 		// ハンドを戻しておく
 		hand.arrange();
+		await this.myBoard.getField().sleep(0); // 考えたふり
 		return played;
 	}
 }

@@ -2870,7 +2870,7 @@ class Board extends Entities {
 		this.playHist.setContract((this.getDeclarer() + 1)%4, this.getTrump() );
 		this.status = Board.OPENING;
 		
-		_reorderHand_();
+		this._reorderHand_();
 	}
 	
 	/**
@@ -2938,7 +2938,21 @@ class Board extends Entities {
 		if (this.status != Board.OPENING && this.status != Board.PLAYING) {
 			throw new Error("playWithGui() は OPENING/PLAYING ステータスである必要があります");
 		}
+		const oldStatus = this.status;
 		this.play(play);
+		if (oldStatus === Board.OPENING) {
+			this.trickGui = this.getTrick();
+			this.add(this.getTrick());
+			const d = (4 + this.trickGui.leader - this.trickGui.direction ) % 4;
+			const ent = this.trickGui.children[0];
+			ent.direction = ((10 - d )%4);
+			this.trickGui.selfLayout();
+			const dummy = this.getHand(this.getDummy());
+			dummy.layout = new DummyHandLayout();
+			dummy.selfLayout();
+			this.selfLayout();
+		}
+
 		const field = this.getField();
 		if (!this.trickGui.isFinished()) {
 			field.draw();
