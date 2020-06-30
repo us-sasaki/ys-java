@@ -1,3 +1,4 @@
+/* 依存 Card.js Player.js */
 /**
  * アドホックなメインプログラムです。だんだん本格的になってきました。
  *
@@ -161,7 +162,7 @@ class PlayMain {
 	_setPlayers_(prob) {
 		this.players = [];
 		this.players[Board.NORTH] = new RandomPlayer(this.board, Board.NORTH);
-		this.players[Board.SOUTH] = new RandomPlayer(this.board, Board.SOUTH); //new HumanPlayer(this.board, this.field, Board.SOUTH);
+		this.players[Board.SOUTH] = new HumanPlayer(this.board, this.field, Board.SOUTH);
 		this.players[Board.EAST] = new RandomPlayer(this.board, Board.EAST);
 		this.players[Board.WEST] = new RandomPlayer(this.board, Board.WEST);
 		// Computer Player 設定
@@ -185,7 +186,7 @@ class PlayMain {
 	_makeVideohand_() {
 		const oldBoard = this.board;
 		this.board = new Board(1);
-		this.board.setName(oldBoard.name);
+		this.board.name = oldBoard.name;
 		
 		// Player 設定
 		this.players = [];
@@ -201,10 +202,8 @@ class PlayMain {
 		this.board.setContract(oldBoard.getContract(), oldBoard.getDeclarer());
 
 		// ビデオモードはオープン状態
-		const east = this.board.getHand(Board.EAST);
-		east.turn(true);
-		const west = this.board.getHand(Board.WEST);
-		west.turn(true);
+		this.board.getHand(Board.EAST).turn(true);
+		this.board.getHand(Board.WEST).turn(true);
 		
 		this.dd.doubleDummy = true;
 		this.dd.caption = "通常に戻す";
@@ -216,13 +215,13 @@ class PlayMain {
 	 * @private
 	 */
 	_makeLasthand_() {
-		const prob = problems[handno];
+		const prob = this.problems[this.handno];
 		const oldBoard = this.board;
 		this.board = new Board(1);
 		this.board.name = oldBoard.name;
 		
 		// Player 設定
-		_setPlayers_(prob);
+		this._setPlayers_(prob);
 
 		// ディール
 		const hands = BridgeUtils.calculateOriginalHand(oldBoard);
@@ -263,6 +262,7 @@ class PlayMain {
 			
 			let c = null;
 			while (c === null) {
+console.log("player="+this.board.getPlayer());
 				c = await this.players[this.board.getPlayer()].play(); // ブロックする
 			}
 			await this.board.playWithGui(c);
@@ -351,7 +351,7 @@ class PlayMain {
 class Problem {
 	/** @type {string} 問題タイトル */ title;
 	/** @type {Bid} コントラクト */ contract;
-	/** @type {Packet[]} 4人のハンド */ hands;
+	/** @type {string[]} 4人のハンド文字列 */ hands;
 	/** @type {string} 問題説明文 */ description;
 	/** @type {string} O.L. */ openingLead;
 	/** @type {string} 思考ルーチン */ thinker;
@@ -400,12 +400,20 @@ class Problem {
 
 		p.contract = new Bid(kind, level, suit);
 
+		p.hands = [problem.n, problem.e, problem.s, problem.w];
+		return p;
+	}
+
+	/**
+	 * この問題のハンドを生成します。
+	 * @returns	{Packet[]} この問題のハンド
+	 */
+	createHands() {
+		const pile = Packet.provideDeck();
 		const hs = [];
 		for (let i = 0; i < 4; i++) hs.push(new Packet());
 		
-		const pile = Packet.provideDeck();
-		const hands = [problem.n, problem.e, problem.s, problem.w];
-		for (let i = 0; i < 4; i++) Problem.draw(pile, hs[i], hands[i]);
+		for (let i = 0; i < 4; i++) Problem.draw(pile, hs[i], this.hands[i]);
 		
 		// 残りはランダムに配る
 		if (pile.children.length > 0) {
@@ -419,23 +427,7 @@ class Problem {
 			}
 		}
 		hs.forEach( h => h.arrange() );
-		p.hands = hs;
-		return p;
-	}
-
-	/**
-	 * この問題のハンドを生成します。
-	 * (内部的に持つ Packet の shallow copy を作ります)
-	 * @returns	{Packet[]} この問題のハンド
-	 */
-	createHands() {
-		const result = [];
-		for (let i = 0; i < 4; i++) {
-			const h = new Packet();
-			this.hands[i].children.forEach(c => h.add(c));
-			result.push(h);
-		}
-		return result;
+		return hs;
 	}
 
 	/**

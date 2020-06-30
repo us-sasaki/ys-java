@@ -1,3 +1,5 @@
+/* 依存 Card.js */
+
 /**
  * Player は Bid, または Playを行う主体です。
  * GUIに連動した人、コンピュータアルゴリズムなどが当てはまります。
@@ -9,16 +11,16 @@
  * @author		Yusuke Sasaki
  */
 class Player {
-	/** リードの順番を示す定数で、リーダー（１番目）を示します。 */
+	/** @const {number} リードの順番を示す定数(0)で、リーダー（１番目）を示します。 */
 	static LEAD		= Board.LEAD;
 	
-	/** リードの順番を示す定数で、セカンドハンド（２番目）を示します。 */
+	/** @const {number} リードの順番を示す定数(1)で、セカンドハンド（２番目）を示します。 */
 	static SECOND	= Board.SECOND;
 	
-	/** リードの順番を示す定数で、サードハンド（３番目）を示します。 */
+	/** リードの順番を示す定数(2)で、サードハンド（３番目）を示します。 */
 	static THIRD	= Board.THIRD;
 	
-	/** リードの順番を示す定数で、フォースハンド（４番目）を示します。 */
+	/** リードの順番を示す定数(3)で、フォースハンド（４番目）を示します。 */
 	static FORTH	= Board.FORTH;
 	
 	/** プレイヤーの相対位置を示す定数(=0)で、自分の位置を示します。 */
@@ -33,10 +35,10 @@ class Player {
 	/** プレイヤーの相対位置を示す定数(=3)で、自分の右の席(right hand)を示します。 */
 	static RIGHT	= 3;
 	
-	/** @type	{Board}	ボード */
+	/** @type {Board} ボード */
 	myBoard;
 
-	/** @type	{number} 座席定数 */
+	/** @type {number} 座席定数 */
 	mySeat;
 	
 /*------------------
@@ -196,11 +198,20 @@ class Player {
 		return (t.leader - this.mySeat + 4) % 4;
 	}
 	
-/*------------------
- * abstract methods
- */
-	//async Bid bid();
-	//async Card draw();
+	/**
+	 * bid します
+	 * @abstract
+	 */
+	async bid() {
+		throw new Error("must implement bid()");
+	}
+	/**
+	 * play します
+	 * @abstract
+	 */
+	async draw() {
+		throw new Error("must implement draw()");
+	}
 	
 }
 
@@ -226,9 +237,6 @@ class RandomPlayer extends Player {
 		}
 	}
 	
-/*------------
- * implements
- */
 	/**
 	 * パスします。
 	 * @return		パス
@@ -259,5 +267,114 @@ class RandomPlayer extends Player {
 		hand.arrange();
 		await this.myBoard.getField().sleep(0); // 考えたふり
 		return played;
+	}
+}
+
+/**
+ * 指定されたボード(ビッド、プレイ履歴)にしたがってビデオ再生する
+ * コンピュータプレイヤーです。
+ */
+class VideoPlayer extends Player {
+	/** @type {Board} シナリオとなる Board */
+	scenario;
+	
+/*-------------
+ * Constructor
+ */
+	/**
+	 * 指定された Board 上でプレイし、シナリオ通りにプレイする VideoPlayer
+	 * を作成します。
+	 * @param {Board} board プレイする Board
+	 * @param {Board} scenario プレイシナリオ(seat の座席のプレイ履歴をプレイ)
+	 * @param {number} seat 座席番号(Board.NORTH など)
+	 */
+	constructor(board, scenario, seat) {
+		super();
+		this.setBoard(board);
+		this.setMySeat(seat);
+		
+		this.scenario = scenario;
+	}
+	
+	/**
+	 * ビッド履歴から現在の状態でのビッドを取得し、返却します。(未実装)
+	 * @async
+	 * @returns		{Bid} 必ずパスします(未実装)
+	 */
+	async bid() {
+		return new Bid(Bid.PASS, 0, 0);
+	}
+	
+	/**
+	 * プレイ履歴から現在の状態でのプレイを取得し、返却します。
+	 * @async
+	 * @returns		{Card} シナリオ通りのプレイ
+	 */
+	async draw() {
+		await this.myBoard.getField().sleep(400); // 考えた振り
+		
+		const trickCount = this.myBoard.getTricks();
+		const num = this.myBoard.getTrick().children.length;
+		
+		const tr = this.scenario.playHist.getTrick(trickCount);
+		
+		return tr.children[num];
+	}
+}
+
+/**
+ * ＧＵＩ操作でプレイを行うヒューマンプレイヤーです。
+ */
+class HumanPlayer extends Player {
+	/** @type {Field} マウスクリック検出する Field */
+	field;
+
+	/**
+	 * 指定された Board 上でプレイするヒューマンプレイヤーを作成します。
+	 * @param {Board} board プレイする Board
+	 * @param {Field} field クリック検出のための Field
+	 * @param {number} seat 座席番号
+	 */
+	constructor(board, field, seat) {
+		super();
+		this.setBoard(board);
+		this.setMySeat(seat);
+		this.field = field;
+	}
+	
+/*------------
+ * implements
+ */
+	/**
+	 * ビッドはまだ実装されていません。自動的に必ずパスします。
+	 *
+	 * @returns		{Bid} パス
+	 */
+	async bid() {
+		return new Bid(Bid.PASS, 0, 0);
+	}
+	
+	/**
+	 * クリックされたカードがルール上可能なプレイであったら、そのカードを返却します。
+	 * ルール上可能でない場合、適当なメッセージで正しいプレイを促します。
+	 * @returns {Card} ランダムなプレイ
+	 */
+	async draw() {
+		const board = this.myBoard;
+		/** @type {Card} */ let clicked = null;
+		while (true) {
+			clicked = await this.field.waitCardSelect();
+			if (clicked != null) {
+				if (board.allows(clicked)) break;
+				if (this.getHand().indexOf(clicked) > -1) {
+					window.alert("リードと同じスートを選択してください");
+				} else {
+					const turn = this.myBoard.getTurn();
+					const seat = PlayHistory.SEAT_STRING[turn];
+					window.alert(seat + "のハンドからカードを選択してください");
+				}
+			}
+		}
+		return clicked;
 	}
 }

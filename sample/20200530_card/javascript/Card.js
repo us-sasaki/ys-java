@@ -562,7 +562,8 @@ class Packet extends Entities {
 	}
 
 	/**
-	 * 指定された Card の index を返却します。存在しない場合、 -1 を返却します。
+	 * 指定された Card または suit, value の組と同種の Card の index を返却します。
+	 * 存在しない場合、 -1 を返却します。
 	 * @param {Card|number} cardOrSuit Card または suit
 	 * @param	{number} value カードの数字
 	 * @return	{number} index
@@ -815,7 +816,7 @@ class Field extends Entities {
 	 * カードがクリックされるのを検出する async 関数です。
 	 * クリック位置は MouseEvent の offsetX, offsetY で検出します。
 	 * @async
-	 * @returns	{Card} クリックされた Card オブジェクト。
+	 * @returns	{Promise<Card>} クリックされた Card オブジェクト。必ず値が入ります。
 	 */
 	waitCardSelect() {
 		return new Promise( (res, rej) => {
@@ -840,7 +841,7 @@ class Field extends Entities {
 	 * どこかがクリックされるまで待つ async 関数です。
 	 * millis を指定することで、最大待ち時間を設定できます。
 	 * @async
-	 * @returns		クリックされた場合 true
+	 * @returns		{Promise<boolean>} クリックされた場合 true
 	 */
 	waitClick(millis) {
 		return new Promise( (res, rej) => {
@@ -863,8 +864,10 @@ class Field extends Entities {
 
 	/**
 	 * 指定時間(msec)待つ async 関数です。
+	 * quit 割り込みを管理するため instance method になっています。
 	 * @async
-	 * @param {number} millis 
+	 * @param {number} millis
+	 * @returns {Promise<void>}
 	 */
 	sleep(millis) {
 		return new Promise( (res, rej) => {
