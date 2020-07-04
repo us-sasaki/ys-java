@@ -94,6 +94,9 @@ class PlayMain {
 		this.textWindow = new Button(this.field, "テキスト表示"); // テキスト表示
 		this.field.add(this.textWindow);
 		this.textWindow.setBounds(540, 86, 80, 24);
+		this.textWindow.setListener( () => {
+			window.confirm(this.board.toText()); // フォントがprop/下が切れる
+		});
 	}
 	
 	/**

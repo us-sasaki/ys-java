@@ -540,3 +540,25 @@ describe("BridgeUtils test", () => {
 		expect(calcstr).toEqual(org);
 	});
 });
+
+describe("BoardStatistics Test", () =>{
+	it("BoardStatistics new", () => {
+	  expect(new BoardStatistics()).toBeDefined();
+	});
+  });
+  
+  describe("OptimizedBoard Test", () =>{
+	it("OptimizedBoard new", () => {
+	  const b = createTestBoard();
+	  dealSequence(b);
+	  bidSequence(b);
+	  openingSequence(b);
+	  const ob = new OptimizedBoard(b);
+	  expect(ob).toBeDefined();
+	  console.log(ob.toString());
+
+	  ob.calcPropData();
+
+	});
+  });
+  

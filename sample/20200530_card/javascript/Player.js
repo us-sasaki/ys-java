@@ -265,7 +265,8 @@ class RandomPlayer extends Player {
 		
 		// ハンドを戻しておく
 		hand.arrange();
-		await this.myBoard.getField().sleep(0); // 考えたふり
+		const field = this.myBoard.getField();
+		if (field) await field.sleep(0); // 考えたふり
 		return played;
 	}
 }
