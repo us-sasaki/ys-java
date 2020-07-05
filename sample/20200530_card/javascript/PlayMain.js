@@ -265,13 +265,13 @@ class PlayMain {
 			
 			let c = null;
 			while (c === null) {
-console.log("player="+this.board.getPlayer());
+//console.log("player="+this.board.getPlayer());
 				c = await this.players[this.board.getPlayer()].play(); // ブロックする
 			}
 			await this.board.playWithGui(c);
 			this.field.draw();
 			
-			if (this.board.status == Board.SCORING) break;
+			if (this.board.status === Board.SCORING) break;
 		}
 	}
 	
@@ -342,6 +342,7 @@ console.log("player="+this.board.getPlayer());
 			this.field.pull(this.board);
 		} catch (e) {
 			if (e instanceof QuitInterruptException) {
+console.log('quit inspected');
 				this.field.spot = -1;
 				this.field.draw();
 			} else {
@@ -678,12 +679,17 @@ class Sumire extends Entity {
 	async animate(face) {
 		this.field.add(this);
 		this.face = face;
-		while (true) {
-			this.picNumber ^= this.face;
-			this.field.draw();
-			if (this.picNumber > 0) {
-				if (await this.field.waitClick(500)) break;
-			} else if (await this.field.waitClick(1000)) break;
+		try {
+			while (true) {
+				this.picNumber ^= this.face;
+				this.field.draw();
+				if (this.picNumber > 0) {
+					if (await this.field.waitClick(500)) break;
+				} else if (await this.field.waitClick(1000)) break;
+			}
+		} catch (e) {
+			if (e instanceof QuitInterruptException) this.field.pull(this);
+			throw e;
 		}
 		this.field.pull(this); // remove
 	}

@@ -9,6 +9,9 @@
  * @param	{number} seed 乱数シード
  */
 class ReproducibleRandom {
+	/** @const {ReproducibleRandom} */
+	static instance;
+
 	/** @type {number} */
 	x;
 	/** @type {number} */
@@ -17,6 +20,7 @@ class ReproducibleRandom {
 	z;
 	/** @type {number} */
 	w;
+
 	constructor(seed) {
 		if (seed===void 0) seed = Math.floor(Math.random() * 0x7FFFFFFF);
 		this.x = 123456789;
@@ -36,7 +40,8 @@ class ReproducibleRandom {
 	}
 	
 	/**
-	 * min以上max以下の乱数を生成する
+	 * min以上max以下の乱数を生成する。厳密には max 値付近の値が出づらい。
+	 * java の nextInt() 実装を参考にすると回避できるが、ごく微小なため許容。
 	 * @param	{number} min 最小値(含む)
 	 * @param	{number} max 最大値(含む)
 	 * @return	{number} min～max の乱数値
@@ -44,6 +49,27 @@ class ReproducibleRandom {
 	nextInt(min, max) {
 		const r = Math.abs(this.next());
 		return min + (r % (max + 1 - min));
+	}
+
+	/**
+	 * static nextInt(min, max) で利用する乱数 instance を与えられた seed で
+	 * 初期化します。
+	 * @param {number} seed 乱数の種
+	 */
+	static setSeed(seed) {
+		ReproducibleRandom.instance = new ReproducibleRandom(seed);
+	}
+
+	/**
+	 * 2^128-1 の周期をもつ乱数を得ます。
+	 * @param {number} min 最小の整数(含む)
+	 * @param {number} max 最大の整数(含む)
+	 * @returns {number} min～max の間の整数値を取る乱数
+	 */
+	static nextInt(min, max) {
+		if (!ReproducibleRandom.instance)
+			ReproducibleRandom.instance = new ReproducibleRandom();
+		return ReproducibleRandom.instance.nextInt(min, max);
 	}
 }
 
@@ -441,10 +467,16 @@ class Packet extends Entities {
 	layout;
 	cardOrder;
 
-	constructor() {
+	constructor(source) {
 		super();
-		this.layout = new CardHandLayout();
-		this.cardOrder = new NaturalCardOrder(); // スペードスート
+		if (source && source instanceof Packet) {
+			this.cardOrder = source.cardOrder;
+			this.layout = source.layout;
+			source.children.forEach( c => this.add(c) );
+		} else {
+			this.layout = new CardHandLayout();
+			this.cardOrder = new NaturalCardOrder(); // スペードスート
+		}
 	}
 
 /*------------------
@@ -453,16 +485,17 @@ class Packet extends Entities {
 	/**
 	 * 所属しているカードをシャッフルします。
 	 * 利用する乱数は ReproducibleRandom です。
-	 * @param		{number} seed	乱数の種
+	 * @param		{number} seed	乱数の種。無指定の場合、利用中の乱数系列を使う。
 	 */
 	shuffle(seed) {
 		if (this.children.length == 0) return;
-		
-		const rnd = new ReproducibleRandom(seed); // seed
+		if (seed) {
+			ReproducibleRandom.setSeed(seed); // seed
+		}
 		const tmp = []; // Card
 		const size = this.children.length;
 		for (let i = 0; i < size; i++) {
-			const index = rnd.nextInt(0, this.children.length-1);
+			const index = ReproducibleRandom.nextInt(0, this.children.length-1);
 			tmp.push(this.children[index]); // 取得
 			this.children.splice(index,1); // 削除
 		}
@@ -531,6 +564,8 @@ class Packet extends Entities {
 	
 	/**
 	 * Packet 同士の集合減算をします。this - target の Packet を返します。
+	 * children に対する処理を行い、新しい Packet インスタンスが返却されます。
+	 * サブクラスで利用することは一般にはできないので注意して下さい。
 	 * @param	{Packet} target	差をとる対象
 	 * @return	{Packet} this - target
 	 */
@@ -539,7 +574,7 @@ class Packet extends Entities {
 		
 		for (let i = 0; i < this.children.length; i++) {
 			const c = this.children[i];
-			if (target.children.indexOf(c) == -1) result.add(c);
+			if (target.children.indexOf(c) === -1) result.add(c);
 		}
 		return result;
 	}
@@ -590,7 +625,7 @@ class Packet extends Entities {
 	 * index 指定の peek(index) は、単に packet.children[index] を利用してください。
 	 * 
 	 * @param	{number|Card}	suitOrCard	suit または Card 種別
-	 * @param	{?number}		value		value (suit を指定した場合)
+	 * @param	{number?}		value		value (suit を指定した場合)
 	 * @returns	{Card}	指定された種別のカードへの参照、この Packet が保持していない場合 null
 	 */
 	peek(suitOrCard, value) {
@@ -608,6 +643,15 @@ class Packet extends Entities {
 				 this.children[i].value === value) return this.children[i];
 		}
 		return null;
+	}
+
+	/**
+	 * 本 Packet に含まれていないカードの集合(残りカード)を取得する。
+	 * このカードのインスタンスは provideDeck() で新たに生成されたものです。
+	 * @returns {Packet} この Packet に含まれていないカードの集合
+	 */
+	complement() {
+		return Packet.provideDeck().sub(this);
 	}
 	
 	/**
@@ -795,9 +839,12 @@ class Field extends Entities {
 	 * @param {Function} rej 実行をブロックする Promise での rejectFunction
 	 */
 	removeReject(rej) {
-		const i = this.rejects.indexOf(rej);
-		if (!this.rejects.includes(rej) == -1) return;
-		this.rejects.splice(i, 1);
+		for (let i = 0; i < this.rejects.length; i++) {
+			if (this.rejects[i].id === rej.id) {
+				this.rejects.splice(i, 1);
+				i--;
+			}
+		}
 	}
 
 	/**
@@ -808,8 +855,13 @@ class Field extends Entities {
 	interrupt() {
 		while (this.rejects.length > 0) {
 			const rej = this.rejects.pop();
-			rej(new QuitInterruptException('quit'));
+			rej.rej(new QuitInterruptException('quit'));
 		}
+	}
+
+	newReject(rej) {
+		if (!this.id) this.id = 0;
+		return { id: this.id++, rej: rej};
 	}
 
 	/**
@@ -820,16 +872,17 @@ class Field extends Entities {
 	 */
 	waitCardSelect() {
 		return new Promise( (res, rej) => {
-			this.addReject(rej);
+			const reject = this.newReject(rej);
+			this.addReject(reject);
 			const listener = (e) => {
 				const x = e.offsetX;
 				const y = e.offsetY;
 				const ent = this.getEntityAt(x, y);
 				if (ent && (ent instanceof Card)) { // Card
 					const selectedCard = ent;
-					console.log('selected ' + selectedCard.toString());
+//					console.log('selected ' + selectedCard.toString());
 					this.canvas.removeEventListener('click', listener);
-					this.removeReject(rej);
+					this.removeReject(reject);
 					res(selectedCard);
 				}
 			};
@@ -845,17 +898,18 @@ class Field extends Entities {
 	 */
 	waitClick(millis) {
 		return new Promise( (res, rej) => {
-			this.addReject(rej);
+			const reject = this.newReject(rej);
+			this.addReject(reject);
 			const listener = () => {
 				this.canvas.removeEventListener('click', listener);
-				this.removeReject(rej);
+				this.removeReject(reject);
 				res(true);
 			};
 			this.canvas.addEventListener('click', listener);
 			if (millis) {
 				setTimeout( () => {
 					this.canvas.removeEventListener('click', listener);
-					this.removeReject(rej);
+					this.removeReject(reject);
 					res(false);
 				}, millis);
 			}
@@ -871,9 +925,10 @@ class Field extends Entities {
 	 */
 	sleep(millis) {
 		return new Promise( (res, rej) => {
-			this.addReject(rej);
+			const reject = this.newReject(rej);
+			this.addReject(reject);
 			setTimeout( () => {
-				this.removeReject(rej);
+				this.removeReject(reject);
 				res();
 			}, millis);
 		});
@@ -1952,9 +2007,20 @@ class Trick extends Packet {
 	/** @type {number} トランプスート */
 	trump;
 	
-	constructor(leader, trump) {
+	/**
+	 * 座席番号、トランプスーツを指定して Trick を生成します。
+	 * Trick を指定すると、同等の Trick のコピーを作成します。
+	 * @param {number|Trick} leaderOrTrick このトリックのleaderの座席番号またはコピー元のTrick
+	 * @param {number} trump leaderOrTrick に leader を指定した場合、trump スーツ
+	 */
+	constructor(leaderOrTrick, trump) {
 		super();
-		this.leader = leader;
+		const trickSpecified = (leaderOrTrick instanceof Trick)?leaderOrTrick:false;
+		if (trickSpecified) {
+			trump = leaderOrTrick.trump;
+			leaderOrTrick = leaderOrTrick.leader;
+		}
+		this.leader = leaderOrTrick;
 		this.winner = -1;
 		this.winnerCard = null;
 		this.trump = trump;
@@ -1962,6 +2028,9 @@ class Trick extends Packet {
 		this.direction = Entity.UPRIGHT;
 		this.setSize(Trick.WIDTH, Trick.HEIGHT);
 		this.layout = new TrickLayout();
+		if (trickSpecified) {
+			trickSpecified.children.forEach(c => this.add(c));
+		}
 	}
 
 
@@ -2766,7 +2835,7 @@ class Board extends Entities {
 		this.vul = vul;
 		this.status = Board.DEALING;
 		this.name = "Bridge Board";
-		/** 既知のカードで、思考ルーチンで利用することを期待 */
+		/** @type {Packet} 既知のカードで、思考ルーチンで利用することを期待 */
 		this.openCards = new Packet();
 		
 		this.direction = Entity.UPRIGHT;

@@ -226,8 +226,8 @@ class Player {
 class RandomPlayer extends Player {
 	/**
 	 * 
-	 * @param {?Board} board
-	 * @param {?number} seat 
+	 * @param {Board?} board
+	 * @param {number?} seat 
 	 */
 	constructor(board, seat) {
 		super();
@@ -359,6 +359,7 @@ class HumanPlayer extends Player {
 	 * クリックされたカードがルール上可能なプレイであったら、そのカードを返却します。
 	 * ルール上可能でない場合、適当なメッセージで正しいプレイを促します。
 	 * @returns {Card} ランダムなプレイ
+	 * @throws {QuitInterruptException} 中断ボタン押下時
 	 */
 	async draw() {
 		const board = this.myBoard;
