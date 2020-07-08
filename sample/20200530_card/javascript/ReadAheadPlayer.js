@@ -1375,15 +1375,6 @@ console.log("相手の長いサイドスート : " + BridgeUtils.suitString(long
 		return p.children[0];
 	}
 	
-	/**
-	 * Aceを14に変換します。
-	 * @param {number|Card} valueOrCard value または Card
-	 * @returns {number} ACE の場合 14, 他は変えない
-	 */
-	bridgeValue(valueOrCard) {
-		if (valueOrCard instanceof Card) return this.bridgeValue(valueOrCard.value);
-		return (valueOrCard === 1)? 14 : valueOrCard;
-	}
 }
 
 /**
@@ -1594,6 +1585,7 @@ class SimplePlayer2 extends Player {
  * constructor
  */
 	constructor(board, seat, ol) {
+		super();
 		setBoard(board);
 		setMySeat(seat);
 		if (ol) this.openingLead = ol;
@@ -1996,25 +1988,26 @@ class SimplePlayer2 extends Player {
 		// 決まらなかった(適当なスートを乱数で選ぶ)
 		//
 		for (let i = 0; i < 20; i++) {
-			const suit = (int)(Math.random() * 4) + 1;
-			if (suit == board.getContract().getSuit()) continue;
+			const suit = ReproducibleRandom.nextInt(1, 4);
+			if (suit === this.board.getContract().suit) continue;
 			
-			if (hand.containsSuit(suit)) return suitOpening(suit);
+			if (this.hand.countSuit(suit) > 0) return this.suitOpening(suit);
 		}
 		//
 		// ハンドがトランプスートのみからなっているなど稀な場合
 		//
-		return hand.peek();
+		return this.hand.children[this.hand.children.length - 1];
 	}
 	
 	/**
 	 * スーツコントラクトでオープニングリードのスートが決まったとき
+	 * @private
+	 * @param {number} suit
+	 * @returns {Card}
 	 */
-	private Card suitOpening(int suit) {
-//		if (suit == Board.getContract().getSuit()) return 0;
+	suitOpening(suit) {
 		
-		String suitPat = BridgeUtils.valuePattern(hand, suit);
-//System.out.println("suitOpening(suit) . suitPat = " + suitPat);
+		const suitPat = BridgeUtils.valuePattern(this.hand, suit);
 		if (suitPat.startsWith("AK")) return hand.peek(suit, Card.KING);
 		if (suitPat.startsWith("A")) return hand.peek(suit, Card.ACE);
 		if (suitPat.startsWith("KQ")) return hand.peek(suit, Card.KING);
@@ -2024,16 +2017,16 @@ class SimplePlayer2 extends Player {
 		if (suitPat.startsWith("KT9")) return hand.peek(suit, 10);
 		if (suitPat.startsWith("QT9")) return hand.peek(suit, 10);
 		if (suitPat.startsWith("T9")) return hand.peek(suit, 10);
-		if (suitPat.charAt(0) <= '9') return hand.peek(suit, suitPat.charAt(0) - '0');
+		if (suitPat[0] <= '9') return hand.peek(suit, parseInt(suitPat[0]));
 		
-		Packet p = hand.subpacket(suit);
+		const p = this.hand.subpacket(suit);
 		p.arrange();
-		if ( bridgeValue(p.peek(0)) < 10 ) {
-			return p.peek(0); // トップオブナッシング
+		if ( this.bridgeValue(p.children[0]) < 10 ) {
+			return p.children[0]; // トップオブナッシング
 		}
-		if (p.size() >= 4) return p.peek(3);
-		if (p.size() == 3) return p.peek(2);
-		return p.peek(0);
+		if (p.children.length >= 4) return p.children[3];
+		if (p.children.length === 3) return p.children[2];
+		return p.children[0];
 	}
 	
 	//*********************************************************************//
@@ -2043,9 +2036,10 @@ class SimplePlayer2 extends Player {
 	/**
 	 * ＮＴコントラクトでのリード
 	 *
-	 *
+	 * @private
+	 * @returns {Card}
 	 */
-	private Card ntLead() {
+	ntLead() {
 // ３．ディフェンダーが勝ったときのリード
 // ・ＮＴの場合
 // 　スートの決め方次の順位：
@@ -2073,14 +2067,14 @@ class SimplePlayer2 extends Player {
 		//
 		// (0) 自分とパートナーのウィナーの数がコントラクトを落とすのに十分なとき、
 		//     自分のウィナーをキャッシュ
-		Packet winners = getWinnersInNTLead();
+		const winners = this.getWinnersInNTLead();
 		
 		// ディフェンダー側のとったトリック
-		int win = board.getTricks() - BridgeUtils.countDeclarerSideWinners(board); 
-		if ( (winners.size() + win) > 7 - board.getContract().getLevel() ) {
+		const win = this.board.getTricks() - BridgeUtils.countDeclarerSideWinners(this.board); 
+		if ( (winners.children.length + win) > 7 - this.board.getContract().level ) {
 			// コントラクトを落とせる
-			for (int i = 0; i < winners.size(); i++) {
-				if (hand.contains(winners.peek(i))) return winners.peek(i);
+			for (let i = 0; i < winners.children.length; i++) {
+				if (this.hand.indexOf(winners.children[i]) > -1) return winners.children[i];
 			}
 		}
 
@@ -2098,13 +2092,14 @@ class SimplePlayer2 extends Player {
 //			}
 //		}
 		
-		int suit = chooseSuitInNTLead();
-		return choosePlayInNTLead(suit);
-		
+		const suit = this.chooseSuitInNTLead();
+		return this.choosePlayInNTLead(suit);
 	}
 	
 	/**
 	 * NTコントラクトのリードスートを選びます。
+	 * @private
+	 * @returns {number} suit
 	 */
 // 　スートの決め方次の順位：
 // 　（１）パートナーにウィナーのあるスート
@@ -2115,35 +2110,35 @@ class SimplePlayer2 extends Player {
 //                ダミーのアナー（ＨＣＰで判断）の多いスート
 // 　　　　ＲＨＯ（ディクレアラーの右手）：
 // 　　　　　　　　ダミーのアナー（ＨＣＰで判断）の少ないスート　　
-	private int chooseSuitInNTLead() {
+	chooseSuitInNTLead() {
 		//
 		// (1) パートナーにウィナーのあるスート
 		//     ※ これは(2)と同値であるが一応実装してある
 		//
-		Packet winners = getWinnersInNTLead();
-		for (int i = 0; i < winners.size(); i++) {
-			Card c = winners.peek(i);
-			if (!hand.contains(c)) { // パートナーが持っている
-				if (hand.containsSuit(c.getSuit())) return c.getSuit();
+		const winners = this.getWinnersInNTLead();
+		for (let i = 0; i < winners.children.length; i++) {
+			const c = winners.children[i];
+			if (this.hand.indexOf(c) === -1) { // パートナーが持っている
+				if (this.hand.countSuit(c.suit) > 0) return c.suit;
 			}
 		}
 		
 		//
 		// (2) O.L. と同じスート
 		//
-		if (board.getTricks() >= 1) {
-			Card c = board.getAllTricks()[0].peek(0);
-			if (hand.containsSuit(c.getSuit())) return c.getSuit();
+		if (this.board.getTricks() >= 1) {
+			const c = this.board.getAllTricks()[0].children[0];
+			if (this.hand.countSuit(c.suit) > 0) return c.suit;
 		}
 		
 		//
 		// (3) 今までディフェンダーが勝ったトリックのリード(最近から順に)
 		//
-		Trick[] trick = board.getAllTricks();
-		for (int i = board.getTricks()-2; i >= 0; i--) {
-			if (isItOurSide(trick[i].getWinner())) { // 自分たちの勝ち
-				int suit = trick[i+1].getLead().getSuit();
-				if (hand.containsSuit(suit)) return suit;
+		const trick = this.board.getAllTricks();
+		for (let i = this.board.getTricks()-2; i >= 0; i--) {
+			if (this.isItOurSide(trick[i].getWinner())) { // 自分たちの勝ち
+				const suit = trick[i+1].getLead().suit;
+				if (this.hand.count(suit) > 0) return suit;
 			}
 		}
 		
@@ -2154,14 +2149,14 @@ class SimplePlayer2 extends Player {
 		//　　　　ＲＨＯ（ディクレアラーの右手）：
 		//    　　　　ダミーのアナー（ＨＣＰで判断）の少ないスート
 		//
-		int[] dummyHonerPoint = BridgeUtils.countHonerPoint(dummyHand);
+		const dummyHonerPoint = BridgeUtils.countHonerPoint(this.dummyHand);
 		
-		if (getDummyPosition() == LEFT) { // 自分はＬＨＯ
-			int maxHcpSuit = 0;
-			int maxHcpVal  = -1;
-			for (int i = 1; i < 5; i++) {
-				if (!dummyHand.containsSuit(i)) continue; // 持ってないスートは除外
-				if (!hand.containsSuit(i)) continue;
+		if (this.getDummyPosition() === Player.LEFT) { // 自分はＬＨＯ
+			let maxHcpSuit = 0;
+			let maxHcpVal  = -1;
+			for (let i = 1; i < 5; i++) {
+				if (this.dummyHand.countSuit(i) === 0) continue; // 持ってないスートは除外
+				if (this.hand.countSuit(i) === 0) continue;
 				if (dummyHonerPoint[i] >= maxHcpVal) { // 同じ HCP では Major を優先させる
 					maxHcpVal  = dummyHonerPoint[i];
 					maxHcpSuit = i;
@@ -2169,11 +2164,11 @@ class SimplePlayer2 extends Player {
 			}
 			if (maxHcpVal > -1) return maxHcpSuit;
 		} else { // 自分はＲＨＯ
-			int minHcpSuit = 0;
-			int minHcpVal  = 100;
-			for (int i = 1; i < 5; i++) {
-				if (!dummyHand.containsSuit(i)) continue;
-				if (!hand.containsSuit(i)) continue;
+			let minHcpSuit = 0;
+			let minHcpVal  = 100;
+			for (let i = 1; i < 5; i++) {
+				if (this.dummyHand.countSuit(i) === 0) continue;
+				if (this.hand.countSuit(i) === 0) continue;
 				if (dummyHonerPoint[i] <= minHcpVal) { // 同じ HCP では Major を優先させる
 					minHcpVal  = dummyHonerPoint[i];
 					minHcpSuit = i;
@@ -2182,9 +2177,9 @@ class SimplePlayer2 extends Player {
 			if (minHcpVal < 100) return minHcpSuit;
 		}
 		// 持ってないスートが該当スートだった場合、適当に
-		hand.shuffle();
-		int suit = hand.peek(0).getSuit();
-		hand.arrange();
+		this.hand.shuffle();
+		const suit = hand.children[0].suit;
+		this.hand.arrange();
 		return suit;
 	}
 	
@@ -2198,59 +2193,61 @@ class SimplePlayer2 extends Player {
 	 *　　（５）ＫＴ９，ＱＴ９、Ｔ９からＴ
 	 *　　（６）その他：現在２枚：上
 	 *　　　　　　　　　現在３枚：３枚目
-	 *　　　　　　　　　現在４枚以上→４枚目　
+	 *　　　　　　　　　現在４枚以上→４枚目
+	 * @param {number} suit suit
+	 * @returns {Card}
 	 */
-	public Card choosePlayInNTLead(int suit) {
-		Packet candidacy = hand.subpacket(suit);
-		if (candidacy.size() == 0)
-			throw new InternalError("choosePlayInNTLead で指定されたスート("+suit+")を持っていません");
+	choosePlayInNTLead(suit) {
+		const candidacy = this.hand.subpacket(suit);
+		if (candidacy.children.length === 0)
+			throw new Error("choosePlayInNTLead で指定されたスート("+suit+")を持っていません");
 		candidacy.arrange();
 		
 		// （１）そのスートの中で、トップがウィナーならキャッシュ
-		Packet winner = getWinners(); //getWinnersInNTLead();
-		Card top = candidacy.peek(0);
-		if (winner.contains(top.getSuit(), top.getValue())) return top;
+		const winner = this.getWinners(); //getWinnersInNTLead();
+		const top = candidacy.children[0];
+		if (winner.indexOf(top) > -1) return top;
 		
 		// （２）ＫＱからＫ
 		if (BridgeUtils.patternMatch(hand, "KQ*", suit)) {
-			return hand.peek(suit, Card.KING);
+			return this.hand.peek(suit, Card.KING);
 		}
 		
 		// （３）ＱＪからＱ
 		if (BridgeUtils.patternMatch(hand, "QJ*", suit)) {
-			return hand.peek(suit, Card.QUEEN);
+			return this.hand.peek(suit, Card.QUEEN);
 		}
 		
 		// （４）ＫＪＴ，ＪＴからＪ
 		if (BridgeUtils.patternMatch(hand, "KJT*", suit)) {
-			return hand.peek(suit, Card.JACK);
+			return this.hand.peek(suit, Card.JACK);
 		}
 		if (BridgeUtils.patternMatch(hand, "JT*", suit)) {
-			return hand.peek(suit, Card.JACK);
+			return this.hand.peek(suit, Card.JACK);
 		}
 		
 		// （５）ＫＴ９，ＱＴ９、Ｔ９からＴ
 		if (BridgeUtils.patternMatch(hand, "KT9*", suit)) {
-			return hand.peek(suit, 10);
+			return this.hand.peek(suit, 10);
 		}
 		if (BridgeUtils.patternMatch(hand, "QT9*", suit)) {
-			return hand.peek(suit, 10);
+			return this.hand.peek(suit, 10);
 		}
 		if (BridgeUtils.patternMatch(hand, "T9*", suit)) {
-			return hand.peek(suit, 10);
+			return this.hand.peek(suit, 10);
 		}
 		
 		// （６）その他：現在２枚：上
 		// 　　　　　　　現在３枚：３枚目
 		// 　　　　　　　現在４枚以上→４枚目　
-		switch (candidacy.size()) {
+		switch (candidacy.children.length) {
 		case 1:
 		case 2:
-			return candidacy.peek(0);
+			return candidacy.children[0];
 		case 3:
-			return candidacy.peek(2);
+			return candidacy.children[2];
 		default:
-			return candidacy.peek(3);
+			return candidacy.children[3];
 		}
 	}
 	
@@ -2292,7 +2289,11 @@ class SimplePlayer2 extends Player {
 	//　　（６）その他：現在２枚：上
 	//　　　　　　　　　現在３枚：３枚目
 	//　　　　　　　　　現在４枚以上→４枚目
-	private Card suitLead() {
+	/**
+	 * @private
+	 * @returns {Card}
+	 */
+	suitLead() {
 		//
 		// (0) 自分とパートナーのウィナーの数がコントラクトを落とすのに十分なとき、
 		//     自分のウィナーをキャッシュ
@@ -3409,20 +3410,7 @@ else
 →  ローエストを返す
 */
 	}
-	
-	/**
-	 * Aceを14に変換します。
-	 * @private
-	 * @param {number|Card} valueOrCard 
-	 * @return {number}
-	 */
-	bridgeValue(valueOrCard) {
-		if (value instanceof Card) {
-			return this.bridgeValue(valueOrCard.value);
-		}
-		if (valueOrCard === 1) return 14;
-		else return valueOrCard;
-	}
+
 	/**
 	 * lead に対するスートフォロー、トランプスートを考慮して２枚のカードの強さを比較します
 	 * ただし、２枚とも同じスートのディスカードの場合、値が大きい方を強いとみなし、

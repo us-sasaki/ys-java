@@ -2045,6 +2045,16 @@ class Trick extends Packet {
 	getTurn() {
 		return ((this.children.length + this.leader) % 4);
 	}
+
+	/**
+	 * 台札を取得する。
+	 * 台札が出ていない場合、null が返る。
+	 * @returns {Card} 台札、出ていない場合 null
+	 */
+	getLead() {
+		if (this.children.length === 0) return null;
+		return this.children[0];
+	}
 	
 	/**
 	 * このトリックが終っているかテストする。
