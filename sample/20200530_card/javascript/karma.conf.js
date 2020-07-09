@@ -21,6 +21,7 @@ module.exports = function(config) {
       'ReadAheadPlayer.js',
       'spec/Card.Spec.js',
       'spec/Player.Spec.js',
+      'spec/ReadAheadPlayer.Spec.js',
       { pattern: 'images/*.gif',
       	watched: false,
       	served: true,

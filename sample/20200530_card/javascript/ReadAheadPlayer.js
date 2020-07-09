@@ -1367,7 +1367,7 @@ console.log("相手の長いサイドスート : " + BridgeUtils.suitString(long
 		
 		const p = hand.subpacket(suit);
 		p.arrange();
-		if ( bridgeValue(p.children[0]) < 10 ) {
+		if ( this.bridgeValue(p.children[0]) < 10 ) {
 			return p.children[0]; // トップオブナッシング
 		}
 		if (p.children.length >= 4) return p.children[3];
@@ -1584,10 +1584,16 @@ class SimplePlayer2 extends Player {
 /*-------------
  * constructor
  */
+	/**
+	 * 
+	 * @param {Board} board 所属する Board
+	 * @param {number} seat 座っている座席番号
+	 * @param {string?} ol オープニングリード指定
+	 */
 	constructor(board, seat, ol) {
 		super();
-		setBoard(board);
-		setMySeat(seat);
+		this.setBoard(board);
+		this.setMySeat(seat);
 		if (ol) this.openingLead = ol;
 	}
 	
@@ -1609,7 +1615,7 @@ class SimplePlayer2 extends Player {
 	 * @return {Promise<Card>}		和美の考えたプレイ
 	 */
 	async draw() {
-		await this.myBoard.getField().sleep(400); // 考えた振り
+		//await this.myBoard.getField().sleep(400); // 考えた振り
 		return this.draw2();
 	}
 	
@@ -1633,7 +1639,7 @@ class SimplePlayer2 extends Player {
 		//             パートナーだけがラフしているときはディスカードする。）
 		//				パートナーが勝っているときはラフせず、ディスカードする。
 		//
-		if (hand.countSuit(lead.suit) === 0) { // スートフォローできない
+		if (this.hand.countSuit(this.lead.suit) === 0) { // スートフォローできない
 			const trump = this.board.getContract().suit;
 			const pack = this.hand.subpacket(trump); // NTのときは、空になる
 			if (pack.children.length > 0) {
@@ -1768,7 +1774,7 @@ class SimplePlayer2 extends Player {
 		const p = new Packet(); // winner 抜き候補
 		const w = new Packet(); // winner 入り候補
 		for (let i = 0; i < this.hand.children.length; i++) {
-			const c = hand.children[i];
+			const c = this.hand.children[i];
 			if (c.suit === trump) continue;	// トランプは候補としない
 			w.add(c);
 			if ((!winnerIsInOnlyOneSuit)&&winners.indexOf(c)>-1)
@@ -1806,7 +1812,7 @@ class SimplePlayer2 extends Player {
 			//
 			// 指定がある場合はそのカード
 			//
-			if (openingLead) {
+			if (this.openingLead) {
 				let suit	= -1;
 				let value	= -1;
 				
@@ -1856,7 +1862,7 @@ class SimplePlayer2 extends Player {
 	 * @private
 	 * @returns {Card}
 	 */
-	ntOpening() {
+	ntOpening_null() {
 		//
 		// 一番長いスートを選ぶ(同一枚数のときはランクの高いスート)
 		//
@@ -1877,10 +1883,12 @@ class SimplePlayer2 extends Player {
 	/**
 	 * ＮＴコントラクトのオープニングリードでスートまできまっている場合
 	 * @private
+	 * @param {number?} スーツ指定
 	 * @returns {Card}
 	 */
 	ntOpening(suit) {
-		const suitPat = BridgeUtils.valuePattern(hand, suit);
+		if (!suit) return this.ntOpening_null();
+		const suitPat = BridgeUtils.valuePattern(this.hand, suit);
 		let value = -1;
 		
 		//
@@ -2138,7 +2146,7 @@ class SimplePlayer2 extends Player {
 		for (let i = this.board.getTricks()-2; i >= 0; i--) {
 			if (this.isItOurSide(trick[i].getWinner())) { // 自分たちの勝ち
 				const suit = trick[i+1].getLead().suit;
-				if (this.hand.count(suit) > 0) return suit;
+				if (this.hand.countSuit(suit) > 0) return suit;
 			}
 		}
 		
@@ -2178,7 +2186,7 @@ class SimplePlayer2 extends Player {
 		}
 		// 持ってないスートが該当スートだった場合、適当に
 		this.hand.shuffle();
-		const suit = hand.children[0].suit;
+		const suit = this.hand.children[0].suit;
 		this.hand.arrange();
 		return suit;
 	}
@@ -2209,31 +2217,31 @@ class SimplePlayer2 extends Player {
 		if (winner.indexOf(top) > -1) return top;
 		
 		// （２）ＫＱからＫ
-		if (BridgeUtils.patternMatch(hand, "KQ*", suit)) {
+		if (BridgeUtils.patternMatch(this.hand, "KQ*", suit)) {
 			return this.hand.peek(suit, Card.KING);
 		}
 		
 		// （３）ＱＪからＱ
-		if (BridgeUtils.patternMatch(hand, "QJ*", suit)) {
+		if (BridgeUtils.patternMatch(this.hand, "QJ*", suit)) {
 			return this.hand.peek(suit, Card.QUEEN);
 		}
 		
 		// （４）ＫＪＴ，ＪＴからＪ
-		if (BridgeUtils.patternMatch(hand, "KJT*", suit)) {
+		if (BridgeUtils.patternMatch(this.hand, "KJT*", suit)) {
 			return this.hand.peek(suit, Card.JACK);
 		}
-		if (BridgeUtils.patternMatch(hand, "JT*", suit)) {
+		if (BridgeUtils.patternMatch(this.hand, "JT*", suit)) {
 			return this.hand.peek(suit, Card.JACK);
 		}
 		
 		// （５）ＫＴ９，ＱＴ９、Ｔ９からＴ
-		if (BridgeUtils.patternMatch(hand, "KT9*", suit)) {
+		if (BridgeUtils.patternMatch(this.hand, "KT9*", suit)) {
 			return this.hand.peek(suit, 10);
 		}
-		if (BridgeUtils.patternMatch(hand, "QT9*", suit)) {
+		if (BridgeUtils.patternMatch(this.hand, "QT9*", suit)) {
 			return this.hand.peek(suit, 10);
 		}
-		if (BridgeUtils.patternMatch(hand, "T9*", suit)) {
+		if (BridgeUtils.patternMatch(this.hand, "T9*", suit)) {
 			return this.hand.peek(suit, 10);
 		}
 		
@@ -2704,7 +2712,7 @@ class SimplePlayer2 extends Player {
 			if ( this.bridgeValue(dummyFollow.peek()) > this.bridgeValue(follow.children[0]) )
 				// ダミーのローエスト ＞ 自分のハイエスト --> ローエスト
 				return follow.peek();
-			else if (this.bridgeValue(lead) > this.bridgeValue(dummyFollow.peek(0)))
+			else if (this.bridgeValue(this.lead) > this.bridgeValue(dummyFollow.children[0]))
 				// リード ＞ ダミーのハイエスト --> リードにチーペストに勝つ
 				return this.getCheepestWinner(follow, this.lead);
 			else if (dummyFollow.children.length === 1)
@@ -2786,7 +2794,7 @@ class SimplePlayer2 extends Player {
 				} else {
 					// ダミーはフォローできる
 					if ( (this.compare(dummyFollow.peek(), follow.children[0]) > 0)
-							||(compare(declarerPlay, follow.peek(0)) > 0) ) {
+							||(this.compare(declarerPlay, follow.children[0]) > 0) ) {
 						// ダミーのローエスト＞自分のハイエスト
 						//  or ディクレアラープレイ＞自分のハイエスト
 						return this.getSignal();
@@ -2828,7 +2836,7 @@ class SimplePlayer2 extends Player {
 					// ダミーのハイエスト＞リード＞自分のハイエスト
 					//         →getsignal
 					if (this.compare(this.lead, dummyFollow.children[0]) > 0)
-						return getSignal();
+						return this.getSignal();
 					if ((this.compare(dummyFollow.children[0], this.lead) > 0)
 							&&(this.compare(this.lead, follow.children[0]) >0 ))
 								return this.getSignal();
@@ -2890,26 +2898,31 @@ class SimplePlayer2 extends Player {
 	//*********************************************************************//
 	/**
 	 * ４番手では、一番安く勝つかローエスト
+	 * @private
+	 * @returns {Card}
 	 */
-	private Card playIn4th() {
-		Packet pack = hand.subpacket(lead.getSuit());
+	playIn4th() {
+		const pack = this.hand.subpacket(this.lead.suit);
 		pack.arrange();
-		Card play = null;
+		let play = null;
 		
-		for (int i = 0; i < pack.size(); i++) {
-			Trick virtual = new TrickImpl(getTrick());
-			virtual.add(pack.peek(i));
-			if (isItOurSide(virtual.getWinner())) play = pack.peek(i);
+		for (let i = 0; i < pack.children.length; i++) {
+			const virtual = new Trick(this.getTrick());
+			virtual.add(pack.children[i]);
+			if (this.isItOurSide(virtual.getWinner())) play = pack.children[i];
 		}
-		if (play == null) play = pack.peek();
+		if (play === null) play = pack.peek();
 		return play;
 	}
 	
 	/**
 	 * 指定したシート番号が自分たちサイドの場合、true
+	 * @private
+	 * @param {number} seat
+	 * @returns {boolean}
 	 */
-	private boolean isItOurSide(int seat) {
-		return (((seat ^ getMySeat()) & 1) == 0);
+	isItOurSide(seat) {
+		return (((seat ^ this.mySeat) & 1) === 0);
 	}
 	
 /*==========================================================
@@ -2946,7 +2959,7 @@ class SimplePlayer2 extends Player {
 		}
 		
 		// 残りのカードを各スートに分ける
-		suits = [];
+		const suits = [];
 		
 		for (let i = 0; i < 4; i++) {
 			suits[i] = rest.subpacket(i+1);
@@ -3091,47 +3104,47 @@ class SimplePlayer2 extends Player {
 		ours.add(this.getExpectedCardsInTrump()); // パートナーが持っていると期待されるカード
 		
 		// sideSuits
-		int[][][] sideSuits = ThinkingUtils.countDistribution(board, getMySeat());
-		
+		const sideSuits = Utils.countDistribution(this.board, this.getMySeat());
+
 		// rest のカード全体で、各スートについて上から順に ours に入っているものが
 		// Suit Contract におけるウィナーとなります。
 		// ただし、Suit Contract では、ダミーとディクレアラーについてトランプが残って
 		// いる可能性がある状態では、サイドスートの(最大)数までしかウィナーを認めません。
 		
 		// トランプが残っていない場合、制限をはずす
-		int trump = board.getTrump();
+		const trump = this.board.getTrump();
 		// ダミー
-		if (sideSuits[board.getDummy()][trump-1][ThinkingUtils.MAX] == 0) {
+		if (sideSuits[this.board.getDummy()][trump-1][Utils.MAX] === 0) {
 //System.out.println("getWinnersInSuitLead . dummy Trump is empty.");
-			for (int suit = 1; suit < 5; suit++)
-				if (suit != trump)
-					sideSuits[board.getDummy()][suit-1][ThinkingUtils.MAX] = 13;
+			for (let suit = 1; suit < 5; suit++)
+				if (suit !== trump)
+					sideSuits[this.board.getDummy()][suit-1][Utils.MAX] = 13;
 		}
 		// ディクレアラー
-		if (sideSuits[board.getDeclarer()][trump-1][ThinkingUtils.MAX] == 0) {
-			for (int suit = 1; suit < 5; suit++)
+		if (sideSuits[this.board.getDeclarer()][trump-1][Utils.MAX] === 0) {
+			for (let suit = 1; suit < 5; suit++)
 				if (suit != trump)
-					sideSuits[board.getDeclarer()][suit-1][ThinkingUtils.MAX] = 13;
+					sideSuits[this.board.getDeclarer()][suit-1][Utils.MAX] = 13;
 		}
 //System.out.println("getWinnersInSuitLead . rest = " + rest);
 //System.out.println("getWinnersInSuitLead . ours = " + ours);
 
-		for (int suit = 1; suit < 5; suit++) {
-			Packet restOfSuit = rest.subpacket(suit);
+		for (let suit = 1; suit < 5; suit++) {
+			const restOfSuit = rest.subpacket(suit);
 			restOfSuit.arrange(); // 上から順番に
 			
 			// ウィナーとカウントできる最大数を計算します
-			int maxWinnersOfSuit = restOfSuit.size();
+			let maxWinnersOfSuit = restOfSuit.children.length;
 			if (suit != trump) { // suit はサイドスート
-				int tmp = sideSuits[board.getDummy()][suit-1][ThinkingUtils.MAX];
+				let tmp = sideSuits[this.board.getDummy()][suit-1][Utils.MAX];
 				if (maxWinnersOfSuit > tmp) maxWinnersOfSuit = tmp;
-				tmp = sideSuits[board.getDeclarer()][suit-1][ThinkingUtils.MAX];
+				tmp = sideSuits[this.board.getDeclarer()][suit-1][Utils.MAX];
 				if (maxWinnersOfSuit > tmp) maxWinnersOfSuit = tmp;
 			}
 //System.out.println("getWinnersInSuitLead.suit="+suit+"  maxWinnersOfSuit="+maxWinnersOfSuit);
-			for (int i = 0; i < maxWinnersOfSuit; i++) {
-				Card c = restOfSuit.peek(i);
-				if (ours.contains(c))
+			for (let i = 0; i < maxWinnersOfSuit; i++) {
+				const c = restOfSuit.children[i];
+				if (ours.indexOf(c) > -1)
 					result.add(c);
 				else break; // ours にあるシークェンスが途切れた
 			}
@@ -3140,12 +3153,12 @@ class SimplePlayer2 extends Player {
 		return result;
 	}
 	
-	private static final String[][] NT_EXPECTED_PATTERN = {
-		{ "T9*" }, // T lead
-		{ "JT*" },	// J lead
-		{ "QJ9*", "QJT*" },	// Q lead
-		{ "KQT*", "KQJ*", "AKJT*", "AKQ*" }, // K lead
-		{ "AKJTx*", "AKQxx*" } }; // A lead
+	static NT_EXPECTED_PATTERN = [
+		[ "T9*" ], // T lead
+		[ "JT*" ],	// J lead
+		[ "QJ9*", "QJT*" ],	// Q lead
+		[ "KQT*", "KQJ*", "AKJT*", "AKQ*" ], // K lead
+		[ "AKJTx*", "AKQxx*" ] ]; // A lead
 	/**
 	 * ＮＴコントラクトの場合のオープニングリードから推定されるパートナーの手を取り出します。
 	 * パートナーがオープニングリーダーであった場合に、そのスートは一定のルール
@@ -3158,11 +3171,11 @@ class SimplePlayer2 extends Player {
 	 *	{ "QJ9*", "QJT*" },	// Q lead
 	 *	{ "KQT*", "KQJ*", "AKJT*", "AKQ*" }, // K lead
 	 *	{ "AKJTx*", "AKQxx*" } }; // A lead
-	 *
-	 * @param		パートナーが持っていると推定されるカード
+	 * @private
+	 * @returns {Packet}	パートナーが持っていると推定されるカードのPacket
 	 */
-	private Packet getExpectedCardsInNT() {
-		return getExpectedCardsImpl(NT_EXPECTED_PATTERN);
+	getExpectedCardsInNT() {
+		return this.getExpectedCardsImpl(SimplePlayer2.NT_EXPECTED_PATTERN);
 	}
 	
 	/**
@@ -3171,31 +3184,34 @@ class SimplePlayer2 extends Player {
 	 * 推定されるハンドですでにプレイされたものは除外する、という意味です。
 	 * オリジナルハンドで考えて、引数で示されるパターン文字列にあてはまるもの
 	 * が抽出されます。
+	 * @private
+	 * @param {string[][]} pattern
+	 * @returns {Packet}
 	 */
-	private Packet getExpectedCardsImpl(String[][] pattern) {
-		Packet result = new PacketImpl();
+	getExpectedCardsImpl(pattern) {
+		const result = new Packet();
 		
-		Trick opening = board.getPlayHistory().getTrick(0); // null はありえない
+		const opening = this.board.playHist.getTrick(0); // null はありえない
 		
 		// 自分がオープニングリーダーの場合、情報はないため、
 		// 空の Packet を返却する。
-		if (opening.getLeader() == getMySeat()) return result;
+		if (opening.leader === this.mySeat) return result;
 		
 		// パートナーがオープニングリーダーであり、自分の番になっているため、
 		// すでにオープニングリードは行われているはず
-		Card openingLead = opening.getLead();
+		const openingLead = opening.getLead();
 		
-		int value = openingLead.getValue();
+		const value = openingLead.value;
 		if ((value <= 9)&&(value >= 2)) return result; // ローカードのリードは何も期待できない
 		
-		int suit = openingLead.getSuit();
+		const suit = openingLead.suit;
 		
-		int index = value - 10; // T=0, J=1, Q=2, K=3, A=4
+		let index = value - 10; // T=0, J=1, Q=2, K=3, A=4
 		if (index < 0) index = 4; // ACE は value == 1 となっているため
-		String [] handPattern = pattern[index];
+		const handPattern = pattern[index];
 		
 		// 優先順位の高いものから順に推定
-		int handPatternIndex = 0;
+		let handPatternIndex = 0;
 		
 		//
 		// パートナーとディクレアラーの手の Union を求める。
@@ -3203,23 +3219,24 @@ class SimplePlayer2 extends Player {
 		//
 		// open = {場に出たカード(含ダミー)} ∪ (現在の自分のハンド)
 		//  i.e. 自分が認識できているすべてのカード
-		Packet open = new PacketImpl(board.getOpenCards());
-		open.add(getMyHand());
+		const open = new Packet(this.board.openCards);
+		open.add(this.getMyHand());
 		
 		// これにこれまでプレイしたパートナーの手を合わせたものが Union
 		//
 		// rest = ￢open
 		// i.e. 自分から見て未知のすべてのカード ( = パートナー ∪ ディクレアラー )
-		Packet rest = open.complement();
+		const rest = open.complement();
 		
 		// これまでのトリックの中で、パートナーが出したものすべてを rest に加える
 		// i.e. rest ＝ パートナーの初期ハンド ∪ 現在のディクレアラーハンド
 		//           ⊃ パートナーの初期ハンド
-		Trick[] trick = board.getAllTricks();
-		for (int i = 0; i < board.getTricks(); i++) {
-			for (int j = 0; j < trick[i].size(); j++) {
-				int seat = (trick[i].getLeader() + j)%4;
-				if (( (seat - this.getMySeat() + 6)%4 ) == 0) rest.add(trick[i].peek(j));
+		const trick = this.board.getAllTricks();
+		for (let i = 0; i < this.board.getTricks(); i++) {
+			for (let j = 0; j < trick[i].children.length; j++) {
+				const seat = (trick[i].leader + j)%4;
+				if (( (seat - this.mySeat + 6)%4 ) === 0)
+					rest.add(trick[i].children[j]);
 			}
 		}
 //System.out.println("expected card (NT/Suit) rest : " + rest);
@@ -3229,33 +3246,33 @@ class SimplePlayer2 extends Player {
 			if (BridgeUtils.patternMatch(rest, handPattern[handPatternIndex], suit)) break;
 		}
 		
-		if (handPatternIndex == handPattern.length) return result; // 該当なし。空パケット返却
+		if (handPatternIndex === handPattern.length) return result; // 該当なし。空パケット返却
 		
 		// 該当ありのため、パターン文字列を result に加える(High Card のみ)
-		String toAdd = handPattern[handPatternIndex];
-		for (int i = 0; i < toAdd.length(); i++) {
-			char c = toAdd.charAt(i);
+		const toAdd = handPattern[handPatternIndex];
+		for (let i = 0; i < toAdd.length(); i++) {
+			const c = toAdd.charAt(i);
 			
 			// open に含まれているものは add しない (すでにパートナーがプレイしたもの)
 			switch (c) {
 			case 'A':
-				if (!open.contains(suit, Card.ACE))
+				if (open.indexOf(suit, Card.ACE) === -1)
 					result.add(rest.peek(suit, Card.ACE));
 				break;
 			case 'K':
-				if (!open.contains(suit, Card.KING))
+				if (open.indexOf(suit, Card.KING) === -1)
 					result.add(rest.peek(suit, Card.KING));
 				break;
 			case 'Q':
-				if (!open.contains(suit, Card.QUEEN))
+				if (open.indexOf(suit, Card.QUEEN) === -1)
 					result.add(rest.peek(suit, Card.QUEEN));
 				break;
 			case 'J':
-				if (!open.contains(suit, Card.JACK))
+				if (open.indexOf(suit, Card.JACK) === -1)
 					result.add(rest.peek(suit, Card.JACK));
 				break;
 			case 'T':
-				if (!open.contains(suit, 10))
+				if (open.indexOf(suit, 10) === -1)
 					result.add(rest.peek(suit, 10));
 				break;
 			default:
@@ -3264,12 +3281,12 @@ class SimplePlayer2 extends Player {
 		return result;
 	}
 	
-	private static final String[][] SUIT_EXPECTED_PATTERN = {
-		{ "T9*", "KT9*", "QT9*" }, // T lead
-		{ "JT*", "KJT*" },	// J lead
-		{ "QJ*" },	// Q lead
-		{ "KQ*" }, // K lead
-		{ "A*" } }; // A lead
+	static SUIT_EXPECTED_PATTERN = [
+		[ "T9*", "KT9*", "QT9*" ], // T lead
+		[ "JT*", "KJT*" ],	// J lead
+		[ "QJ*" ],	// Q lead
+		[ "KQ*" ], // K lead
+		[ "A*" ] ]; // A lead
 	
 	/**
 	 * スーツコントラクトの場合のオープニングリードから推定されるパートナーの手を取り出します。
@@ -3283,127 +3300,154 @@ class SimplePlayer2 extends Player {
 		{ "QJ*" },	// Q lead
 		{ "KQ*" }, // K lead
 		{ "A*" } }; // A lead
-	 *
-	 * @param		パートナーが持っていると推定されるカード
+	 * @private
+	 * @returns {Packet} パートナーが持っていると推定されるカードからなる Packet
 	 */
-	private Packet getExpectedCardsInTrump() {
-		return getExpectedCardsImpl(SUIT_EXPECTED_PATTERN);
+	getExpectedCardsInTrump() {
+		return getExpectedCardsImpl(SimplePlayer2.SUIT_EXPECTED_PATTERN);
 	}
 	
 	/**
 	 * 指定された候補カードの集まりの中から、指定されたカードに勝てる値がチーペストな
 	 * カードを取得する。どうしても勝てない場合、ローエストを返す。
 	 * スートフォローについては考慮しておらず、値による評価しかしていない。
+	 * @private
+	 * @param {Packet} candidacy
+	 * @param {Card} target
+	 * @returns {Card}
 	 */
-	private Card getCheepestWinner(Packet candidacy, Card target) {
-		Packet p = candidacy.subpacket(target.getSuit());
-		if (target == null) return p.peek();
+	getCheepestWinner(candidacy, target) {
+		const p = candidacy.subpacket(target.suit);
+		if (target === null) return p.peek();
 		p.arrange();
-		if (p.contains(target)) return target;
+		if (p.indexOf(target) > -1) return target;
 		
-		Card stronger = null;
-		for (int i = 0; i < p.size(); i++) {
-			Card c = p.peek(i);
-			if (bridgeValue(c) > bridgeValue(target)) stronger = c;
+		let stronger = null;
+		for (let i = 0; i < p.children.length; i++) {
+			const c = p.children[i];
+			if (this.bridgeValue(c) > this.bridgeValue(target)) stronger = c;
 		}
-		if (stronger == null) return p.peek(); // ローエスト
+		if (stronger === null) return p.peek(); // ローエスト
 		return stronger;
 	}
 	
 	/**
 	 * 指定された Packet の中の、指定されたカードと同等の最低のカードを出す
+	 * @private
+	 * @param {Packet} candidacy
+	 * @param {Card|number?} base
+	 * @returns {Card}
 	 */
-	private Card getBottomOfSequence(Packet candidacy, Card base) {
-		Packet p = candidacy.subpacket(base.getSuit());
+	getBottomOfSequence(candidacy, base) {
+		if (!base)
+			return this.getBottomOfSequence_baseNull(candidacy);
+		if (typeof base == 'number')
+			return this.getBottomOfSequence_withSuit(candidacy, base);
+
+		const p = candidacy.subpacket(base.suit);
 		p.arrange();
-		Card c = base;
-		for (int i = 1; i < p.size(); i++) {
-			Card c2 = p.peek(i);
-			if (bridgeValue(c) - bridgeValue(c2) == 1)	c = c2;
+		let c = base;
+		for (let i = 1; i < p.children.length; i++) {
+			const c2 = p.children[i];
+			if (this.bridgeValue(c) - this.bridgeValue(c2) === 1) c = c2;
 		}
 		return c;
 	}
 	
-	private Card getBottomOfSequence(Packet candidacy) {
-		if (candidacy.size() == 0) return null;
-		Packet p = new PacketImpl(candidacy);
+	/**
+	 * @private
+	 * @param {Packet} candidacy
+	 * @returns {Card}
+	 */
+	getBottomOfSequence_baseNull(candidacy) {
+		if (candidacy.children.length === 0) return null;
+		const p = new Packet(candidacy);
 		p.arrange();
-		Card c = p.peek(0);
-		for (int i = 1; i < p.size(); i++) {
-			Card c2 = p.peek(i);
-			if (bridgeValue(c) - bridgeValue(c2) == 1)	c = c2;
+		let c = p.children[0];
+		for (let i = 1; i < p.children.length; i++) {
+			const c2 = p.children[i];
+			if (this.bridgeValue(c) - this.bridgeValue(c2) === 1) c = c2;
 		}
 		return c;	
 	}
 	
-	private Card getBottomOfSequence(Packet candidacy, int suit) {
-		return getBottomOfSequence(candidacy.subpacket(suit));
+	/**
+	 * @private
+	 * @param {Packet} candidacy
+	 * @param {number} suit
+	 * @returns {Card}
+	 */
+	getBottomOfSequence_withSuit(candidacy, suit) {
+		return this.getBottomOfSequence(candidacy.subpacket(suit));
 	}
 	
-	private Card getNextLowerCard(Card c) {
-		Packet p = hand.subpacket(c.getSuit());
+	/**
+	 * @private
+	 * @param {Packet?} h
+	 * @param {Card} c
+	 * @returns {Card}
+	 */
+	getNextLowerCard(h, c) {
+		if (c === void 0 && h instanceof Card) {
+			c = h;
+			h = this.hand;
+		}
+		const p = this.hand.subpacket(c.suit);
 		p.arrange();
-		int index = p.indexOf(c);
-		if ((!(index == -1))||(index == p.size()-1))
-			throw new IllegalStateException("ハンドに " + c + "が含まれていません");
-		return p.peek(index+1);
-	}
-	
-	private Card getNextLowerCard(Packet h, Card c) {
-		Packet p = h.subpacket(c.getSuit());
-		p.arrange();
-//System.out.println("getNext..p = " + p);
-//System.out.println("c = " + c);
-		int index = p.indexOf(c);
-		if (index == -1)
-			throw new IllegalStateException("対象 Packet に " + c + "が含まれていません");
-		if (index == p.size()-1) return null;
-		return p.peek(index+1);
+		const index = p.indexOf(c);
+		// 元のソースでは、h 指定の場合、
+		// index === p.children.length-1 の場合 null が返る実装だった。
+		if ( index !== -1 || index === p.children.length-1 )
+			throw new Error("ハンドに " + c + "が含まれていません");
+		return p.children[index+1];
 	}
 	
 	/**
 	 * どの位置でも呼ばれる
+	 * @private
+	 * @returns {Card?} シグナルを考慮したプレイ
 	 */
-	private Card getSignal() {
+	getSignal() {
 		// 自分のハンドから、リードと同じスートのカードを抽出する
-		Packet follow = hand.subpacket(lead.getSuit());
+		const follow = this.hand.subpacket(this.lead.suit);
 		
-		if (follow.size() == 0) return null;
-		if (follow.size() == 1) return follow.peek();
+		if (follow.children.length === 0) return null;
+		if (follow.children.length === 1) return follow.peek();
 		
 		follow.arrange();
-		Card card1 = board.getTrick().peek(0); // == lead
-		Card card2 = board.getTrick().peek(1);
-		int trump = board.getContract().getSuit();
+		const card1 = this.board.getTrick().children[0]; // == lead
+		const card2 = this.board.getTrick().children[1];
+		const trump = this.board.getContract().suit;
 		
 //オーバーテイクの場合を選出		
-		if ((card1.getSuit() == trump)||(card2.getSuit() != trump)) {
+		if ((card1.suit === trump)||(card2.suit !== trump)) {
 			// ディクレアラーはラフしていない
-			if ((compare(follow.peek(0), card1) > 0)&&(compare(card1, card2) > 0)) {
+			if ((this.compare(follow.children[0], card1) > 0)
+				&&(this.compare(card1, card2) > 0)) {
 				// フォローのハイエスト＞card1＞card2
-				Packet p = board.getOpenCards().complement();
-				p.add(dummyHand);
-				p = p.complement().subpacket(lead.getSuit()); // p = 今までプレイされたカード
+				let p = this.board.openCards.complement();
+				p.add(this.dummyHand);
+				p = p.complement().subpacket(this.lead.suit); // p = 今までプレイされたカード
 				// 下の２行はすでにプレイされているので、pに含まれているはず
 				//p.add(card1);
 				//if (card2.getSuit() == card1.getSuit()) p.add(card2);
 				
-				Card high = follow.peek(0);
-				Card low;
-				if (follow.size() == 2) low = follow.peek(1);
-				else low = follow.peek(2);
+				const high = follow.children[0];
+				let low;
+				if (follow.children.length === 2) low = follow.children[1];
+				else low = follow.children[2];
 				
-				int i;
-				for (i = bridgeValue(low); i <= bridgeValue(high); i++) {
-					int j = i;
-					if (j == 14) j = 1;
-					if (!p.containsValue(j)) break;
+				let i;
+				for (i = this.bridgeValue(low); i <= this.bridgeValue(high); i++) {
+					let j = i;
+					if (j === 14) j = 1;
+					if (p.countValue(j) === 0) break;
 				}
-				if (i > bridgeValue(high)) {
-					Card c = follow.peek(0);
-					for (int j = 1; j < follow.size(); j++) {
-						Card c2 = follow.peek(j);
-						if (bridgeValue(c) - bridgeValue(c2) == 1)	c = c2;
+				if (i > this.bridgeValue(high)) {
+					let c = follow.children[0];
+					for (let j = 1; j < follow.children.length; j++) {
+						const c2 = follow.children[j];
+						if (this.bridgeValue(c) - this.bridgeValue(c2) === 1) c = c2;
 					}
 					//オーバーテイクしても損のない状況ではオーバーテイクする
 					return c;
@@ -3434,34 +3478,34 @@ else
 	 * lead に対するスートフォロー、トランプスートを考慮して２枚のカードの強さを比較します
 	 * ただし、２枚とも同じスートのディスカードの場合、値が大きい方を強いとみなし、
 	 * 違うスートのディスカードの場合は 0 を返却しています
-	 *
-	 * @param		a		比較対象のカード
-	 * @param		b		比較対象のカード
-	 * @return		結果( (1) a > b  (-1) a < b  (0) a = b )
+	 * @private
+	 * @param		{Card} a		比較対象のカード
+	 * @param		{Card} b		比較対象のカード
+	 * @returns		{number} 結果( (1) a > b  (-1) a < b  (0) a = b )
 	 */
-	private int compare(Card a, Card b) {
-		if ((a == null)&&(b == null)) return 0;
-		if (b == null) return 1;
-		if (a == null) return -1;
+	compare(a, b) {
+		if ((a === null)&&(b === null)) return 0;
+		if (b === null) return 1;
+		if (a === null) return -1;
 		
 		// 同じスートの場合
 		// (２枚とも同じスートのディスカードの場合、値の大きい方が強い事となっている）
-		if (a.getSuit() == b.getSuit()) {
-			int av = bridgeValue(a);
-			int bv = bridgeValue(b);
+		if (a.suit === b.suit) {
+			const av = this.bridgeValue(a);
+			const bv = this.bridgeValue(b);
 			if (av > bv) return 1;
-			if (av == bv) return 0;
+			if (av === bv) return 0;
 			return -1;
 		}
-		int trump = board.getContract().getSuit();
+		const trump = this.board.getContract().suit;
 		
 		// ラフの場合
-		if (a.getSuit() == trump) return 1;
-		if (b.getSuit() == trump) return -1;
+		if (a.suit === trump) return 1;
+		if (b.suit === trump) return -1;
 		
 		// スートフォローを見る
-		if (a.getSuit() == lead.getSuit()) return 1;
-		if (b.getSuit() == lead.getSuit()) return -1;
+		if (a.suit === this.lead.suit) return 1;
+		if (b.suit === this.lead.suit) return -1;
 		
 		//
 		return 0;
@@ -3470,13 +3514,13 @@ else
 	/**
 	 * 指定された２カードのうち、強い方を返却します。
 	 * 強さの判定には compare(a,b) を使用します。
-	 *
-	 * @param		a		候補Ａ
-	 * @param		b		候補Ｂ
-	 * @return		２候補のうち、強いカード
+	 * @private
+	 * @param		{Card} a		候補Ａ
+	 * @param		{Card} b		候補Ｂ
+	 * @returns		{Card} ２候補のうち、強いカード
 	 */
-	private Card getStronger(Card a, Card b) {
-		if (compare(a, b) > 0) return a;
+	getStronger(a, b) {
+		if (this.compare(a, b) > 0) return a;
 		else return b;
 	}
 }

@@ -166,9 +166,11 @@ class PlayMain {
 		this.players = [];
 		this.players[Board.NORTH] = new RandomPlayer(this.board, Board.NORTH);
 		this.players[Board.SOUTH] = new HumanPlayer(this.board, this.field, Board.SOUTH);
-		this.players[Board.EAST] = new RandomPlayer(this.board, Board.EAST);
-		this.players[Board.WEST] = new RandomPlayer(this.board, Board.WEST);
-		// Computer Player 設定
+		//this.players[Board.EAST] = new RandomPlayer(this.board, Board.EAST);
+		//this.players[Board.WEST] = new RandomPlayer(this.board, Board.WEST);
+		this.players[Board.EAST ] = new SimplePlayer2(this.board, Board.EAST);
+		this.players[Board.WEST ] = new SimplePlayer2(this.board, Board.WEST, prob.openingLead);
+	// Computer Player 設定
 /*		if ( !prob.thinker || prob.thinker != "DoubleDummyPlayer") {
 			this.players[Board.EAST ] = new SimplePlayer2(this.board, Board.EAST);
 			this.players[Board.WEST ] = new SimplePlayer2(this.board, Board.WEST, prob.openingLead);

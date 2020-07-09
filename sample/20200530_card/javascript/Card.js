@@ -456,7 +456,6 @@ class Entities extends Entity {
  * @classdesc Packet は複数の Card をまとめたハンドを表します。
  * 以前の GuiedPacket の機能の他、PacketFactory のクラスメソッドも
  * 合わせもちます。
- * @constructor
  * @extends Entities
  */
 class Packet extends Entities {
@@ -467,6 +466,10 @@ class Packet extends Entities {
 	layout;
 	cardOrder;
 
+	/**
+	 * Packet インスタンスを生成します。
+	 * @param {Packet?} source コピー元の Packet。省略すると空の Packet を作成します。
+	 */
 	constructor(source) {
 		super();
 		if (source && source instanceof Packet) {

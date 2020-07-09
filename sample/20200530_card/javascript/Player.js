@@ -213,6 +213,17 @@ class Player {
 		throw new Error("must implement draw()");
 	}
 	
+	/**
+	 * Aceを14に変換します。
+	 * @param {number|Card} valueOrCard value または Card
+	 * @returns {number} ACE の場合 14, 他は変えない
+	 */
+	bridgeValue(valueOrCard) {
+		if (valueOrCard instanceof Card) return this.bridgeValue(valueOrCard.value);
+		return (valueOrCard === 1)? 14 : valueOrCard;
+	}
+
+	
 }
 
 
@@ -380,14 +391,4 @@ class HumanPlayer extends Player {
 		return clicked;
 	}
 	
-	/**
-	 * Aceを14に変換します。
-	 * @param {number|Card} valueOrCard value または Card
-	 * @returns {number} ACE の場合 14, 他は変えない
-	 */
-	bridgeValue(valueOrCard) {
-		if (valueOrCard instanceof Card) return this.bridgeValue(valueOrCard.value);
-		return (valueOrCard === 1)? 14 : valueOrCard;
-	}
-
 }
