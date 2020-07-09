@@ -623,12 +623,16 @@ class Packet extends Entities {
 	 * 指定された Card と同種のカードを含んでいる場合、この Packet の持つそのカード
 	 * への参照を返却します。
 	 * index 指定の peek(index) は、単に packet.children[index] を利用してください。
+	 * 引数を省略した場合、最後のカードを返却します(arrange されていればローエスト)。
 	 * 
-	 * @param	{number|Card}	suitOrCard	suit または Card 種別
+	 * @param	{number|Card?}	suitOrCard	suit または Card 種別
 	 * @param	{number?}		value		value (suit を指定した場合)
 	 * @returns	{Card}	指定された種別のカードへの参照、この Packet が保持していない場合 null
 	 */
 	peek(suitOrCard, value) {
+		if (suitOrCard === void 0 && value === void 0) {
+			return this.children[this.children.length-1];
+		}
 		let suit;
 		if (typeof suitOrCard === 'number' && value!==void 0 && typeof value === 'number') {
 			suit = suitOrCard; // suit
