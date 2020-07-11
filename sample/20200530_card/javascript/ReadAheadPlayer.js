@@ -320,8 +320,8 @@ class OptimizedBoard {
 				this.draw(c);
 				
 				const stats = calculateImpl(0, 14 * OptimizedBoard.TRICK_MULTIPLICITY, true);
-console.log(this.getCardString(c) + " のボード統計情報");
-console.log(stats.toString());
+//console.log(this.getCardString(c) + " のボード統計情報");
+//console.log(stats.toString());
 				
 				// best play かどうかの判定、bestPlayCount, bestTricks の更新
 				let finalTricks;
@@ -1403,8 +1403,8 @@ class Utils {
 	 * @return	{number[][][]} int の３次元配列(int[4][4][2])で、[座席][スート][最大(1) or 最小(0)]
 	 */
 	static countDistribution(board, seat) {
-		if (seat === board.getDummy())
-			throw new Error("ダミーにおけるカウントはサポートしてません");
+		if (seat === board.getDummy()) seat ^= 2;
+		//	throw new Error("ダミーにおけるカウントはサポートしてません");
 		if ( (seat < 0)||(seat > 3) )
 			throw new Error("指定された seat の値(="+seat+")が異常です");
 		
@@ -1423,7 +1423,7 @@ class Utils {
 		//
 		// 他の２つのディストリビューションを計算する
 		//
-		/** @type {number[]} [2] */ other = new Array(2).fill(0);
+		/** @type {number[]} [2] */ const other = new Array(2).fill(0);
 		let num = 0;
 		for (let dir = 0; dir < 4; dir++) {
 			if ( (dir === dummySeat)||(dir === seat) ) continue;
@@ -1447,9 +1447,9 @@ class Utils {
 								- c[dummySeat][suit][Utils.MIN]
 								- c[seat][suit][Utils.MIN]; // 残り枚数
 			c[ other[0] ][suit] = [];
-			c[ other[0] ][suit][Utils.MIN]
-			= c[ other[1] ][suit][Utils.MIN]
-			= 0;
+			c[ other[1] ][suit] = [];
+			c[ other[0] ][suit][Utils.MIN] = 0;
+			c[ other[1] ][suit][Utils.MIN] = 0;
 			
 			c[ other[0] ][suit][Utils.MAX] = Math.min(restCards, board.getHand( other[0] ).children.length);
 			c[ other[1] ][suit][Utils.MAX] = Math.min(restCards, board.getHand( other[1] ).children.length);
@@ -1466,8 +1466,7 @@ class Utils {
 				if (trick.children[j].suit !== leadSuit) { // ショウアウト
 					c[ player ][leadSuit-1][Utils.MAX] = 0;
 					// もう一人はだれかを見つける。そのスートの枚数は確定する。
-					const another = 0;
-					if (other[0] == player) another = 1;
+					const another = (other[0] === player)?1:0;
 					c[ other[another] ][leadSuit-1][Utils.MAX] =
 					c[ other[another] ][leadSuit-1][Utils.MIN] =
 									13
@@ -1486,7 +1485,7 @@ class Utils {
 						- c[other[i]][3][Utils.MAX];
 			for (let suit = 0; suit < 4; suit++) {
 				// 同じスートのカード枚数から出る条件
-				const restMinCards =	13
+				let restMinCards =	13
 								- playedDist[suit][Utils.MAX]
 								- c[ dummySeat  ][suit][Utils.MAX]
 								- c[   seat     ][suit][Utils.MAX]
@@ -1808,7 +1807,6 @@ class SimplePlayer2 extends Player {
 	playIn1st() {
 		if (this.board.status === Board.OPENING) {
 			// オープニングリード
-			
 			//
 			// 指定がある場合はそのカード
 			//
@@ -1847,6 +1845,7 @@ class SimplePlayer2 extends Player {
 			}
 			
 			if (this.board.getContract().suit === Bid.NO_TRUMP) return this.ntOpening();
+//console.log("playIn1st() suitOpening call");
 			return this.suitOpening();
 		}
 		if (this.board.getContract().suit === Bid.NO_TRUMP) return this.ntLead();
@@ -1953,14 +1952,15 @@ class SimplePlayer2 extends Player {
 	 * @private
 	 * @returns {Card}
 	 */
-	suitOpening() {
+	suitOpening_null() {
+//console.log("suitOpening()");
 		let max  = -1;
 		let play = null;
 		
 		for (let i = 0; i < 4; i++) {
 			if ( (i+1) === this.board.getContract().suit ) continue; // トランプは除外
 			
-			const suitPat = BridgeUtils.valuePattern(hand, i+1);
+			const suitPat = BridgeUtils.valuePattern(this.hand, i+1);
 			
 			// AK のあるスート (10 点)
 			if ( (suitPat.startsWith("AK"))&&(max < 10) ) {
@@ -1980,21 +1980,23 @@ class SimplePlayer2 extends Player {
 			// QJ のあるスート (7 点)
 			if ( (suitPat.startsWith("QJ"))&&(max < 7) ) {
 				max = 7;
-				play = hand.peek(i+1, Card.QUEEN);
+				play = this.hand.peek(i+1, Card.QUEEN);
 			}
 			// ダブルトン (6 点)
-			if ( (suitPat.length() === 2)&&(max < 6) ) {
+			if ( (suitPat.length === 2)&&(max < 6) ) {
 				max = 6;
-				const p = hand.subpacket(i+1);
+				const p = this.hand.subpacket(i+1);
 				p.arrange();
 				play = p.children[0];
 			}
 		}
+//console.log("suitOpening() play="+(play?play.toString():"null"));
 		if (play !== null) return play;
 		
 		//
 		// 決まらなかった(適当なスートを乱数で選ぶ)
 		//
+//console.log("suitOpening(): 決まらなかった");
 		for (let i = 0; i < 20; i++) {
 			const suit = ReproducibleRandom.nextInt(1, 4);
 			if (suit === this.board.getContract().suit) continue;
@@ -2004,28 +2006,28 @@ class SimplePlayer2 extends Player {
 		//
 		// ハンドがトランプスートのみからなっているなど稀な場合
 		//
-		return this.hand.children[this.hand.children.length - 1];
+		return this.hand.peek();
 	}
 	
 	/**
 	 * スーツコントラクトでオープニングリードのスートが決まったとき
 	 * @private
-	 * @param {number} suit
+	 * @param {number?} suit
 	 * @returns {Card}
 	 */
 	suitOpening(suit) {
-		
+		if (suit === void 0) return this.suitOpening_null();
 		const suitPat = BridgeUtils.valuePattern(this.hand, suit);
-		if (suitPat.startsWith("AK")) return hand.peek(suit, Card.KING);
-		if (suitPat.startsWith("A")) return hand.peek(suit, Card.ACE);
-		if (suitPat.startsWith("KQ")) return hand.peek(suit, Card.KING);
-		if (suitPat.startsWith("QJ")) return hand.peek(suit, Card.QUEEN);
-		if (suitPat.startsWith("KJT")) return hand.peek(suit, Card.JACK);
-		if (suitPat.startsWith("JT")) return hand.peek(suit, Card.JACK);
-		if (suitPat.startsWith("KT9")) return hand.peek(suit, 10);
-		if (suitPat.startsWith("QT9")) return hand.peek(suit, 10);
-		if (suitPat.startsWith("T9")) return hand.peek(suit, 10);
-		if (suitPat[0] <= '9') return hand.peek(suit, parseInt(suitPat[0]));
+		if (suitPat.startsWith("AK")) return this.hand.peek(suit, Card.KING);
+		if (suitPat.startsWith("A")) return this.hand.peek(suit, Card.ACE);
+		if (suitPat.startsWith("KQ")) return this.hand.peek(suit, Card.KING);
+		if (suitPat.startsWith("QJ")) return this.hand.peek(suit, Card.QUEEN);
+		if (suitPat.startsWith("KJT")) return this.hand.peek(suit, Card.JACK);
+		if (suitPat.startsWith("JT")) return this.hand.peek(suit, Card.JACK);
+		if (suitPat.startsWith("KT9")) return this.hand.peek(suit, 10);
+		if (suitPat.startsWith("QT9")) return this.hand.peek(suit, 10);
+		if (suitPat.startsWith("T9")) return this.hand.peek(suit, 10);
+		if (suitPat[0] <= '9') return this.hand.peek(suit, parseInt(suitPat[0]));
 		
 		const p = this.hand.subpacket(suit);
 		p.arrange();
@@ -2343,7 +2345,10 @@ class SimplePlayer2 extends Player {
 	 */
 	chooseSuitInSuitLead() {
 		// (int[4][4][2])で、[座席][スート][最大(1) or 最小(0)]
-		dist = Utils.countDistribution(this.board, this.getMySeat());
+		const dist = Utils.countDistribution(this.board, this.mySeat);
+//console.log('seat='+Board.SEAT_STRING[this.mySeat]+' contract='+this.board.getContract().toString());
+//console.log(this.board.toString());
+//console.log('chooseSuitInSuitLead dist='+JSON.stringify(dist));
 		const trump = this.board.getContract().suit;
 		
 		//
@@ -2353,11 +2358,12 @@ class SimplePlayer2 extends Player {
 		//
 		
 		// トランプスートが現在０枚と確定しないとき、
-		if (dist[ this.getPartnerSeat() ][ this.trump-1 ][ Utils.MAX ] > 0) {
+		if (dist[ this.getPartnerSeat() ][ trump-1 ][ Utils.MAX ] > 0) {
+//console.log('chooseSuitInSuitLead() トランプスーツが0枚と確定しない'+ Board.SEAT_STRING[this.getPartnerSeat()]);
 			let sideSuit;
 			for (sideSuit = 1; sideSuit < 5; sideSuit++) {
 				if (sideSuit === trump) continue;
-				if (hand.countSuit(sideSuit) === 0) continue;
+				if (this.hand.countSuit(sideSuit) === 0) continue;
 				// (2) ではラフリスは単純に除外する
 				if (this.isRuflis(dist, sideSuit)) continue;
 				
@@ -2374,7 +2380,7 @@ class SimplePlayer2 extends Player {
 		if ((this.board.getTricks() >= 1)&&(this.getDummyPosition() === Player.LEFT)) {
 			const c = this.board.getAllTricks()[0].children[0];
 			const suit = c.suit;
-			if ( (this.hand.countSuit(suit) > -1)
+			if ( (this.hand.countSuit(suit) > 0)
 				&& (!this.isRuflis(dist, suit)) ) return suit;
 		}
 		
@@ -2431,26 +2437,26 @@ class SimplePlayer2 extends Player {
 				if (i === this.trump) continue;				// トランプは除外
 				const h = BridgeUtils.countHoners(dummyOriginal, i);
 				if (h > 2) continue;
-				if (honers == -1) {
+				if (honers === -1) {
 					honers = h;
 					honerSuit = i;
 					continue;
 				}
-				if (honers == 0) {
+				if (honers === 0) {
 					if (h > 0) {
 						honers = h;
 						honerSuit = i;
 					}
 					continue;
 				}
-				if (honers == 2) {
-					if (h == 1) {
+				if (honers === 2) {
+					if (h === 1) {
 						honers = h;
 						honerSuit = i;
 					}
 					continue;
 				}
-				if (h != 1) { // h = 0 or 2
+				if (h !== 1) { // h = 0 or 2
 					honers = h;
 					honerSuit = i;
 				}
@@ -2483,7 +2489,7 @@ class SimplePlayer2 extends Player {
 				if (this.dummyHand.countSuit(i) === 0) { // ダミーがラフできるスートは除外
 					if (this.dummyHand.countSuit(this.trump) > 0) continue;
 				}
-				if (hand.countSuit(i) === 0) continue;	// 持ってないスートは除外
+				if (this.hand.countSuit(i) === 0) continue;	// 持ってないスートは除外
 				if (i === this.trump) continue;				// トランプは除外
 				const h = BridgeUtils.countHoners(dummyOriginal, i);
 				if (h > 1) continue;
@@ -2596,6 +2602,7 @@ class SimplePlayer2 extends Player {
 	 * @returns	{Card}
 	 */
 	choosePlayInSuitLead(suit) {
+//console.log('choosePlayInSuitLead() this.hand='+this.hand.toString());
 		const candidacy = this.hand.subpacket(suit);
 		if (candidacy.children.length === 0)
 			throw new Error("choosePlayInSuitLead で指定されたスート("+suit+")を持っていません");
@@ -3001,19 +3008,19 @@ class SimplePlayer2 extends Player {
 		if (!afterDummy) rest.add(this.getDummyHand());
 		
 		// 残りのカードを各スートに分ける
-		suits = [];
+		const suits = [];
 		
 		for (let i = 0; i < 4; i++) {
 			suits[i] = rest.subpacket(i+1);
 			suits[i].arrange();	// 強いカードを小さいインデックスに
 		}
 		
-		const hand2 = new Packet(hand);
+		const hand2 = new Packet(this.hand);
 		hand2.add(this.lead); // パートナーのリードを追加しておく
 		
 		// 各スーツのウィナーを抽出する
 		for (let i = 0; i < 4; i++) {
-			for (let j = 0; j < suits[i].size(); j++) {
+			for (let j = 0; j < suits[i].children.length; j++) {
 				const winner = suits[i].children[j];
 				if (hand2.indexOf(winner) > -1) {
 					result.add(winner); // 最高位を持っている場合、次の位も調べる
@@ -3104,7 +3111,7 @@ class SimplePlayer2 extends Player {
 		ours.add(this.getExpectedCardsInTrump()); // パートナーが持っていると期待されるカード
 		
 		// sideSuits
-		const sideSuits = Utils.countDistribution(this.board, this.getMySeat());
+		const sideSuits = Utils.countDistribution(this.board, this.mySeat);
 
 		// rest のカード全体で、各スートについて上から順に ours に入っているものが
 		// Suit Contract におけるウィナーとなります。
@@ -3113,6 +3120,8 @@ class SimplePlayer2 extends Player {
 		
 		// トランプが残っていない場合、制限をはずす
 		const trump = this.board.getTrump();
+//console.log('Contract:'+this.board.getContract().toString());
+//console.log(`getWinersInSuitLead() sideSuits[${this.board.getDummy()}][${trump-1}][${Utils.MAX}]`);
 		// ダミー
 		if (sideSuits[this.board.getDummy()][trump-1][Utils.MAX] === 0) {
 //System.out.println("getWinnersInSuitLead . dummy Trump is empty.");
@@ -3250,7 +3259,7 @@ class SimplePlayer2 extends Player {
 		
 		// 該当ありのため、パターン文字列を result に加える(High Card のみ)
 		const toAdd = handPattern[handPatternIndex];
-		for (let i = 0; i < toAdd.length(); i++) {
+		for (let i = 0; i < toAdd.length; i++) {
 			const c = toAdd.charAt(i);
 			
 			// open に含まれているものは add しない (すでにパートナーがプレイしたもの)
@@ -3304,7 +3313,7 @@ class SimplePlayer2 extends Player {
 	 * @returns {Packet} パートナーが持っていると推定されるカードからなる Packet
 	 */
 	getExpectedCardsInTrump() {
-		return getExpectedCardsImpl(SimplePlayer2.SUIT_EXPECTED_PATTERN);
+		return this.getExpectedCardsImpl(SimplePlayer2.SUIT_EXPECTED_PATTERN);
 	}
 	
 	/**

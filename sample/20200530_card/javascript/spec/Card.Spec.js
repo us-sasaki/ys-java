@@ -555,7 +555,7 @@ describe("BoardStatistics Test", () =>{
 	  openingSequence(b);
 	  const ob = new OptimizedBoard(b);
 	  expect(ob).toBeDefined();
-	  console.log(ob.toString());
+	  //console.log(ob.toString());
 
 	  ob.calcPropData();
 
