@@ -9,23 +9,16 @@
  * @param	{number} seed 乱数シード
  */
 class ReproducibleRandom {
-	/** @const {ReproducibleRandom} */
-	static instance;
-
-	/** @type {number} */
-	x;
-	/** @type {number} */
-	y;
-	/** @type {number} */
-	z;
-	/** @type {number} */
-	w;
 
 	constructor(seed) {
 		if (seed===void 0) seed = Math.floor(Math.random() * 0x7FFFFFFF);
+		/** @type {number} */
 		this.x = 123456789;
+		/** @type {number} */
 		this.y = 362436069;
+		/** @type {number} */
 		this.z = 521288629;
+		/** @type {number} */
 		this.w = seed;
 	}
 
@@ -42,13 +35,12 @@ class ReproducibleRandom {
 	/**
 	 * min以上max以下の乱数を生成する。厳密には max 値付近の値が出づらい。
 	 * java の nextInt() 実装を参考にすると回避できるが、ごく微小なため許容。
-	 * @param	{number} min 最小値(含む)
-	 * @param	{number} max 最大値(含む)
-	 * @return	{number} min～max の乱数値
+	 * @param {number} bounds 乱数値の上限(含まない)
+	 * @returns {number} 0～(bound-1) の間の整数値を取る乱数
 	 */
-	nextInt(min, max) {
+	nextInt(bounds) {
 		const r = Math.abs(this.next());
-		return min + (r % (max + 1 - min));
+		return r % bounds;
 	}
 
 	/**
@@ -61,15 +53,14 @@ class ReproducibleRandom {
 	}
 
 	/**
-	 * 2^128-1 の周期をもつ乱数を得ます。
-	 * @param {number} min 最小の整数(含む)
-	 * @param {number} max 最大の整数(含む)
-	 * @returns {number} min～max の間の整数値を取る乱数
+	 * 2^128-1 の周期をもつ 0～(上限-1) の整数値乱数を得ます。
+	 * @param {number} bound 乱数値の上限(含まない)
+	 * @returns {number} 0～(bound-1) の間の整数値を取る乱数
 	 */
-	static nextInt(min, max) {
+	static nextInt(bounds) {
 		if (!ReproducibleRandom.instance)
 			ReproducibleRandom.instance = new ReproducibleRandom();
-		return ReproducibleRandom.instance.nextInt(min, max);
+		return ReproducibleRandom.instance.nextInt(bounds);
 	}
 }
 
@@ -79,12 +70,6 @@ class ReproducibleRandom {
  * @classdesc 自然なカードの並び順を表します。
  */
 class NaturalCardOrder {
-	/**
-	 * スートの順位を表します。数値配列で、0,クラブ,ダイヤ,ハード,
-	 * スペードの順に優先度を示す数値が格納されます。(大きい方が優先)
-	 * @type	{number[]} 
-	 */
-	suitOrder;
 
 /*--------------
  * static field
@@ -116,6 +101,12 @@ class NaturalCardOrder {
 	 * @param	{number}	trump	トランプスートを示します。{@link Card}
 	 */
 	constructor(trump) {
+		/**
+		 * スートの順位を表します。数値配列で、0,クラブ,ダイヤ,ハード,
+		 * スペードの順に優先度を示す数値が格納されます。(大きい方が優先)
+		 * @type	{number[]} 
+		 */
+		this.suitOrder;
 		switch (trump) {
 		case Card.HEART:
 			this.suitOrder = NaturalCardOrder.SUIT_ORDER_HEART;
@@ -498,7 +489,7 @@ class Packet extends Entities {
 		const tmp = []; // Card
 		const size = this.children.length;
 		for (let i = 0; i < size; i++) {
-			const index = ReproducibleRandom.nextInt(0, this.children.length-1);
+			const index = ReproducibleRandom.nextInt(this.children.length);
 			tmp.push(this.children[index]); // 取得
 			this.children.splice(index,1); // 削除
 		}
@@ -3588,7 +3579,7 @@ class Board extends Entities {
 		const size = oneSuit.children.length;
 		for (let i = 0; i < size; i++) {
 			const c = oneSuit.children[i];
-			if ((c.isHead == true)||(this.openCards.indexOf(c)>=0)) {
+			if ((c.isHead === true)||(this.openCards.indexOf(c)>=0)) {
 				s = s + c.toString().substring(2);
 			}
 		}

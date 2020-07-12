@@ -19,6 +19,7 @@ function helperAsync(runAsync) {
 }
 /**
  * @callback AsyncFunc
+ * @param {any} param パラメーター
  * @returns   {Promise}   テストしたい処理ブロックを包含する Promise
  */
 

@@ -37,7 +37,7 @@ class OptimizedBoard {
 	 * カードの状態を示す。
 	 * 下位４ビットは、所有者(North=0, East=1, South=2, West=3)をあらわし、
 	 * それを除いた上位ビットはプレイ番号(1-52, 0は未プレイ)を示す。
-	 * なお、実際にあらわすカードのない添え字(14, 28, 42, 56)のカードには 15 が格納される。
+	 * なお、実際にあらわすカードのない添え字(13, 27, 41, 55)のカードには 15 が格納される。
 	 * 添え字はカード定数であり、バリューとスートをあらわす１つの値である。
 	 * バリューは、2を0に、Aを12に対応させ、クラブを0, スペードを3に対応させる。<br>
 	 * (カード定数)＝(バリュー)＋(スート)×14 で求める。
@@ -206,7 +206,7 @@ class OptimizedBoard {
 		// １トリック完了
 		
 		// ウィナーの決定、leader に設定する
-		const winner = this.leader[(this.count>>2) - 1];
+		let winner = this.leader[(this.count>>2) - 1];
 		let winCard = this.play[this.count - 3];
 		
 		for (let i = -2; i <= 0; i++) {
@@ -281,7 +281,7 @@ class OptimizedBoard {
 		//
 		// 再帰的処理
 		//
-		let countAtLead		= (count>>2)*4+1;
+		let countAtLead		= (this.count>>2)*4+1;
 		
 		// スートフォローできるかどうかの判定
 		// 現在、スートフォローできるかどうかの検索と実際にプレイするループの
@@ -319,7 +319,7 @@ class OptimizedBoard {
 				// 持っていて、プレイされていない ... c を出せる
 				this.draw(c);
 				
-				const stats = calculateImpl(0, 14 * OptimizedBoard.TRICK_MULTIPLICITY, true);
+				const stats = this.calculateImpl(0, 14 * OptimizedBoard.TRICK_MULTIPLICITY, true);
 //console.log(this.getCardString(c) + " のボード統計情報");
 //console.log(stats.toString());
 				
@@ -382,15 +382,15 @@ class OptimizedBoard {
 			result.totalPlayCount = 1;
 			result.bestPlayCount = 1;
 			result.bestPlayPaths = 1;
-			result.finalNSTricks = nsWins * OptimizedBoard.TRICK_MULTIPLICITY;
+			result.finalNSTricks = this.nsWins * OptimizedBoard.TRICK_MULTIPLICITY;
 			
 			return result;
-		} else if (count === 48) {
+		} else if (this.count === 48) {
 			// 残り１トリックだった場合の返却
 			result.totalPlayCount	= 1;
 			result.bestPlayCount	= 1;
 			result.bestPlayPaths	= 1;
-			result.finalNSTricks	= nsWins * OptimizedBoard.TRICK_MULTIPLICITY;
+			result.finalNSTricks	= this.nsWins * OptimizedBoard.TRICK_MULTIPLICITY;
 			
 			// nsWins を求める
 			
@@ -401,7 +401,7 @@ class OptimizedBoard {
 				}
 			}
 			// ウィナーの決定、leader に設定する
-			let winner = this.leader[count>>2];
+			let winner = this.leader[this.count>>2];
 			const leaderSeat = winner;
 			let winCard = this.lastPlayBuffer[leaderSeat];
 			
@@ -415,7 +415,7 @@ class OptimizedBoard {
 							winner	= (leaderSeat + i) % 4;
 						}
 					}
-				} else if ( (card/14 |0) === trump ) {
+				} else if ( (card/14 |0) === this.trump ) {
 					// はじめて出た trump は必ず勝つ
 					winCard	= card;
 					winner	= (leaderSeat + i) % 4;
@@ -436,7 +436,7 @@ class OptimizedBoard {
 		//
 		// depthBorder を超えているか？
 		//
-		if ((depth >= this.depthBorder)&&( (count%4) === 0 )) {
+		if ((depth >= this.depthBorder)&&( (this.count%4) === 0 )) {
 			// ここで概算を行う
 			let tricks = this.calcApproximateTricks(); // 現在のリーダーがとれるトリック数
 			if ( (this.leader[this.count>>2] % 2) == 0 ) {
@@ -459,14 +459,14 @@ class OptimizedBoard {
 		//
 		// 再帰的処理
 		//
-		const countAtLead		= (count>>2)*4+1;
+		const countAtLead		= (this.count>>2)*4+1;
 		
 		// スートフォローできるかどうかの判定
 		// 現在、スートフォローできるかどうかの検索と実際にプレイするループの
 		// ２つをまわしているが、インライン展開することで１つにできる
 		let	startIndex = 0;
 		let	endIndex = 55;
-		if ( (count % 4) != 0 ) {
+		if ( (this.count % 4) != 0 ) {
 			const suit	= this.play[countAtLead]/14 |0;
 			const suit2	= suit * 14;
 			for (let c = suit2; c < suit2 + 13; c++) {
@@ -515,7 +515,7 @@ class OptimizedBoard {
 					// α-βは適用不可、ということ
 					if ((nsside !== borderNsside)&&(bestTricks > border)) {
 						result.totalPlayCount += stats.totalPlayCount;
-						undo();
+						this.undo();
 						break;
 					}
 				} else if (bestTricks === finalTricks) {
@@ -526,7 +526,7 @@ class OptimizedBoard {
 				// result の更新
 				result.totalPlayCount += stats.totalPlayCount;
 				
-				undo();
+				this.undo();
 			} else {
 				lastEntried = false; // 他の人が持っている or デリミタ... シーケンスが切れた
 			}
@@ -551,7 +551,7 @@ class OptimizedBoard {
 	 */
 	calcApproximateTricks() {
 		const seat = (this.leader[this.count>>2] + this.count) % 4;
-		calcPropData();
+		this.calcPropData();
 		
 		const leaderTricks	= this.calcX(seat);
 		
@@ -733,7 +733,7 @@ class OptimizedBoard {
 		let xs;
 		// (A) ①完全にブロックしている場合
 		if ( (this.shorterLength[NSorEW][suit] > 0)
-				&&(this.isWinner[lowestCardOfShorterSuit[NSorEW][suit]])
+				&&(this.isWinner[this.lowestCardOfShorterSuit[NSorEW][suit]])
 				&&( (this.lowestCardOfShorterSuit[NSorEW][suit] % 14)
 						> (this.highestCardOfLongerSuit[NSorEW][suit] % 14) ) ) {
 			if (suit === this.trump) {
@@ -813,6 +813,7 @@ class OptimizedBoard {
  */
 	/**
 	 * カード定数から C5 などのカードを示す文字列を得ます。
+	 * @static
 	 * @param {number} card カード定数
 	 * @returns {string} C5 のようなカード文字列
 	 */
@@ -822,6 +823,7 @@ class OptimizedBoard {
 	
 	/**
 	 * カードオブジェクトからカード定数を求めます。
+	 * @static
 	 * @param {Card} card Card
 	 * @returns {number} カード定数
 	 */
@@ -912,6 +914,8 @@ class OptimizedBoard {
  * 2015/8/12 コンピュータの性能アップに伴い、先読み深化
  */
 class ReadAheadPlayer extends Player {
+	static DEPTH = [8,8,8,8,8,8,9,10,100, 100, 100, 100, 100, 100 ];
+
 	/** @type {SimplePlayer2} 思考ルーチン */
 	base;
 	/** @type {boolean} オープニングリード指定があるか */
@@ -931,7 +935,7 @@ class ReadAheadPlayer extends Player {
 		this.setBoard(board);
 		this.setMySeat(seat);
 		
-		base = new SimplePlayer2(board, seat, ol);
+		this.base = new SimplePlayer2(board, seat, ol);
 		if (ol) this.openingLeadSpecified = true;
 	}
 	
@@ -971,7 +975,8 @@ class ReadAheadPlayer extends Player {
 		
 		// プレイ間隔一定のため
 		const t = new Date().getTime();
-		if ((t - t0) < 700) board.getField().sleep(700 - (t - t0)); // 700msec になるまで考えるふり
+		if ((t - t0) < 700 && board.getField() )
+			await board.getField().sleep(700 - (t - t0)); // 700msec になるまで考えるふり
 		
 		return play;
 	}
@@ -993,7 +998,8 @@ class ReadAheadPlayer extends Player {
 		// まで先読みが行われます。例えば０を指定し、すでにリード状態にあった場合、
 		// 先読みは行われません。
 		//                        
-		depth = [8,8,8,8,8,8,9,10,100, 100, 100, 100, 100, 100 ];
+		const depth = ReadAheadPlayer.DEPTH;
+		//const depth = [5,5,5,5,5,5,5,5,5,5,5,5,5,5]; // for test
 
 
 // これだと時間がかかりすぎということで、もう少し減らす
@@ -1038,7 +1044,7 @@ console.log();
 		// まだ山に戻っていないカード(disposed)
 		//   = { open cards } - { 今出ているカード }
 		const board = this.myBoard;
-		const disposed = board.getOpenCards().sub(board.getTrick()).sub(this.getDummyHand());
+		const disposed = board.openCards.sub(board.getTrick()).sub(this.getDummyHand());
 		
 		for (let i = 0; i < disposed.children.length; i++) {
 			const c = disposed.children[i];
@@ -1129,7 +1135,7 @@ console.log("SimplePlayer2 の意見を優先 : " + simplePlayer2Play);
 		//
 		// point付けをする
 		//
-		point = new Array(option.children.length).fill(0);
+		const point = new Array(option.children.length).fill(0);
 		
 		//
 		// オープニングリードの場合の規則
@@ -1188,8 +1194,8 @@ console.log("ディスカード用処理開始");
 			//
 			// 相手の長いサイドスート、枚数、座席を検出する
 			//
-			const s1 = (this.getMySeat() + 1)%4;
-			const s2 = (this.getMySeat() + 3)%4;
+			const s1 = (this.mySeat + 1)%4;
+			const s2 = (this.mySeat + 3)%4;
 			const hand1 = this.myBoard.getHand()[s1];
 			const hand2 = this.myBoard.getHand()[s2];
 			
@@ -1998,7 +2004,7 @@ class SimplePlayer2 extends Player {
 		//
 //console.log("suitOpening(): 決まらなかった");
 		for (let i = 0; i < 20; i++) {
-			const suit = ReproducibleRandom.nextInt(1, 4);
+			const suit = ReproducibleRandom.nextInt(4)+1;
 			if (suit === this.board.getContract().suit) continue;
 			
 			if (this.hand.countSuit(suit) > 0) return this.suitOpening(suit);
@@ -2868,10 +2874,6 @@ class SimplePlayer2 extends Player {
 			
 			// １枚しかない場合はそのカードを出す
 			if (pack.children.length === 1) return pack.peek();
-			
-			// 勝っている人、カードを選んでおく
-			const wc = this.board.getTrick().getWinnerCard();
-			const wcs = this.board.getTrick().getWinner();
 			
 			//
 			let max = this.lead;
