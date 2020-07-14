@@ -5,7 +5,7 @@ const startBridge = function() {
     <div id="modal-overlay"></div>
     <div id="modal-content">
         <table class="full">
-            <tr><td>ブリッジシミュレーター</td></tr>
+            <tr><td><img src="images/bridge.gif"></img>シミュレーター</td></tr>
             <tr><td>
                 <table class="full"><tr><td>
                 <select name="select"></select>
