@@ -10,7 +10,8 @@
 	margin: 0 ;
 	padding: 30px 60px ;
 	border: 2px solid #aaa ;
-	background: #822;
+	background: #F88;
+	color: #800;
 	position: fixed;
 	display: inline;
 	z-index: 3 ;
