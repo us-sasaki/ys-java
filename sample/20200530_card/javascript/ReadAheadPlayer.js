@@ -1842,7 +1842,7 @@ class SimplePlayer2 extends Player {
 					const ol = this.getMyHand().peek(suit, value);
 					if (ol) return ol;
 				}
-				if ((suit != -1)&&(this.hand.containsSuit(suit))) {
+				if ((suit != -1)&&(this.hand.countSuit(suit)>0)) {
 					// スートのみが有効
 					if (this.board.getContract().suit === Bid.NO_TRUMP)
 						return this.ntOpening(suit);

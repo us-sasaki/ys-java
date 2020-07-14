@@ -1,4 +1,37 @@
 /* 依存 Card.js Player.js */
+const startBridge = function() {
+	const sim = document.getElementById('bridge-simulator');
+	sim.innerHTML = `
+    <div id="modal-overlay"></div>
+    <div id="modal-content">
+        <table class="full">
+            <tr><td>ブリッジシミュレーター</td></tr>
+            <tr><td>
+                <table class="full"><tr><td>
+                <select name="select"></select>
+                </td>
+                <td><input type="button" value="開始する" id="startButton"></td></tr>
+                </table>
+            </td></tr>
+            <tr><td><input type="button" value="今のプレイを自動再生する" id="videoButton"></td></tr>
+            <tr><td><input type="button" value="同じハンドをもう一度プレイする" id="replayButton"></td></tr>
+        </table>
+	</div>
+	<canvas id="canvas" width="640" height="480"></canvas>
+`;
+
+	( async () => {
+		//
+		const m = new PlayMain('canvas');
+		problem.forEach( p => m.addProblem(Problem.regular(p)));
+		
+		while (true) {
+			await m.start();
+		}
+	
+	})();
+};
+
 /**
  * アドホックなメインプログラムです。だんだん本格的になってきました。
  *
@@ -34,7 +67,7 @@ class PlayMain {
 		// ボタン
 		this._placeQuitButton_();
 		this._placeDDButton_();
-		this._placeTextButton_();
+		//this._placeTextButton_();
 	}
 	
 /*------------------
@@ -398,6 +431,7 @@ class Problem {
 		if (s.startsWith('D')) suit = Bid.DIAMOND;
 		if (s.startsWith('H')) suit = Bid.HEART;
 		if (s.startsWith('S')) suit = Bid.SPADE;
+		if (s.startsWith('NT')) suit = Bid.NO_TRUMP;
 
 		p.contract = new Bid(kind, level, suit);
 
@@ -435,9 +469,10 @@ class Problem {
 	 * 文字列で与えられたハンド情報を解釈して hand に設定します。
 	 * @param	{Packet} pile カードの山
 	 * @param	{Packet} hand 設定先のハンド
-	 * @param	{string} str ハンド文字列
+	 * @param	{string?} str ハンド文字列
 	 */
 	static draw(pile, hand, str) {
+		if (!str) return;
 		let suit = Card.SPADE;
 		
 		for (let i = 0; i < str.length; i++) {

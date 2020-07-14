@@ -7,7 +7,22 @@
     <title>ブリッジシミュレーター</title>
 </head>
 <body>
-    <div id = "bridge-simulator"></div>
+    <div id="modal-overlay"></div>
+    <div id="modal-content">
+        <table class="full">
+            <tr><td>ブリッジシミュレーター</td></tr>
+            <tr><td>
+                <table class="full"><tr><td>
+                <select name="select"></select>
+                </td>
+                <td><input type="button" value="開始する" id="startButton"></td></tr>
+                </table>
+            </td></tr>
+            <tr><td><input type="button" value="今のプレイを自動再生する" id="videoButton"></td></tr>
+            <tr><td><input type="button" value="同じハンドをもう一度プレイする" id="replayButton"></td></tr>
+        </table>
+    </div>
+    <canvas id="canvas" width="640" height="480"></canvas>
 
     <script type="text/javascript" src="Card.js"></script>
     <script type="text/javascript" src="Player.js"></script>
@@ -15,7 +30,8 @@
     <script type="text/javascript" src="PlayMain.js"></script>
     <script type="text/javascript">
 const problem = [
-    {   title: "適当な問題",
+    {
+        title: "適当な問題",
         description: "テスト用の適当な問題です。\nクラブと north のダイヤに指定があります",
         contract: "4SX",
         n: "C:AKQ D;987",
@@ -24,7 +40,8 @@ const problem = [
         w: "C:543",
         thinker: "DoubleDummyPlayer"
     },
-    {   title: "スーツごとに分かれている",
+    {
+        title: "スーツごとに分かれている",
         description: "テスト用の適当な問題です。\n各ハンドが１スーツのみからなっています",
         contract: "7HXX",
         n: "C:AKQJT98765432",
