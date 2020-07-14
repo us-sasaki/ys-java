@@ -5,7 +5,7 @@ const startBridge = function() {
     <div id="modal-overlay"></div>
     <div id="modal-content">
         <table class="full">
-            <tr><td><img src="images/bridge.gif"></img>シミュレーター</td></tr>
+            <tr><td style="font-weight:bold; vertical-align: middle;">　問題を選んでね！　<img src="images/sumire_icon.gif" height="100%" style="vertical-align: middle;"></img></td></tr>
             <tr><td>
                 <table class="full"><tr><td>
                 <select name="select"></select>
