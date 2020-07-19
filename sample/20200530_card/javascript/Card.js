@@ -157,9 +157,7 @@ class NaturalCardOrder {
  */
 class Entity {
 
-	/** 描画上、コンテナとなる Entity (parent)
-	 * @type {Entities}
-	 */
+	/** @type {Entities} 描画上、コンテナとなる Entity (parent) */
 	parent;
 	/** @type {number} この Entity の x 座標(右が正、pixel) */
 	x;
@@ -316,14 +314,12 @@ class Entities extends Entity {
  */
 	/**
 	 * 子オブジェクトを追加します。子オブジェクトの親として自分を設定します。
-	 * また、このオブジェクトに layout が設定している場合、layoutします。
 	 * @param	{Entity|Entities} entity	追加対象の Entity または Entities
 	 */
 	add(entity) {
 		if (this.children.indexOf(entity) >= 0) return;
 		entity.setParent(this);
 		this.children.push(entity);
-		if (this.layout != null) this.layout.layout(this);
 	}
 	
 	/**
@@ -332,7 +328,7 @@ class Entities extends Entity {
 	 *
 	 * @param	{number|Entity} indexOrEntity	引くオブジェクトの番号(省略した場合、
 	 *								最後の要素)
-	 * @returns	{?Entity}	引かれた子オブジェクト(引かれなかった場合 null)
+	 * @returns	{Entity?}	引かれた子オブジェクト(引かれなかった場合 null)
 	 */
 	pull(indexOrEntity) {
 		if (indexOrEntity===void 0) indexOrEntity = this.children.length - 1;
@@ -401,11 +397,10 @@ class Entities extends Entity {
 	/**
 	 * この Entity を描画します。
 	 * 描画前に設定されている layout があればレイアウトが再計算されます。
-	 * このメソッドは親オブジェクトからのみ呼ばれます。
 	 * @override
 	 */
 	draw(ctx) {
-		if (this.layout != null) this.layout.layout(this);
+		this.selfLayout();
 		this.children.forEach( (child) => {
 			child.draw(ctx);
 		});
@@ -417,20 +412,16 @@ class Entities extends Entity {
 	 *
 	 * @param	{number} x		表示位置 X
 	 * @param	{number} y		表示位置 Y
-	 * @returns	{Entity} その位置に表示している Entity
+	 * @returns	{Entity?} その位置に表示している Entity 。ない場合 null。
 	 */
 	getEntityAt(x, y) {
 		//console.log('getEntityAt('+x+','+y+')');
-		let n;
-		for (n = this.children.length - 1; n >= 0; n--) {
+		for (let n = this.children.length - 1; n >= 0; n--) {
 			const bounds = this.children[n].getRect();
-			//console.log('checking '+this.children[n].toString()+'('+bounds.x+','+bounds.y+')-('+(bounds.x+bounds.w)+','+(bounds.y+bounds.h)+') dir='+this.children[n].direction);
 			if (x >= bounds.x && x <= (bounds.x + bounds.w) &&
 				y >= bounds.y && y <= (bounds.y + bounds.h)) {
 				if (this.children[n] instanceof Entities) {
-					//console.log('recursive call getEntityAt() for '+this.children[n].toString());
 					const ent = this.children[n].getEntityAt(x, y);
-					//console.log('ent='+((ent)?ent.toString():'null'));
 					if (ent) return ent;
 				} else {
 					return this.children[n];
@@ -476,6 +467,32 @@ class Packet extends Entities {
 /*------------------
  * instance methods
  */
+	/**
+	 * 別の Packet に同じインスタンスを add したときに parent が上書きされないよう
+	 * 必ず新しい Card インスタンスを追加するようにしました。
+	 * 結果、バグ解消。しかし、遅くなっています。subpacket のみ parent 上書きしない
+	 * 仕様にする方がよいかも
+	 * @override
+	 * @param {Card} card 
+	 */
+	add(card) {
+		if (this.children.indexOf(card) >= 0) return;
+		if (this.parent) card.setParent(this);
+		this.children.push(card);
+
+		//		super.add(new Card(card));
+	}
+
+	/**
+	 * add の override に対応し、こちらも override しています。
+	 * @override
+	 * @param {Entities} parent 
+	 */
+	setParent(parent) {
+		this.parent = parent;
+		this.children.forEach(c => c.setParent(this));
+	}
+
 	/**
 	 * 所属しているカードをシャッフルします。
 	 * 利用する乱数は ReproducibleRandom です。
@@ -685,7 +702,7 @@ class Packet extends Entities {
 	 * pile から1枚ずつ hands (Packet の配列) に均等に配ります
 	 *
 	 * @param	{Packet}	pile	配る元の Packet
-	 * @param	{Array.<Packet>}	hands	配り先の Packet の配列
+	 * @param	{Packet[]}	hands	配り先の Packet の配列
 	 * @param	{number}	begin	配りはじめる hand の番号
 	 */
 	static deal(pile, hands, begin) {
@@ -857,6 +874,11 @@ class Field extends Entities {
 		}
 	}
 
+	/**
+	 * reject 関数は同じオブジェクトが使いまわされるようなので、区別できるよう
+	 * wrap しています。
+	 * @param {Function} rej reject 関数
+	 */
 	newReject(rej) {
 		if (!this.id) this.id = 0;
 		return { id: this.id++, rej: rej};
@@ -868,7 +890,7 @@ class Field extends Entities {
 	 * @async
 	 * @returns	{Promise<Card>} クリックされた Card オブジェクト。必ず値が入ります。
 	 */
-	waitCardSelect() {
+	waitCardSelect_back() {
 		return new Promise( (res, rej) => {
 			const reject = this.newReject(rej);
 			this.addReject(reject);
@@ -885,6 +907,90 @@ class Field extends Entities {
 				}
 			};
 			this.canvas.addEventListener('click', listener);
+		});
+	}
+
+	waitCardSelect() {
+		return new Promise( (res, rej) => {
+			const reject = this.newReject(rej);
+			this.addReject(reject);
+
+			// floating 処理の準備
+			let floated = null;
+			let board = null;
+			for (let i = 0; i < this.children.length; i++) {
+				if (this.children[i] instanceof Board) board = this.children[i];
+			}
+			const north = board.getHand(Board.NORTH);
+			const south = board.getHand(Board.SOUTH);
+			const northLayout = north.layout;
+			const southLayout = south.layout;
+			const fieldLayout = board.layout;
+			north.layout = null;
+			south.layout = null;
+			board.layout = null;
+			// 実験のため追加
+			let click;
+			let mousemove;
+			let touchmove;
+			let touchend;
+			const removeListeners = () => {
+				this.canvas.removeEventListener('click', click);
+				this.canvas.removeEventListener('mousemove', mousemove);
+				this.canvas.removeEventListener('touchmove', touchmove);
+				this.canvas.removeEventListener('touchend', touchend);
+				north.layout = northLayout;
+				south.layout = southLayout;
+				board.layout = fieldLayout;
+				this.removeReject(reject);
+				if (floated) {
+					if (floated.parent === north) floated.x += Card.XSTEP;
+					if (floated.parent === south) floated.y += Card.YSTEP;
+				}
+			}
+			click = (e) => {
+				const card = this.getEntityAt(e.offsetX, e.offsetY);
+				if (card instanceof Card) {
+					removeListeners();
+					res(card);
+				}
+			}
+			touchend = (e) => {
+				if (floated && floated instanceof Card) {
+					removeListeners();
+					res(floated);
+				}
+			}
+			const move =  (cardSelector) => (e) => {
+				//console.log(`mousemove x=${e.offsetX} y=${e.offsetY}`);
+				let card = cardSelector(e);
+				if (!(card instanceof Card)) card = null;
+				if (floated !== card) {
+					// 別のカードに移った
+					if (floated) {
+						//console.log('floated parent = ' + floated.parent.toString());
+						if (floated.parent === north) floated.x += Card.XSTEP; // floated を戻す
+						if (floated.parent === south) floated.y += Card.YSTEP;
+					}
+					if (card) {
+						//console.log('card parent = ' + card.parent.toString());
+						if (card.parent === north) card.x -= Card.XSTEP; // card を浮かせる
+						if (card.parent === south) card.y -= Card.YSTEP;
+					}
+					floated = card;
+					this.draw();
+				}
+			};
+			mousemove = move( (e) => this.getEntityAt(e.offsetX, e.offsetY));
+			touchmove = move( (e) => {
+				const card = this.getEntityAt(e.touches[0].pageX, e.touches[0].pageY);
+				if (card instanceof Card) e.preventDefault();
+				return card;
+			} );
+			this.canvas.addEventListener('click', click);
+			this.canvas.addEventListener('touchend', touchend);
+			this.canvas.addEventListener('mousemove', mousemove);
+			this.canvas.addEventListener('touchmove', touchmove, false);
 		});
 	}
 
@@ -1113,12 +1219,23 @@ class Card extends Entity {
 /*-------------
  * constructor
  */
-	constructor(suit, value) {
+	constructor(suitOrCard, value) {
 		super();
-		this.setSize(Card.XSIZE, Card.YSIZE);
-		this.suit = suit;
-		this.value = value;
-		this.isHead = true;
+		if (value === void 0 && suitOrCard instanceof Card) {
+			const c = suitOrCard;
+			this.setSize(c.w, c.h);
+			this.suit = c.suit;
+			this.value = c.value;
+			this.isHead = c.isHead;
+			this.direction = c.direction;
+			this.parent = c.parent;
+		} else {
+			const suit = suitOrCard;
+			this.setSize(Card.XSIZE, Card.YSIZE);
+			this.suit = suit;
+			this.value = value;
+			this.isHead = true;
+		}
 	}
 
 /*------------------
@@ -2689,7 +2806,7 @@ class BoardLayout {
 		
 		if (board.getHand() != null) {
 			for (let i = 0; i < 4; i++) {
-				const ent = board.getHand()[i];
+				/** @type {Packet} */ const ent = board.getHand()[i];
 				if (!ent) {
 					continue;
 				}
@@ -2719,7 +2836,7 @@ class BoardLayout {
 					throw new InternalError();
 				}
 				ent.setPosition(x + xx, y + yy);
-				if (ent.layout) ent.layout.layout(ent);
+				ent.selfLayout();
 			}
 		}
 		// トリックの位置指定
@@ -2727,7 +2844,7 @@ class BoardLayout {
 		
 		if (trick) {
 			trick.setPosition(x + BoardLayout.TRICK_X, y + BoardLayout.TRICK_Y);
-			trick.layout.layout(trick);
+			trick.selfLayout();
 		}
 		
 		// ウィナーの位置指定

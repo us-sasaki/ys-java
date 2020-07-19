@@ -21,31 +21,35 @@ const startBridge = function() {
 `;
 
 	( async () => {
-		//
 		const m = new PlayMain('canvas');
-		problem.forEach( p => m.addProblem(Problem.regular(p)));
 		
 		while (true) {
 			await m.start();
 		}
-	
 	})();
 };
 
 /**
  * アドホックなメインプログラムです。だんだん本格的になってきました。
+ * Java 版の AppTest, PracticeModePlayMain, PracticeApplet の機能を持っています。
  *
  * @version		a-release		19, June 2020
  * @author		Yusuke Sasaki
  */
 class PlayMain {
+	/** @constant {number[]} バルの出現順序(PracticeMode用) */
+	static VUL = [ Board.VUL_NONE, Board.VUL_NS, Board.VUL_EW, Board.VUL_BOTH,
+					Board.VUL_NS, Board.VUL_EW, Board.VUL_BOTH, Board.VUL_NONE ];
+	/** @constant {number} 練習用ボード数(MAX 8) */
+	static BOARDS = 4;
+
     /** @type {string} */ canvasId;
     /** @type {Field} */ field;
     /** @type {Board} */ board;
     /** @type {Player[]} */ players;
     /** @type {number} */ handno;
     /** @type {string} */ contractString;
-	/** @type {Problem[]} */ problems;
+	/** @type {Problem[]} problems.length == 0 のとき PracticeMode */ problems;
     /** @type {Sumire} */ sumire;
 	/** @type {Button} */ quit;
     /** @type {Button} */ dd;
@@ -53,6 +57,10 @@ class PlayMain {
 	/** @type {SelectDialog} */ dialog;
     /** @type {YesNoDialog} */ confirmDialog;
 	/** @type {boolean} */ exitSignal;
+	/** @type {boolean} PracticeMode か */ isPractice;
+
+	/** @type {number} practice mode の時の totalScore */ totalScore;
+	/** @type {number} practice mode の時の board number */ boardNum;
 	
 	/**
 	 * PlayMain オブジェクトを生成します。
@@ -68,6 +76,16 @@ class PlayMain {
 		this._placeQuitButton_();
 		this._placeDDButton_();
 		//this._placeTextButton_();
+
+		// 問題を登録
+		this.totalScore = 0;
+		this.boardNum = 0;
+		try {
+			problem.forEach( p => this.addProblem(Problem.regular(p)));
+		} catch (e) {
+			this.isPractice = true;
+			if (!e instanceof ReferenceError) console.log(e);
+		}
 	}
 	
 /*------------------
@@ -91,7 +109,13 @@ class PlayMain {
 		this.quit.setBounds(540, 30, 80, 24);
 		this.field.add(this.quit);
 		this.quit.setListener( () => {
-			if (window.confirm('このボードを破棄して中断します')) {
+			if (this.isPractice) {
+				if (window.confirm('これまでのプレイ結果を破棄して中断しますか？')) {
+					this.totalScore = 0;
+					this.boardNum = -1;
+					this.field.interrupt();
+				}
+			} else if (window.confirm('このボードを破棄して中断します')) {
 				this.field.interrupt(); // OK 押下
 			}
 		});
@@ -111,12 +135,22 @@ class PlayMain {
 			if (this.board.status != Board.PLAYING) return;
 			//
 			dd.doubleDummy = !dd.doubleDummy;
-			dd.caption = dd.doubleDummy?'通常に戻す':'ダブルダミー';
-			this.board.getHand(Board.EAST).turn(dd.doubleDummy);
-			this.board.getHand(Board.WEST).turn(dd.doubleDummy);
-			this.field.draw();
+			this._ddSet_(dd.doubleDummy);
 		});
 		this.dd = dd;
+	}
+
+	/**
+	 * ダブルダミーボタンの状態を変更します。
+	 * @private
+	 * @param {boolean}} doubleDummy ダブルダミーボタンがダブルダミー状態か
+	 */
+	_ddSet_(doubleDummy) {
+		this.dd.doubleDummy = doubleDummy;
+		this.dd.caption = doubleDummy?'通常に戻す':'ダブルダミー';
+		this.board.getHand(Board.EAST).turn(doubleDummy);
+		this.board.getHand(Board.WEST).turn(doubleDummy);
+		this.field.draw();
 	}
 
 	/**
@@ -137,26 +171,40 @@ class PlayMain {
 	 * @async
 	 */
 	async start() {
-		const titles = [];
-		this.problems.forEach( prob => titles.push(prob.title));
-		this.dialog.setPulldown(titles);
-		// 前のボードがない場合、リプレイ/ビデオは無効化
-		const disabled = (this.board)?false:true;
-		this.dialog.replayButton.disabled = disabled;
-		this.dialog.videoButton.disabled = disabled || (this.board.status !== Board.SCORING);
-
 		this.field.draw();
-		const result = await this.dialog.show();
-		
-		if ("video" ==  result) {
-			this._makeVideohand_();
-		} else if ("replay" == result) {
-			this._makeLasthand_();
+		// 問題が設定されていない場合、practice mode
+
+		if (this.isPractice) {
+			this.totalScore = 0;
+			this._makeRandomHand_();
+			this._ddSet_(false);
 		} else {
-			this.handno = parseInt(result.substring(4));
-			this._makeNewhand_();
+			const titles = [];
+			this.problems.forEach( prob => titles.push(prob.title));
+			this.dialog.setPulldown(titles);
+			// 前のボードがない場合、リプレイ/ビデオは無効化
+			const disabled = (this.board)?false:true;
+			this.dialog.replayButton.disabled = disabled;
+			this.dialog.videoButton.disabled = disabled || (this.board.status !== Board.SCORING);
+
+			const result = await this.dialog.show();
+			
+			if ("video" ==  result) {
+				this._makeVideohand_();
+				this._ddSet_(true);
+				this.boardNum = (this.boardNum + PlayMain.BOARDS - 1) % PlayMain.BOARDS;
+			} else if ("replay" == result) {
+				this._makeLasthand_();
+				this._ddSet_(false);
+				this.boardNum = (this.boardNum + PlayMain.BOARDS - 1) % PlayMain.BOARDS;
+			} else {
+				this.handno = parseInt(result.substring(4));
+				this._makeNewhand_();
+				this._ddSet_(false);
+			}
 		}
 		// field に board を追加
+		CardImageHolder.setBackImage(this.boardNum%4);
 		this.field.add(this.board);
 		this.board.setPosition(0, 0);
 		this.board.setDirection(0);
@@ -166,6 +214,13 @@ class PlayMain {
 
 		// field から board を削除
 		this.field.pull(this.board);
+
+		// boardNum を増やす(カード裏面画像も変わる)
+		this.boardNum++;
+		if (this.boardNum === PlayMain.BOARDS) {
+			this.totalScore = 0;
+			this.boardNum = 0;
+		}
 
 	}
 	
@@ -196,19 +251,20 @@ class PlayMain {
 	 * @param	{Problem} prob 問題
 	 */
 	_setPlayers_(prob) {
+		const thinker = (this.isPractice)?problem:prob.thinker;
 		this.players = [];
 		this.players[Board.NORTH] = new RandomPlayer(this.board, Board.NORTH);
 		this.players[Board.SOUTH] = new HumanPlayer(this.board, this.field, Board.SOUTH);
 		// Computer Player 設定
-		if ( !prob.thinker || prob.thinker != "DoubleDummyPlayer") {
+		if ( !thinker || thinker != "DoubleDummyPlayer") {
 			this.players[Board.EAST ] = new SimplePlayer2(this.board, Board.EAST);
 			this.players[Board.WEST ] = new SimplePlayer2(this.board, Board.WEST, prob.openingLead);
-		} else if (prob.thinker == "DoubleDummyPlayer") {
+		} else if (thinker == "DoubleDummyPlayer") {
 			this.players[Board.EAST ] = new ReadAheadPlayer(this.board, Board.EAST);
 			this.players[Board.WEST ] = new ReadAheadPlayer(this.board, Board.WEST, prob.openingLead);
 		} else {
-			this.players[Board.EAST ] = new NoRufPlayer(this.board, Board.EAST);
-			this.players[Board.WEST ] = new NoRufPlayer(this.board, Board.WEST, prob.openingLead);
+			this.players[Board.EAST ] = new RandomPlayer(this.board, Board.EAST);
+			this.players[Board.WEST ] = new RandomPlayer(this.board, Board.WEST);
 		}
 	}
 	
@@ -233,14 +289,6 @@ class PlayMain {
 		
 		// コントラクト設定を行う
 		this.board.setContract(oldBoard.getContract(), oldBoard.getDeclarer());
-
-		// ビデオモードはオープン状態
-		this.board.getHand(Board.EAST).turn(true);
-		this.board.getHand(Board.WEST).turn(true);
-		
-		this.dd.doubleDummy = true;
-		this.dd.caption = "通常に戻す";
-		
 	}
 	
 	/**
@@ -265,6 +313,30 @@ class PlayMain {
 		this.board.setContract(oldBoard.getContract(), oldBoard.getDeclarer());
 	}
 	
+	/**
+	 * ダイアログで新しいハンドを選択したときの処理です。
+	 * @private
+	 */
+	_makeRandomHand_() {
+		const prob = Problem.random(this.boardNum);
+		this.problems = [prob];
+		this.handno = 0;
+		
+		this.board = new Board(1);
+		this.board.name = prob.title;
+		
+		// Player 設定
+		this._setPlayers_(prob);
+		
+		// ディール
+		const hands = prob.createHands();
+		
+		this.board.deal(hands);
+		
+		// コントラクト設定を行う
+		this.board.setContract(prob.contract, Board.SOUTH);
+	}
+
 	/**
 	 * 始めのすみれによる説明を表示する
 	 * @async
@@ -295,7 +367,6 @@ class PlayMain {
 			
 			let c = null;
 			while (c === null) {
-//console.log("player="+this.board.getPlayer());
 				c = await this.players[this.board.getPlayer()].play(); // ブロックする
 			}
 			await this.board.playWithGui(c);
@@ -345,11 +416,15 @@ class PlayMain {
 		} else {
 			// ダウン
 			msg += (-up) + "ダウン";
-			msg2 = "残念。もう一度がんばって！";
+			msg2 += (this.isPractice)?"残念。":"残念。もう一度がんばって！";
 		}
-		
-		msg += "("+win+"トリック)\nN-S側のスコア："+Score.calculate(this.board, Board.SOUTH);
-		msg += "\n \n" + msg2;
+		const score = Score.calculate(this.board, Board.SOUTH);
+		msg += "("+win+"トリック)\nN-S側のスコア："+ score + "\n";
+		if (this.isPractice) {
+			this.totalScore += score;
+			msg += "スコア累積:" + this.totalScore;
+		}
+		msg += "\n" + msg2;
 		
 		this.sumire = new Sumire(this.field, msg);
 		if (up >= 0) 
@@ -400,7 +475,7 @@ class Problem {
 	}
 
 	isValid() {
-		//
+		// ★★　未実装　★★
 		return true;
 	}
 
@@ -501,6 +576,250 @@ class Problem {
 			}
 		}
 	}
+
+	/**
+	 * ランダムな問題を作成します。
+	 * 
+	 * @param {number} boardNum ボード番号
+	 * @param {number?} seed 指定した場合、ReproducibleRandom を seed で初期化します
+	 * @returns	{Problem} 問題
+	 */
+	static random(boardNum, seed) {
+		if (seed) ReproducibleRandom.setSeed(seed);
+		/** @type {Problem} */ const p = new Problem();
+		//
+		// 1. まず、ランダムにハンドを配る
+		//
+		const pile = Packet.provideDeck();
+		
+		pile.shuffle();
+		p.hands = [];
+		for (let i = 0; i < 4; i++) p.hands.push(new Packet());
+		Packet.deal(pile, p.hands, 0);
+		for (let i = 0; i < 4; i++) p.hands[i].arrange();
+		
+		//
+		// 2. スートごとの枚数、HCP、NS側のトリック数を基礎情報として計算する
+		//
+		const a = Problem.calculateAttributes(p.hands);
+		
+		//
+		// 3. デノミネーション、サイドをトリック数から決定する
+		//
+		
+		// 最大と最小の幅を計算する
+		let maxNSTricks = -1;
+		let maxDenom 	= -1;
+		let minNSTricks = 1400;
+		let minDenom	= -1;
+		for (let i = 0; i < 5; i++) {
+			if (a.trick[i] > maxNSTricks) {
+				maxNSTricks = a.trick[i];
+				if (i < 4) maxDenom = i + 1;
+			}
+			if (a.trick[i] < minNSTricks) {
+				minNSTricks = a.trick[i];
+				if (i < 4) minDenom = i + 1;
+			}
+		}
+		let NSorEW = -1;
+		/** @type {number} */ let denomination;
+console.log("min " + minNSTricks + "  max " + maxNSTricks);
+		if (maxNSTricks - minNSTricks <= 100) {
+			denomination = Bid.NO_TRUMP;
+			if (a.trick[Bid.NO_TRUMP] > 650) NSorEW = 0;	// NS側コントラクト
+			else NSorEW = 1;
+		} else {
+			if (maxNSTricks > 1300 - minNSTricks) {
+				NSorEW = 0;
+				denomination = maxDenom;
+			} else {
+				NSorEW = 1;
+				denomination = minDenom;
+			}
+		}
+
+		//
+		// 4. ディクレアラーを決定する
+		//
+		/** @type {number} */ let declarer;
+		if (denomination === Bid.NO_TRUMP) {
+			// HCP の大きい方をディクレアラーとする
+			declarer = (a.hcp[NSorEW] > a.hcp[NSorEW + 2])?NSorEW:NSorEW + 2;
+		} else {
+			// スートコントラクトのときは、トランプの長い方
+			declarer = (a.count[NSorEW][denomination-1] > a.count[NSorEW+2][denomination-1])?NSorEW:NSorEW + 2;
+		}
+		
+		//
+		// 5. レングスポイント、ダミーポイントを計算する
+		//
+		a.pts = Problem.calcPoints(denomination, declarer, NSorEW, a);
+		
+		//
+		// 6. 点数レンジでレベルを決める
+		//
+		const totalPt = a.pts[NSorEW] + a.pts[NSorEW+2];
+console.log("Total Point : " + totalPt);
+		let level;
+		if (totalPt > 36) {
+			// グランドスラム
+			level = 7;
+		} else if (totalPt > 32) {
+			// スモールスラム
+			level = 6;
+		} else if (totalPt > 29) {
+			// ５の代
+			level = 5;
+		} else if (totalPt > 26) {
+			// ４の代
+			level = 4;
+		} else if (totalPt > 23) {
+			// ３の代
+			level = 3;
+		} else if (totalPt > 21) {
+			// ２の代
+			level = 2;
+		} else {
+			// １の代
+			level = 1;
+		}
+		let kind = Bid.BID; // ダブルなし
+		
+		let tr = Math.floor(a.trick[denomination-1]/100);
+		if (tr < 7) tr = 13 - tr;
+		if (level + 5 > tr) kind = Bid.DOUBLE;
+		p.contract = new Bid(kind, level, denomination);
+		
+		//
+		// 7. ディクレアラーを SOUTH になるようにハンドを回転させる
+		//
+		for (let i = 0; i < ((declarer - Board.SOUTH) + 4) % 4; i++) {
+			const tmp = p.hands[0];
+			for (let j = 0; j < 3; j++) {
+				p.hands[j] = p.hands[j+1];
+			}
+			p.hands[3] = tmp;
+		}
+		for (let i = 0; i < 4; i++) p.hands[i] = p.hands[i].toString();
+		
+		//
+		// 8. 説明文をつくる
+		//
+		p.description = "あなたの " + p.getContractString() + " よ。\n切り札は";
+		switch (denomination) {
+		case Bid.NO_TRUMP:	p.description += "ありません。";	break;
+		case Bid.SPADE:		p.description += "スペード、";	break;
+		case Bid.HEART:		p.description += "ハート、";		break;
+		case Bid.DIAMOND:	p.description += "ダイアモンド、";break;
+		case Bid.CLUB:		p.description += "クラブ、";		break;
+		default:			p.description += "なんでしょう。";break;
+		}
+		
+		p.description += "\n13トリックのうち、" + (level + 6) + "トリック以上とってね";
+		p.title = "Board " + (boardNum+1);
+		return p;
+	}
+
+	/**
+	 * スートごとの枚数、HCPを計算します
+	 * @private
+	 * @param {Packet[]} hands ハンド
+	 * @returns {Object}
+	 */
+	static calculateAttributes(hands) {
+		const a = {};
+		// スートごとの枚数をカウントする
+		// 各スートについて、
+		a.count = [];
+		for (let i = 0; i < 4; i++) {
+			a.count[i] = [];
+			for (let suit = 1; suit < 5; suit++) {
+			// それぞれの枚数を数える
+				a.count[i][suit-1] = hands[i].countSuit(suit);
+			}
+		}
+		
+		// HCPを計算する
+		a.hcp = [];
+		for (let i = 0; i < 4; i++) {
+			a.hcp[i] = BridgeUtils.countHonerPoint(hands[i])[0];
+		}
+		
+		// デノミネーションごとのトリック数を計算する。
+		a.trick = [];
+		for (let denomination = 1; denomination < 6; denomination++) {
+			const b = new Board(1);
+			b.deal(hands);
+			b.setContract(new Bid(Bid.BID, 1, denomination), Board.SOUTH);
+			
+			const ob = new OptimizedBoard(b);
+			a.trick[denomination-1] = 1300 - ob.calcApproximateTricks();
+			// NS側のトリック * 100 とする
+console.log(" denom : " + denomination + "  Tricks : " + a.trick[denomination-1]);
+		}
+		return a;
+	}
+
+	/**
+	 * デノミネーション、ディクレアラーが決まった後で
+	 * レングスポイント、ダミーポイントを計算する。
+	 * @private
+	 * @param {number} denomination
+	 * @param {number} declarer
+	 * @param {number} NSorEW
+	 * @param {Object} a count を保有するオブジェクト
+	 * @returns {number[]} pts
+	 */
+	static calcPoints(denomination, declarer, NSorEW, a) {
+		const pts = [];
+		//
+		// レングスポイントなど計算する
+		//
+		for (let i = NSorEW; i < 4; i+=2) {
+			pts[i] = a.hcp[i];
+		}
+		
+		if (denomination !== Bid.NO_TRUMP) {
+			// レングスポイントを加算する
+			// レングスポイントは、NT/Suitコントラクトで (スートの枚数)-4 が正のとき
+			// この数値を加算します(5枚スート..1pts  6枚スート..2pts ……)
+			// トランプスートは、次の評価式とする
+			// FP（フィットポイント・・和美の造語＝（フィット枚数－8）＊1.5
+			for (let i = NSorEW; i < 4; i+=2) {
+				for (let suit = 1; suit < 5; suit++) {
+					if (suit === denomination) continue;
+					const cnt = a.count[i][suit-1];
+					if (cnt > 4) pts[i] += (cnt - 4);
+				}
+			}
+			const fit = a.count[NSorEW][denomination-1] + a.count[NSorEW+2][denomination-1];
+			if (fit > 8) pts[NSorEW] += Math.floor(((fit - 8) * 3 / 2));
+			// NorEのみに加点しているが、トランプのときはtotalPointしか評価しない
+			// ディクレアラーを決めるのに長さを使用しているのみ
+		
+			// ダミーポイント
+			const dummy = (declarer + 2) % 4;
+			const dummyTrumps = a.count[dummy][denomination-1];
+			for (let suit = 1; suit < 5; suit++) {
+				const cnt = a.count[dummy][suit-1];
+				switch (cnt) {
+				
+				case 0:	// void
+					pts[dummy] += Math.min(5, dummyTrumps*3);
+					break;
+				case 1: // singleton
+					pts[dummy] += Math.min(3, (dummyTrumps-1)*3);
+					break;
+				case 2: // doubleton
+					pts[dummy] += Math.min(1, (dummyTrumps-2)*3);
+				default:	// fall through
+				}
+			}
+		}
+		return pts;
+	}
+
 }
 
 /**

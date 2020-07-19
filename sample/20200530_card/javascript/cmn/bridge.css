@@ -13,7 +13,7 @@
 	background: #FFC;
 	color: #070;
 	position: fixed;
-	display: inline;
+	display: none;
 	z-index: 3 ;
 	left: 140px;
 	top: 140px;
@@ -21,7 +21,7 @@
   
 #modal-overlay {
 	z-index: 1 ;
-	display: inline ;
+	display: none ;
 	position: fixed ;
 	top: 0 ;
 	left: 0 ;

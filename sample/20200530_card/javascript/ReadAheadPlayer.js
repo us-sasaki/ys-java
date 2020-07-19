@@ -12,10 +12,7 @@ class BoardStatistics {
      * @returns {string} 文字列表現
      */
 	toString() {
-		let result = 	"bestPlays=" + this.bestPlayCount;
-		result = result +	", bestPaths=" + this.bestPlayPaths;
-		result = result +	", totalPlayCount=" + this.totalPlayCount;
-		result = result +	", finalNSTricks=" + this.finalNSTricks;
+		let result = `bestPlays=${this.bestPlayCount}, bestPaths=${this.bestPlayPaths}, totalPlayCount=${this.totalPlayCount}, finalNSTricks=${this.finalNSTricks}`;
 		
 		return result;
 	}
@@ -1017,17 +1014,6 @@ class ReadAheadPlayer extends Player {
 		
 		const bps = b.getBestPlay();
 		
-		//
-		// デバッグ用出力
-		//
-/*
-for (int i = 0; i < bps.length; i++) {
-	if (bps[i] == -1) break;
-	System.out.print(" " + i + ":" + OptimizedBoard.getCardString(bps[i]));
-}
-console.log();
-*/
-		
 		//------------------
 		// 同格カードの抽出
 		//------------------
@@ -1620,7 +1606,8 @@ class SimplePlayer2 extends Player {
 	 * @return {Promise<Card>}		和美の考えたプレイ
 	 */
 	async draw() {
-		//await this.myBoard.getField().sleep(400); // 考えた振り
+		const field = this.myBoard.getField();
+		if (field) await field.sleep(400); // 考えた振り
 		return this.draw2();
 	}
 	
