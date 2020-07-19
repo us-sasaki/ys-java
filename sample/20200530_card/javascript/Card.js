@@ -469,9 +469,7 @@ class Packet extends Entities {
  */
 	/**
 	 * 別の Packet に同じインスタンスを add したときに parent が上書きされないよう
-	 * 必ず新しい Card インスタンスを追加するようにしました。
-	 * 結果、バグ解消。しかし、遅くなっています。subpacket のみ parent 上書きしない
-	 * 仕様にする方がよいかも
+	 * override しました。
 	 * @override
 	 * @param {Card} card 
 	 */
@@ -479,8 +477,6 @@ class Packet extends Entities {
 		if (this.children.indexOf(card) >= 0) return;
 		if (this.parent) card.setParent(this);
 		this.children.push(card);
-
-		//		super.add(new Card(card));
 	}
 
 	/**
@@ -887,29 +883,13 @@ class Field extends Entities {
 	/**
 	 * カードがクリックされるのを検出する async 関数です。
 	 * クリック位置は MouseEvent の offsetX, offsetY で検出します。
+	 * マウスホバー、タッチスクリーン上のタッチムーブによって選択中のカードの
+	 * フローティングを行います。ホバー中のクリック、またはタッチエンドにより
+	 * フローティング中のカードが選択されます。
+	 * スマートフォンでのタッチ位置は、TouchEvent.touches.pageX(,pageY)で検出します。
 	 * @async
 	 * @returns	{Promise<Card>} クリックされた Card オブジェクト。必ず値が入ります。
 	 */
-	waitCardSelect_back() {
-		return new Promise( (res, rej) => {
-			const reject = this.newReject(rej);
-			this.addReject(reject);
-			const listener = (e) => {
-				const x = e.offsetX;
-				const y = e.offsetY;
-				const ent = this.getEntityAt(x, y);
-				if (ent && (ent instanceof Card)) { // Card
-					const selectedCard = ent;
-//					console.log('selected ' + selectedCard.toString());
-					this.canvas.removeEventListener('click', listener);
-					this.removeReject(reject);
-					res(selectedCard);
-				}
-			};
-			this.canvas.addEventListener('click', listener);
-		});
-	}
-
 	waitCardSelect() {
 		return new Promise( (res, rej) => {
 			const reject = this.newReject(rej);
@@ -925,7 +905,7 @@ class Field extends Entities {
 			const south = board.getHand(Board.SOUTH);
 			const northLayout = north.layout;
 			const southLayout = south.layout;
-			const fieldLayout = board.layout;
+			const boardLayout = board.layout;
 			north.layout = null;
 			south.layout = null;
 			board.layout = null;
@@ -941,7 +921,7 @@ class Field extends Entities {
 				this.canvas.removeEventListener('touchend', touchend);
 				north.layout = northLayout;
 				south.layout = southLayout;
-				board.layout = fieldLayout;
+				board.layout = boardLayout;
 				this.removeReject(reject);
 				if (floated) {
 					if (floated.parent === north) floated.x += Card.XSTEP;
@@ -968,12 +948,10 @@ class Field extends Entities {
 				if (floated !== card) {
 					// 別のカードに移った
 					if (floated) {
-						//console.log('floated parent = ' + floated.parent.toString());
 						if (floated.parent === north) floated.x += Card.XSTEP; // floated を戻す
 						if (floated.parent === south) floated.y += Card.YSTEP;
 					}
 					if (card) {
-						//console.log('card parent = ' + card.parent.toString());
 						if (card.parent === north) card.x -= Card.XSTEP; // card を浮かせる
 						if (card.parent === south) card.y -= Card.YSTEP;
 					}
@@ -983,6 +961,8 @@ class Field extends Entities {
 			};
 			mousemove = move( (e) => this.getEntityAt(e.offsetX, e.offsetY));
 			touchmove = move( (e) => {
+				// 2 タッチ以上(ピンチ操作は preventDefault させない)
+				if (e.touches.length != 1) return null;
 				const card = this.getEntityAt(e.touches[0].pageX, e.touches[0].pageY);
 				if (card instanceof Card) e.preventDefault();
 				return card;
@@ -1284,9 +1264,8 @@ class Card extends Entity {
 	 * @return	{string}	このカードの文字列表現
 	 */
 	toString() {
-		let s;
-		if (this.isHead) s = "/"; else s = "_";
-		s += Card.SUIT_LETTERS[this.suit] + Card.VALUE_LETTERS[this.value];
+		const s = (this.isHead)?"/":"_"
+					+ Card.SUIT_LETTERS[this.suit] + Card.VALUE_LETTERS[this.value];
 		return s;
 	}
 }
@@ -2697,9 +2676,9 @@ class WinnerCard extends Entity {
 		
 		this.setSize(WinnerCard.SHORTER_EDGE, WinnerCard.LONGER_EDGE);
 		if (win) {
-			this.direction = Entity.UPRIGHT;
+			this.setDirection(Entity.UPRIGHT);
 		} else {
-			this.direction = Entity.RIGHT_VIEW;
+			this.setDirection(Entity.RIGHT_VIEW);
 		}
 	}
 
@@ -2727,7 +2706,8 @@ class WinnerCard extends Entity {
 		const img = CardImageHolder.getBackImage();
 		
 		ctx.setTransform(c, s, -s, c, 0, 0);
-		ctx.drawImage(img, x, y, this.w, this.h);
+		if ((this.direction & 1) === 0) ctx.drawImage(img, x, y, this.w, this.h);
+		else ctx.drawImage(img, x, y, this.h, this.w);
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 	}
 }

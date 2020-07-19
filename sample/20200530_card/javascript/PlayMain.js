@@ -416,7 +416,7 @@ class PlayMain {
 		} else {
 			// ダウン
 			msg += (-up) + "ダウン";
-			msg2 += (this.isPractice)?"残念。":"残念。もう一度がんばって！";
+			msg2 = (this.isPractice)?"残念。":"残念。もう一度がんばって！";
 		}
 		const score = Score.calculate(this.board, Board.SOUTH);
 		msg += "("+win+"トリック)\nN-S側のスコア："+ score + "\n";
