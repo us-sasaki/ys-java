@@ -81,7 +81,11 @@ class PlayMain {
 		this.totalScore = 0;
 		this.boardNum = 0;
 		try {
-			problem.forEach( p => this.addProblem(Problem.regular(p)));
+			problem.forEach( p => {
+				const prob = Problem.regular(p);
+				if (prob.isValid()) this.problems.push(prob);} );
+			const titles = this.problems.map( p => p.title );
+			this.dialog.setPulldown(titles);
 		} catch (e) {
 			this.isPractice = true;
 			if (!e instanceof ReferenceError) console.log(e);
@@ -91,15 +95,6 @@ class PlayMain {
 /*------------------
  * instance methods
  */
-	/**
-	 * はじめに表示されるダイアログに問題を追加します。
-	 * valid でない問題は追加されません。
-     * @param   {Problem} p     追加する問題
-	 */
-	addProblem(p) {
-		if (p.isValid()) this.problems.push(p);
-	}
-	
 	/**
 	 * 中断ボタン(this.quit)を生成、配置します。
 	 * @private
@@ -179,9 +174,6 @@ class PlayMain {
 			this._makeRandomHand_();
 			this._ddSet_(false);
 		} else {
-			const titles = [];
-			this.problems.forEach( prob => titles.push(prob.title));
-			this.dialog.setPulldown(titles);
 			// 前のボードがない場合、リプレイ/ビデオは無効化
 			const disabled = (this.board)?false:true;
 			this.dialog.replayButton.disabled = disabled;
@@ -447,7 +439,6 @@ class PlayMain {
 			this.field.pull(this.board);
 		} catch (e) {
 			if (e instanceof QuitInterruptException) {
-console.log('quit inspected');
 				this.field.spot = -1;
 				this.field.draw();
 			} else {
@@ -877,7 +868,13 @@ class SelectDialog {
 	show() {
 		let startListener, videoListener, replayListener;
 		return new Promise( (res) => {
-			startListener = () => {	res('prob'+this.select.selectedIndex); };
+			startListener = () => {
+				// ★★
+				for (let i = 0; i < this.select.options.length; i++) {
+					this.select.options[i].selected = (i === this.select.selectedIndex);
+				}
+				res('prob'+this.select.selectedIndex);
+			};
 			videoListener = () => {	res('video'); };
 			replayListener = () => { res('replay'); };
 				// イベントハンドラを登録しておく
@@ -950,7 +947,7 @@ class Sumire extends Entity {
  * Constructor
  */
 	/**
-	 * 指定したコントラクトであることを説明する Entity を作成します。
+	 * 指定したメッセージを説明する Entity を作成します。
 	 * @param	{Field} field field
 	 * @param	{string} msg 表示するメッセージ
 	 */
@@ -1025,7 +1022,7 @@ class Sumire extends Entity {
 	 * わらったり、泣いたりのアニメーションを表示し、ブロックします。
 	 * クリックを検知するとアニメーションを解除します。
 	 * @async
-	 * @param　{number} face 顔(1..笑い顔, 2..泣き顔)
+	 * @param　{number} face 顔(0..通常 1..笑い顔, 2..泣き顔)
 	 */
 	async animate(face) {
 		this.field.add(this);
