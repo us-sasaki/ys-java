@@ -1614,13 +1614,10 @@ class DummyHandLayout {
 		
 		const count = this._countSuits_(packet, suitOrder);
 		
-		if (count[0] + count[1] + count[2] + count[3] == 0) return;
+		if (count[0] + count[1] + count[2] + count[3] === 0) return;
 		
 		// サイズ計算用
-		let maxCount = -1;
-		for (let i = 0; i < 4; i++) {
-			if (maxCount < count[i]) maxCount = count[i];
-		}
+		const maxCount = Math.max(...count);
 		
 		//
 		let xpos, ypos, n = 0;
@@ -1816,16 +1813,16 @@ class BiddingHistory {
 		switch (b.kind) {
 		
 		case Bid.DOUBLE:
-			if (this.contract.kind != Bid.BID) return false;
-			if ( (this.contract.suit != b.suit)||
-				(this.contract.level != b.level) ) return false;
+			if (this.contract.kind !== Bid.BID) return false;
+			if ( (this.contract.suit !== b.suit)||
+				(this.contract.level !== b.level) ) return false;
 			if (((this.declarer ^ this.bid.length ^ this.dealer) & 1) != 1) return false;
 			break;
 		
 		case Bid.REDOUBLE:
-			if (this.contract.kind != Bid.DOUBLE) return false;
-			if ( (this.contract.suit != b.suit)||
-				(this.contract.level != b.level) ) return false;
+			if (this.contract.kind !== Bid.DOUBLE) return false;
+			if ( (this.contract.suit !== b.suit)||
+				(this.contract.level !== b.level) ) return false;
 			if (((this.declarer ^ this.bid.length ^ this.dealer) & 1) != 0) return false;
 			break;
 			
@@ -1862,11 +1859,11 @@ class BiddingHistory {
 					else break;
 				}
 				if (passCount < 3) break;
-				if ((passCount == 3)&&(this.contract == null)) break;
+				if ((passCount === 3)&&(this.contract === null)) break;
 				
 				// Pass out ?
 				this.finished = true;
-				if (passCount == 4) {
+				if (passCount === 4) {
 					this.contract = new Bid(Bid.PASS, 0, 0);
 					this.declarer = this.dealer;
 					return;

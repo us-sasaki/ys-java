@@ -1104,12 +1104,15 @@ console.log("同格カード含めた最善プレイ候補:" + result);
 	/**
 	 * 指定されたプレイ候補から、リード規則などに従うプレイを選びます。
 	 * 各プレイ候補について、point 付けを行い、最大 point のプレイを返却します。
+	 * もともとのソースでは最初の３トリックが true となっていたが、
+	 * それなりに計算が早く、優先させた場合も無駄に深読みしているので false
+	 * とした(2020/7/23)
 	 * @param {Packet} option プレイ候補
 	 * @return		{Card} なるべく規則に従うプレイ
 	 */
 	choosePlay(option) {
 		// SimplePlayer2 を優先させるか
-		const SPL_IS_SUPERIOR = [ true, true, true, false, false,
+		const SPL_IS_SUPERIOR = [ false, false, false, false, false,
 								false, false, false, false, false,
 								false, false, false ];
 		if (SPL_IS_SUPERIOR[this.myBoard.getTricks()]) {
@@ -3333,7 +3336,7 @@ class SimplePlayer2 extends Player {
 	 * 指定された Packet の中の、指定されたカードと同等の最低のカードを出す
 	 * @private
 	 * @param {Packet} candidacy
-	 * @param {Card|number?} base
+	 * @param {Card|number} base カード指定
 	 * @returns {Card}
 	 */
 	getBottomOfSequence(candidacy, base) {
