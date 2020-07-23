@@ -1293,7 +1293,7 @@ class CardImageHolder {
 	 * カードイメージを読み込みます。
 	 */
 	static loadImages(path) {
-		if (CardImageHolder._loaded) return;
+		if (CardImageHolder._loaded) return "loaded";
 		if (path===void 0) path = 'images/';
 		if (!path.endsWith('/')) path = path + '/';
 		// カード表面の読み込み
@@ -1301,7 +1301,7 @@ class CardImageHolder {
 		for (let i = 0; i < s.length; i++) {
 			const suit = s[i];
 			for (let value = 1; value < 14; value++) {
-				const imgsrc = path+suit+value+'.gif?'+ new Date().getTime(); // nocache
+				const imgsrc = path+suit+value+'.gif?'+ Date.now(); // nocache
 				const img = new Image();
 				img.src = imgsrc;
 				CardImageHolder.IMAGE.push(img);
@@ -1309,18 +1309,19 @@ class CardImageHolder {
 		}
 		// カード裏面の読み込み
 		for (let i = 0; i < 4; i++) {
-			const imgsrc = path+'back'+i+'.gif?'+ new Date().getTime();
+			const imgsrc = path+'back'+i+'.gif?'+ Date.now();
 			const img = new Image();
 			img.src = imgsrc;
 			CardImageHolder.BACK_IMAGE.push(img);
 		}
 		// すみれ画像の読み込み
 		for (let i = 0; i < 3; i++) {
-			const imgsrc = path+'sumire'+i+'.gif?'+ new Date().getTime();
+			const imgsrc = path+'sumire'+i+'.gif?'+ Date.now();
 			const img = new Image();
 			img.src = imgsrc;
 			CardImageHolder.SUMIRE.push(img);
 		}
+		return "loaded";
 	}
 	// execute loadImages(static initializer)
 	static _loaded = CardImageHolder.loadImages();
@@ -1352,7 +1353,6 @@ class CardImageHolder {
 	static setBackImage(num) {
 		CardImageHolder.backImageNumber = num;
 	}
-
 }
 	
 /**
@@ -1385,7 +1385,6 @@ class CardHandLayout {
 			for (let i = 0; i < n; i++) {
 				const ent = entities.children[i];
 				ent.setPosition(xpos, ypos);
-				//ent.setSize(Card.XSIZE, Card.YSIZE);
 				xpos += Card.XSTEP;
 			}
 			entities.setSize(Card.XSIZE + (n-1)*Card.XSTEP, Card.YSIZE);
@@ -1399,7 +1398,6 @@ class CardHandLayout {
 			for (let i = 0; i < n; i++) {
 				const ent = entities.children[i];
 				ent.setPosition(xpos, ypos);
-				//ent.setSize(Card.YSIZE, Card.XSIZE);
 				ypos -= Card.XSTEP;
 			}
 			entities.setSize(Card.YSIZE, Card.XSIZE + (n-1)*Card.XSTEP);
@@ -1413,7 +1411,6 @@ class CardHandLayout {
 			for (let i = 0; i < n; i++) {
 				const ent = entities.children[i];
 				ent.setPosition(xpos, ypos);
-				//ent.setSize(Card.XSIZE, Card.YSIZE);
 				xpos -= Card.XSTEP;
 			}
 			entities.setSize(Card.XSIZE + (n-1)*Card.XSTEP, Card.YSIZE);
@@ -1427,7 +1424,6 @@ class CardHandLayout {
 			for (let i = 0; i < n; i++) {
 				const ent = entities.children[i];
 				ent.setPosition(xpos, ypos);
-				//ent.setSize(Card.YSIZE, Card.XSIZE);
 				ypos += Card.XSTEP;
 			}
 			entities.setSize(Card.YSIZE, Card.XSIZE + (n-1)*Card.XSTEP);
@@ -1481,16 +1477,16 @@ class Bid {
 /*------------------
  * static constants
  */
-	/** @const {number} kind (Bid) を表す定数. */
+	/** @const {number} kind (Bid) を表す定数(=0). */
 	static BID			= 0;
 	
-	/** @const {number} kind (Pass) を表す定数. */
+	/** @const {number} kind (Pass) を表す定数(=1). */
 	static PASS		= 1;
 	
-	/** @const {number} kind (Double) を表す定数. */
+	/** @const {number} kind (Double) を表す定数(=2). */
 	static DOUBLE		= 2;
 	
-	/** @const {number} kind (Redouble) を表す定数. */
+	/** @const {number} kind (Redouble) を表す定数(=3). */
 	static REDOUBLE	= 3;
 	
 	/** @const {number} bid suit (club) を表す定数(=1). */
@@ -1712,12 +1708,8 @@ class DummyHandLayout {
 	_countSuits_(packet, suitOrder) {
 		// それぞれのスートの枚数を数える
 		const count = [0, 0, 0, 0];
-		
-		for (let i = 0; i < packet.children.length; i++) {
-			let card = packet.children[i];
-			count[4 - suitOrder[card.suit]]++;
-		}
-		
+		packet.children.forEach( c => {count[4 - suitOrder[c.suit]]++;} );
+
 		return count;
 	}
 	
@@ -1735,10 +1727,8 @@ class DummyHandLayout {
 		//
 		// サイズ計算用
 		//
-		let maxCount = -1;
-		for (let i = 0; i < 4; i++) {
-			if (maxCount < count[i]) maxCount = count[i];
-		}
+		const maxCount = Math.max(...count);
+
 		switch (packet.direction) {
 		
 		case Entity.UPRIGHT:

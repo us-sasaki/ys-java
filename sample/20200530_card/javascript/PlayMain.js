@@ -170,7 +170,6 @@ class PlayMain {
 		// 問題が設定されていない場合、practice mode
 
 		if (this.isPractice) {
-			this.totalScore = 0;
 			this._makeRandomHand_();
 			this._ddSet_(false);
 		} else {
