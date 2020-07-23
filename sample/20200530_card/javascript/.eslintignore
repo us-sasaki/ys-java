@@ -1,6 +1,7 @@
 node_modules
 images
 out
-test
-test.js
+spec
 cmn
+karma.conf.js
+*.min.js

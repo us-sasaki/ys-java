@@ -88,7 +88,7 @@ class PlayMain {
 			this.dialog.setPulldown(titles);
 		} catch (e) {
 			this.isPractice = true;
-			if (!e instanceof ReferenceError) console.log(e);
+			if (!(e instanceof ReferenceError)) console.log(e);
 		}
 	}
 	
@@ -466,7 +466,7 @@ class Problem {
 	}
 
 	isValid() {
-		// ★★　未実装　★★
+		// ★★ 未実装 ★★
 		return true;
 	}
 
@@ -804,7 +804,6 @@ console.log(" denom : " + denomination + "  Tricks : " + a.trick[denomination-1]
 					break;
 				case 2: // doubleton
 					pts[dummy] += Math.min(1, (dummyTrumps-2)*3);
-				default:	// fall through
 				}
 			}
 		}
@@ -828,7 +827,7 @@ class SelectDialog {
 	/**
 	 * document に、ダイアログを追加します。
 	 */
-	constructor(titles) {
+	constructor() {
 		this.modalContent = document.getElementById('modal-content');
 		this.modalOverlay = document.getElementById('modal-overlay');
 		if (!this.modalContent || !this.modalOverlay)
@@ -1022,7 +1021,7 @@ class Sumire extends Entity {
 	 * わらったり、泣いたりのアニメーションを表示し、ブロックします。
 	 * クリックを検知するとアニメーションを解除します。
 	 * @async
-	 * @param　{number} face 顔(0..通常 1..笑い顔, 2..泣き顔)
+	 * @param {number} face 顔(0..通常 1..笑い顔, 2..泣き顔)
 	 */
 	async animate(face) {
 		this.field.add(this);

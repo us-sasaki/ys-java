@@ -28,8 +28,8 @@ class ReproducibleRandom {
 	 */
 	next() {
 		const t = this.x ^ (this.x << 11);
-	    this.x = this.y; this.y = this.z; this.z = this.w;
-	    return this.w = (this.w ^ (this.w >>> 19)) ^ (t ^ (t >>> 8)); 
+		this.x = this.y; this.y = this.z; this.z = this.w;
+		return this.w = (this.w ^ (this.w >>> 19)) ^ (t ^ (t >>> 8)); 
 	}
 	
 	/**
@@ -621,7 +621,7 @@ class Packet extends Entities {
 
 		for (let i = 0; i < this.children.length; i++) {
 			if (this.children[i].suit === suit &&
-				 this.children[i].value === value) return i;
+				this.children[i].value === value) return i;
 		}
 		return -1;
 	}
@@ -651,7 +651,7 @@ class Packet extends Entities {
 		}
 		for (let i = 0; i < this.children.length; i++) {
 			if (this.children[i].suit === suit &&
-				 this.children[i].value === value) return this.children[i];
+				this.children[i].value === value) return this.children[i];
 		}
 		return null;
 	}
@@ -927,20 +927,20 @@ class Field extends Entities {
 					if (floated.parent === north) floated.x += Card.XSTEP;
 					if (floated.parent === south) floated.y += Card.YSTEP;
 				}
-			}
+			};
 			click = (e) => {
 				const card = this.getEntityAt(e.offsetX, e.offsetY);
 				if (card instanceof Card) {
 					removeListeners();
 					res(card);
 				}
-			}
-			touchend = (e) => {
+			};
+			touchend = () => {
 				if (floated && floated instanceof Card) {
 					removeListeners();
 					res(floated);
 				}
-			}
+			};
 			const move =  (cardSelector) => (e) => {
 				//console.log(`mousemove x=${e.offsetX} y=${e.offsetY}`);
 				let card = cardSelector(e);
@@ -1264,7 +1264,7 @@ class Card extends Entity {
 	 * @return	{string}	このカードの文字列表現
 	 */
 	toString() {
-		const s = (this.isHead)?"/":"_"
+		const s = ((this.isHead)?"/":"_")
 					+ Card.SUIT_LETTERS[this.suit] + Card.VALUE_LETTERS[this.value];
 		return s;
 	}
@@ -1634,7 +1634,7 @@ class DummyHandLayout {
 		switch (packet.direction) {
 		
 		case Entity.UPRIGHT:
-			 xpos = r.x + 3 * (Card.XSIZE + 3);;
+			xpos = r.x + 3 * (Card.XSIZE + 3);
 			
 			// それぞれのカードの配置を行う
 			for (let i = 0; i < 4; i++) {
@@ -1864,41 +1864,43 @@ class BiddingHistory {
 		
 		// declarer, contract 更新, パス続いたか判定
 		switch (newBid.kind) {
-		case Bid.PASS:
-			// パスが続いたか
-			let passCount = 0;
-			for (let i = this.bid.length - 1; i >= 0; i--) {
-				if (this.bid[i].kind == Bid.PASS) passCount++;
-				else break;
+		case Bid.PASS: {
+				// パスが続いたか
+				let passCount = 0;
+				for (let i = this.bid.length - 1; i >= 0; i--) {
+					if (this.bid[i].kind == Bid.PASS) passCount++;
+					else break;
+				}
+				if (passCount < 3) break;
+				if ((passCount == 3)&&(this.contract == null)) break;
+				
+				// Pass out ?
+				this.finished = true;
+				if (passCount == 4) {
+					this.contract = new Bid(Bid.PASS, 0, 0);
+					this.declarer = this.dealer;
+					return;
+				}
+				break;
 			}
-			if (passCount < 3) break;
-			if ((passCount == 3)&&(this.contract == null)) break;
-			
-			// Pass out ?
-			this.finished = true;
-			if (passCount == 4) {
-				this.contract = new Bid(Bid.PASS, 0, 0);
-				this.declarer = this.dealer;
-				return;
-			}
-			break;
 		case Bid.DOUBLE:
 		case Bid.REDOUBLE:
 			this.contract = newBid;
 			break;
 		
-		case Bid.BID:
-			this.contract = newBid;
-			
-			// declarer を見つける.
-			let n;
-			for (n = (1 - (this.bid.length & 1)); n < this.bid.length; n += 2) {
-				const b = this.bid[n];
-				if ((b.kind == Bid.BID)&&
-					(b.suit == newBid.suit)) break;
+		case Bid.BID:{
+				this.contract = newBid;
+				
+				// declarer を見つける.
+				let n;
+				for (n = (1 - (this.bid.length & 1)); n < this.bid.length; n += 2) {
+					const b = this.bid[n];
+					if ((b.kind == Bid.BID)&&
+						(b.suit == newBid.suit)) break;
+				}
+				this.declarer = (n + this.dealer)%4;
+				break;
 			}
-			this.declarer = (n + this.dealer)%4;
-			break;
 		}
 	}
 	
@@ -2423,8 +2425,6 @@ class PlayHistory {
 		if (this.trick.length == 0) return null;
 		if (this.hand[0] == null) return null;
 		
-		let n = this.trickCount + 1;
-		if (this.trickCount == 13) n--;
 		return this.trick.slice(0, this.trick.length);
 	}
 	
@@ -2775,7 +2775,7 @@ class BoardLayout {
 	 * @param {Board} target layout対象となる Board
 	 */
 	layout(target) {
-		if (!target instanceof Board)
+		if (!(target instanceof Board))
 			throw new Error("BoardLayout は Board 専用です:"+target);
 		const board = target;
 		const d = board.direction;
@@ -2839,7 +2839,7 @@ class BoardLayout {
 	 * @param {Board} target layout 対象の Board
 	 */
 	layoutSize(target) {
-		if (!target instanceof Board)
+		if (!(target instanceof Board))
 			throw new Error("BoardLayout は Board 専用です:"+target);
 		return {w:target.w, h:target.h};
 	}
@@ -3223,22 +3223,23 @@ class Board extends Entities {
 			this.status = Board.PLAYING;
 			// fall through
 			
-		case Board.PLAYING:
-			//
-			// まず、PlayHistory を undo() する
-			//
-			const lastPlay = this.playHist.undo(); // PLAYING なので、Exception はでないはず
-			const turn = this.playHist.getTurn();
-			if (turn != this.getDummy()) lastPlay.isHead = false;
-			this.openCards.pull(lastPlay);
-			
-			// undo() の結果、OPENING になる場合
-			if ((this.getTricks() == 0)&&(this.playHist.getTrick() == null)) {
-				// O.L.にもどる
-				this._dummyClose_();
-				this.status = Board.OPENING;
+		case Board.PLAYING: {
+				//
+				// まず、PlayHistory を undo() する
+				//
+				const lastPlay = this.playHist.undo(); // PLAYING なので、Exception はでないはず
+				const turn = this.playHist.getTurn();
+				if (turn != this.getDummy()) lastPlay.isHead = false;
+				this.openCards.pull(lastPlay);
+				
+				// undo() の結果、OPENING になる場合
+				if ((this.getTricks() == 0)&&(this.playHist.getTrick() == null)) {
+					// O.L.にもどる
+					this._dummyClose_();
+					this.status = Board.OPENING;
+				}
+				break;
 			}
-			break;
 			
 		default:
 			throw new Error("status が異常値 " + this.status);
@@ -3481,7 +3482,7 @@ class Board extends Entities {
 	/**
 	 * プレイされた過去のトリックすべてを取得します。
 	 * 本処理は、PlayHistory.getAllTricks() へ委譲しています。
-	 * @return	{Array.<Trick>} 全トリック
+	 * @return	{Trick[]} 全トリック
 	 * @see		PlayHistory#getAllTricks()
 	 */
 	getAllTricks() {
@@ -3490,7 +3491,7 @@ class Board extends Entities {
 
 	/**
 	 * parent を検索し、Field を取得します。
-	 * @returns		{?Field}		この Board の親系列にある Field。ない場合 null。
+	 * @returns		{Field?}		この Board の親系列にある Field。ない場合 null。
 	 */
 	getField() {
 		let obj = this;
@@ -3798,7 +3799,7 @@ class Score {
 	 * @param {number} vul 
 	 */
 	static _calcImpl_(contract, win, declarer, seat, vul) {
-		const make = win - 6;
+		//const make = win - 6;
 		const up = win - contract.level - 6;
 		
 		let score = 0;
