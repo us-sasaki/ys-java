@@ -91,9 +91,9 @@ describe("CardHandLayout Test", () => {
 		const hand = Packet.provideDeck();
 		hand.shuffle(2);
 		chl.layout(hand);
-		expect(chl.layoutSize(hand)).toEqual({w:773, h:87});
+		expect(chl.layoutSize(hand)).toEqual({w:977, h:87});
 		hand.setDirection(Entity.RIGHT_VIEW);
-		expect(chl.layoutSize(hand)).toEqual({w:87, h:773});
+		expect(chl.layoutSize(hand)).toEqual({w:87, h:977});
 	});
 
 });
@@ -132,9 +132,9 @@ describe("DummyHandLayout Test", () => {
 		const hand = Packet.provideDeck();
 		hand.shuffle(2);
 		chl.layout(hand);
-		expect(chl.layoutSize(hand)).toEqual({w:248, h:279});
+		expect(chl.layoutSize(hand)).toEqual({w:248, h:303});
 		hand.setDirection(Entity.RIGHT_VIEW);
-		expect(chl.layoutSize(hand)).toEqual({w:279, h:248});
+		expect(chl.layoutSize(hand)).toEqual({w:303, h:248});
 	});
 });
 
