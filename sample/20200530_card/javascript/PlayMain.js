@@ -361,6 +361,10 @@ class PlayMain {
 				c = await this.players[this.board.getPlayer()].play(); // ブロックする
 			}
 			await this.board.playWithGui(c);
+			if (this.board.status === Board.PLAYING) {
+				this.board.getHand(Board.NORTH).layout = null;
+				this.board.getHand(Board.SOUTH).layout = null;
+			}
 			this.field.draw();
 			
 			if (this.board.status === Board.SCORING) break;
@@ -390,7 +394,11 @@ class PlayMain {
 		}
 
 		this.board.selfLayout();
-		this.board.getHand().forEach( hand => { hand.arrange(); hand.selfLayout(); });
+		this.board.getHand().forEach( hand => {
+			hand.layout = new CardHandLayout();
+			hand.arrange();
+			hand.selfLayout();
+		});
 	
 		// スコア表示
 		let msg = "結果：" + this.contractString + "  ";

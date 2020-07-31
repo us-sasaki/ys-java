@@ -1159,8 +1159,8 @@ class Card extends Entity {
  */
 	static XSIZE = 59;
 	static YSIZE = 87;
-	static XSTEP = 14;
-	static YSTEP = 16;
+	static XSTEP = 18; //14;
+	static YSTEP = 18; //16;
 
 	/** @const {number} suit 値用の定数 */
 	static JOKER = 0; // 利用されない(JOKER は value も同一値)
