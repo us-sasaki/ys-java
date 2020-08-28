@@ -8,8 +8,8 @@ import java.util.function.BinaryOperator;
  * ある型の要素に対する二項演算が結合的であり、単位元をもつ(単位的半群)場合、
  * 直列した要素の区間に対する演算結果のクエリを高速に実行可能です。
  * 一般に、要素数 n に対し、任意の区間に対して O(log n) の計算量で結果を
- * 取得可能です。また、セグメント木の要素の変更は O(lon n) の計算量です。
- * 構築のための計算量 O(n) のメソッドを公開しています。
+ * 取得可能です。また、セグメント木の要素の変更は O(log n) の計算量です。
+ * 構築のための計算量 O(n) のメソッドを有しています。
  *
  * <pre>
  * 演算 agg : E x E → E が結合的である、とは、
@@ -68,7 +68,7 @@ public class SegmentTree<E> {
 	 * aggregator.apply(identity, identity) が identity に等しくない場合、
 	 * IllegalArgumentException がスローされます。
 	 * 単位元は ∀A, agg(A, E) = agg(E, A) = A を満たす E であり、この
-	 * チェックは部分的であることに注意してください。
+	 * チェックは必要条件に過ぎないことに注意してください。
 	 * 初期値は identity となります。
 	 *
 	 * @param		size		セグメント木の大きさ
@@ -88,7 +88,7 @@ public class SegmentTree<E> {
 	 * aggregator.apply(identity, identity) が identity に等しくない場合、
 	 * IllegalArgumentException がスローされます。
 	 * 単位元は ∀A, agg(A, E) = agg(E, A) = A を満たす E であり、この
-	 * チェックは部分的であることに注意してください。
+	 * チェックは必要条件に過ぎないことに注意してください。
 	 *
 	 * @param		size		セグメント木の大きさ
 	 * @param		aggregator	2 つの E の要素から E の要素への演算
@@ -106,7 +106,7 @@ public class SegmentTree<E> {
 	 * aggregator.apply(identity, identity) が identity に等しくない場合、
 	 * IllegalArgumentException がスローされます。
 	 * 単位元は ∀A, agg(A, E) = agg(E, A) = A を満たす E であり、この
-	 * チェックは部分的であることに注意してください。
+	 * チェックは必要条件に過ぎないことに注意してください。
 	 *
 	 * @param		size		セグメント木の大きさ
 	 * @param		aggregator	2 つの E の要素から E の要素への演算
@@ -120,6 +120,7 @@ public class SegmentTree<E> {
 		init(size, aggregator, identity);
 		construct(value, begin, endExclusive);
 	}
+	
 	@SuppressWarnings("unchecked")
 	private void init(int size, BinaryOperator<E> aggregator, E identity) {
 		if (size <= 1 || size > 0x40000000)
@@ -138,7 +139,7 @@ public class SegmentTree<E> {
  */
 	/**
 	 * 配列でこのセグメント木を初期化します。
-	 * update を繰り返し呼ぶより高速ですが、計算量は O(n) です。
+	 * update を繰り返し呼ぶより高速で、計算量は O(n) です。
 	 *
 	 * @param		elements		このセグメント木に設定する値
 	 */
@@ -148,7 +149,7 @@ public class SegmentTree<E> {
 	
 	/**
 	 * 配列でこのセグメント木を初期化します。
-	 * update を繰り返し呼ぶより高速ですが、計算量は O(n) です。
+	 * update を繰り返し呼ぶより高速で、計算量は O(n) です。
 	 *
 	 * @param		elements		このセグメント木に設定する値
 	 * @param		begin			elements における開始値(含みます)
@@ -187,7 +188,7 @@ public class SegmentTree<E> {
 	
 	/**
 	 * 指定された index の要素を指定されたものに更新し、木の値を再計算します。
-	 * 計算時間のオーダーは、O(log size) です。
+	 * 計算時間のオーダーは、O(log n) です。
 	 *
 	 * @param		index		追加するインデックス(0 以上 size 未満)
 	 * @param		element		更新する要素
@@ -207,38 +208,38 @@ public class SegmentTree<E> {
 	
 	/**
 	 * 与えられた区間に対する aggregator 演算結果を高速に取得します。
-	 * 計算時間のオーダーは、O(log size) です。
+	 * 計算時間のオーダーは、O(log n) です。
 	 *
 	 * @param		s		区間の開始(含む)
-	 * @param		e		区間の終了(含まない)
+	 * @param		eExclusive		区間の終了(含まない)
 	 * @return		区間における aggregator の結果
 	 */
-	public E calculate(int s, int e) {
-		if (s < 0 || e >= size)
+	public E calculate(int s, int eExclusive) {
+		if (s < 0 || eExclusive >= size)
 			throw new IndexOutOfBoundsException("wrong index");
-		if (s >= e)
-			throw new IllegalArgumentException("s must be smaller than e");
-		return calcImpl(s, e, 0, 0, m);
+		if (s >= eExclusive)
+			throw new IllegalArgumentException("s must be smaller than eExclusive");
+		return calcImpl(s, eExclusive, 0, 0, m);
 	}
 	
 	/**
 	 * 与えられた区間での演算結果を返却する。
 	 *
 	 * @param		s		区間の開始(含む)
-	 * @param		e		区間の終了(含まない)
+	 * @param		eExclusive		区間の終了(含まない)
 	 * @param		n		セグメントのインデックス
 	 * @param		l		セグメントの開始番号(含む)
 	 * @param		r		セグメントの終了番号(含まない)
 	 */
-	private E calcImpl(int s, int e, int n, int l, int r) {
+	private E calcImpl(int s, int eExclusive, int n, int l, int r) {
 		// 共通部分がない場合
-		if (r <= s || e <= l) return identity;
+		if (r <= s || eExclusive <= l) return identity;
 		// 完全に含んでいる場合
-		if (s <= l && r <= e) return st[n];
+		if (s <= l && r <= eExclusive) return st[n];
 		// 一部共通している場合
 		int i = (l>>>1)+(r>>>1);
-		E cl = calcImpl(s, e, 2*n + 1, l, i);
-		E cr = calcImpl(s, e, 2*n + 2, i, r);
+		E cl = calcImpl(s, eExclusive, 2*n + 1, l, i);
+		E cr = calcImpl(s, eExclusive, 2*n + 2, i, r);
 		return aggregator.apply(cl, cr);
 	}
 }
