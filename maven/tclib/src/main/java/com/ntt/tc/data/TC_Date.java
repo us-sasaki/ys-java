@@ -37,7 +37,7 @@ public class TC_Date extends C8yValue implements Comparable<TC_Date> {
 	protected Date date;
 	
 	/** toJson() を高速化するためのキャッシュ */
-	protected JsonValue dateCache = null;
+	//protected JsonValue dateCache = null;
 	
 /*-------------
  * Constructor
@@ -136,7 +136,7 @@ public class TC_Date extends C8yValue implements Comparable<TC_Date> {
 		} catch (ParseException pe) {
 			throw new C8yFormatException(pe.toString());
 		}
-		dateCache = null;
+		//dateCache = null;
 	}
 	
 	/**
@@ -189,7 +189,7 @@ public class TC_Date extends C8yValue implements Comparable<TC_Date> {
 	strictfp // JSON プロパティから除外
 	public void setTime(long time) {
 		date.setTime(time);
-		dateCache = null;
+		//dateCache = null;
 	}
 	
 /*-----------
@@ -217,9 +217,10 @@ public class TC_Date extends C8yValue implements Comparable<TC_Date> {
 	 */
 	@Override
 	public JsonType toJson() {
-		if (dateCache == null)
-			dateCache = new JsonValue(sdf.get().format(date));
-		return dateCache;
+		//if (dateCache == null)
+		//	dateCache = new JsonValue(sdf.get().format(date));
+		//return dateCache;
+		return new JsonValue(sdf.get().format(date));
 	}
 	
 	/**
