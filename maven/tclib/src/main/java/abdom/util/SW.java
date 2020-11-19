@@ -1,28 +1,28 @@
 package abdom.util;
 
 /**
- * «”\‘ª’è‚È‚Ç‚Å—˜—p‚·‚éŠÈˆÕƒXƒgƒbƒvƒEƒIƒbƒ`(msec ƒI[ƒ_[)B
- * static method ‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * æ€§èƒ½æ¸¬å®šãªã©ã§åˆ©ç”¨ã™ã‚‹ç°¡æ˜“ã‚¹ãƒˆãƒƒãƒ—ã‚¦ã‚ªãƒƒãƒ(msec ã‚ªãƒ¼ãƒ€ãƒ¼)ã€‚
+ * static method ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 public class SW {
 	private static long t0 = -1L;
 	
 	/**
-	 * ƒXƒgƒbƒvƒEƒHƒbƒ`‚ğŠJn‚µ‚Ü‚·B
+	 * ã‚¹ãƒˆãƒƒãƒ—ã‚¦ã‚©ãƒƒãƒã‚’é–‹å§‹ã—ã¾ã™ã€‚
 	 */
 	public static void start() {
 		t0 = System.currentTimeMillis();
 	}
 	
 	/**
-	 * ƒ‰ƒbƒvŒo‰ßŠÔ(msec) ‚ğ•\¦‚µ‚Ü‚·B‰üs‚µ‚Ü‚¹‚ñB
+	 * ãƒ©ãƒƒãƒ—çµŒéæ™‚é–“(msec) ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚æ”¹è¡Œã—ã¾ã›ã‚“ã€‚
 	 */
 	public static void print() {
 		System.out.print(lap());
 	}
 	
 	/**
-	 * w’èƒƒbƒZ[ƒW‚ÌŒã‚Éƒ‰ƒbƒvŒo‰ßŠÔ(msec) ‚ğ•\¦‚µ‚Ü‚·B‰üs‚µ‚Ü‚¹‚ñB
+	 * æŒ‡å®šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å¾Œã«ãƒ©ãƒƒãƒ—çµŒéæ™‚é–“(msec) ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚æ”¹è¡Œã—ã¾ã›ã‚“ã€‚
 	 */
 	public static void print(String msg) {
 		System.out.print(msg);
@@ -30,7 +30,7 @@ public class SW {
 	}
 	
 	/**
-	 * ƒ‰ƒbƒvŒo‰ßŠÔ(msec)‚ğ•\¦‚µ‚Ü‚·B
+	 * ãƒ©ãƒƒãƒ—çµŒéæ™‚é–“(msec)ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚
 	 */
 	public static void println() {
 		print();
@@ -38,7 +38,7 @@ public class SW {
 	}
 	
 	/**
-	 * w’èƒƒbƒZ[ƒW‚ÌŒã‚Éƒ‰ƒbƒvŒo‰ßŠÔ(msec) ‚ğ•\¦‚µ‚Ü‚·B
+	 * æŒ‡å®šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å¾Œã«ãƒ©ãƒƒãƒ—çµŒéæ™‚é–“(msec) ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚
 	 */
 	public static void println(String msg) {
 		System.out.print(msg);
@@ -46,8 +46,8 @@ public class SW {
 	}
 	
 	/**
-	 * ƒ‰ƒbƒvŒo‰ßŠÔ(start() ‚©‚ç‚ÌŒo‰ßŠÔ)‚ğ long ’l‚Åæ“¾‚µ‚Ü‚·B
-	 * @return	Œo‰ßŠÔ(msec)
+	 * ãƒ©ãƒƒãƒ—çµŒéæ™‚é–“(start() ã‹ã‚‰ã®çµŒéæ™‚é–“)ã‚’ long å€¤ã§å–å¾—ã—ã¾ã™ã€‚
+	 * @return	çµŒéæ™‚é–“(msec)
 	 */
 	public static long lap() {
 		if (t0 == -1) start();

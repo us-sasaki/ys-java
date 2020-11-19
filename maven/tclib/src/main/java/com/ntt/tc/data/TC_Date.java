@@ -1,8 +1,10 @@
 package com.ntt.tc.data;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.TimeZone;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonValue;
@@ -23,10 +25,10 @@ public class TC_Date extends C8yValue implements Comparable<TC_Date> {
 	 * スレッドごとに SimpleDateFormat インスタンスを分ける必要があるため、
 	 * ThreadLocal 利用。
 	 */
-	protected static ThreadLocal<SimpleDateFormat> sdf =
-			new ThreadLocal<SimpleDateFormat>() {
+	protected static ThreadLocal<DateFormat> sdf =
+			new ThreadLocal<DateFormat>() {
 				@Override
-				protected SimpleDateFormat initialValue() {
+				protected DateFormat initialValue() {
 					return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 				}
 			};
@@ -74,6 +76,48 @@ public class TC_Date extends C8yValue implements Comparable<TC_Date> {
 	 */
 	public TC_Date(long date) {
 		this.date = new Date(date);
+	}
+	
+/*---------------
+ * class methods
+ */
+	/**
+	 * デフォルトで使用する DateFormat を指定します。
+	 * この指定は、ThreadLocal 変数に格納されるため、スレッドごとに
+	 * 指定が必要です。何も指定しない場合のフォーマットは ISO8601 の
+	 * SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX") です。
+	 *
+	 * @param		df		以降このスレッドで日付解析に利用する
+	 *						デフォルトの DateFormat オブジェクト
+	 */
+	public static void setDefaultFormat(DateFormat df) {
+		sdf.set(df);
+	}
+	
+	/**
+	 * デフォルトで使用する TimeZone を指定します。
+	 * この指定は、ThreadLocal 変数に格納されるため、スレッドごとに
+	 * 指定が必要です。この設定は setDefaultFormat() によって上書き
+	 * されます。
+	 *
+	 * @param		timeZone	以降このスレッドで日付解析に利用する
+	 *						デフォルトの TimeZone オブジェクト
+	 */
+	public static void setTimeZone(TimeZone timeZone) {
+		sdf.get().setTimeZone(timeZone);
+	}
+	
+	/**
+	 * デフォルトで使用する TimeZone を指定します。
+	 * この指定は、ThreadLocal 変数に格納されるため、スレッドごとに
+	 * 指定が必要です。この設定は setDefaultFormat() によって上書き
+	 * されます。
+	 *
+	 * @param		id	以降このスレッドで日付解析に利用する
+	 *						デフォルトの TimeZone を示す３文字の文字列
+	 */
+	public static void setTimeZone(String id) {
+		setTimeZone(TimeZone.getTimeZone(id));
 	}
 	
 /*------------------
