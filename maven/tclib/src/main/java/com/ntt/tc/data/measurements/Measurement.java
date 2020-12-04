@@ -113,6 +113,12 @@ public class Measurement extends C8yData {
 	 */
 	public Measurement(String source, String type) {
 		super();
+		try {
+			Long.parseLong(source);
+		} catch (NumberFormatException nfe) {
+			// API で source を整数値外とすると、server error となるため
+			throw new C8yFormatException("source は整数値である必要があります");
+		}
 		this.source = new ID();
 		this.source.id = source;
 		time = new TC_Date();
