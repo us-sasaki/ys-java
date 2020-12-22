@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import abdom.data.json.JsonType;
 import abdom.data.json.JsonValue;
@@ -33,11 +34,20 @@ public class TC_Date extends C8yValue implements Comparable<TC_Date> {
 				}
 			};
 	
+	protected static ThreadLocal<AtomicInteger> sdfVer =
+			new ThreadLocal<AtomicInteger>() {
+				@Override
+				protected AtomicInteger initialValue() {
+					return new AtomicInteger(0);
+				}
+			};
+	
 	/** 内部的には java.util.Date として値を保持します */
 	protected Date date;
 	
 	/** toJson() を高速化するためのキャッシュ */
-	//protected JsonValue dateCache = null;
+	protected JsonValue dateCache = null;
+	protected int ver = -1;
 	
 /*-------------
  * Constructor
@@ -92,6 +102,7 @@ public class TC_Date extends C8yValue implements Comparable<TC_Date> {
 	 */
 	public static void setDefaultFormat(DateFormat df) {
 		sdf.set(df);
+		sdfVer.get().incrementAndGet();
 	}
 	
 	/**
@@ -105,6 +116,7 @@ public class TC_Date extends C8yValue implements Comparable<TC_Date> {
 	 */
 	public static void setTimeZone(TimeZone timeZone) {
 		sdf.get().setTimeZone(timeZone);
+		sdfVer.get().incrementAndGet();
 	}
 	
 	/**
@@ -189,7 +201,7 @@ public class TC_Date extends C8yValue implements Comparable<TC_Date> {
 	strictfp // JSON プロパティから除外
 	public void setTime(long time) {
 		date.setTime(time);
-		//dateCache = null;
+		sdfVer.get().incrementAndGet();
 	}
 	
 /*-----------
@@ -217,10 +229,11 @@ public class TC_Date extends C8yValue implements Comparable<TC_Date> {
 	 */
 	@Override
 	public JsonType toJson() {
-		//if (dateCache == null)
-		//	dateCache = new JsonValue(sdf.get().format(date));
-		//return dateCache;
-		return new JsonValue(sdf.get().format(date));
+		if (dateCache == null || sdfVer.get().get() != ver) {
+			dateCache = new JsonValue(sdf.get().format(date));
+			ver = sdfVer.get().get();
+		}
+		return dateCache;
 	}
 	
 	/**
