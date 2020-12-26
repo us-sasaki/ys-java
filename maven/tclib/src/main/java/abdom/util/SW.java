@@ -23,6 +23,8 @@ public class SW {
 	
 	/**
 	 * 指定メッセージの後にラップ経過時間(msec) を表示します。改行しません。
+	 *
+	 * @param	msg		メッセージ
 	 */
 	public static void print(String msg) {
 		System.out.print(msg);
@@ -39,6 +41,8 @@ public class SW {
 	
 	/**
 	 * 指定メッセージの後にラップ経過時間(msec) を表示します。
+	 *
+	 * @param	msg		メッセージ
 	 */
 	public static void println(String msg) {
 		System.out.print(msg);
