@@ -18,6 +18,7 @@ package abdom.util.struct;
  * Triple&lt;String, Integer, Double&gt; profile = new Triple&lt;&gt;("name", 29, 63.2);
  * </pre>
  * のように新しいクラスを定義せず使うこともできます。
+ * Singlet, Doublet, Triplet, Quartet, Quintet, Sextet, Septet, Octet, Nonet
  *
  * @version		March 2, 2019
  * @author		Yusuke Sasaki
