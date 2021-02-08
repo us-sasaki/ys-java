@@ -203,4 +203,31 @@ public class Alarm extends C8yData {
 		this.status = status;
 		this.severity = severity;
 	}
+	
+	/**
+	 * 与えられた引数を保持するオブジェクトを生成します。
+	 *
+	 * @param	managedObject	Alarm を出力した ManagedObject
+	 * @param	text		このアラームのテキスト
+	 */
+	@Deprecated
+	public Alarm(ManagedObject managedObject, String text) {
+		this(managedObject.id, "c8y_PowerAlarm", text, "ACTIVE", "MINOR");
+	}
+	
+	/**
+	 * 与えられた引数を保持するオブジェクトを生成します。
+	 *
+	 * @param	managedObject	Alarm を出力した ManagedObject
+	 * @param	type		alarm の type
+	 * @param	text		alarm の説明文
+	 * @param	status		Alarm の status。ACTIVE/ACKNOWLEDGED/CLEARED
+	 * 						のいずれかである必要があります
+	 * @param	severity	Alarm の severity。CRITICAL/MAJOR/MINOR/WARNING
+	 * 						のいずれかである必要があります
+	 */
+	public Alarm(ManagedObject managedObject, String type, String text, String status, String severity) {
+		this(managedObject.id, type, text, status, severity);
+	}
+	
 }

@@ -227,7 +227,7 @@ public class ServiceAPI {
 	 * @throws		java.io.IOException	REST異常
 	 */
 	public Simulator readSimulator(String id) throws IOException {
-		Response resp = rest.get("/service/smartrule/smartrules/"+id);
+		Response resp = rest.get("/service/smartrule/simulators/"+id);
 		return Jsonizer.fromJson(resp, Simulator.class);
 	}
 	

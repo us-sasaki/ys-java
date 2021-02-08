@@ -87,6 +87,8 @@ public class Rest {
 	 * @param		password	パスワード
 	 */
 	public Rest(String urlStr, String user, String password) {
+		if (!urlStr.startsWith("http://") && !urlStr.startsWith("https://"))
+			throw new IllegalArgumentException("url は http://, https:// で始まっている必要があります");
 		r = new JsonRest(urlStr);
 		if (user == null)
 			throw new IllegalArgumentException("user が指定されていません");
@@ -109,6 +111,8 @@ public class Rest {
 	 * @param		password	パスワード
 	 */
 	public Rest(String urlStr, String tenant, String user, String password) {
+		if (!urlStr.startsWith("http://") && !urlStr.startsWith("https://"))
+			throw new IllegalArgumentException("url は http://, https:// で始まっている必要があります");
 		r = new JsonRest(urlStr);
 		if (tenant == null)
 			throw new IllegalArgumentException("tenant が指定されていません");
