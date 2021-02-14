@@ -6,7 +6,7 @@ package abdom.util.struct;
  * 単に 3 要素を持つクラスをまとめ、List などの要素として利用することを
  * 想定しています。
  * <pre>
- * public class Profile extends Triple&lt;String, Integer, Double&gt; {
+ * public class Profile extends Triplet&lt;String, Integer, Double&gt; {
  *     public Profile() { }
  *     public Profile(String name, Integer age, Double weight) {
  *         super(name, age, weight);
@@ -15,10 +15,10 @@ package abdom.util.struct;
  * </pre>
  * のように定義を簡略化することができます。もちろん、
  * <pre>
- * Triple&lt;String, Integer, Double&gt; profile = new Triple&lt;&gt;("name", 29, 63.2);
+ * Triplet&lt;String, Integer, Double&gt; profile = new Triplet&lt;&gt;("name", 29, 63.2);
  * </pre>
  * のように新しいクラスを定義せず使うこともできます。
- * Singlet, Doublet, Triplet, Quartet, Quintet, Sextet, Septet, Octet, Nonet
+ * Singlet, Doublet, Triplett, Quartet, Quintet, Sextet, Septet, Octet, Nonet
  *
  * @version		March 2, 2019
  * @author		Yusuke Sasaki
@@ -27,7 +27,7 @@ package abdom.util.struct;
  * @param	<V1>	value1 の型
  * @param	<V2>	value2 の型
  */
-public class Triple<K, V1, V2> {
+public class Triplet<K, V1, V2> {
 	public K key;
 	public V1 value1;
 	public V2 value2;
@@ -35,9 +35,9 @@ public class Triple<K, V1, V2> {
 /*-------------
  * constructor
  */
-	public Triple() {
+	public Triplet() {
 	}
-	public Triple(K key, V1 value1, V2 value2) {
+	public Triplet(K key, V1 value1, V2 value2) {
 		this.key = key;
 		this.value1 = value1;
 		this.value2 = value2;
@@ -80,8 +80,8 @@ public class Triple<K, V1, V2> {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Triple)) return false;
-		Triple<?,?,?> t = (Triple<?,?,?>)obj;
+		if (!(obj instanceof Triplet)) return false;
+		Triplet<?,?,?> t = (Triplet<?,?,?>)obj;
 		
 		return ( (key == null && t.key == null)
 				||(key != null && key.equals(t.key)) )
