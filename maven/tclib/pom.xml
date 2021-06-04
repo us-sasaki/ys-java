@@ -18,7 +18,7 @@
   </properties>
 
   <dependencies>
-    <!-- ¡JUNIT 5 -->
+    <!-- â– JUNIT 5 -->
     <dependency>
         <groupId>org.junit.platform</groupId>
         <artifactId>junit-platform-launcher</artifactId>
@@ -67,10 +67,10 @@
     <dependency>
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
-        <version>1.19</version>
+        <version>1.26</version>
     </dependency>
   </dependencies>
-  <!-- ¡JUNIT 5  -->
+  <!-- â– JUNIT 5  -->
   <build>
     <!-- <finalName>introduction-to-junit5</finalName> -->
     <plugins>
@@ -91,7 +91,7 @@
           </dependency>
         </dependencies>
       </plugin>
-      <!-- ¡Javadoc -->
+      <!-- â– Javadoc -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -102,9 +102,9 @@
       </plugin>
     </plugins>
   </build>
-  <!-- ¡JUNIT 5 ‚±‚±‚Ü‚Å -->
+  <!-- â– JUNIT 5 ã“ã“ã¾ã§ -->
   <reporting>
-  <!-- ¡JUNIT 5 ƒŒƒ|[ƒg -->
+  <!-- â– JUNIT 5 ãƒ¬ãƒãƒ¼ãƒˆ -->
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
