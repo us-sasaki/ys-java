@@ -371,6 +371,39 @@ public class APIUtil {
 		return devapi;
 	}
 	
+/*------------------
+ * Measurement 関連
+ */
+	/**
+	 * Measurement パラメータ直接指定して Measurement を生成します。
+	 *
+	 * @param	source 	source device id
+	 * @param	type	measurement type
+	 * @param	measurementPath	fragment と series を . つなぎで指定します
+	 * @param	value	value
+	 * @param	unit	unit
+	 */
+	public void createMeasurement(String source, String type, String measurementPath, double value, String unit) throws IOException {
+		Measurement m = new Measurement(source, type);
+		m.put(measurementPath, value, unit);
+		api.createMeasurement(m);
+	}
+	
+/*------------
+ * Event 関連
+ */
+	/**
+	 * Event パラメータ直接指定して Event を生成します。
+	 *
+	 * @param	source 	source device id
+	 * @param	type	event type
+	 * @param	text	text
+	 */
+	public Event createEvent(String source, String type, String text) throws IOException {
+		Event e = new Event(source, type, text);
+		return api.createEvent(e);
+	}
+	
 /*------------
  * Alarm 関連
  */
@@ -418,6 +451,21 @@ public class APIUtil {
 	 */
 	public TreeMap<Long, Long> getAlarmCreationElapsed(TC_Date from, TC_Date to) {
 		return getAlarmCreationElapsed(from, to, null);
+	}
+	
+	/**
+	 * Alarm パラメータ直接指定して　Alarm を生成します。
+	 *
+	 * @param	source 	source device id
+	 * @param	type	alarm type
+	 * @param	text	text
+	 * @param	status		Alarm status
+	 * @param	severity	Alarm severity
+	 * @return	生成された Alarm
+	 */
+	public Alarm createAlarm(String source, String type, String text, String status, String severity) throws IOException {
+		Alarm a = new Alarm(source, type, text, status, severity);
+		return api.createAlarm(a);
 	}
 	
 /*------------------
