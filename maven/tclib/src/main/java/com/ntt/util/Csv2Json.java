@@ -52,10 +52,13 @@ public class Csv2Json {
 				try {
 					Double.parseDouble(column);
 					type[i] = "double";
-					Long.parseLong(column);
-					type[i] = "long";
 				} catch (NumberFormatException nfe) {
-					type[i] = "String";
+					try {
+						Long.parseLong(column);
+						type[i] = "long";
+					} catch (NumberFormatException nfe2) {
+						type[i] = "String";
+					}
 				}
 				i++;
 			}
