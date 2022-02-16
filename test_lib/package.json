@@ -1,0 +1,14 @@
+{
+  "name": "test_lib",
+  "version": "1.0.0",
+  "description": "test library",
+  "main": "index.js",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://github.com:us-sasaki/ys-java.git"
+  },
+  "author": "hoge",
+  "license": "ISC",
+  "dependencies": {}
+}
