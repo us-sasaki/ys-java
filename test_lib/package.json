@@ -6,7 +6,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/us-sasaki/ys-java/test_lib"
+    "url": "git+ssh://github.com/us-sasaki/Tutorial.git"
   },
   "author": "hoge",
   "license": "ISC",

@@ -8,7 +8,7 @@
     "url": "git+ssh://github.com:tamac-io/sayusuke.git"
   },
   "dependencies":{
- "test_lib":"https://github.com/us-sasaki/ys-java/test_lib"
+    "test_lib":"git+ssh://github.com:us-sasaki/Tutorial.git"
   },
   "author": "hoge",
   "license": "ISC"
