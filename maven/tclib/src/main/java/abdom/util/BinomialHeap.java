@@ -1,7 +1,5 @@
 package abdom.util;
 
-import java.util.*;
-
 /**
  * 二項ヒープ
  * 昇順
