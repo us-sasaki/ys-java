@@ -67,7 +67,7 @@
     <dependency>
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
-        <version>1.30</version> <!-- 1.19 ???????? -->
+        <version>1.33</version> <!-- 1.30 -->
     </dependency>
   </dependencies>
   <!-- ¡JUNIT 5  -->
