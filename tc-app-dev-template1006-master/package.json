@@ -9,7 +9,8 @@
     "deploy": "c8ycli deploy",
     "test": "karma start karma.conf.js",
     "client:install": "cd tc-client && npm install",
-    "client:build": "cd tc-client && npm run build"
+    "client:build": "cd tc-client && npm run build",
+    "postinstall": "ngcc"
   },
   "keywords": [],
   "author": "",

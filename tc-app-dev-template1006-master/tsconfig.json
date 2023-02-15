@@ -16,5 +16,8 @@
       "dom",
       "es2016"
     ],
+  },
+  "angularCompilerOptions": {
+    "enableIvy": true
   }
 }
