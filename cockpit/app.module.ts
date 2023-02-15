@@ -22,6 +22,12 @@ import { SearchModule } from '@c8y/ngx-components/search';
 import { AssetsNavigatorModule } from '@c8y/ngx-components/assets-navigator';
 import { CockpitConfigModule } from '@c8y/ngx-components/cockpit-config';
 
+import { EmptyModule } from './custom-widgets/empty/empty.module';
+import { ThingsCloudModule } from './custom-widgets/common/thingsCloud.module';
+
+import { C8yService } from './custom-widgets/common/c8y/c8y.service';
+import { C8yCommonService } from './custom-widgets/common/c8y/c8ycommon.service';
+
 @NgModule({
   imports: [
     // Upgrade module must be the first
@@ -41,7 +47,17 @@ import { CockpitConfigModule } from '@c8y/ngx-components/cockpit-config';
     SearchModule,
     SubAssetsModule,
     ChildDevicesModule,
-    CockpitConfigModule
+    CockpitConfigModule,
+    ThingsCloudModule,
+    EmptyModule,
+  ],
+  declarations: [
+  ],
+  entryComponents: [
+  ],
+  providers: [
+    C8yService,
+    C8yCommonService
   ]
 })
 export class AppModule extends HybridAppModule {
