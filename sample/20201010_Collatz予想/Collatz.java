@@ -26,7 +26,7 @@ public class Collatz {
 		}
 	}
 	public static void main(String[] args) throws Exception {
-		Collatz c = new Collatz(2000000);
+		Collatz c = new Collatz(20000000);
 		long max = 0;
 		for (long v : c.solved) {
 			max = Math.max(max, v);
