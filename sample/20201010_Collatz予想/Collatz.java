@@ -26,11 +26,13 @@ public class Collatz {
 		}
 	}
 	public static void main(String[] args) throws Exception {
+		long t0 = System.currentTimeMillis();
 		Collatz c = new Collatz(20000000);
 		long max = 0;
 		for (long v : c.solved) {
 			max = Math.max(max, v);
 		}
 		System.out.println(max);
+		System.out.println("elapsed: " + (System.currentTimeMillis() - t0));
 	}
 }
