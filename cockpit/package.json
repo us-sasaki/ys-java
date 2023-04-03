@@ -18,7 +18,7 @@
     "@ngx-translate/core": "13.0.0",
     "rxjs": "~6.6.3",
     "zone.js": "~0.11.4",
-    "@c8y/ng1-modules": "1014.0.294",
+    "@c8y/ng1-modules": "1017.289.0",
     "angular": "1.6.9",
     "@c8y/style": "1014.0.294"
   },
