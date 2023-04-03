@@ -23,7 +23,7 @@
     "@c8y/style": "1014.0.294"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "12.2.14",
+    "@angular-devkit/build-angular": "15.2.4",
     "@angular/compiler-cli": "12.2.14",
     "@angular/language-service": "12.2.14",
     "@angular/service-worker": "12.2.14",
@@ -32,7 +32,7 @@
     "jest": "^27.4.5",
     "jest-preset-angular": "^11.0.1",
     "typescript": "4.2.4",
-    "@c8y/cli": "1014.0.294"
+    "@c8y/cli": "1018.1.0"
   },
   "scripts": {
     "start": "c8ycli server -u https://thirdsasa.iot-trialpack.com",
