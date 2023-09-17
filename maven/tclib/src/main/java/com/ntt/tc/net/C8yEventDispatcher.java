@@ -47,7 +47,7 @@ public class C8yEventDispatcher extends Thread {
 	
 	API api;
 	boolean started = false; // 通信スレッドが開始したか
-	boolean isStopping = false; // 強制終了中か
+	volatile boolean isStopping = false; // 強制終了中か
 	
 	int[] id;
 	private List<Session> sessions; // 利用時 synchronized 要
