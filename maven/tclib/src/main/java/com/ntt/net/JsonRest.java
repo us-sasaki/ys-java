@@ -4,11 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.Map;
 import java.util.HashMap;
-import java.text.SimpleDateFormat;
 import java.nio.charset.StandardCharsets;
 
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -21,11 +18,8 @@ import javax.net.ssl.X509TrustManager;
 import com.ntt.tc.util.Base64; // till JDK1.7
 
 import abdom.data.json.JsonType;
-import abdom.data.json.JsonValue;
 import abdom.data.json.Jsonizable;
-import abdom.data.json.JsonParseException;
 
-import static java.net.HttpURLConnection.*;
 
 /**
  * REST による要求を簡単に行うためのクラス。軽量化のため、外部ライブラリに
@@ -584,5 +578,19 @@ public class JsonRest {
 		public boolean verify(String hostname, SSLSession session) {
 			return true;
 		}
+	}
+
+	/**
+	 * クライアント証明書、秘密鍵を keyStore ファイルにより設定します。
+	 * 事前に keytool コマンドで keyStore ファイル、パスワードを設定する必要があります。
+	 * 処理内容は System プロパティの javax.net.ssl.keyStore,
+	 * javax.net.ssl.keyStorePassword への設定のみです。
+	 * 動作未確認。(2024/7/5)
+	 * @param keyStoreFile myClientCert.p12 のような keyStore ファイル名
+	 * @param keyStorePass keyStore のパスワード
+	 */
+	static void setClientAuth(String keyStoreFile, String keyStorePass) {
+		System.setProperty("javax.net.ssl.keyStore", keyStoreFile);
+		System.setProperty("javax.net.ssl.keyStorePassword", keyStorePass);
 	}
 }

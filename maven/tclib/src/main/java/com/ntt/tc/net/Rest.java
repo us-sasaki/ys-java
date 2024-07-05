@@ -1,25 +1,14 @@
 package com.ntt.tc.net;
 
 import java.io.*;
-import java.net.*;
 //import java.util.Base64; // from JDK1.8
-import java.util.Date;
 import java.util.Map;
-import java.text.SimpleDateFormat;
 
-import javax.net.ssl.HttpsURLConnection;
-
-import abdom.data.json.JsonArray;
 import abdom.data.json.JsonType;
-import abdom.data.json.JsonValue;
-import abdom.data.json.JsonObject;
 import abdom.data.json.Jsonizable;
-import abdom.data.json.JsonParseException;
 
 import com.ntt.net.JsonRest;
 import com.ntt.tc.util.Base64; // till JDK1.7
-
-import static java.net.HttpURLConnection.*;
 
 /**
  * REST による要求を簡単に行うためのクラス。軽量化のため、外部ライブラリに
