@@ -1,15 +1,15 @@
 import java.util.*;
 
 /**
- * Collatz —\‘z‚ª³‚µ‚¢‚©A—LŒÀ‚Ì”‚Ü‚Å‚ÅŠm”F‚·‚éB
- * –³ŒÀƒ‹[ƒvA‚Ü‚½‚Í—áŠO‚ªo‚È‚¯‚ê‚Îw’è‚µ‚½”‚Ü‚Å‚Í³‚µ‚¢B
+ * Collatz äºˆæƒ³ãŒæ­£ã—ã„ã‹ã€æœ‰é™ã®æ•°ã¾ã§ã§ç¢ºèªã™ã‚‹ã€‚
+ * ç„¡é™ãƒ«ãƒ¼ãƒ—ã€ã¾ãŸã¯ä¾‹å¤–ãŒå‡ºãªã‘ã‚Œã°æŒ‡å®šã—ãŸæ•°ã¾ã§ã¯æ­£ã—ã„ã€‚
  */
 public class Collatz {
 	Map<Long, Long> solved;
-	long solvedMax = 1; // ‚±‚Ì”ˆÈ‰º‚Í‚·‚×‚Ä 1 ‚É‚È‚é
+	long solvedMax = 0; // ã“ã®æ•°ä»¥ä¸‹ã¯ã™ã¹ã¦ 1 ã«ãªã‚‹
 	
 	private void solve(long number, long life) {
-		if (number == 1) return;
+		//if (number == 1) return;
 		if (number > Long.MAX_VALUE/3)
 			throw new RuntimeException("value exceeded: "+ number);
 		if (solvedMax >= number) return;
@@ -27,7 +27,7 @@ public class Collatz {
 	
 	public Collatz(int arg) {
 		solved = new HashMap<>();
-		for (int i = 2; i < arg; i++) {
+		for (int i = 1; i < arg; i++) {
 			solve(i, 1);
 		}
 	}
